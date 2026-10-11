@@ -776,8 +776,11 @@ async function boot() {
     const { data: rep, mock } = await loadData('replay');
     if (rep?.history?.length) {
       S.source = new ReplaySource(rep);
-      setMode('replay', 'REPLAY', `recorded ${dateShort(S.source.recorded)}`);
-      $('#live-meta').innerHTML = `REPLAY OF ${esc(rep.game?.short_name || '')}, RECORDED ${esc(dateShort(S.source.recorded).toUpperCase())} · REAL SPEED${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
+      const recAt = rep.recorded_ms || S.source.recorded;
+      const recTxt = new Date(recAt).toDateString() === new Date().toDateString()
+        ? `today, ${new Date(recAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(' ', '').toLowerCase()}` : dateShort(recAt);
+      setMode('replay', 'REPLAY', `recorded ${recTxt}`);
+      $('#live-meta').innerHTML = `REPLAY OF ${esc(rep.game?.short_name || '')}, RECORDED ${esc(recTxt.toUpperCase())} · REAL SPEED${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
       $('#skip-btn').hidden = false;
       $('#skip-btn').addEventListener('click', () => S.source.skip?.());
       S.source.addEventListener('reset', () => { S.alerts.clear(); S.day.clear(); S.shownTakeover.clear(); renderFeed(); renderReceipts(); });
@@ -788,9 +791,11 @@ async function boot() {
     // The live server may just have been slow to answer (quick tunnels hiccup). Keep checking, and switch over
     // in place when it answers, without reloading the page. Never switch in the middle of a spoiler.
     {
+      let probing = false;
       const retry = setInterval(async () => {
-        if (!$('#takeover').hidden) return;
-        const back = await resolveApi();
+        if (probing || !$('#takeover').hidden) return;
+        probing = true;
+        const back = await resolveApi({ tries: 1, timeout: 8000 }).finally(() => { probing = false; });
         if (!back || !$('#takeover').hidden) return;
         clearInterval(retry);
         S.source.stop?.();
@@ -803,7 +808,7 @@ async function boot() {
         S.source.start();
         S.push?.render();
         loadDb();
-      }, 15000);
+      }, 10000);
     }
   }
   S.source.addEventListener('games', onGames);

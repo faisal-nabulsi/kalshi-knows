@@ -313,7 +313,8 @@ class Engine:
         inferred = [dict(r, prob=round(float(r["prob"]), 3)) for r in inferred][:4]
         # Don't name a play from bad inputs (REVIEW.md E2): missing field position or a stale ESPN snapshot
         bad = [k for k in ("posteam", "down", "yardline_100") if state.get(k) in (None, "")]
-        if state.get("field_age_s") is None or state["field_age_s"] > 60:
+        # the lag-robust model is trained on one-play-late state (train/train_lagged.py), so only block truly stale state
+        if state.get("field_age_s") is None or state["field_age_s"] > float(os.environ.get("STALE_GATE_S", "180")):
             bad.append("stale_state")
         # --- two-stage alerts (stage 2): update the provisional alert in place when there is one
         prev = self.alert_by_id.get(pend.get("aid") or "")
@@ -520,6 +521,8 @@ class Engine:
                     continue
                 if "espn_nearest" not in a and ref - a["ts_ms"] > 1_800_000 and not backfill:
                     a["espn_nearest"] = None     # stale (e.g. restored after a restart): don't re-emit
+                    if a.get("grade") in (None, "pending", "called"):
+                        a["grade"], a["graded_ms"] = "no_match", ref   # never leave it GRADING (quiet: no re-emit)
                 if "espn_nearest" not in a or (backfill and a.get("grade") in (None, "pending")):
                     # unconfirmed: show what ESPN says happened around the jump
                     near = [p for p in plays if p.get("wallclock_ms")
@@ -664,6 +667,29 @@ def espn_loop():
 SUMMARY_HOT_MS = 4000   # ESPN summary poll period for games with a pending alert (lead_s is reported conservatively)
 
 
+def _grade_stale(last: dict):
+    """Alerts past the grading window whose game is no longer polled (went FINAL) would never get try_confirm
+    called again. Fetch the game's summary once per minute and force a final grade."""
+    t = now_ms()
+    with ENGINE.lock:
+        stale = {a["game_id"] for a in ENGINE.alerts
+                 if not a["id"].startswith("r_") and a.get("confirmed") is None
+                 and a.get("grade") in (None, "pending", "called")
+                 and t - a["ts_ms"] > CONFIRM_MS + 45_000}
+    for gid in stale:
+        if time.time() - last.get("stale:" + gid, 0) < 60:
+            continue
+        last["stale:" + gid] = time.time()
+        g = ENGINE.games.get(gid) or {}
+        try:
+            if g.get("home_id") and g.get("away_id"):
+                plays = espn.fetch_plays(gid, g["home_id"], g["away_id"], g["home"], g["away"])
+                ENGINE.on_plays(gid, plays, now_ms())
+        except Exception as e:
+            log.warning("stale-grade fetch %s failed: %s", gid, e)
+        ENGINE.try_confirm(gid, now_ms())
+
+
 def summary_loop():
     last: dict[str, float] = {}
     while not _stop.is_set():
@@ -672,6 +698,7 @@ def summary_loop():
             # a game that just ended keeps being fetched while an alert on it is still grading
             live = [g for g in ENGINE.games.values() if g.get("status") == "in"
                     or (g["game_id"] in hot and g.get("home_id"))]
+        _grade_stale(last)
         for g in live:
             gid = g["game_id"]
             period = 4 if gid in hot else 8

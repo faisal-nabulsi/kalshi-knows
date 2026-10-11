@@ -2,15 +2,23 @@
 // Both emit: 'games' (detail: games[]), 'alert' (detail: alert), 'status' (detail: {mode, text}).
 import { fetchJSON, PLAY_POINTS } from './util.js';
 
-export async function resolveApi() {
-  try {
-    const override = new URLSearchParams(location.search).get('api');
-    const cfg = override ? { api: override } : await fetchJSON('config.json', { timeout: 4000 });
-    const api = (cfg?.api || '').replace(/\/+$/, '');
-    if (!api) return null;
-    const health = await fetchJSON(`${api}/api/health`, { timeout: 6000 });
-    if (health?.ok) return { api, health };
-  } catch (e) { /* offline → replay */ }
+// First probe is tolerant: a cold quick-tunnel connection can take 15 s to answer. Up to `tries` attempts with an
+// 8 s timeout each (config.json read once, health probed per attempt) before we give up and fall back to replay.
+export async function resolveApi({ tries = 3, timeout = 8000 } = {}) {
+  let api = '';
+  for (let i = 0; i < tries; i++) {
+    try {
+      if (!api) {
+        const override = new URLSearchParams(location.search).get('api');
+        const cfg = override ? { api: override } : await fetchJSON('config.json', { timeout: 4000 });
+        api = (cfg?.api || '').replace(/\/+$/, '');
+        if (!api) return null;
+      }
+      const health = await fetchJSON(`${api}/api/health`, { timeout });
+      if (health?.ok) return { api, health };
+    } catch (e) { /* slow or offline: retry, then replay */ }
+    if (i < tries - 1) await new Promise((r) => setTimeout(r, 500));
+  }
   return null;
 }
 
