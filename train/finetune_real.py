@@ -176,7 +176,9 @@ def main():
 
     Xsim, Z, bst = sim_logprobs(rows)
     simcols = [f"sim_{c}" for c in CLASSES]
-    use_mm = [c for c in MM if c in rows and rows[c].notna().mean() > 0.3]
+    # Multi-market features are OFF for production: the totals market reacts slowly/partially (TD +1.4 pts at
+    # +30 s), the TD ladder barely trades, and the live engine doesn't poll them (train/serve skew). KK_USE_MM=1 to test.
+    use_mm = [c for c in MM if os.environ.get("KK_USE_MM") == "1" and c in rows and rows[c].notna().mean() > 0.3]
     print("multi-market features:", use_mm or "none", {c: round(float(rows[c].notna().mean()), 2) for c in MM if c in rows})
     F = pd.concat([pd.DataFrame(Z, columns=simcols), rows[STATE + MICRO + use_mm].reset_index(drop=True)], axis=1).astype(float)
     np.savez(OUT / "stage2_matrix.npz", X=F.to_numpy(), y=y, g=groups, live=live_mask, cols=np.array(list(F.columns)),

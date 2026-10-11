@@ -159,7 +159,23 @@ def predict_proba(state, p_before, p_after, team):
     return p / p.sum()
 
 
+def _possession_mask(p, state, team):
+    """If the favoured team was on DEFENSE, offensive plays (FG, big play) are near-impossible; if it had the
+    ball, a takeaway by it is. Soft (x0.1) because ESPN's possession can lag a play."""
+    pos = state.get("posteam")
+    if not pos or not team:
+        return p
+    p = p.copy()
+    idx = {c: i for i, c in enumerate(CLASSES)}
+    if team != pos:
+        for c in ("FG", "BIG_PLAY"):
+            p[idx[c]] *= 0.1
+    else:
+        p[idx["TURNOVER"]] *= 0.1
+    return p / p.sum()
+
+
 def infer_play(state: dict, p_before: float, p_after: float, team: str):
-    p = predict_proba(state, p_before, p_after, team)
+    p = _possession_mask(predict_proba(state, p_before, p_after, team), state, team)
     out = [{"type": c, "team": team, "prob": round(float(pr), 3)} for c, pr in zip(CLASSES, p)]
     return sorted(out, key=lambda r: -r["prob"])

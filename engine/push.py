@@ -63,9 +63,17 @@ def _save(subs: list[dict]):
     tmp.replace(SUBS)
 
 
+PUSH_HOSTS = ("web.push.apple.com", "fcm.googleapis.com", "updates.push.services.mozilla.com",
+              "notify.windows.com", "push.services.mozilla.com")
+
+
 def subscribe(sub: dict) -> int:
     if not isinstance(sub, dict) or not sub.get("endpoint") or not (sub.get("keys") or {}).get("p256dh"):
         raise ValueError("not a PushSubscription (need endpoint + keys.p256dh + keys.auth)")
+    from urllib.parse import urlparse
+    host = urlparse(sub["endpoint"]).hostname or ""
+    if urlparse(sub["endpoint"]).scheme != "https" or not any(host == h or host.endswith("." + h) for h in PUSH_HOSTS):
+        raise ValueError("endpoint is not a known browser push service")   # no arbitrary outbound POSTs (SSRF)
     sub = {"endpoint": sub["endpoint"], "keys": {"p256dh": sub["keys"]["p256dh"], "auth": sub["keys"].get("auth", "")},
            "expirationTime": sub.get("expirationTime")}
     with _lock:
@@ -106,6 +114,13 @@ def _send_one(sub: dict, data: str) -> dict:
     except Exception as e:
         log.warning("push to %s failed: %s", host, e)
         return {"host": host, "status": None, "ok": False, "error": str(e)[:200]}
+
+
+def send_to(endpoint: str, payload: dict) -> list[dict]:
+    """Send to one subscriber (the 'send me a test' button), never the whole audience."""
+    public_key()
+    subs = [s for s in load_subs() if s.get("endpoint") == endpoint]
+    return [_send_one(s, json.dumps(payload)) for s in subs]
 
 
 def send_all(payload: dict, wait: bool = False) -> list[dict] | None:

@@ -173,7 +173,7 @@ class Engine:
         if pos == away:
             diff, is_home = as_ - hs, 0
         else:
-            diff, is_home = hs - as_, 1 if pos == home else 0
+            diff, is_home = hs - as_, 1     # home has the ball, or possession unknown: home perspective
         return {"qtr": snap.get("period") or 1,
                 "game_seconds_remaining": snap.get("game_seconds_remaining")
                 if snap.get("game_seconds_remaining") is not None
@@ -323,9 +323,14 @@ class Engine:
                         self._emit(a)
                     continue
                 best = None
+                used = {x["confirmed"].get("play_id") for x in self.alerts if x.get("confirmed")}
                 for p in plays:
                     if p.get("type") not in CONFIRM_TYPES or p.get("team") != a["team"]:
                         continue
+                    if p.get("id") in used:
+                        continue          # already confirmed another alert
+                    if p.get("wallclock_ms") and a.get("jump_started_ms") and p["wallclock_ms"] < a["jump_started_ms"] - 40_000:
+                        continue          # too early: observed market lag after a play is 4-33 s
                     seen = p.get("seen_ms")
                     wc = p.get("wallclock_ms") or seen
                     if wc is None:
@@ -342,9 +347,11 @@ class Engine:
                     p = best[1]
                     seen = p.get("seen_ms")
                     a["confirmed"] = {
+                        "play_id": p.get("id"),
                         "play_text": p.get("text"), "play_type": p.get("type"),
                         "espn_wallclock_ms": p.get("wallclock_ms"), "espn_seen_ms": seen,
-                        "lead_s": round((seen - a["ts_ms"]) / 1000, 1) if seen is not None else None,
+                        "lead_s": round((seen - a["ts_ms"] - SUMMARY_HOT_MS) / 1000, 1) if seen is not None else None,
+                        "lead_s_raw": round((seen - a["ts_ms"]) / 1000, 1) if seen is not None else None,
                         "market_lag_s": round((a["ts_ms"] - p["wallclock_ms"]) / 1000, 1) if p.get("wallclock_ms") else None,
                         "inferred_correct": bool(a["inferred"]) and a["inferred"][0]["type"] == p.get("type"),
                     }
@@ -440,6 +447,9 @@ def espn_loop():
             ENGINE.espn_err = str(e)[:200]
             log.warning("scoreboard failed: %s", e)
         _stop.wait(max(0.5, 5 - (time.time() - t0)))
+
+
+SUMMARY_HOT_MS = 4000   # ESPN summary poll period for games with a pending alert (lead_s is reported conservatively)
 
 
 def summary_loop():
@@ -852,10 +862,23 @@ async def subscribe(request: Request):
 
 
 @app.post("/api/push/test")
-def push_test():
+async def push_test(request: Request):
+    """With {"endpoint": ...}: test only that phone. Broadcast to everyone only from this Mac (localhost)."""
     payload = {"title": "Kalshi Knows · test", "body": "Push works. Spoilers will land here before your stream shows the play.",
                "url": "./#live", "tag": f"test-{now_ms()}"}
-    res = push.send_all(payload, wait=True) or []
+    try:
+        body = await request.json()
+    except Exception:  # noqa: BLE001
+        body = {}
+    ep = (body or {}).get("endpoint")
+    local = request.client is not None and request.client.host in ("127.0.0.1", "::1") \
+        and "cf-connecting-ip" not in request.headers
+    if ep:
+        res = push.send_to(ep, payload)
+    elif local:
+        res = push.send_all(payload, wait=True) or []
+    else:
+        return JSONResponse({"ok": False, "error": "send your subscription endpoint"}, status_code=400)
     return {"ok": any(r["ok"] for r in res) if res else False, "sent": len(res),
             "delivered": sum(1 for r in res if r["ok"]), "results": res}
 

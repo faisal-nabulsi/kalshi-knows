@@ -81,7 +81,7 @@ export function initPush(getApi) {
   }
   async function test() {
     const api = getApi(); if (!api) return note('Live server offline.', true);
-    try { const r = await fetch(`${api}/api/push/test`, { method: 'POST' }); note(r.ok ? 'Test sent. It should land in a second or two.' : `Server said ${r.status}`, !r.ok); }
+    try { const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription(); const r = await fetch(`${api}/api/push/test`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ endpoint: sub && sub.endpoint }) }); note(r.ok ? 'Test sent. It should land in a second or two.' : `Server said ${r.status}`, !r.ok); }
     catch (e) { note(`Test failed: ${e.message}`, true); }
   }
 
