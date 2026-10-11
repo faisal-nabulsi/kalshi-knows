@@ -1,0 +1,40 @@
+{
+ "prereg_hashes_ok": true,
+ "games": [
+  "401872982",
+  "401872983",
+  "401872984",
+  "401872985",
+  "401872986",
+  "401872987",
+  "401872990"
+ ],
+ "live_regime": {
+  "set": "PRIMARY: live regime |\u0394|>=0.08",
+  "n_fires": 32,
+  "games": 6,
+  "accuracy": 0.656,
+  "always_other": 0.469,
+  "lift": 0.188,
+  "lift_ci95": [
+   -0.131,
+   0.333
+  ],
+  "named_calls": 2,
+  "named_precision": 1.0
+ },
+ "all_fires": {
+  "set": "secondary: all fires |\u0394|>=0.05",
+  "n_fires": 113,
+  "games": 7,
+  "accuracy": 0.726,
+  "always_other": 0.611,
+  "lift": 0.115,
+  "lift_ci95": [
+   -0.011,
+   0.189
+  ],
+  "named_calls": 9,
+  "named_precision": 0.889
+ }
+}

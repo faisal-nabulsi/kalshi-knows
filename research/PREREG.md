@@ -14,3 +14,12 @@ No retraining or threshold changes until after the test is reported.
 | Match window | ESPN play wallclock in [jump −20 s, +90 s] |
 | Test set | today's games that are final by ~1:20pm PT and were never in training (pipeline/out/train_games.json excludes them) |
 | Metrics (reported as-is) | accuracy and always-OTHER on the same fires (live regime ≥0.08), named-call precision at ≥0.75 + count, game-clustered bootstrap 95% CI |
+
+## Result (run once, 1:36pm PT) — results/today_test.json
+Test set: 7 games final by the cutoff and never in training (NYG @ WSH excluded: in overtime, not final by ~1:20pm; PHI @ JAX was in the training set). Model hashes verified against this file before running.
+- PRIMARY (live regime |Δ| ≥ 0.08): 32 fires, 6 games — accuracy 65.6% vs 46.9% always-OTHER (lift +18.8 pts, game-clustered 95% CI −13.1 to +33.3); named calls 2, both correct.
+- Secondary (all fires |Δ| ≥ 0.05): 113 fires, 7 games — 72.6% vs 61.1% (lift +11.5, CI −1.1 to +18.9); named calls 9, 8 correct (88.9%).
+Reading: same direction and size as the offline results; one morning is too small for a tight interval.
+
+## Addendum (after the result): production switched to the audited-label model
+After reporting the above, production moved to train/train_relabeled.py (same features; audited labels; trained only on pre-today data).

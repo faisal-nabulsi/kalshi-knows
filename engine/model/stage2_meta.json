@@ -95,12 +95,12 @@
   }
  ],
  "labels": {
-  "OTHER": 5956,
-  "BIG_PLAY": 1140,
-  "TD": 935,
-  "TURNOVER": 561,
-  "FG": 209,
-  "SAFETY": 7
+  "OTHER": 5039,
+  "BIG_PLAY": 1128,
+  "TD": 914,
+  "TURNOVER": 725,
+  "FG": 142,
+  "SAFETY": 8
  },
  "n_windows": 17046,
  "n_fires": 8808,
@@ -138,5 +138,35 @@
   "ydstogo",
   "yardline_100"
  ],
- "production": "stage1_plus_state (no price shape)"
+ "production": "stage1_plus_state, AUDITED labels (train/audit), deduped jumps",
+ "relabeled_metrics": {
+  "cv_live": {
+   "set": "CV by game, live regime",
+   "n": 2641,
+   "games": 296,
+   "accuracy": 0.738,
+   "always_other": 0.498,
+   "lift": 0.24,
+   "lift_ci95": [
+    0.216,
+    0.267
+   ],
+   "named_calls": 466,
+   "named_precision": 0.805
+  },
+  "temporal_live": {
+   "set": "train 2025 -> test 2026, live regime",
+   "n": 511,
+   "games": 58,
+   "accuracy": 0.75,
+   "always_other": 0.47,
+   "lift": 0.28,
+   "lift_ci95": [
+    0.217,
+    0.351
+   ],
+   "named_calls": 94,
+   "named_precision": 0.766
+  }
+ }
 }
