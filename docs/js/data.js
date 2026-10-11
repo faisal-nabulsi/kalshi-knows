@@ -47,6 +47,33 @@ export class LiveSource extends EventTarget {
     }, 3000);
   }
   connect() {
+    // WebSocket first (Cloudflare quick tunnels buffer SSE); SSE as a fallback; polling covers both.
+    this.wsFails = this.wsFails || 0;
+    if ('WebSocket' in window && this.wsFails < 4) return this.connectWS();
+    this.connectSSE();
+  }
+  connectWS() {
+    let ws;
+    try { ws = new WebSocket(`${this.api.replace(/^http/, 'ws')}/api/ws`); } catch { this.wsFails = 9; return this.connectSSE(); }
+    this.ws = ws;
+    let opened = false;
+    ws.onopen = () => { opened = true; this.wsFails = 0; this.emit('status', { ok: true }); };
+    ws.onmessage = (e) => {
+      try {
+        const m = JSON.parse(e.data);
+        if (m.event === 'games') { this.lastGamesAt = Date.now(); this.emit('games', m.data); }
+        else if (m.event === 'alert') this.emit('alert', m.data);
+      } catch {}
+    };
+    ws.onclose = () => {
+      if (!opened) this.wsFails++;
+      this.emit('status', { ok: false });
+      clearTimeout(this.reT);
+      this.reT = setTimeout(() => this.connect(), Math.min(15000, 1500 * (1 + this.wsFails)));
+    };
+    ws.onerror = () => { try { ws.close(); } catch {} };
+  }
+  connectSSE() {
     if (!('EventSource' in window)) return;
     this.es?.close();
     const es = new EventSource(`${this.api}/api/stream`);
@@ -56,7 +83,7 @@ export class LiveSource extends EventTarget {
       try { this.lastGamesAt = Date.now(); this.emit('games', JSON.parse(e.data)); } catch {}
     });
     es.addEventListener('alert', (e) => { try { this.emit('alert', JSON.parse(e.data)); } catch {} });
-    es.addEventListener('error', () => this.emit('status', { ok: false }));
+    es.addEventListener('error', () => { this.emit('status', { ok: false }); if (es.readyState === 2) setTimeout(() => this.connectSSE(), 5000); });
   }
   async guess(alert_id, nickname, guess) {
     try {

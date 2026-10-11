@@ -472,7 +472,9 @@ async function boot() {
     const serverReplay = live.health.mode === 'replay';
     setMode(serverReplay ? 'replay' : 'live', serverReplay ? 'LIVE SERVER · REPLAY' : 'LIVE');
     $('#live-meta').textContent = `KALSHI PUBLIC ORDER BOOK · ${int(live.health.games_tracked)} GAMES TRACKED · UPDATES EVERY ~2 S`;
-    S.source.addEventListener('status', (e) => setMode(e.detail.ok ? (serverReplay ? 'replay' : 'live') : 'warn', e.detail.ok ? (serverReplay ? 'LIVE SERVER · REPLAY' : 'LIVE') : 'RECONNECTING'));
+    const okMode = () => setMode(serverReplay ? 'replay' : 'live', serverReplay ? 'LIVE SERVER · REPLAY' : 'LIVE');
+    S.source.addEventListener('status', (e) => { if (e.detail.ok || Date.now() - S.source.lastGamesAt < 12000) okMode(); else setMode('warn', 'RECONNECTING'); });
+    S.source.addEventListener('games', okMode);
   } else {
     const { data: rep, mock } = await loadData('replay');
     if (rep?.history?.length) {
