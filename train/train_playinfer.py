@@ -94,6 +94,16 @@ def metrics(y_true, proba, name):
             "n": int(len(y_true))}
 
 
+def rule_of_thumb(X: pd.DataFrame) -> np.ndarray:
+    """What a sports fan would guess: offense gained a lot -> TD, a little -> big play; defense gained -> turnover."""
+    P = np.full((len(X), len(CLASSES)), 0.02)
+    off = X["delta_pos"].to_numpy() > 0
+    big = X["abs_delta"].to_numpy() >= 0.10
+    for i, (o, b) in enumerate(zip(off, big)):
+        P[i, CLASSES.index("TD" if (o and b) else "BIG_PLAY" if o else "TURNOVER")] = 0.9
+    return P / P.sum(1, keepdims=True)
+
+
 def train_mlp(Xtr, ytr, Xva, yva, scaler):
     import torch, torch.nn as nn
     dev = "cuda" if torch.cuda.is_available() else "cpu"
@@ -130,10 +140,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--real", default=None, help="aligned_jumps.parquet from the nfl-data pipeline")
     ap.add_argument("--trials", type=int, default=30)
+    ap.add_argument("--start", type=int, default=1999)
     args = ap.parse_args()
     OUT.mkdir(exist_ok=True)
     t0 = time.time()
-    df = load_nflverse(range(2016, 2027))
+    df = load_nflverse(range(args.start, 2027))
     df = df[df["delta_home"].abs() >= MIN_DELTA]
     df["y"] = df["category"].map({c: i for i, c in enumerate(CLASSES)})
     tr, va, te = df[df.season <= 2023], df[df.season == 2024], df[df.season >= 2025]
@@ -146,15 +157,17 @@ def main():
     results = []
     prior = np.bincount(ytr, minlength=len(CLASSES)) / len(ytr)
     results.append(metrics(yte, np.tile(prior, (len(yte), 1)), "majority_prior"))
+    results.append(metrics(yte, rule_of_thumb(Xte), "rule_of_thumb"))
     scaler = StandardScaler().fit(Xtr)
-    lr = LogisticRegression(max_iter=2000).fit(scaler.transform(Xtr), ytr)
+    sub = rng.choice(len(Xtr), min(len(Xtr), 200_000), replace=False)  # LR on a subsample: CPU-bound
+    lr = LogisticRegression(max_iter=1000).fit(scaler.transform(Xtr.iloc[sub]), ytr[sub])
     results.append(metrics(yte, lr.predict_proba(scaler.transform(Xte)), "logistic_regression"))
 
     # XGBoost random search on GPU
     best = (1e9, None, None)
     for t in range(args.trials):
         params = {"objective": "multi:softprob", "num_class": len(CLASSES), "device": "cuda", "tree_method": "hist",
-                  "max_depth": int(rng.integers(3, 11)), "learning_rate": float(10 ** rng.uniform(-2, -0.7)),
+                  "max_depth": int(rng.integers(3, 11)), "learning_rate": float(10 ** rng.uniform(-1.5, -0.7)),
                   "subsample": float(rng.uniform(0.6, 1.0)), "colsample_bytree": float(rng.uniform(0.6, 1.0)),
                   "min_child_weight": float(10 ** rng.uniform(0, 1.5)), "lambda": float(10 ** rng.uniform(-1, 1)),
                   "eval_metric": "mlogloss"}
@@ -178,6 +191,7 @@ def main():
            "sim_test": results, "train_rows": int(len(tr)), "seconds": time.time() - t0}
 
     bst.save_model(OUT / "playinfer_xgb.json")
+    json.dump({"classes": CLASSES, "features": FEATURES, "best_iteration": int(bst.best_iteration)}, open(OUT / "spec.json", "w"))
     # MLP weights as plain JSON so the Mac can run it with numpy only
     sd = {k: v.cpu().numpy().tolist() for k, v in net.state_dict().items()}
     json.dump({"state_dict": sd, "mean": scaler.mean_.tolist(), "scale": scaler.scale_.tolist()}, open(OUT / "playinfer_mlp.json", "w"))
@@ -185,18 +199,44 @@ def main():
     if args.real and Path(args.real).exists():
         real = pd.read_parquet(args.real)
         real = real[real["delta_home"].abs() >= 0.05].copy()
+        if "is_quiet" in real:
+            real = real[~real["is_quiet"].fillna(False).astype(bool)]
+        if "score_diff_home" not in real:
+            real["score_diff_home"] = real["home_score_pre"] - real["away_score_pre"]
         real = real[real["category"].isin(CLASSES)]
         if len(real):
             yr = real["category"].map({c: i for i, c in enumerate(CLASSES)}).to_numpy()
             Xr = make_features(real, False)
+            pr_xgb = bst.predict(xgb.DMatrix(Xr), iteration_range=(0, bst.best_iteration + 1))
             out["real_kalshi_test"] = [
                 metrics(yr, np.tile(prior, (len(yr), 1)), "majority_prior"),
+                metrics(yr, rule_of_thumb(Xr), "rule_of_thumb"),
                 metrics(yr, lr.predict_proba(scaler.transform(Xr)), "logistic_regression"),
-                metrics(yr, bst.predict(xgb.DMatrix(Xr), iteration_range=(0, bst.best_iteration + 1)), "xgboost_gpu"),
+                metrics(yr, pr_xgb, "xgboost_gpu"),
                 metrics(yr, mlp_predict(Xr), "mlp_gpu"),
             ]
+            # Stage 2: calibrate on REAL Kalshi jumps (multinomial logistic on log-probs), cross-validated by game
+            if len(real) >= 60 and "game_id" in real:
+                from sklearn.model_selection import GroupKFold
+                Z = np.log(np.clip(pr_xgb, 1e-6, 1))
+                cv = np.zeros_like(pr_xgb)
+                for tr_i, te_i in GroupKFold(n_splits=5).split(Z, yr, real["game_id"]):
+                    cal = LogisticRegression(max_iter=2000, C=1.0).fit(Z[tr_i], yr[tr_i])
+                    full = np.full((len(te_i), len(CLASSES)), 1e-6)
+                    full[:, cal.classes_] = cal.predict_proba(Z[te_i])
+                    cv[te_i] = full / full.sum(1, keepdims=True)
+                out["real_kalshi_test"].append(metrics(yr, cv, "xgboost_calibrated_on_kalshi"))
+                cal = LogisticRegression(max_iter=2000, C=1.0).fit(Z, yr)
+                coef = np.zeros((len(CLASSES), len(CLASSES))); icpt = np.full(len(CLASSES), -20.0)
+                coef[cal.classes_] = cal.coef_; icpt[cal.classes_] = cal.intercept_
+                json.dump({"coef": coef.tolist(), "intercept": icpt.tolist(), "n": int(len(real))}, open(OUT / "calib.json", "w"))
             out["real_label_dist"] = real["category"].value_counts().to_dict()
             print("REAL KALSHI:", json.dumps(out["real_kalshi_test"], indent=1))
+    board = sorted(out.get("real_kalshi_test", results), key=lambda r: -r["log_loss"])  # worst first
+    names = ["Dugar", "House Cat", "Gazelle", "Everyone Else", "Lion", "Kevin & Faisal"]
+    offset = len(names) - len(board)
+    out["model_leaderboard"] = [{**r, "tier": i + 1 + max(offset, 0), "tier_name": names[min(i + max(offset, 0), 5)]}
+                                for i, r in enumerate(board)][::-1]
     json.dump(out, open(OUT / "metrics.json", "w"), indent=1)
     print("done in", round(time.time() - t0), "s; winner", winner)
 

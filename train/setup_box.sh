@@ -11,7 +11,7 @@ export PATH=$HOME/.local/bin:$PATH
 [ -d venv ] && [ -x venv/bin/python ] || { rm -rf venv; uv venv -q --python 3.11 venv; }
 uv pip install -q --python venv/bin/python "xgboost==2.1.4" "pandas==2.2.3" "pyarrow==18.1.0" "scikit-learn==1.5.2" "numpy==1.26.4"
 uv pip install -q --python venv/bin/python "torch==2.5.1" --index-url https://download.pytorch.org/whl/cu124
-for y in $(seq 2016 2026); do
+for y in $(seq 1999 2026); do
   f=data/pbp_$y.parquet
   [ -s "$f" ] || curl -sL -o "$f" "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_$y.parquet"
 done
