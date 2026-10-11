@@ -4,7 +4,8 @@ import { fetchJSON, PLAY_POINTS } from './util.js';
 
 export async function resolveApi() {
   try {
-    const cfg = await fetchJSON('config.json', { timeout: 4000 });
+    const override = new URLSearchParams(location.search).get('api');
+    const cfg = override ? { api: override } : await fetchJSON('config.json', { timeout: 4000 });
     const api = (cfg?.api || '').replace(/\/+$/, '');
     if (!api) return null;
     const health = await fetchJSON(`${api}/api/health`, { timeout: 4500 });

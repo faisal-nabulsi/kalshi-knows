@@ -111,7 +111,7 @@ export function createStage(canvas, labelsEl, opts = {}) {
   key.shadow.mapSize.set(lowPower ? 1024 : 2048, lowPower ? 1024 : 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02; key.shadow.radius = 6;
   scene.add(key, key.target);
   const fill = new THREE.DirectionalLight(COLD, 0.55); fill.position.set(-5, 1.5, 2.5); scene.add(fill);
-  const rim = new THREE.DirectionalLight(SIG, 2.4); rim.position.set(-1.6, 2.6, -4.5); scene.add(rim);
+  const rim = new THREE.DirectionalLight(SIG, 2.4); rim.position.set(-1.8, 0.7, -4.5); scene.add(rim);
   const rim2 = new THREE.DirectionalLight(0xffd2b8, 0.7); rim2.position.set(4, 1.2, -3); scene.add(rim2);
   scene.add(new THREE.HemisphereLight(0x30343a, 0x0a0a0b, 0.6));
 

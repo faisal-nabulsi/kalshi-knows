@@ -189,9 +189,10 @@ function feedItem(a) {
   </li>`;
 }
 
+const feedSeen = new Set();
 function renderFeed() {
   const list = [...S.alerts.values()].sort((a, b) => b.ts_ms - a.ts_ms).slice(0, 30);
-  $('#feed').innerHTML = list.map(feedItem).join('');
+  $('#feed').innerHTML = list.map((a) => { const html = feedItem(a); if (feedSeen.has(a.id)) return html; feedSeen.add(a.id); return html.replace('class="fi ', 'class="fi fi-new '); }).join('');
   $('#feed-count').textContent = String(S.alerts.size);
   $('#feed-empty').hidden = list.length > 0;
 }
@@ -199,6 +200,7 @@ function renderFeed() {
 function onAlert(a) {
   if (!a?.id) return;
   const prev = S.alerts.get(a.id);
+  if (prev && !!prev.confirmed === !!a.confirmed && !a._initial) return; // nothing new
   const merged = { ...prev, ...a, confirmed: a.confirmed || prev?.confirmed || null };
   S.alerts.set(a.id, merged);
   if (!a._initial) S.lastAlert = merged;
@@ -212,6 +214,12 @@ function onAlert(a) {
 }
 
 // ------------------------------------------------------------ SPOILER takeover
+function fitText(el) {
+  el.style.fontSize = '';
+  const box = el.parentElement.clientWidth;
+  let fs = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+  while (el.scrollWidth > box && fs > 24 && guard++ < 40) { fs *= 0.94; el.style.fontSize = `${fs}px`; }
+}
 const TO = {
   alert: null, timer: null, votes: null, mine: null, t0: 0, revealT: null,
   open(a, { demo = false } = {}) {
@@ -239,7 +247,7 @@ const TO = {
     const delayName = S.delays.find((d) => d.v === S.delay)?.k || 'your stream';
     $('#to-lower').innerHTML = `<span class="to-lower-tag">KALSHI KNOWS</span><span>The price moved at ${clock(this.t0, { tenth: true })}. You're on <b>${esc(delayName.toLowerCase())}</b>, about ${S.delay}s behind real life.${S.source.kind === 'replay' ? ' <em>REPLAY</em>' : ''}</span>`;
     this.renderVotes();
-    requestAnimationFrame(() => el.classList.add('shown'));
+    requestAnimationFrame(() => { el.classList.add('shown'); fitText($('#to-play')); fitText($('#to-team')); });
     this.revealT = setTimeout(() => this.reveal(), reduceMotion ? 0 : 4200);
     S.stage?.kick();
     try { navigator.vibrate?.([90, 50, 90]); } catch {}
@@ -250,6 +258,7 @@ const TO = {
     const el = $('#takeover'); if (el.hidden) return;
     el.classList.add('revealed'); $('#to-pre').textContent = 'SPOILER · WHAT THE MARKET SAYS HAPPENED';
     $('#to-play').textContent = $('#to-play').dataset.post;
+    fitText($('#to-play')); fitText($('#to-team'));
   },
   update(a) {
     this.alert = a;
@@ -427,7 +436,7 @@ function renderTicker() {
   if (last) items.push(`<span class="tk tk-sig"><b>LAST SPOILER</b> ${esc(last.headline || '')}</span>`);
   if (S.db) {
     items.push(S.dbNear ? `<span class="tk"><b>DUTCH BOOK</b> 0 free lunches, ${int((S.db.near_misses || []).length)} traps</span>` : `<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
-    (S.dbOpps || []).slice(0, 3).forEach((o) => items.push(`<span class="tk">${esc(o.title)} <em class="mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</em></span>`));
+    (S.dbOpps || []).slice(0, 3).forEach((o) => items.push(o._near ? `<span class="tk">${esc(o.title)} <em class="mono">looks free, isn't</em></span>` : `<span class="tk">${esc(o.title)} <em class="mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</em></span>`));
   }
   (S.knew?.cases || []).slice(0, 3).forEach((c) => items.push(`<span class="tk"><b>SOMEONE KNEW</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} early</em></span>`));
   const sig = items.join('');
