@@ -1,9 +1,8 @@
 # TODO (owners)
 
 ## Faisal
-- [ ] Paste the Anthropic key for the product's own Claude calls (announcer lines): run `! read -s K && echo "ANTHROPIC_API_KEY=$K" >> ~/Desktop/hackathon/degen-oracle/engine/.env`
 - [ ] Find a legal stream of the 1:25pm games (SF@SEA) for the projector (YouTube TV / Fox app / NFL+ / Hulu Live)
-- [ ] Find out our presentation time slot
+- [x] Presentation ~4:00pm (during the 1:25pm games, Q4)
 - [ ] Test push on your iPhone (Safari → site → Share → Add to Home Screen → open it → Enable alerts) at the 12:30 checkpoint
 
 ## Kevin (slides + demo picks)
