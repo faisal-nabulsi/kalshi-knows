@@ -1,0 +1,4606 @@
+{
+ "updated_ms": 1791739296871,
+ "scanned_events": 9050,
+ "scanned_markets": 103807,
+ "total_mispricing_usd": 0,
+ "note": "Top-of-book only: profit is for the quantity fillable at the quoted asks. Paper analysis, not advice.",
+ "opportunities": [],
+ "near_misses": [
+  {
+   "id": "KXNETFLIXRANKSHOWGLOBAL-26OCT12:fake_exh",
+   "event_ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12",
+   "title": "Top Global Netflix Show this week?",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-EAS",
+     "label": "East of Eden: Limited Series",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-MON",
+     "label": "Monster: The Lizzie Borden Story: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-ADI",
+     "label": "A Different World: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-WON",
+     "label": "Wonka's The Golden Ticket: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-LEG",
+     "label": "LEGO ONE PIECE: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-THE",
+     "label": "The Gentlemen: Season 2",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-CRE",
+     "label": "Crew Girl: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-RAW",
+     "label": "Raw: 2026 - September 28, 2026",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-THEG",
+     "label": "The Gentlemen: Season 1",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    },
+    {
+     "ticker": "KXNETFLIXRANKSHOWGLOBAL-26OCT12-GAB",
+     "label": "Gabby's Dollhouse: Season 14",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 141
+    }
+   ],
+   "cost": 21.15,
+   "worst_case_payout": 141,
+   "profit_before_fees": 119.85,
+   "fees": 1.46,
+   "profit_after_fees": 118.39,
+   "explanation": "Looks like free money: all 10 YES prices add up to $0.15, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXWORDOFTHEYEAR-26DEC:fake_exh",
+   "event_ticker": "KXWORDOFTHEYEAR-26DEC",
+   "title": "Merriam-Webster Word of the Year 2026?",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-BRA",
+     "label": "Brainrot",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-LOR",
+     "label": "Lore",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-AI",
+     "label": "AI",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-VIB",
+     "label": "Vibe",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-LAR",
+     "label": "larping",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-PER",
+     "label": "Performative",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-SEM",
+     "label": "Semiquincentennial",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-AGE",
+     "label": "Agentic",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 198
+    },
+    {
+     "ticker": "KXWORDOFTHEYEAR-26DEC-LOO",
+     "label": "Looksmaxxing",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 198
+    }
+   ],
+   "cost": 106.92,
+   "worst_case_payout": 198,
+   "profit_before_fees": 91.08,
+   "fees": 6.8,
+   "profit_after_fees": 84.28,
+   "explanation": "Looks like free money: all 9 YES prices add up to $0.54, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBNEXTCOACH-KU26:fake_exh",
+   "event_ticker": "KXNCAAMBNEXTCOACH-KU26",
+   "title": "Kansas Basketball - Next Head Coach",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-JVAU",
+     "label": "Jacque Vaughn",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-BSTE",
+     "label": "Brad Stevens",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-TOTZ",
+     "label": "T.J. Otzelberger",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-TLLO",
+     "label": "Tommy Lloyd",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-SDRE",
+     "label": "Scott Drew",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-GMCC",
+     "label": "Grant McCasland",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-NOAT",
+     "label": "Nate Oats",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-BUND",
+     "label": "Brad Underwood",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-DHUR",
+     "label": "Dan Hurley",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-SMIL",
+     "label": "Sean Miller",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-KSAM",
+     "label": "Kelvin Sampson",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-MCRO",
+     "label": "Mick Cronin",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-BMCM",
+     "label": "Bucky McMillan",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-LMUR",
+     "label": "Luke Murray",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-FHOI",
+     "label": "Fred Hoiberg",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-TGOL",
+     "label": "Todd Golden",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-JCAS",
+     "label": "Jeremy Case",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-AMIL",
+     "label": "Aaron Miles",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-DGAT",
+     "label": "Dennis Gates",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-BDON",
+     "label": "Billy Donovan",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-BMCC",
+     "label": "Ben McCollum",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-DMAY",
+     "label": "Dusty May",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-JWRI",
+     "label": "Jay Wright",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-JSCH",
+     "label": "John Schertz",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    },
+    {
+     "ticker": "KXNCAAMBNEXTCOACH-KU26-JGRO",
+     "label": "John Groce",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 131
+    }
+   ],
+   "cost": 53.71,
+   "worst_case_payout": 131,
+   "profit_before_fees": 77.29,
+   "fees": 3.85,
+   "profit_after_fees": 73.44,
+   "explanation": "Looks like free money: all 25 YES prices add up to $0.41, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXACQUANNOUNCEPINS-27JAN01:fake_exh",
+   "event_ticker": "KXACQUANNOUNCEPINS-27JAN01",
+   "title": "Who will acquire Pinterest this year?",
+   "category": "Financials",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-OPENPINT",
+     "label": "OpenAI",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 100
+    },
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-PAYPPINT",
+     "label": "PayPal",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 100
+    },
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-METAPINT",
+     "label": "Meta",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 100
+    },
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-GOOGPINT",
+     "label": "Google / Alphabet",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 100
+    },
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-MICRPINT",
+     "label": "Microsoft",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 100
+    },
+    {
+     "ticker": "KXACQUANNOUNCEPINS-27JAN01-AMAZPINT",
+     "label": "Amazon",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 100
+    }
+   ],
+   "cost": 31.0,
+   "worst_case_payout": 100,
+   "profit_before_fees": 69.0,
+   "fees": 2.09,
+   "profit_after_fees": 66.91,
+   "explanation": "Looks like free money: all 6 YES prices add up to $0.31, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNEWROLEGS-30DEC:fake_exh",
+   "event_ticker": "KXNEWROLEGS-30DEC",
+   "title": "Who will be the next COO of Goldman Sachs?",
+   "category": "Financials",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNEWROLEGS-30DEC-DDE",
+     "label": "Dan Dees",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 200
+    },
+    {
+     "ticker": "KXNEWROLEGS-30DEC-MNA",
+     "label": "Marc Nachmann",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 200
+    },
+    {
+     "ticker": "KXNEWROLEGS-30DEC-AVA",
+     "label": "Ashok Varadhan",
+     "side": "yes",
+     "price": 0.15,
+     "qty": 200
+    },
+    {
+     "ticker": "KXNEWROLEGS-30DEC-KPO",
+     "label": "Kim Posnett",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 200
+    },
+    {
+     "ticker": "KXNEWROLEGS-30DEC-MMC",
+     "label": "Matt McClure",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 200
+    }
+   ],
+   "cost": 136.0,
+   "worst_case_payout": 200,
+   "profit_before_fees": 64.0,
+   "fees": 8.24,
+   "profit_after_fees": 55.76,
+   "explanation": "Looks like free money: all 5 YES prices add up to $0.68, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAFGAME-26OCT16WASHPUR:fake_exh",
+   "event_ticker": "KXNCAAFGAME-26OCT16WASHPUR",
+   "title": "Washington vs Purdue",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAFGAME-26OCT16WASHPUR-PUR",
+     "label": "Purdue",
+     "side": "yes",
+     "price": 0.59,
+     "qty": 3929
+    },
+    {
+     "ticker": "KXNCAAFGAME-26OCT16WASHPUR-WASH",
+     "label": "Washington",
+     "side": "yes",
+     "price": 0.4,
+     "qty": 3929
+    }
+   ],
+   "cost": 3889.71,
+   "worst_case_payout": 3929,
+   "profit_before_fees": 39.29,
+   "fees": 132.54,
+   "profit_after_fees": -93.25,
+   "explanation": "Looks like free money: all 2 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNBERRECESSQ:fake_exh",
+   "event_ticker": "KXNBERRECESSQ",
+   "title": "When will the next US recession start?",
+   "category": "Economics",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNBERRECESSQ-Q4-2024",
+     "label": "Q4 2024",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 50
+    },
+    {
+     "ticker": "KXNBERRECESSQ-Q1-2025",
+     "label": "Q1 2025",
+     "side": "yes",
+     "price": 0.009,
+     "qty": 50
+    },
+    {
+     "ticker": "KXNBERRECESSQ-Q2-2025",
+     "label": "Q2 2025",
+     "side": "yes",
+     "price": 0.034,
+     "qty": 50
+    },
+    {
+     "ticker": "KXNBERRECESSQ-Q3-2025",
+     "label": "Q3 2025",
+     "side": "yes",
+     "price": 0.028,
+     "qty": 50
+    },
+    {
+     "ticker": "KXNBERRECESSQ-Q4-2025",
+     "label": "Q4 2025",
+     "side": "yes",
+     "price": 0.066,
+     "qty": 50
+    },
+    {
+     "ticker": "KXNBERRECESSQ-Q1-2026",
+     "label": "Q1 2026",
+     "side": "yes",
+     "price": 0.088,
+     "qty": 50
+    }
+   ],
+   "cost": 12.75,
+   "worst_case_payout": 50,
+   "profit_before_fees": 37.25,
+   "fees": 0.88,
+   "profit_after_fees": 36.37,
+   "explanation": "Looks like free money: all 6 YES prices add up to $0.26, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXLOLMAP-26OCT120500VITKT-2:fake_exh",
+   "event_ticker": "KXLOLMAP-26OCT120500VITKT-2",
+   "title": "Team Vitality vs. KT Rolster: Map 2",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXLOLMAP-26OCT120500VITKT-2-VIT",
+     "label": "Team Vitality",
+     "side": "yes",
+     "price": 0.23,
+     "qty": 1350
+    },
+    {
+     "ticker": "KXLOLMAP-26OCT120500VITKT-2-KT",
+     "label": "KT Rolster",
+     "side": "yes",
+     "price": 0.75,
+     "qty": 1350
+    }
+   ],
+   "cost": 1323.0,
+   "worst_case_payout": 1350,
+   "profit_before_fees": 27.0,
+   "fees": 34.46,
+   "profit_after_fees": -7.46,
+   "explanation": "Looks like free money: all 2 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXRANKLISTGOOGLESEARCH-26DEC:fake_exh",
+   "event_ticker": "KXRANKLISTGOOGLESEARCH-26DEC",
+   "title": "#1 searched person on Google in 2026",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-DON",
+     "label": "Donald Trump",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-KAM",
+     "label": "Kamala Harris",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-VOL",
+     "label": "Volodymyr Zelenskyy",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-JOE",
+     "label": "Joe Biden",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-TAY",
+     "label": "Taylor Swift",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-ELO",
+     "label": "Elon Musk",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-VLA",
+     "label": "Vladimir Putin",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-TIM",
+     "label": "Timoth\u00e9e Chalamet",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-BIL",
+     "label": "Billie Eilish",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-SAM",
+     "label": "Sam Altman",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-BAD",
+     "label": "Bad Bunny",
+     "side": "yes",
+     "price": 0.13,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-SAV",
+     "label": "Savannah Guthrie",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-ERL",
+     "label": "Erling Haaland",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26DEC-LIO",
+     "label": "Lionel Messi",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26-LUI",
+     "label": "Luigi Mangione",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 47
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH-26-ZOH",
+     "label": "Zohran Mamdani",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 47
+    }
+   ],
+   "cost": 28.2,
+   "worst_case_payout": 47,
+   "profit_before_fees": 18.8,
+   "fees": 1.89,
+   "profit_after_fees": 16.91,
+   "explanation": "Looks like free money: all 16 YES prices add up to $0.60, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12:fake_exh",
+   "event_ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12",
+   "title": "Top Global Netflix Movie this week?",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-UNA",
+     "label": "UNABOMBER",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-THE",
+     "label": "The Widower: 'Til Death Do Us Part",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-DOI",
+     "label": "Doing Life",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-THEB",
+     "label": "The Breadwinner",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-THEE",
+     "label": "The Equalizer 3",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-THEM",
+     "label": "The Mummy",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-THEW",
+     "label": "The Whisper Man",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-WHA",
+     "label": "What's Your Number?",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-AMI",
+     "label": "A Minecraft Movie",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    },
+    {
+     "ticker": "KXNETFLIXRANKMOVIEGLOBAL-26OCT12-KPO",
+     "label": "KPop Demon Hunters",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 17
+    }
+   ],
+   "cost": 3.91,
+   "worst_case_payout": 17,
+   "profit_before_fees": 13.09,
+   "fees": 0.33,
+   "profit_after_fees": 12.76,
+   "explanation": "Looks like free money: all 10 YES prices add up to $0.23, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXMODELHIGH-27-1550:fake_exh",
+   "event_ticker": "KXMODELHIGH-27-1550",
+   "title": "Which AI will be the first to hit 1550 on Text Arena?",
+   "category": "Science and Technology",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXMODELHIGH-27-1550-QWEN",
+     "label": "Qwen",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-GEMI",
+     "label": "Gemini",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-CHAT",
+     "label": "ChatGPT",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-CLAU",
+     "label": "Claude",
+     "side": "yes",
+     "price": 0.37,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-GROK",
+     "label": "Grok",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-KIMI",
+     "label": "Kimi",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-ERNI",
+     "label": "Ernie",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 36
+    },
+    {
+     "ticker": "KXMODELHIGH-27-1550-OTHE",
+     "label": "Other",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 36
+    }
+   ],
+   "cost": 23.4,
+   "worst_case_payout": 36,
+   "profit_before_fees": 12.6,
+   "fees": 1.26,
+   "profit_after_fees": 11.34,
+   "explanation": "Looks like free money: all 8 YES prices add up to $0.65, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXBOLPDIVGAME-26OCT11POTSTR:fake_exh",
+   "event_ticker": "KXBOLPDIVGAME-26OCT11POTSTR",
+   "title": "Real Potosi vs The Strongest",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXBOLPDIVGAME-26OCT11POTSTR-POT",
+     "label": "Real Potosi",
+     "side": "yes",
+     "price": 0.4,
+     "qty": 1000
+    },
+    {
+     "ticker": "KXBOLPDIVGAME-26OCT11POTSTR-STR",
+     "label": "The Strongest",
+     "side": "yes",
+     "price": 0.34,
+     "qty": 1000
+    },
+    {
+     "ticker": "KXBOLPDIVGAME-26OCT11POTSTR-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.25,
+     "qty": 1000
+    }
+   ],
+   "cost": 990.0,
+   "worst_case_payout": 1000,
+   "profit_before_fees": 10.0,
+   "fees": 45.64,
+   "profit_after_fees": -35.64,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBF3-26OCT112000LADMIL:fake_exh",
+   "event_ticker": "KXMLBF3-26OCT112000LADMIL",
+   "title": "Los Angeles D vs Milwaukee: First 3 Innings",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXMLBF3-26OCT112000LADMIL-LAD",
+     "label": "Los Angeles D",
+     "side": "yes",
+     "price": 0.31,
+     "qty": 967
+    },
+    {
+     "ticker": "KXMLBF3-26OCT112000LADMIL-MIL",
+     "label": "Milwaukee",
+     "side": "yes",
+     "price": 0.34,
+     "qty": 967
+    },
+    {
+     "ticker": "KXMLBF3-26OCT112000LADMIL-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.34,
+     "qty": 967
+    }
+   ],
+   "cost": 957.33,
+   "worst_case_payout": 967,
+   "profit_before_fees": 9.67,
+   "fees": 44.86,
+   "profit_after_fees": -35.19,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNFLMOSTRECYDS-26OCT11BALATL:fake_exh",
+   "event_ticker": "KXNFLMOSTRECYDS-26OCT11BALATL",
+   "title": "Baltimore vs Atlanta: Most Receiving Yards",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-ATLJDOTSON4",
+     "label": "Jahan Dotson",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 31
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-ATLDLONDON5",
+     "label": "Drake London",
+     "side": "yes",
+     "price": 0.5,
+     "qty": 31
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-ATLKPITTS8",
+     "label": "Kyle Pitts Sr.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 31
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-ATLBROBINSON7",
+     "label": "Bijan Robinson",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 31
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-BALMANDREWS89",
+     "label": "Mark Andrews",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 31
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11BALATL-BALRBATEMAN7",
+     "label": "Rashod Bateman",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 31
+    }
+   ],
+   "cost": 23.87,
+   "worst_case_payout": 31,
+   "profit_before_fees": 7.13,
+   "fees": 1.14,
+   "profit_after_fees": 5.99,
+   "explanation": "Looks like free money: all 6 YES prices add up to $0.77, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAFGAME-26OCT16OKSTHOU:fake_exh",
+   "event_ticker": "KXNCAAFGAME-26OCT16OKSTHOU",
+   "title": "Oklahoma St. vs Houston",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAFGAME-26OCT16OKSTHOU-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.59,
+     "qty": 650
+    },
+    {
+     "ticker": "KXNCAAFGAME-26OCT16OKSTHOU-OKST",
+     "label": "Oklahoma St.",
+     "side": "yes",
+     "price": 0.4,
+     "qty": 650
+    }
+   ],
+   "cost": 643.5,
+   "worst_case_payout": 650,
+   "profit_before_fees": 6.5,
+   "fees": 21.93,
+   "profit_after_fees": -15.43,
+   "explanation": "Looks like free money: all 2 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXUFCMIDDLEWEIGHTTITLE-26:fake_exh",
+   "event_ticker": "KXUFCMIDDLEWEIGHTTITLE-26",
+   "title": "Middleweight Title Holder on Dec 31, 2026?",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-DPLE",
+     "label": "Dricus Du Plessis",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-NIMA",
+     "label": "Nassourdine Imavov",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-SSTR",
+     "label": "Sean Strickland",
+     "side": "yes",
+     "price": 0.77,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-KCHI",
+     "label": "Khamzat Chimaev",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-IADE",
+     "label": "Israel Adesanya",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-RRID",
+     "label": "Reinier de Ridder",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-CBOR",
+     "label": "Caio Borralho",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 90
+    },
+    {
+     "ticker": "KXUFCMIDDLEWEIGHTTITLE-26-AHER",
+     "label": "Anthony Hernandez",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 90
+    }
+   ],
+   "cost": 84.6,
+   "worst_case_payout": 90,
+   "profit_before_fees": 5.4,
+   "fees": 2.18,
+   "profit_after_fees": 3.22,
+   "explanation": "Looks like free money: all 8 YES prices add up to $0.94, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 5,
+   "tier_name": "Lion",
+   "tier_blurb": "Tier-1 partner. Eats the gazelle, takes the board seat."
+  },
+  {
+   "id": "KXNEWROLEX-27JAN:fake_exh",
+   "event_ticker": "KXNEWROLEX-27JAN",
+   "title": "Who will be the next CEO of X?",
+   "category": "Companies",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNEWROLEX-27JAN-ELON",
+     "label": "Elon Musk",
+     "side": "yes",
+     "price": 0.15,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-JACK",
+     "label": "Jack Dorsey",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-GROK",
+     "label": "Grok",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-NIKI",
+     "label": "Nikita Bier",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-JIMM",
+     "label": "Jimmy Donaldson",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-SAM",
+     "label": "Sam Altman",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-MAHM",
+     "label": "Mahmoud Reza Banki",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 8
+    },
+    {
+     "ticker": "KXNEWROLEX-27JAN-SRIR",
+     "label": "Sriram Krishnan",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 8
+    }
+   ],
+   "cost": 2.8,
+   "worst_case_payout": 8,
+   "profit_before_fees": 5.2,
+   "fees": 0.23,
+   "profit_after_fees": 4.97,
+   "explanation": "Looks like free money: all 8 YES prices add up to $0.35, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLWINMARGIN-26OCT11BALATL:fake_exh",
+   "event_ticker": "KXNFLWINMARGIN-26OCT11BALATL",
+   "title": "Baltimore vs Atlanta: Winning Margin",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-ATL1TO6",
+     "label": "Atlanta by 1 to 6",
+     "side": "yes",
+     "price": 0.21,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-ATL7TO14",
+     "label": "Atlanta by 7 to 14",
+     "side": "yes",
+     "price": 0.18,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-ATL15PLUS",
+     "label": "Atlanta by 15 or more",
+     "side": "yes",
+     "price": 0.18,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-BAL1TO6",
+     "label": "Baltimore by 1 to 6",
+     "side": "yes",
+     "price": 0.18,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-BAL7TO14",
+     "label": "Baltimore by 7 to 14",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 71
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11BALATL-BAL15PLUS",
+     "label": "Baltimore by 15 or more",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 71
+    }
+   ],
+   "cost": 68.16,
+   "worst_case_payout": 71,
+   "profit_before_fees": 2.84,
+   "fees": 4.0,
+   "profit_after_fees": -1.16,
+   "explanation": "Looks like free money: all 7 YES prices add up to $0.96, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNFLFIRSTTDTEAM-26OCT11DENLAC:fake_exh",
+   "event_ticker": "KXNFLFIRSTTDTEAM-26OCT11DENLAC",
+   "title": "Denver vs Los Angeles C: First Team to Score a TD",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLFIRSTTDTEAM-26OCT11DENLAC-LAC",
+     "label": "Los Angeles C",
+     "side": "yes",
+     "price": 0.44,
+     "qty": 90
+    },
+    {
+     "ticker": "KXNFLFIRSTTDTEAM-26OCT11DENLAC-DEN",
+     "label": "Denver",
+     "side": "yes",
+     "price": 0.52,
+     "qty": 90
+    },
+    {
+     "ticker": "KXNFLFIRSTTDTEAM-26OCT11DENLAC-NONE",
+     "label": "No team",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 90
+    }
+   ],
+   "cost": 87.3,
+   "worst_case_payout": 90,
+   "profit_before_fees": 2.7,
+   "fees": 3.21,
+   "profit_after_fees": -0.51,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.97, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBGAME-26OCT152000MILLAD:mutex_no",
+   "event_ticker": "KXMLBGAME-26OCT152000MILLAD",
+   "title": "Game 4: Milwaukee vs Los Angeles D",
+   "category": "Sports",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXMLBGAME-26OCT152000MILLAD-MIL",
+     "label": "Milwaukee",
+     "side": "no",
+     "price": 0.59,
+     "qty": 264
+    },
+    {
+     "ticker": "KXMLBGAME-26OCT152000MILLAD-LAD",
+     "label": "Los Angeles D",
+     "side": "no",
+     "price": 0.4,
+     "qty": 264
+    }
+   ],
+   "cost": 261.36,
+   "worst_case_payout": 264,
+   "profit_before_fees": 2.64,
+   "fees": 8.92,
+   "profit_after_fees": -6.28,
+   "explanation": "At most one of these 2 outcomes can happen, so NO wins on at least 1 of them. Buying NO on all 2 costs $0.99 per set but pays at least $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXCRITICSCOM-27:fake_exh",
+   "event_ticker": "KXCRITICSCOM-27",
+   "title": "Critics Choice Awards: Best Comedy",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXCRITICSCOM-27-DEB",
+     "label": "The Debut",
+     "side": "yes",
+     "price": 0.21,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-WIL",
+     "label": "Wild Horse Nine",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-INV",
+     "label": "The Invite",
+     "side": "yes",
+     "price": 0.25,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-CLU",
+     "label": "Club Kid",
+     "side": "yes",
+     "price": 0.16,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-FUR",
+     "label": "The Further Mis-Adventures of Cliff Booth",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-DIG",
+     "label": "Digger",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-ILO",
+     "label": "I Love Boosters",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-DEV",
+     "label": "The Devil Wears Prada 2",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-COY",
+     "label": "Coyote vs. Acme",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-DRA",
+     "label": "The Drama",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-SHE",
+     "label": "The Sheep Detectives",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-GAL",
+     "label": "The Gallerist",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-FOC",
+     "label": "Focker-in-Law",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-TEE",
+     "label": "Teenage Sex and Death at Camp Miasma",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-PRO",
+     "label": "Project Hail Mary",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 53
+    },
+    {
+     "ticker": "KXCRITICSCOM-27-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 53
+    }
+   ],
+   "cost": 50.88,
+   "worst_case_payout": 53,
+   "profit_before_fees": 2.12,
+   "fees": 3.1,
+   "profit_after_fees": -0.98,
+   "explanation": "Looks like free money: all 16 YES prices add up to $0.96, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXDTEMMYS-COURTROOM26:fake_exh",
+   "event_ticker": "KXDTEMMYS-COURTROOM26",
+   "title": "Daytime Emmy Awards: Outstanding Legal / Courtroom Series",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXDTEMMYS-COURTROOM26-CAU",
+     "label": "Caught in Providence",
+     "side": "yes",
+     "price": 0.23,
+     "qty": 200
+    },
+    {
+     "ticker": "KXDTEMMYS-COURTROOM26-DIV",
+     "label": "Divorce Court",
+     "side": "yes",
+     "price": 0.28,
+     "qty": 200
+    },
+    {
+     "ticker": "KXDTEMMYS-COURTROOM26-JUS",
+     "label": "Justice For The People with Judge Milian",
+     "side": "yes",
+     "price": 0.21,
+     "qty": 200
+    },
+    {
+     "ticker": "KXDTEMMYS-COURTROOM26-MAT",
+     "label": "Mathis Court with Judge Mathis",
+     "side": "yes",
+     "price": 0.23,
+     "qty": 200
+    },
+    {
+     "ticker": "KXDTEMMYS-COURTROOM26-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 200
+    }
+   ],
+   "cost": 198.0,
+   "worst_case_payout": 200,
+   "profit_before_fees": 2.0,
+   "fees": 10.66,
+   "profit_after_fees": -8.66,
+   "explanation": "Looks like free money: all 5 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXGOOGLESEARCH-TVS27:fake_exh",
+   "event_ticker": "KXGOOGLESEARCH-TVS27",
+   "title": "Google\u2019s Year in Search 2026 Global - Tv Shows: #1 search",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-HIS",
+     "label": "His & Hers",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 3
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-BRID",
+     "label": "Bridgerton",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 3
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-LAN",
+     "label": "Landman & The Madison",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 3
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-STR",
+     "label": "Stranger Things",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 3
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-PIT",
+     "label": "The Pitt",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 3
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-TVS27-SUR",
+     "label": "Survivor",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 3
+    }
+   ],
+   "cost": 1.23,
+   "worst_case_payout": 3,
+   "profit_before_fees": 1.77,
+   "fees": 0.11,
+   "profit_after_fees": 1.66,
+   "explanation": "Looks like free money: all 6 YES prices add up to $0.41, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLAFCNORTH-27:mutex_no",
+   "event_ticker": "KXNFLAFCNORTH-27",
+   "title": "AFC North Division Winner",
+   "category": "Sports",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXNFLAFCNORTH-27-BAL",
+     "label": "Baltimore",
+     "side": "no",
+     "price": 0.43,
+     "qty": 79
+    },
+    {
+     "ticker": "KXNFLAFCNORTH-27-CIN",
+     "label": "Cincinnati",
+     "side": "no",
+     "price": 0.74,
+     "qty": 79
+    },
+    {
+     "ticker": "KXNFLAFCNORTH-27-CLE",
+     "label": "Cleveland",
+     "side": "no",
+     "price": 0.89,
+     "qty": 79
+    },
+    {
+     "ticker": "KXNFLAFCNORTH-27-PIT",
+     "label": "Pittsburgh",
+     "side": "no",
+     "price": 0.92,
+     "qty": 79
+    }
+   ],
+   "cost": 235.42,
+   "worst_case_payout": 237,
+   "profit_before_fees": 1.58,
+   "fees": 3.39,
+   "profit_after_fees": -1.81,
+   "explanation": "At most one of these 4 outcomes can happen, so NO wins on at least 3 of them. Buying NO on all 4 costs $2.98 per set but pays at least $3.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXEPLGAME-26OCT18NFOARS:fake_exh",
+   "event_ticker": "KXEPLGAME-26OCT18NFOARS",
+   "title": "Nottingham Forest vs Arsenal",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXEPLGAME-26OCT18NFOARS-NFO",
+     "label": "Nottingham Forest",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 152
+    },
+    {
+     "ticker": "KXEPLGAME-26OCT18NFOARS-ARS",
+     "label": "Arsenal",
+     "side": "yes",
+     "price": 0.61,
+     "qty": 152
+    },
+    {
+     "ticker": "KXEPLGAME-26OCT18NFOARS-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.24,
+     "qty": 152
+    }
+   ],
+   "cost": 150.48,
+   "worst_case_payout": 152,
+   "profit_before_fees": 1.52,
+   "fees": 5.78,
+   "profit_after_fees": -4.26,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXDWTSRANK-226DEC31:mutex_no",
+   "event_ticker": "KXDWTSRANK-226DEC31",
+   "title": "Dancing with the Stars Season 35 \u00b7 2nd Place",
+   "category": "Entertainment",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXDWTSRANK-226DEC31-JSTIL",
+     "label": "Julia Stiles",
+     "side": "no",
+     "price": 0.99,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-JDEW",
+     "label": "Jenna Dewan",
+     "side": "no",
+     "price": 0.97,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-TAT",
+     "label": "Tatyana Ali",
+     "side": "no",
+     "price": 0.99,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-EFRE",
+     "label": "Ezra Frech",
+     "side": "no",
+     "price": 0.79,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-AGLE",
+     "label": "Amber Glenn",
+     "side": "no",
+     "price": 0.76,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-CWOO",
+     "label": "Connor Wood",
+     "side": "no",
+     "price": 0.98,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-TCAM",
+     "label": "Tyler Cameron",
+     "side": "no",
+     "price": 0.99,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-HSHU",
+     "label": "Harry Shum Jr.",
+     "side": "no",
+     "price": 0.86,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-GROD",
+     "label": "Guillermo Rodriguez",
+     "side": "no",
+     "price": 0.99,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-MHIG",
+     "label": "Maura Higgins",
+     "side": "no",
+     "price": 0.68,
+     "qty": 117
+    },
+    {
+     "ticker": "KXDWTSRANK-226DEC31-JOLS",
+     "label": "Jackson Olson",
+     "side": "no",
+     "price": 0.99,
+     "qty": 117
+    }
+   ],
+   "cost": 1168.83,
+   "worst_case_payout": 1170,
+   "profit_before_fees": 1.17,
+   "fees": 6.5,
+   "profit_after_fees": -5.33,
+   "explanation": "At most one of these 11 outcomes can happen, so NO wins on at least 10 of them. Buying NO on all 11 costs $9.99 per set but pays at least $10.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXDIESELYE-26DEC31:lad:KXDIESELYE-26DEC31-T4.60:KXDIESELYE-26DEC31-T4.80",
+   "event_ticker": "KXDIESELYE-26DEC31",
+   "title": "Diesel price at year-end 2026",
+   "category": "Economics",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXDIESELYE-26DEC31-T4.60",
+     "label": "Above $4.60",
+     "side": "yes",
+     "price": 0.9,
+     "qty": 99
+    },
+    {
+     "ticker": "KXDIESELYE-26DEC31-T4.80",
+     "label": "Above $4.80",
+     "side": "no",
+     "price": 0.09,
+     "qty": 99
+    }
+   ],
+   "cost": 98.01,
+   "worst_case_payout": 99,
+   "profit_before_fees": 0.99,
+   "fees": 1.2,
+   "profit_after_fees": -0.21,
+   "explanation": "Kalshi prices 'Above $4.80' above 'Above $4.60' (it should never be higher, since beating the bigger number means beating the smaller one). Buy YES on Above $4.60 and NO on Above $4.80 for $0.99 total; you get at least $1.00 whatever happens.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W3R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W3R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 3 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.28,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W3R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    }
+   ],
+   "cost": 4.05,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.95,
+   "fees": 0.29,
+   "profit_after_fees": 0.66,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.81, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W2R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W2R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 2 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.24,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W2R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    }
+   ],
+   "cost": 4.05,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.95,
+   "fees": 0.29,
+   "profit_after_fees": 0.66,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.81, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLNFCSOUTH-27:mutex_no",
+   "event_ticker": "KXNFLNFCSOUTH-27",
+   "title": "NFC South Division Winner",
+   "category": "Sports",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXNFLNFCSOUTH-27-TB",
+     "label": "Tampa Bay",
+     "side": "no",
+     "price": 0.86,
+     "qty": 86
+    },
+    {
+     "ticker": "KXNFLNFCSOUTH-27-ATL",
+     "label": "Atlanta",
+     "side": "no",
+     "price": 0.64,
+     "qty": 86
+    },
+    {
+     "ticker": "KXNFLNFCSOUTH-27-CAR",
+     "label": "Carolina",
+     "side": "no",
+     "price": 0.68,
+     "qty": 86
+    },
+    {
+     "ticker": "KXNFLNFCSOUTH-27-NO",
+     "label": "New Orleans",
+     "side": "no",
+     "price": 0.81,
+     "qty": 86
+    }
+   ],
+   "cost": 257.14,
+   "worst_case_payout": 258,
+   "profit_before_fees": 0.86,
+   "fees": 4.36,
+   "profit_after_fees": -3.5,
+   "explanation": "At most one of these 4 outcomes can happen, so NO wins on at least 3 of them. Buying NO on all 4 costs $2.99 per set but pays at least $3.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W8R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W8R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 8 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.32,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W8R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    }
+   ],
+   "cost": 4.15,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.85,
+   "fees": 0.29,
+   "profit_after_fees": 0.56,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.83, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W6R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W6R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 6 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.3,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W6R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    }
+   ],
+   "cost": 4.2,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.8,
+   "fees": 0.29,
+   "profit_after_fees": 0.51,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.84, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W5R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W5R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 5 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.31,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W5R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    }
+   ],
+   "cost": 4.2,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.8,
+   "fees": 0.29,
+   "profit_after_fees": 0.51,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.84, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W7R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W7R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 7 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.3,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W7R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    }
+   ],
+   "cost": 4.25,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.75,
+   "fees": 0.3,
+   "profit_after_fees": 0.45,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.85, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNCAAMBAPRANK-26W4R1:fake_exh",
+   "event_ticker": "KXNCAAMBAPRANK-26W4R1",
+   "title": "College Basketball (M): #1 Ranked Team on Week 4 AP Poll",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-DUKE",
+     "label": "Duke",
+     "side": "yes",
+     "price": 0.28,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-ARIZ",
+     "label": "Arizona",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-MICH",
+     "label": "Michigan",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-ISU",
+     "label": "Iowa St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-HOU",
+     "label": "Houston",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-CONN",
+     "label": "UConn",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-ARK",
+     "label": "Arkansas",
+     "side": "yes",
+     "price": 0.09,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-ILL",
+     "label": "Illinois",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-MSU",
+     "label": "Michigan St.",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-KU",
+     "label": "Kansas",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAMBAPRANK-26W4R1-LOU",
+     "label": "Louisville",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 5
+    }
+   ],
+   "cost": 4.25,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.75,
+   "fees": 0.3,
+   "profit_after_fees": 0.45,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.85, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLREC-26OCT11INDPIT:lad:KXNFLREC-26OCT11INDPIT-INDTWARREN84-3:KXNFLREC-26OCT11INDPIT-INDTWARREN84-4",
+   "event_ticker": "KXNFLREC-26OCT11INDPIT",
+   "title": "Indianapolis vs Pittsburgh: Receptions",
+   "category": "Sports",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXNFLREC-26OCT11INDPIT-INDTWARREN84-3",
+     "label": "Tyler Warren: 3+",
+     "side": "yes",
+     "price": 0.85,
+     "qty": 75
+    },
+    {
+     "ticker": "KXNFLREC-26OCT11INDPIT-INDTWARREN84-4",
+     "label": "Tyler Warren: 4+",
+     "side": "no",
+     "price": 0.14,
+     "qty": 75
+    }
+   ],
+   "cost": 74.25,
+   "worst_case_payout": 75,
+   "profit_before_fees": 0.75,
+   "fees": 1.31,
+   "profit_after_fees": -0.56,
+   "explanation": "Kalshi prices 'Tyler Warren: 4+' above 'Tyler Warren: 3+' (it should never be higher, since beating the bigger number means beating the smaller one). Buy YES on Tyler Warren: 3+ and NO on Tyler Warren: 4+ for $0.99 total; you get at least $1.00 whatever happens.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNFLWINMARGIN-26OCT11DENLAC:fake_exh",
+   "event_ticker": "KXNFLWINMARGIN-26OCT11DENLAC",
+   "title": "Denver vs Los Angeles C: Winning Margin",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-LAC1TO6",
+     "label": "Los Angeles C by 1 to 6",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-LAC7TO14",
+     "label": "Los Angeles C by 7 to 14",
+     "side": "yes",
+     "price": 0.13,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-LAC15PLUS",
+     "label": "Los Angeles C by 15 or more",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-DEN1TO6",
+     "label": "Denver by 1 to 6",
+     "side": "yes",
+     "price": 0.22,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-DEN7TO14",
+     "label": "Denver by 7 to 14",
+     "side": "yes",
+     "price": 0.2,
+     "qty": 36
+    },
+    {
+     "ticker": "KXNFLWINMARGIN-26OCT11DENLAC-DEN15PLUS",
+     "label": "Denver by 15 or more",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 36
+    }
+   ],
+   "cost": 35.28,
+   "worst_case_payout": 36,
+   "profit_before_fees": 0.72,
+   "fees": 2.08,
+   "profit_after_fees": -1.36,
+   "explanation": "Looks like free money: all 7 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNFLMOSTRECYDS-26OCT11DENLAC:fake_exh",
+   "event_ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC",
+   "title": "Denver vs Los Angeles C: Most Receiving Yards",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-DENRHARVEY12",
+     "label": "RJ Harvey",
+     "side": "yes",
+     "price": 0.13,
+     "qty": 3
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-LACKMITCHELL34",
+     "label": "Keaton Mitchell",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 3
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-DENEENGRAM1",
+     "label": "Evan Engram",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 3
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-DENTFRANKLIN11",
+     "label": "Troy Franklin",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 3
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-DENCSUTTON14",
+     "label": "Courtland Sutton",
+     "side": "yes",
+     "price": 0.18,
+     "qty": 3
+    },
+    {
+     "ticker": "KXNFLMOSTRECYDS-26OCT11DENLAC-DENJWADDLE17",
+     "label": "Jaylen Waddle",
+     "side": "yes",
+     "price": 0.3,
+     "qty": 3
+    }
+   ],
+   "cost": 2.28,
+   "worst_case_payout": 3,
+   "profit_before_fees": 0.72,
+   "fees": 0.16,
+   "profit_after_fees": 0.56,
+   "explanation": "Looks like free money: all 6 YES prices add up to $0.76, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLMVPSPECIALS-27AGE:fake_exh",
+   "event_ticker": "KXNFLMVPSPECIALS-27AGE",
+   "title": "Age of Pro Football MVP Winner",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLMVPSPECIALS-27AGE-25ORLESS",
+     "label": "25 years old or younger",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 9
+    },
+    {
+     "ticker": "KXNFLMVPSPECIALS-27AGE-26TO29",
+     "label": "26-29 years old",
+     "side": "yes",
+     "price": 0.31,
+     "qty": 9
+    },
+    {
+     "ticker": "KXNFLMVPSPECIALS-27AGE-30TO33",
+     "label": "30-33 years old",
+     "side": "yes",
+     "price": 0.5,
+     "qty": 9
+    },
+    {
+     "ticker": "KXNFLMVPSPECIALS-27AGE-34ORMORE",
+     "label": "34 years old or older",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 9
+    }
+   ],
+   "cost": 8.46,
+   "worst_case_payout": 9,
+   "profit_before_fees": 0.54,
+   "fees": 0.38,
+   "profit_after_fees": 0.16,
+   "explanation": "Looks like free money: all 4 YES prices add up to $0.94, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 4,
+   "tier_name": "Everyone Else",
+   "tier_blurb": "A 40-slide consulting deck with no recommendation."
+  },
+  {
+   "id": "KXNFL2H-26OCT11DENLAC:fake_exh",
+   "event_ticker": "KXNFL2H-26OCT11DENLAC",
+   "title": "DEN Broncos vs LA Chargers: 2nd Half Winner",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFL2H-26OCT11DENLAC-LAC",
+     "label": "Los Angeles C",
+     "side": "yes",
+     "price": 0.39,
+     "qty": 43
+    },
+    {
+     "ticker": "KXNFL2H-26OCT11DENLAC-DEN",
+     "label": "Denver",
+     "side": "yes",
+     "price": 0.53,
+     "qty": 43
+    },
+    {
+     "ticker": "KXNFL2H-26OCT11DENLAC-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 43
+    }
+   ],
+   "cost": 42.57,
+   "worst_case_payout": 43,
+   "profit_before_fees": 0.43,
+   "fees": 1.67,
+   "profit_after_fees": -1.24,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXGOOGLESEARCH-ATH27:fake_exh",
+   "event_ticker": "KXGOOGLESEARCH-ATH27",
+   "title": "Google\u2019s Year in Search 2026 Global - Athletes: #1 search",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-CRI",
+     "label": "Cristiano Ronaldo",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-LIO",
+     "label": "Lionel Messi",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-NEY",
+     "label": "Neymar Jr",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-KYL",
+     "label": "Kylian Mbapp\u00e9",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-ERL",
+     "label": "Erling Haaland",
+     "side": "yes",
+     "price": 0.5,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-LAM",
+     "label": "Lamine Yamal",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-LEB",
+     "label": "LeBron James",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-JAL",
+     "label": "Jalen Brunson",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-OGA",
+     "label": "OG Anunoby",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-LIN",
+     "label": "Lindsey Vonn",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 21
+    },
+    {
+     "ticker": "KXGOOGLESEARCH-ATH27-SHO",
+     "label": "Shohei Ohtani",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 21
+    }
+   ],
+   "cost": 20.58,
+   "worst_case_payout": 21,
+   "profit_before_fees": 0.42,
+   "fees": 1.08,
+   "profit_after_fees": -0.66,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXCRITICSPROD-27:fake_exh",
+   "event_ticker": "KXCRITICSPROD-27",
+   "title": "Critics Choice Awards: Best Production Design",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXCRITICSPROD-27-ODY",
+     "label": "The Odyssey",
+     "side": "yes",
+     "price": 0.49,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-PRO",
+     "label": "Project Hail Mary",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-DUN",
+     "label": "Dune: Part Three",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-LAB",
+     "label": "La Bola Negra",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-WER",
+     "label": "Werwulf",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-FUR",
+     "label": "The Further Mis-Adventures of Cliff Booth",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-WUT",
+     "label": "Wuthering Heights",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-SEN",
+     "label": "Sense and Sensibility",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-WIL",
+     "label": "Wildwood",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-BAC",
+     "label": "Backrooms",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-FAT",
+     "label": "Fatherland",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-WILD",
+     "label": "Wild Horse Nine",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-INK",
+     "label": "Ink",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-DEV",
+     "label": "The Devil Wears Prada 2",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-DIG",
+     "label": "Digger",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    },
+    {
+     "ticker": "KXCRITICSPROD-27-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 20
+    }
+   ],
+   "cost": 19.6,
+   "worst_case_payout": 20,
+   "profit_before_fees": 0.4,
+   "fees": 1.06,
+   "profit_after_fees": -0.66,
+   "explanation": "Looks like free money: all 16 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXTOPMODEL-26OCT31:fake_exh",
+   "event_ticker": "KXTOPMODEL-26OCT31",
+   "title": "Top AI model this month",
+   "category": "Science and Technology",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXTOPMODEL-26OCT31-CLAU55",
+     "label": "claude-opus-5.5-high",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 2
+    },
+    {
+     "ticker": "KXTOPMODEL-26OCT31-CLAUM",
+     "label": "claude-fable-5.1-max",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 2
+    },
+    {
+     "ticker": "KXTOPMODEL-26OCT31-GEMI",
+     "label": "gemini-4-argon-high",
+     "side": "yes",
+     "price": 0.78,
+     "qty": 2
+    }
+   ],
+   "cost": 1.6,
+   "worst_case_payout": 2,
+   "profit_before_fees": 0.4,
+   "fees": 0.05,
+   "profit_after_fees": 0.35,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.80, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXTGTFT-26NOV08:lad:KXTGTFT-26NOV08-T94:KXTGTFT-26NOV08-T95",
+   "event_ticker": "KXTGTFT-26NOV08",
+   "title": "Target Foot Traffic in October",
+   "category": "Financials",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXTGTFT-26NOV08-T94",
+     "label": "Above 94",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 39
+    },
+    {
+     "ticker": "KXTGTFT-26NOV08-T95",
+     "label": "Above 95",
+     "side": "no",
+     "price": 0.89,
+     "qty": 39
+    }
+   ],
+   "cost": 38.61,
+   "worst_case_payout": 39,
+   "profit_before_fees": 0.39,
+   "fees": 0.52,
+   "profit_after_fees": -0.13,
+   "explanation": "Kalshi prices 'Above 95' above 'Above 94' (it should never be higher, since beating the bigger number means beating the smaller one). Buy YES on Above 94 and NO on Above 95 for $0.99 total; you get at least $1.00 whatever happens.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXPUTINZELENSKYYLOCATION-28:fake_exh",
+   "event_ticker": "KXPUTINZELENSKYYLOCATION-28",
+   "title": "Where will Putin and Zelenskyy next meet?",
+   "category": "Social",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-HUNG",
+     "label": "Hungary",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-SWZ",
+     "label": "Switzerland",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-TUR",
+     "label": "Turkey",
+     "side": "yes",
+     "price": 0.31,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-CHI",
+     "label": "China",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-GER",
+     "label": "Germany",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-UNI",
+     "label": "United States",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-UKR",
+     "label": "Ukraine",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 1
+    },
+    {
+     "ticker": "KXPUTINZELENSKYYLOCATION-28-RUS",
+     "label": "Russia",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    }
+   ],
+   "cost": 0.71,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.29,
+   "fees": 0.09,
+   "profit_after_fees": 0.2,
+   "explanation": "Looks like free money: all 8 YES prices add up to $0.71, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXRANKLISTGOOGLESEARCH2-26DEC:fake_exh",
+   "event_ticker": "KXRANKLISTGOOGLESEARCH2-26DEC",
+   "title": "#2 Most Searched Person on Google in 2026?",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-DON",
+     "label": "Donald Trump",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-KAM",
+     "label": "Kamala Harris",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-VOL",
+     "label": "Volodymyr Zelenskyy",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-JOE",
+     "label": "Joe Biden",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-TAY",
+     "label": "Taylor Swift",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-ELO",
+     "label": "Elon Musk",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-VLA",
+     "label": "Vladimir Putin",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-TIM",
+     "label": "Timoth\u00e9e Chalamet",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-BIL",
+     "label": "Billie Eilish",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-SAM",
+     "label": "Sam Altman",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXRANKLISTGOOGLESEARCH2-26DEC-BAD",
+     "label": "Bad Bunny",
+     "side": "yes",
+     "price": 0.23,
+     "qty": 1
+    }
+   ],
+   "cost": 0.75,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.25,
+   "fees": 0.12,
+   "profit_after_fees": 0.13,
+   "explanation": "Looks like free money: all 11 YES prices add up to $0.75, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "KXNFLMOSTRSHYDS-26OCT11MINNO:fake_exh",
+   "event_ticker": "KXNFLMOSTRSHYDS-26OCT11MINNO",
+   "title": "Minnesota vs New Orleans: Most Rushing Yards",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFLMOSTRSHYDS-26OCT11MINNO-NOKMILLER5",
+     "label": "Kendre Miller",
+     "side": "yes",
+     "price": 0.15,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFLMOSTRSHYDS-26OCT11MINNO-MINAJONES33",
+     "label": "Aaron Jones Sr.",
+     "side": "yes",
+     "price": 0.65,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFLMOSTRSHYDS-26OCT11MINNO-MINKMURRAY1",
+     "label": "Kyler Murray",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFLMOSTRSHYDS-26OCT11MINNO-NOTSHOUGH6",
+     "label": "Tyler Shough",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 5
+    }
+   ],
+   "cost": 4.75,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.25,
+   "fees": 0.19,
+   "profit_after_fees": 0.06,
+   "explanation": "Looks like free money: all 4 YES prices add up to $0.95, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 4,
+   "tier_name": "Everyone Else",
+   "tier_blurb": "A 40-slide consulting deck with no recommendation."
+  },
+  {
+   "id": "KXGDPYEAR-36:fake_exh",
+   "event_ticker": "KXGDPYEAR-36",
+   "title": "US real GDP growth in 2036?",
+   "category": "Economics",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXGDPYEAR-36-T0.1",
+     "label": "0.0% or Below",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B0.3",
+     "label": "0.1% to 0.5%",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B0.8",
+     "label": "0.6% to 1.0%",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B1.3",
+     "label": "1.1% to 1.5%",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B1.8",
+     "label": "1.6% to 2.0%",
+     "side": "yes",
+     "price": 0.28,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B2.3",
+     "label": "2.1% to 2.5%",
+     "side": "yes",
+     "price": 0.2,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B2.8",
+     "label": "2.6% to 3.0%",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B3.3",
+     "label": "3.1% to 3.5%",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B3.8",
+     "label": "3.6% to 4.0%",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B4.3",
+     "label": "4.1% to 4.5%",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B4.8",
+     "label": "4.6% to 5.0%",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B5.3",
+     "label": "5.1% to 5.5%",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-B5.8",
+     "label": "5.6% to 6.0%",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXGDPYEAR-36-T6.0",
+     "label": "6.1% or Above",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 6
+    }
+   ],
+   "cost": 5.76,
+   "worst_case_payout": 6,
+   "profit_before_fees": 0.24,
+   "fees": 0.38,
+   "profit_after_fees": -0.14,
+   "explanation": "Looks like free money: all 14 YES prices add up to $0.96, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXLALIGAGAME-26OCT10RVCATH:fake_exh",
+   "event_ticker": "KXLALIGAGAME-26OCT10RVCATH",
+   "title": "Vallecano vs Bilbao",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXLALIGAGAME-26OCT10RVCATH-RVC",
+     "label": "Vallecano",
+     "side": "yes",
+     "price": 0.31,
+     "qty": 15
+    },
+    {
+     "ticker": "KXLALIGAGAME-26OCT10RVCATH-ATH",
+     "label": "Bilbao",
+     "side": "yes",
+     "price": 0.35,
+     "qty": 15
+    },
+    {
+     "ticker": "KXLALIGAGAME-26OCT10RVCATH-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.33,
+     "qty": 15
+    }
+   ],
+   "cost": 14.85,
+   "worst_case_payout": 15,
+   "profit_before_fees": 0.15,
+   "fees": 0.71,
+   "profit_after_fees": -0.56,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBINNINGWIN-26OCT112000LADMIL-4:fake_exh",
+   "event_ticker": "KXMLBINNINGWIN-26OCT112000LADMIL-4",
+   "title": "Los Angeles D vs Milwaukee: 4th Inning Winner",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXMLBINNINGWIN-26OCT112000LADMIL-4-LAD",
+     "label": "Los Angeles D",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 14
+    },
+    {
+     "ticker": "KXMLBINNINGWIN-26OCT112000LADMIL-4-MIL",
+     "label": "Milwaukee",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 14
+    },
+    {
+     "ticker": "KXMLBINNINGWIN-26OCT112000LADMIL-4-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.65,
+     "qty": 14
+    }
+   ],
+   "cost": 13.86,
+   "worst_case_payout": 14,
+   "profit_before_fees": 0.14,
+   "fees": 0.51,
+   "profit_after_fees": -0.37,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBALCSMVP-26:fake_exh",
+   "event_ticker": "KXMLBALCSMVP-26",
+   "title": "ALCS MVP Winner",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXMLBALCSMVP-26-AJUDGE99",
+     "label": "Aaron Judge",
+     "side": "yes",
+     "price": 0.002,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-JCAMINERO13",
+     "label": "Junior Caminero",
+     "side": "yes",
+     "price": 0.3,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-JARANDA8",
+     "label": "Jonathan Aranda",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-YDIAZ2",
+     "label": "Yandy D\u00edaz",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-CSIMPSON14",
+     "label": "Chandler Simpson",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-CMULLINS31",
+     "label": "Cedric Mullins",
+     "side": "yes",
+     "price": 0.016,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-FPERALTA51",
+     "label": "Freddy Peralta",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-DRASMUSSEN57",
+     "label": "Drew Rasmussen",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-SMCCLANAHAN18",
+     "label": "Shane McClanahan",
+     "side": "yes",
+     "price": 0.005,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-JRAMREZ11",
+     "label": "Jos\u00e9 Ram\u00edrez",
+     "side": "yes",
+     "price": 0.065,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-SKWAN38",
+     "label": "Steven Kwan",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-CDELAUTER24",
+     "label": "Chase DeLauter",
+     "side": "yes",
+     "price": 0.059,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-TBAZZANA37",
+     "label": "Travis Bazzana",
+     "side": "yes",
+     "price": 0.043,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-JADELL7",
+     "label": "Jo Adell",
+     "side": "yes",
+     "price": 0.038,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-TBIBEE28",
+     "label": "Tanner Bibee",
+     "side": "yes",
+     "price": 0.009,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-GWILLIAMS32",
+     "label": "Gavin Williams",
+     "side": "yes",
+     "price": 0.037,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-CSMITH36",
+     "label": "Cade Smith",
+     "side": "yes",
+     "price": 0.005,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBALCSMVP-26-LCASTILLO58",
+     "label": "Luis Castillo",
+     "side": "yes",
+     "price": 0.002,
+     "qty": 1
+    }
+   ],
+   "cost": 0.861,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.139,
+   "fees": 0.19,
+   "profit_after_fees": -0.051,
+   "explanation": "Looks like free money: all 18 YES prices add up to $0.86, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBWSMVP-26:fake_exh",
+   "event_ticker": "KXMLBWSMVP-26",
+   "title": "Pro Baseball Championship Series MVP Winner",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXMLBWSMVP-26-SOHTANI17",
+     "label": "Shohei Ohtani",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-MBETTS50",
+     "label": "Mookie Betts",
+     "side": "yes",
+     "price": 0.036,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-FFREEMAN5",
+     "label": "Freddie Freeman",
+     "side": "yes",
+     "price": 0.046,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-KTUCKER23",
+     "label": "Kyle Tucker",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-WSMITH16",
+     "label": "Will Smith",
+     "side": "yes",
+     "price": 0.029,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-THERNANDEZ37",
+     "label": "Teoscar Hern\u00e1ndez",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-YYAMAMOTO18",
+     "label": "Yoshinobu Yamamoto",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-TSKUBAL29",
+     "label": "Tarik Skubal",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-BSNELL7",
+     "label": "Blake Snell",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-AJUDGE99",
+     "label": "Aaron Judge",
+     "side": "yes",
+     "price": 0.001,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JCHOURIO11",
+     "label": "Jackson Chourio",
+     "side": "yes",
+     "price": 0.08,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-CYELICH22",
+     "label": "Christian Yelich",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-WCONTRERAS24",
+     "label": "William Contreras",
+     "side": "yes",
+     "price": 0.027,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JMISIOROWSKI32",
+     "label": "Jacob Misiorowski",
+     "side": "yes",
+     "price": 0.07,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JCAMINERO13",
+     "label": "Junior Caminero",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JARANDA8",
+     "label": "Jonathan Aranda",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-FPERALTA51",
+     "label": "Freddy Peralta",
+     "side": "yes",
+     "price": 0.012,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JRAMREZ11",
+     "label": "Jos\u00e9 Ram\u00edrez",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-SKWAN38",
+     "label": "Steven Kwan",
+     "side": "yes",
+     "price": 0.007,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-TBIBEE28",
+     "label": "Tanner Bibee",
+     "side": "yes",
+     "price": 0.003,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-YDIAZ2",
+     "label": "Yandy D\u00edaz",
+     "side": "yes",
+     "price": 0.029,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-CSIMPSON14",
+     "label": "Chandler Simpson",
+     "side": "yes",
+     "price": 0.011,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-CMULLINS31",
+     "label": "Cedric Mullins",
+     "side": "yes",
+     "price": 0.011,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-DRASMUSSEN57",
+     "label": "Drew Rasmussen",
+     "side": "yes",
+     "price": 0.027,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-SMCCLANAHAN18",
+     "label": "Shane McClanahan",
+     "side": "yes",
+     "price": 0.006,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-CDELAUTER24",
+     "label": "Chase DeLauter",
+     "side": "yes",
+     "price": 0.014,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-TBAZZANA37",
+     "label": "Travis Bazzana",
+     "side": "yes",
+     "price": 0.003,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-JADELL7",
+     "label": "Jo Adell",
+     "side": "yes",
+     "price": 0.011,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-GWILLIAMS32",
+     "label": "Gavin Williams",
+     "side": "yes",
+     "price": 0.011,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-CSMITH36",
+     "label": "Cade Smith",
+     "side": "yes",
+     "price": 0.005,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-LCASTILLO58",
+     "label": "Luis Castillo",
+     "side": "yes",
+     "price": 0.001,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-MMUNCY13",
+     "label": "Max Muncy (LAD)",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-TGLASNOW31",
+     "label": "Tyler Glasnow",
+     "side": "yes",
+     "price": 0.011,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-RSASAKI11",
+     "label": "Roki Sasaki",
+     "side": "yes",
+     "price": 0.004,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-BTURANG2",
+     "label": "Brice Turang",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-SFRELICK10",
+     "label": "Sal Frelick",
+     "side": "yes",
+     "price": 0.004,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-TMEGILL29",
+     "label": "Trevor Megill",
+     "side": "yes",
+     "price": 0.007,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBWSMVP-26-MHARRIS23",
+     "label": "Michael Harris",
+     "side": "yes",
+     "price": 0.001,
+     "qty": 1
+    }
+   ],
+   "cost": 0.897,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.103,
+   "fees": 0.38,
+   "profit_after_fees": -0.277,
+   "explanation": "Looks like free money: all 38 YES prices add up to $0.90, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMORTGAGERATE-27DEC30:lad:KXMORTGAGERATE-27DEC30-T9.25:KXMORTGAGERATE-27DEC30-T9.50",
+   "event_ticker": "KXMORTGAGERATE-27DEC30",
+   "title": "How high will the 30-year mortgage rate get in 2027?",
+   "category": "Economics",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXMORTGAGERATE-27DEC30-T9.25",
+     "label": "Above 9.25%",
+     "side": "yes",
+     "price": 0.16,
+     "qty": 10
+    },
+    {
+     "ticker": "KXMORTGAGERATE-27DEC30-T9.50",
+     "label": "Above 9.50%",
+     "side": "no",
+     "price": 0.83,
+     "qty": 10
+    }
+   ],
+   "cost": 9.9,
+   "worst_case_payout": 10,
+   "profit_before_fees": 0.1,
+   "fees": 0.2,
+   "profit_after_fees": -0.1,
+   "explanation": "Kalshi prices 'Above 9.50%' above 'Above 9.25%' (it should never be higher, since beating the bigger number means beating the smaller one). Buy YES on Above 9.25% and NO on Above 9.50% for $0.99 total; you get at least $1.00 whatever happens.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNFL1HFT-26OCT11BALATL:fake_exh",
+   "event_ticker": "KXNFL1HFT-26OCT11BALATL",
+   "title": "Baltimore vs Atlanta: 1st Half / Fulltime Result",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-ATLATL",
+     "label": "Atlanta 1H / Atlanta game",
+     "side": "yes",
+     "price": 0.4,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-ATLBAL",
+     "label": "Atlanta 1H / Baltimore game",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-ATLTIE",
+     "label": "Atlanta 1H / Tie game",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-BALATL",
+     "label": "Baltimore 1H / Atlanta game",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-BALBAL",
+     "label": "Baltimore 1H / Baltimore game",
+     "side": "yes",
+     "price": 0.24,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-BALTIE",
+     "label": "Baltimore 1H / Tie game",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-TIEATL",
+     "label": "Tie 1H / Atlanta game",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-TIEBAL",
+     "label": "Tie 1H / Baltimore game",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNFL1HFT-26OCT11BALATL-TIETIE",
+     "label": "Tie 1H / Tie game",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 5
+    }
+   ],
+   "cost": 4.9,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.1,
+   "fees": 0.31,
+   "profit_after_fees": -0.21,
+   "explanation": "Looks like free money: all 9 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXPERLIGA1GAME-26OCT11SBAAAT:fake_exh",
+   "event_ticker": "KXPERLIGA1GAME-26OCT11SBAAAT",
+   "title": "Sport Boys vs Alianza Atletico",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXPERLIGA1GAME-26OCT11SBAAAT-SBA",
+     "label": "Sport Boys",
+     "side": "yes",
+     "price": 0.41,
+     "qty": 5
+    },
+    {
+     "ticker": "KXPERLIGA1GAME-26OCT11SBAAAT-AAT",
+     "label": "Alianza Atletico",
+     "side": "yes",
+     "price": 0.29,
+     "qty": 5
+    },
+    {
+     "ticker": "KXPERLIGA1GAME-26OCT11SBAAAT-TIE",
+     "label": "Tie",
+     "side": "yes",
+     "price": 0.28,
+     "qty": 5
+    }
+   ],
+   "cost": 4.9,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.1,
+   "fees": 0.25,
+   "profit_after_fees": -0.15,
+   "explanation": "Looks like free money: all 3 YES prices add up to $0.98, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXHIGHDEN-26OCT12:mutex_no",
+   "event_ticker": "KXHIGHDEN-26OCT12",
+   "title": "Highest temperature in Denver on Oct 12, 2026?",
+   "category": "Climate and Weather",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXHIGHDEN-26OCT12-T75",
+     "label": "74\u00b0 or below",
+     "side": "no",
+     "price": 0.99,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHDEN-26OCT12-B75.5",
+     "label": "75\u00b0 to 76\u00b0",
+     "side": "no",
+     "price": 0.99,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHDEN-26OCT12-B77.5",
+     "label": "77\u00b0 to 78\u00b0",
+     "side": "no",
+     "price": 0.98,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHDEN-26OCT12-B79.5",
+     "label": "79\u00b0 to 80\u00b0",
+     "side": "no",
+     "price": 0.84,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHDEN-26OCT12-B81.5",
+     "label": "81\u00b0 to 82\u00b0",
+     "side": "no",
+     "price": 0.55,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHDEN-26OCT12-T82",
+     "label": "83\u00b0 or above",
+     "side": "no",
+     "price": 0.64,
+     "qty": 6
+    }
+   ],
+   "cost": 29.94,
+   "worst_case_payout": 30,
+   "profit_before_fees": 0.06,
+   "fees": 0.3,
+   "profit_after_fees": -0.24,
+   "explanation": "At most one of these 6 outcomes can happen, so NO wins on at least 5 of them. Buying NO on all 6 costs $4.99 per set but pays at least $5.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXHIGHCHI-26OCT11:exh_yes",
+   "event_ticker": "KXHIGHCHI-26OCT11",
+   "title": "Highest temperature in Chicago on Oct 11, 2026?",
+   "category": "Climate and Weather",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXHIGHCHI-26OCT11-T73",
+     "label": "72\u00b0 or below",
+     "side": "yes",
+     "price": 0.03,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT11-B73.5",
+     "label": "73\u00b0 to 74\u00b0",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT11-B75.5",
+     "label": "75\u00b0 to 76\u00b0",
+     "side": "yes",
+     "price": 0.29,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT11-B77.5",
+     "label": "77\u00b0 to 78\u00b0",
+     "side": "yes",
+     "price": 0.6,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT11-B79.5",
+     "label": "79\u00b0 to 80\u00b0",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 6
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT11-T80",
+     "label": "81\u00b0 or above",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 6
+    }
+   ],
+   "cost": 5.94,
+   "worst_case_payout": 6,
+   "profit_before_fees": 0.06,
+   "fees": 0.26,
+   "profit_after_fees": -0.2,
+   "explanation": "These 6 outcomes cover every possibility, so exactly one pays $1. Buying YES on all of them costs $0.99 and always returns $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNCAAFGAME-26OCT16TROYULL:mutex_no",
+   "event_ticker": "KXNCAAFGAME-26OCT16TROYULL",
+   "title": "Troy vs Louisiana",
+   "category": "Sports",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXNCAAFGAME-26OCT16TROYULL-ULL",
+     "label": "Louisiana",
+     "side": "no",
+     "price": 0.38,
+     "qty": 5
+    },
+    {
+     "ticker": "KXNCAAFGAME-26OCT16TROYULL-TROY",
+     "label": "Troy",
+     "side": "no",
+     "price": 0.61,
+     "qty": 5
+    }
+   ],
+   "cost": 4.95,
+   "worst_case_payout": 5,
+   "profit_before_fees": 0.05,
+   "fees": 0.18,
+   "profit_after_fees": -0.13,
+   "explanation": "At most one of these 2 outcomes can happen, so NO wins on at least 1 of them. Buying NO on all 2 costs $0.99 per set but pays at least $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXHIGHTSFO-26OCT12:exh_yes",
+   "event_ticker": "KXHIGHTSFO-26OCT12",
+   "title": "Highest temperature in San Francisco on Oct 12, 2026?",
+   "category": "Climate and Weather",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-T64",
+     "label": "63\u00b0 or below",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 4
+    },
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-B64.5",
+     "label": "64\u00b0 to 65\u00b0",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 4
+    },
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-B66.5",
+     "label": "66\u00b0 to 67\u00b0",
+     "side": "yes",
+     "price": 0.16,
+     "qty": 4
+    },
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-B68.5",
+     "label": "68\u00b0 to 69\u00b0",
+     "side": "yes",
+     "price": 0.34,
+     "qty": 4
+    },
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-B70.5",
+     "label": "70\u00b0 to 71\u00b0",
+     "side": "yes",
+     "price": 0.38,
+     "qty": 4
+    },
+    {
+     "ticker": "KXHIGHTSFO-26OCT12-T71",
+     "label": "72\u00b0 or above",
+     "side": "yes",
+     "price": 0.05,
+     "qty": 4
+    }
+   ],
+   "cost": 3.96,
+   "worst_case_payout": 4,
+   "profit_before_fees": 0.04,
+   "fees": 0.23,
+   "profit_after_fees": -0.19,
+   "explanation": "These 6 outcomes cover every possibility, so exactly one pays $1. Buying YES on all of them costs $0.99 and always returns $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXNEXTMANAGERMLB-PHI26:fake_exh",
+   "event_ticker": "KXNEXTMANAGERMLB-PHI26",
+   "title": "Philadelphia: Next Manager",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-ACOR",
+     "label": "Alex Cora",
+     "side": "yes",
+     "price": 0.01,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-DMAT",
+     "label": "Don Mattingly",
+     "side": "yes",
+     "price": 0.25,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-RBAL",
+     "label": "Rocco Baldelli",
+     "side": "yes",
+     "price": 0.14,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-DROS",
+     "label": "David Ross",
+     "side": "yes",
+     "price": 0.11,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-BAUS",
+     "label": "Brad Ausmus",
+     "side": "yes",
+     "price": 0.2,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-DWAT",
+     "label": "Dusty Wathan",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-BSNI",
+     "label": "Brian Snitker",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-SSER",
+     "label": "Scott Servais",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-DBEL",
+     "label": "David Bell",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNEXTMANAGERMLB-PHI26-RWAS",
+     "label": "Ron Washington",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 1
+    }
+   ],
+   "cost": 0.97,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.03,
+   "fees": 0.12,
+   "profit_after_fees": -0.09,
+   "explanation": "Looks like free money: all 10 YES prices add up to $0.97, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "USCLIMATE:lad:USCLIMATE-2025:USCLIMATE-2030",
+   "event_ticker": "USCLIMATE",
+   "title": "US meets its climate goals?",
+   "category": "Climate and Weather",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "USCLIMATE-2025",
+     "label": "By 2025",
+     "side": "yes",
+     "price": 0.139,
+     "qty": 1
+    },
+    {
+     "ticker": "USCLIMATE-2030",
+     "label": "By 2030",
+     "side": "no",
+     "price": 0.838,
+     "qty": 1
+    }
+   ],
+   "cost": 0.977,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.023,
+   "fees": 0.02,
+   "profit_after_fees": 0.003,
+   "explanation": "Kalshi prices 'By 2030' above 'By 2025', though being below the smaller number means being below the bigger one. Buy YES on By 2025 and NO on By 2030 for $0.98; you get at least $1.00 whatever happens.",
+   "tier": 2,
+   "tier_name": "House Cat",
+   "tier_blurb": "Pre-revenue, pre-product, pre-awake. 'Building in stealth' since 2023."
+  },
+  {
+   "id": "USCLIMATE:lp:USCLIMATE-2025",
+   "event_ticker": "USCLIMATE",
+   "title": "US meets its climate goals?",
+   "category": "Climate and Weather",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "USCLIMATE-2025",
+     "label": "By 2025",
+     "side": "yes",
+     "price": 0.139,
+     "qty": 1
+    },
+    {
+     "ticker": "USCLIMATE-2030",
+     "label": "By 2030",
+     "side": "no",
+     "price": 0.838,
+     "qty": 1
+    }
+   ],
+   "cost": 0.977,
+   "worst_case_payout": 1.0,
+   "profit_before_fees": 0.023,
+   "fees": 0.02,
+   "profit_after_fees": 0.003,
+   "explanation": "The LP found a basket of YES/NO trades whose payout is at least $1 in every possible outcome for less than that cost, net of fees: YES By 2025; NO By 2030.",
+   "tier": 2,
+   "tier_name": "House Cat",
+   "tier_blurb": "Pre-revenue, pre-product, pre-awake. 'Building in stealth' since 2023."
+  },
+  {
+   "id": "KXNCAAFGAME-26OCT17NIUWYO:fake_exh",
+   "event_ticker": "KXNCAAFGAME-26OCT17NIUWYO",
+   "title": "Northern Illinois vs Wyoming",
+   "category": "Sports",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXNCAAFGAME-26OCT17NIUWYO-WYO",
+     "label": "Wyoming",
+     "side": "yes",
+     "price": 0.73,
+     "qty": 1
+    },
+    {
+     "ticker": "KXNCAAFGAME-26OCT17NIUWYO-NIU",
+     "label": "Northern Illinois",
+     "side": "yes",
+     "price": 0.26,
+     "qty": 1
+    }
+   ],
+   "cost": 0.99,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.01,
+   "fees": 0.04,
+   "profit_after_fees": -0.03,
+   "explanation": "Looks like free money: all 2 YES prices add up to $0.99, under $1. But the list is not exhaustive, so an unlisted outcome can win and every ticket would lose.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXMLBGAME-26OCT132000CLETB:mutex_no",
+   "event_ticker": "KXMLBGAME-26OCT132000CLETB",
+   "title": "Game 2: Cleveland vs Tampa Bay",
+   "category": "Sports",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXMLBGAME-26OCT132000CLETB-CLE",
+     "label": "Cleveland",
+     "side": "no",
+     "price": 0.57,
+     "qty": 1
+    },
+    {
+     "ticker": "KXMLBGAME-26OCT132000CLETB-TB",
+     "label": "Tampa Bay",
+     "side": "no",
+     "price": 0.42,
+     "qty": 1
+    }
+   ],
+   "cost": 0.99,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.01,
+   "fees": 0.04,
+   "profit_after_fees": -0.03,
+   "explanation": "At most one of these 2 outcomes can happen, so NO wins on at least 1 of them. Buying NO on all 2 costs $0.99 per set but pays at least $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "KXHIGHTOKC-26OCT12:exh_yes",
+   "event_ticker": "KXHIGHTOKC-26OCT12",
+   "title": "Highest temperature in Oklahoma City on Oct 12, 2026?",
+   "category": "Climate and Weather",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-T87",
+     "label": "86\u00b0 or below",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    },
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-B87.5",
+     "label": "87\u00b0 to 88\u00b0",
+     "side": "yes",
+     "price": 0.1,
+     "qty": 1
+    },
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-B89.5",
+     "label": "89\u00b0 to 90\u00b0",
+     "side": "yes",
+     "price": 0.38,
+     "qty": 1
+    },
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-B91.5",
+     "label": "91\u00b0 to 92\u00b0",
+     "side": "yes",
+     "price": 0.32,
+     "qty": 1
+    },
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-B93.5",
+     "label": "93\u00b0 to 94\u00b0",
+     "side": "yes",
+     "price": 0.15,
+     "qty": 1
+    },
+    {
+     "ticker": "KXHIGHTOKC-26OCT12-T94",
+     "label": "95\u00b0 or above",
+     "side": "yes",
+     "price": 0.02,
+     "qty": 1
+    }
+   ],
+   "cost": 0.99,
+   "worst_case_payout": 1,
+   "profit_before_fees": 0.01,
+   "fees": 0.08,
+   "profit_after_fees": -0.07,
+   "explanation": "These 6 outcomes cover every possibility, so exactly one pays $1. Buying YES on all of them costs $0.99 and always returns $1.00.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  }
+ ],
+ "by_category": {
+  "Climate and Weather": {
+   "events": 258,
+   "violations": 0
+  },
+  "Science and Technology": {
+   "events": 172,
+   "violations": 0
+  },
+  "Sports": {
+   "events": 6358,
+   "violations": 0
+  },
+  "Financials": {
+   "events": 603,
+   "violations": 0
+  },
+  "Economics": {
+   "events": 608,
+   "violations": 0
+  },
+  "Social": {
+   "events": 9,
+   "violations": 0
+  },
+  "Entertainment": {
+   "events": 737,
+   "violations": 0
+  },
+  "Health": {
+   "events": 6,
+   "violations": 0
+  },
+  "Companies": {
+   "events": 80,
+   "violations": 0
+  },
+  "Transportation": {
+   "events": 1,
+   "violations": 0
+  },
+  "Business": {
+   "events": 1,
+   "violations": 0
+  },
+  "AI": {
+   "events": 5,
+   "violations": 0
+  },
+  "Crypto": {
+   "events": 106,
+   "violations": 0
+  },
+  "Mentions": {
+   "events": 75,
+   "violations": 0
+  },
+  "Commodities": {
+   "events": 30,
+   "violations": 0
+  },
+  "Other": {
+   "events": 1,
+   "violations": 0
+  }
+ }
+}
