@@ -359,6 +359,15 @@ class Engine:
                     log.info("CONFIRMED %s: %s (lead %.1fs)", a["id"], (p.get("text") or "")[:80],
                              a["confirmed"]["lead_s"] or 0)
                     self._emit(a)
+                    if CFG["push"] and CFG["mode"] == "live":
+                        # same tag -> iOS replaces the spoiler notification with its receipt
+                        lead = a["confirmed"]["lead_s"]
+                        body = (p.get("text") or "")[:110]
+                        if lead and lead > 0:
+                            body += f" · Kalshi called it {lead:.0f}s before ESPN"
+                        threading.Thread(target=push.send_all, args=({
+                            "title": f"✓ CONFIRMED · {a.get('short_name') or ''}".strip(" ·"), "body": body,
+                            "url": "./#live", "tag": a["id"]},), daemon=True).start()
 
     # ---- API views
     def games_list(self, step: int = 1) -> list[dict]:
