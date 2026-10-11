@@ -1,73 +1,73 @@
 {
- "games": 7,
- "n_candidate_plays": 128,
+ "games": 66,
+ "n_candidate_plays": 1090,
  "min_abs_delta": 0.05,
  "overall": {
-  "median_s": 6.99,
-  "p25_s": 5.9,
-  "p75_s": 9.18,
-  "n": 76
+  "median_s": 6.97,
+  "p25_s": 5.57,
+  "p75_s": 8.96,
+  "n": 417
  },
  "by_category": {
   "BIG_PLAY": {
-   "median_s": 7.78,
-   "p25_s": 6.08,
-   "p75_s": 9.73,
-   "n": 32
+   "median_s": 7.35,
+   "p25_s": 6.19,
+   "p75_s": 9.26,
+   "n": 168
   },
   "FG": {
-   "median_s": 6.43,
-   "p25_s": 5.33,
-   "p75_s": 7.46,
-   "n": 7
+   "median_s": 6.62,
+   "p25_s": 5.52,
+   "p75_s": 7.2,
+   "n": 12
   },
   "TD": {
-   "median_s": 6.78,
-   "p25_s": 4.45,
-   "p75_s": 8.05,
-   "n": 27
+   "median_s": 6.21,
+   "p25_s": 4.68,
+   "p75_s": 8.25,
+   "n": 132
   },
   "TURNOVER": {
-   "median_s": 8.19,
-   "p25_s": 6.5,
-   "p75_s": 8.83,
-   "n": 10
+   "median_s": 7.13,
+   "p25_s": 5.9,
+   "p75_s": 8.9,
+   "n": 105
   }
  },
  "clean_only_overall": {
-  "median_s": 6.97,
-  "p25_s": 6.03,
-  "p75_s": 8.92,
-  "n": 58
+  "median_s": 6.84,
+  "p25_s": 5.61,
+  "p75_s": 8.73,
+  "n": 354
  },
  "clean_only_by_category": {
   "BIG_PLAY": {
-   "median_s": 6.92,
-   "p25_s": 6.08,
-   "p75_s": 10.09,
-   "n": 20
+   "median_s": 7.26,
+   "p25_s": 6.18,
+   "p75_s": 8.96,
+   "n": 130
   },
   "FG": {
-   "median_s": 6.67,
-   "p25_s": 6.02,
-   "p75_s": 7.74,
-   "n": 6
+   "median_s": 6.81,
+   "p25_s": 5.83,
+   "p75_s": 7.47,
+   "n": 11
   },
   "TD": {
-   "median_s": 6.78,
-   "p25_s": 4.45,
-   "p75_s": 8.05,
-   "n": 23
+   "median_s": 6.26,
+   "p25_s": 4.7,
+   "p75_s": 8.25,
+   "n": 120
   },
   "TURNOVER": {
-   "median_s": 8.16,
-   "p25_s": 6.28,
-   "p75_s": 8.61,
-   "n": 9
+   "median_s": 6.83,
+   "p25_s": 5.64,
+   "p75_s": 8.77,
+   "n": 93
   }
  },
  "share_moved_before_wallclock": 0.0,
- "share_direction_matches_team": 1.0,
+ "share_direction_matches_team": 0.983,
  "stream_delay_reference_s": {
   "broadcast": 19,
   "best_stream": 48,

@@ -7,111 +7,111 @@
  "sweep": [
   {
    "threshold": 0.04,
-   "n_alerts": 305,
-   "precision": 0.305,
-   "precision_incl_high_leverage": 0.718,
-   "recall": 0.554,
+   "n_alerts": 1621,
+   "precision": 0.35,
+   "precision_incl_high_leverage": 0.639,
+   "recall": 0.439,
    "median_detection_delay_s": 10.0,
-   "n_games": 7
+   "n_games": 66
   },
   {
    "threshold": 0.05,
-   "n_alerts": 244,
-   "precision": 0.316,
-   "precision_incl_high_leverage": 0.758,
-   "recall": 0.47,
+   "n_alerts": 1133,
+   "precision": 0.414,
+   "precision_incl_high_leverage": 0.739,
+   "recall": 0.386,
    "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_games": 66
   },
   {
    "threshold": 0.06,
-   "n_alerts": 189,
-   "precision": 0.339,
+   "n_alerts": 827,
+   "precision": 0.464,
    "precision_incl_high_leverage": 0.81,
-   "recall": 0.434,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "recall": 0.332,
+   "median_detection_delay_s": 12.0,
+   "n_games": 66
   },
   {
    "threshold": 0.07,
-   "n_alerts": 162,
-   "precision": 0.352,
-   "precision_incl_high_leverage": 0.833,
-   "recall": 0.398,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 674,
+   "precision": 0.473,
+   "precision_incl_high_leverage": 0.825,
+   "recall": 0.287,
+   "median_detection_delay_s": 12.0,
+   "n_games": 66
   },
   {
    "threshold": 0.08,
-   "n_alerts": 131,
-   "precision": 0.382,
-   "precision_incl_high_leverage": 0.855,
-   "recall": 0.373,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 509,
+   "precision": 0.521,
+   "precision_incl_high_leverage": 0.859,
+   "recall": 0.244,
+   "median_detection_delay_s": 12.0,
+   "n_games": 66
   },
   {
    "threshold": 0.09,
-   "n_alerts": 103,
-   "precision": 0.408,
-   "precision_incl_high_leverage": 0.883,
-   "recall": 0.325,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 379,
+   "precision": 0.559,
+   "precision_incl_high_leverage": 0.881,
+   "recall": 0.194,
+   "median_detection_delay_s": 12.5,
+   "n_games": 66
   },
   {
    "threshold": 0.1,
-   "n_alerts": 78,
-   "precision": 0.436,
-   "precision_incl_high_leverage": 0.897,
-   "recall": 0.277,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 297,
+   "precision": 0.586,
+   "precision_incl_high_leverage": 0.886,
+   "recall": 0.163,
+   "median_detection_delay_s": 12.5,
+   "n_games": 66
   },
   {
    "threshold": 0.11,
-   "n_alerts": 61,
-   "precision": 0.492,
-   "precision_incl_high_leverage": 0.902,
-   "recall": 0.241,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 229,
+   "precision": 0.62,
+   "precision_incl_high_leverage": 0.908,
+   "recall": 0.134,
+   "median_detection_delay_s": 12.0,
+   "n_games": 66
   },
   {
    "threshold": 0.12,
-   "n_alerts": 48,
-   "precision": 0.542,
-   "precision_incl_high_leverage": 0.917,
-   "recall": 0.193,
-   "median_detection_delay_s": 10.5,
-   "n_games": 7
+   "n_alerts": 176,
+   "precision": 0.659,
+   "precision_incl_high_leverage": 0.926,
+   "recall": 0.108,
+   "median_detection_delay_s": 12.0,
+   "n_games": 66
   },
   {
    "threshold": 0.13,
-   "n_alerts": 44,
-   "precision": 0.568,
-   "precision_incl_high_leverage": 0.909,
-   "recall": 0.193,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 167,
+   "precision": 0.659,
+   "precision_incl_high_leverage": 0.922,
+   "recall": 0.103,
+   "median_detection_delay_s": 13.0,
+   "n_games": 66
   },
   {
    "threshold": 0.14,
-   "n_alerts": 36,
-   "precision": 0.556,
-   "precision_incl_high_leverage": 0.944,
-   "recall": 0.193,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 133,
+   "precision": 0.654,
+   "precision_incl_high_leverage": 0.947,
+   "recall": 0.089,
+   "median_detection_delay_s": 13.0,
+   "n_games": 66
   },
   {
    "threshold": 0.15,
-   "n_alerts": 29,
-   "precision": 0.621,
-   "precision_incl_high_leverage": 1.0,
-   "recall": 0.181,
-   "median_detection_delay_s": 11.0,
-   "n_games": 7
+   "n_alerts": 108,
+   "precision": 0.667,
+   "precision_incl_high_leverage": 0.954,
+   "recall": 0.077,
+   "median_detection_delay_s": 13.0,
+   "n_games": 66
   }
  ]
 }

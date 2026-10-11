@@ -4,7 +4,7 @@ import numpy as np, pandas as pd
 sys.path.insert(0,os.path.dirname(__file__))
 import nfl_align as A
 D=A.D; ROOT=os.path.join(os.path.dirname(__file__),'..')
-WORD={'TD':'touchdown','FG':'field goal','TURNOVER':'takeaway','BIG_PLAY':'big play','SAFETY':'safety','OTHER':'swing'}
+WORD={'TD':'touchdown','FG':'field goal','TURNOVER':'takeaway','BIG_PLAY':'big play','SAFETY':'safety','OTHER':'big moment'}
 def score_game(gid,tr,plays):
     g=plays[plays.game_id==gid]
     lead=np.sign(g.home_score.values-g.away_score.values)
