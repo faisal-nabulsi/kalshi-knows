@@ -1,0 +1,3158 @@
+{
+ "split": {
+  "fit_rows": 525336,
+  "val_rows": 93739,
+  "test_rows": 142446,
+  "fit_markets": 225295,
+  "val_markets": 45165,
+  "test_markets": 70249,
+  "fit_start": "2021-07-01",
+  "fit_end": "2025-12-11",
+  "val_start": "2025-12-13",
+  "val_end": "2026-01-03",
+  "test_start": "2026-01-05",
+  "test_end": "2026-01-30"
+ },
+ "n_markets_all_rows": 4363922,
+ "n_settled_markets": 4363922,
+ "n_multivariate_dropped": 22,
+ "n_binary_kept": 4363900,
+ "n_with_trades": 351244,
+ "trades_kept_for_binary_nonmve": 149565170,
+ "overall": [
+  {
+   "model": "market",
+   "brier": 0.12696834521712758,
+   "logloss": 0.3933933583566408,
+   "n": 142446
+  },
+  {
+   "model": "platt_global",
+   "brier": 0.12622568165728362,
+   "logloss": 0.39150967681282306,
+   "n": 142446
+  },
+  {
+   "model": "isotonic_global",
+   "brier": 0.12627121837263078,
+   "logloss": 0.3904134064380434,
+   "n": 142446
+  },
+  {
+   "model": "platt_per_cat",
+   "brier": 0.12579155696720098,
+   "logloss": 0.3876910646471447,
+   "n": 142446
+  },
+  {
+   "model": "isotonic_per_cat",
+   "brier": 0.12588693854252406,
+   "logloss": 0.38741614602185476,
+   "n": 142446
+  },
+  {
+   "model": "logit_multi",
+   "brier": 0.12505260918719593,
+   "logloss": 0.38468574717051063,
+   "n": 142446
+  },
+  {
+   "model": "xgboost",
+   "brier": 0.1235831188500551,
+   "logloss": 0.37681859568807186,
+   "n": 142446
+  }
+ ],
+ "contested_5_95": [
+  {
+   "model": "market",
+   "brier": 0.1742404062157036,
+   "logloss": 0.5228098438944084,
+   "n": 98346
+  },
+  {
+   "model": "platt_global",
+   "brier": 0.17316054467569106,
+   "logloss": 0.5198538297234792,
+   "n": 98346
+  },
+  {
+   "model": "isotonic_global",
+   "brier": 0.1732966834485247,
+   "logloss": 0.5202192374678495,
+   "n": 98346
+  },
+  {
+   "model": "platt_per_cat",
+   "brier": 0.17273702234710472,
+   "logloss": 0.5185097937304322,
+   "n": 98346
+  },
+  {
+   "model": "isotonic_per_cat",
+   "brier": 0.17308371494410926,
+   "logloss": 0.5194388646703778,
+   "n": 98346
+  },
+  {
+   "model": "logit_multi",
+   "brier": 0.171802376922948,
+   "logloss": 0.5151814384681013,
+   "n": 98346
+  },
+  {
+   "model": "xgboost",
+   "brier": 0.17167243415569675,
+   "logloss": 0.5146261453798574,
+   "n": 98346
+  }
+ ],
+ "by_horizon": {
+  "24h": {
+   "all": [
+    {
+     "model": "market",
+     "brier": 0.1492047821569767,
+     "logloss": 0.45249862809814734,
+     "n": 21747
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.14887616712219887,
+     "logloss": 0.45186690641656474,
+     "n": 21747
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.1488700889499085,
+     "logloss": 0.45125722368383503,
+     "n": 21747
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.14879097728601592,
+     "logloss": 0.4504741209404798,
+     "n": 21747
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.14896841094861318,
+     "logloss": 0.45133289166901214,
+     "n": 21747
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.14855702261622547,
+     "logloss": 0.4503609103095706,
+     "n": 21747
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.1483779842854618,
+     "logloss": 0.4457670351133995,
+     "n": 21747
+    }
+   ],
+   "contested": [
+    {
+     "model": "market",
+     "brier": 0.18132433580709223,
+     "logloss": 0.5396021081904775,
+     "n": 17357
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.18090771434148553,
+     "logloss": 0.538615322578518,
+     "n": 17357
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.18092343528316543,
+     "logloss": 0.5386395066606883,
+     "n": 17357
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.18092235315305422,
+     "logloss": 0.5387049134082309,
+     "n": 17357
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.18120739522631232,
+     "logloss": 0.5396916500771822,
+     "n": 17357
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.1805321684444583,
+     "logloss": 0.5373791175577792,
+     "n": 17357
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.18101430106780866,
+     "logloss": 0.5379771049260725,
+     "n": 17357
+    }
+   ]
+  },
+  "6h": {
+   "all": [
+    {
+     "model": "market",
+     "brier": 0.15162187510877848,
+     "logloss": 0.455967782503307,
+     "n": 50450
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.1510274372610956,
+     "logloss": 0.45442857587187263,
+     "n": 50450
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.15106349298675864,
+     "logloss": 0.4537976092391698,
+     "n": 50450
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.15091074564263807,
+     "logloss": 0.45249677826749024,
+     "n": 50450
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.1510768600907298,
+     "logloss": 0.45285171001357016,
+     "n": 50450
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.15098661613027625,
+     "logloss": 0.45279756938668647,
+     "n": 50450
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.15137745213727505,
+     "logloss": 0.45120334484730773,
+     "n": 50450
+    }
+   ],
+   "contested": [
+    {
+     "model": "market",
+     "brier": 0.18739119176658972,
+     "logloss": 0.5535533847739167,
+     "n": 39804
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.18664629586286569,
+     "logloss": 0.5516875956557117,
+     "n": 39804
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.18672512767077884,
+     "logloss": 0.5519172613574629,
+     "n": 39804
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.18659376105274336,
+     "logloss": 0.551494215906349,
+     "n": 39804
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.18693421839945207,
+     "logloss": 0.5524610404754118,
+     "n": 39804
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.18667718331178235,
+     "logloss": 0.5513602522500731,
+     "n": 39804
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.1881214555061681,
+     "logloss": 0.5555012084641064,
+     "n": 39804
+    }
+   ]
+  },
+  "1h": {
+   "all": [
+    {
+     "model": "market",
+     "brier": 0.10237943466801393,
+     "logloss": 0.33015769664945854,
+     "n": 70249
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.10140214427429131,
+     "logloss": 0.32763905759088946,
+     "n": 70249
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.10147046828755042,
+     "logloss": 0.3260579917707732,
+     "n": 70249
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.10063203210066807,
+     "logloss": 0.32171444750871453,
+     "n": 70249
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.10065121529347852,
+     "logloss": 0.32063623924779716,
+     "n": 70249
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.0991515838470558,
+     "logloss": 0.31543950589175623,
+     "n": 70249
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.09594659657978742,
+     "logloss": 0.3020540822107832,
+     "n": 70249
+    }
+   ],
+   "contested": [
+    {
+     "model": "market",
+     "brier": 0.15854513769597062,
+     "logloss": 0.4860202546615609,
+     "n": 41185
+    },
+    {
+     "model": "platt_global",
+     "brier": 0.15686202666807922,
+     "logloss": 0.48118066107830504,
+     "n": 41185
+    },
+    {
+     "model": "isotonic_global",
+     "brier": 0.15710429968219072,
+     "logloss": 0.48182106446111705,
+     "n": 41185
+    },
+    {
+     "model": "platt_per_cat",
+     "brier": 0.15589529807277902,
+     "logloss": 0.47812036475051845,
+     "n": 41185
+    },
+    {
+     "model": "isotonic_per_cat",
+     "brier": 0.1562739988291485,
+     "logloss": 0.478988645366032,
+     "n": 41185
+    },
+    {
+     "model": "logit_multi",
+     "brier": 0.15374726499044786,
+     "logloss": 0.4708607726981086,
+     "n": 41185
+    },
+    {
+     "model": "xgboost",
+     "brier": 0.15183794029075354,
+     "logloss": 0.46528066484449027,
+     "n": 41185
+    }
+   ]
+  }
+ },
+ "by_category_xgb_vs_market": [
+  {
+   "level": "group",
+   "name": "Crypto",
+   "model": "xgboost",
+   "n_rows": 7023,
+   "brier": 0.05472007597789144,
+   "logloss": 0.1898472659251987,
+   "brier_market": 0.055550519846596924,
+   "brier_gain_pct": 1.494934468658004,
+   "contested_brier": 0.10437225171572034,
+   "contested_brier_market": 0.1071371317293305
+  },
+  {
+   "level": "group",
+   "name": "Entertainment",
+   "model": "xgboost",
+   "n_rows": 5127,
+   "brier": 0.03184723245211598,
+   "logloss": 0.11071593318024568,
+   "brier_market": 0.03353263122288402,
+   "brier_gain_pct": 5.02614530773193,
+   "contested_brier": 0.10701105269922663,
+   "contested_brier_market": 0.11089992563202432
+  },
+  {
+   "level": "group",
+   "name": "Finance",
+   "model": "xgboost",
+   "n_rows": 3528,
+   "brier": 0.07227663125294306,
+   "logloss": 0.25674884689564736,
+   "brier_market": 0.09195343000650111,
+   "brier_gain_pct": 21.39865663756849,
+   "contested_brier": 0.10942179745527811,
+   "contested_brier_market": 0.12013231987982281
+  },
+  {
+   "level": "group",
+   "name": "Media",
+   "model": "xgboost",
+   "n_rows": 3620,
+   "brier": 0.06349548914396116,
+   "logloss": 0.19666586733205357,
+   "brier_market": 0.061993259551627725,
+   "brier_gain_pct": -2.4232143997564597,
+   "contested_brier": 0.17941809004577275,
+   "contested_brier_market": 0.1757355219986244
+  },
+  {
+   "level": "group",
+   "name": "Other",
+   "model": "xgboost",
+   "n_rows": 13828,
+   "brier": 0.12315013747712182,
+   "logloss": 0.3693867984630889,
+   "brier_market": 0.12194075063640801,
+   "brier_gain_pct": -0.9917823487243014,
+   "contested_brier": 0.18426538701347772,
+   "contested_brier_market": 0.18118241596403328
+  },
+  {
+   "level": "group",
+   "name": "Sports",
+   "model": "xgboost",
+   "n_rows": 101169,
+   "brier": 0.1425860122063356,
+   "logloss": 0.4314779992109709,
+   "brier_market": 0.14643622059131936,
+   "brier_gain_pct": 2.629273255917395,
+   "contested_brier": 0.17618712703217235,
+   "contested_brier_market": 0.17897530140416815
+  },
+  {
+   "level": "group",
+   "name": "Weather",
+   "model": "xgboost",
+   "n_rows": 4471,
+   "brier": 0.04276986881956465,
+   "logloss": 0.14063150777791034,
+   "brier_market": 0.042988951052261755,
+   "brier_gain_pct": 0.5096245135890111,
+   "contested_brier": 0.14997514925034847,
+   "contested_brier_market": 0.15070378491408798
+  },
+  {
+   "level": "cat",
+   "name": "Bitcoin",
+   "model": "xgboost",
+   "n_rows": 3094,
+   "brier": 0.03594046301268786,
+   "logloss": 0.1265837868423365,
+   "brier_market": 0.03803393666824287,
+   "brier_gain_pct": 5.5042255389329595,
+   "contested_brier": 0.09887493088425976,
+   "contested_brier_market": 0.10387458904572182
+  },
+  {
+   "level": "cat",
+   "name": "Golf",
+   "model": "xgboost",
+   "n_rows": 4170,
+   "brier": 0.06606570382896948,
+   "logloss": 0.2132949434916304,
+   "brier_market": 0.06857541970501993,
+   "brier_gain_pct": 3.6597893047481143,
+   "contested_brier": 0.12391713722091376,
+   "contested_brier_market": 0.12813018179307673
+  },
+  {
+   "level": "cat",
+   "name": "High Temp",
+   "model": "xgboost",
+   "n_rows": 4281,
+   "brier": 0.043564506869753605,
+   "logloss": 0.1430965897860819,
+   "brier_market": 0.043724176627574746,
+   "brier_gain_pct": 0.36517499044326035,
+   "contested_brier": 0.15220644631072142,
+   "contested_brier_market": 0.1526915865165508
+  },
+  {
+   "level": "cat",
+   "name": "Mentions",
+   "model": "xgboost",
+   "n_rows": 3347,
+   "brier": 0.0665420027746996,
+   "logloss": 0.20522358713636754,
+   "brier_market": 0.06497878686176393,
+   "brier_gain_pct": -2.4057326835929618,
+   "contested_brier": 0.18274555939754497,
+   "contested_brier_market": 0.17909425943373114
+  },
+  {
+   "level": "cat",
+   "name": "NBA",
+   "model": "xgboost",
+   "n_rows": 27905,
+   "brier": 0.15560124949436893,
+   "logloss": 0.4711184822407769,
+   "brier_market": 0.16238559762956042,
+   "brier_gain_pct": 4.177924787805492,
+   "contested_brier": 0.18017634579127126,
+   "contested_brier_market": 0.18442716064000617
+  },
+  {
+   "level": "cat",
+   "name": "NCAA Basketball",
+   "model": "xgboost",
+   "n_rows": 29318,
+   "brier": 0.15410512893392836,
+   "logloss": 0.45901285811677806,
+   "brier_market": 0.15432248783281707,
+   "brier_gain_pct": 0.1408471972822177,
+   "contested_brier": 0.1947212624630881,
+   "contested_brier_market": 0.194596799469592
+  },
+  {
+   "level": "cat",
+   "name": "NFL",
+   "model": "xgboost",
+   "n_rows": 11692,
+   "brier": 0.13042492798173969,
+   "logloss": 0.3982751922165797,
+   "brier_market": 0.13401697729259746,
+   "brier_gain_pct": 2.6802942309430673,
+   "contested_brier": 0.16773122355039943,
+   "contested_brier_market": 0.17228583388096771
+  },
+  {
+   "level": "cat",
+   "name": "NHL",
+   "model": "xgboost",
+   "n_rows": 12051,
+   "brier": 0.11909706521143786,
+   "logloss": 0.3660825581834573,
+   "brier_market": 0.12910330289251046,
+   "brier_gain_pct": 7.75056676079283,
+   "contested_brier": 0.14624084619900785,
+   "contested_brier_market": 0.15302474487053577
+  },
+  {
+   "level": "cat",
+   "name": "Other",
+   "model": "xgboost",
+   "n_rows": 13828,
+   "brier": 0.12315013747712182,
+   "logloss": 0.3693867984630889,
+   "brier_market": 0.12194075063640801,
+   "brier_gain_pct": -0.9917823487243014,
+   "contested_brier": 0.18426538701347772,
+   "contested_brier_market": 0.18118241596403328
+  },
+  {
+   "level": "cat",
+   "name": "Other Sports",
+   "model": "xgboost",
+   "n_rows": 4319,
+   "brier": 0.12188946900260424,
+   "logloss": 0.3746679675074887,
+   "brier_market": 0.12276918276081321,
+   "brier_gain_pct": 0.7165591058163894,
+   "contested_brier": 0.16701792254461728,
+   "contested_brier_market": 0.1688582576846824
+  },
+  {
+   "level": "cat",
+   "name": "Soccer",
+   "model": "xgboost",
+   "n_rows": 4448,
+   "brier": 0.16824195710481987,
+   "logloss": 0.5073810294627896,
+   "brier_market": 0.1675091950514556,
+   "brier_gain_pct": -0.4374458686516837,
+   "contested_brier": 0.1842788770983034,
+   "contested_brier_market": 0.1824727019006159
+  },
+  {
+   "level": "cat",
+   "name": "Tennis",
+   "model": "xgboost",
+   "n_rows": 6528,
+   "brier": 0.15032326936701815,
+   "logloss": 0.45744323767002415,
+   "brier_market": 0.1535027113017363,
+   "brier_gain_pct": 2.0712610922346477,
+   "contested_brier": 0.17108903309666332,
+   "contested_brier_market": 0.17389030652892953
+  }
+ ],
+ "brier_gain_vs_market_ci": {
+  "platt_per_cat": {
+   "mean": 0.0011767882499266308,
+   "ci95": [
+    0.0009077527975075071,
+    0.0014743204834737622
+   ]
+  },
+  "platt_per_cat_contested": {
+   "mean": 0.0015033838685988648,
+   "ci95": [
+    0.0011372483546837032,
+    0.0019221610248872317
+   ]
+  },
+  "isotonic_per_cat": {
+   "mean": 0.001081406674603547,
+   "ci95": [
+    0.000782163626124153,
+    0.001340196393340259
+   ]
+  },
+  "isotonic_per_cat_contested": {
+   "mean": 0.0011566912715943066,
+   "ci95": [
+    0.0007960787465458726,
+    0.0015078338342576828
+   ]
+  },
+  "logit_multi": {
+   "mean": 0.0019157360299316489,
+   "ci95": [
+    0.0016579622791992284,
+    0.0021830615648965376
+   ]
+  },
+  "logit_multi_contested": {
+   "mean": 0.0024380292927556235,
+   "ci95": [
+    0.002070001701141886,
+    0.002834549719511161
+   ]
+  },
+  "xgboost": {
+   "mean": 0.00338522636707249,
+   "ci95": [
+    0.0027924905695237983,
+    0.00400072926936362
+   ]
+  },
+  "xgboost_contested": {
+   "mean": 0.002567972060006829,
+   "ci95": [
+    0.0018322782882745252,
+    0.003283184995434657
+   ]
+  }
+ },
+ "reliability_h24": [
+  {
+   "model": "market",
+   "decile": 0,
+   "price_lo": 0.0,
+   "n": 5226,
+   "mean_price": 0.03303291276097298,
+   "mean_pred": 0.03303291215862504,
+   "win_rate": 0.025449674703406047,
+   "gap_win_minus_price_pp": -0.758323805756693
+  },
+  {
+   "model": "market",
+   "decile": 1,
+   "price_lo": 0.1,
+   "n": 2584,
+   "mean_price": 0.14233745634555817,
+   "mean_pred": 0.1423374616365084,
+   "win_rate": 0.12461300309597523,
+   "gap_win_minus_price_pp": -1.7724453249582939
+  },
+  {
+   "model": "market",
+   "decile": 2,
+   "price_lo": 0.2,
+   "n": 2353,
+   "mean_price": 0.24541860818862915,
+   "mean_pred": 0.24541861346388086,
+   "win_rate": 0.22864428389290267,
+   "gap_win_minus_price_pp": -1.6774324295726477
+  },
+  {
+   "model": "market",
+   "decile": 3,
+   "price_lo": 0.3,
+   "n": 2224,
+   "mean_price": 0.3422931432723999,
+   "mean_pred": 0.3422931675135875,
+   "win_rate": 0.3255395683453237,
+   "gap_win_minus_price_pp": -1.6753574927076187
+  },
+  {
+   "model": "market",
+   "decile": 4,
+   "price_lo": 0.4,
+   "n": 2210,
+   "mean_price": 0.44799551367759705,
+   "mean_pred": 0.4479954740984947,
+   "win_rate": 0.42036199095022625,
+   "gap_win_minus_price_pp": -2.7633522727370794
+  },
+  {
+   "model": "market",
+   "decile": 5,
+   "price_lo": 0.5,
+   "n": 1991,
+   "mean_price": 0.5410447120666504,
+   "mean_pred": 0.5410446944037973,
+   "win_rate": 0.496735308890005,
+   "gap_win_minus_price_pp": -4.430940317664539
+  },
+  {
+   "model": "market",
+   "decile": 6,
+   "price_lo": 0.6,
+   "n": 1411,
+   "mean_price": 0.6432175636291504,
+   "mean_pred": 0.643217580695257,
+   "win_rate": 0.622962437987243,
+   "gap_win_minus_price_pp": -2.0255125641907346
+  },
+  {
+   "model": "market",
+   "decile": 7,
+   "price_lo": 0.7,
+   "n": 1233,
+   "mean_price": 0.7451500296592712,
+   "mean_pred": 0.7451500388924319,
+   "win_rate": 0.6853203568532036,
+   "gap_win_minus_price_pp": -5.982967280606766
+  },
+  {
+   "model": "market",
+   "decile": 8,
+   "price_lo": 0.8,
+   "n": 1114,
+   "mean_price": 0.8443536758422852,
+   "mean_pred": 0.8443536795341348,
+   "win_rate": 0.8061041292639138,
+   "gap_win_minus_price_pp": -3.824954657837132
+  },
+  {
+   "model": "market",
+   "decile": 9,
+   "price_lo": 0.9,
+   "n": 1401,
+   "mean_price": 0.9527836441993713,
+   "mean_pred": 0.9527837314153041,
+   "win_rate": 0.9043540328336902,
+   "gap_win_minus_price_pp": -4.842961136568114
+  },
+  {
+   "model": "xgboost",
+   "decile": 0,
+   "price_lo": 0.0,
+   "n": 5226,
+   "mean_price": 0.03303291276097298,
+   "mean_pred": 0.023313645725414042,
+   "win_rate": 0.025449674703406047,
+   "gap_win_minus_price_pp": -0.758323805756693
+  },
+  {
+   "model": "xgboost",
+   "decile": 1,
+   "price_lo": 0.1,
+   "n": 2584,
+   "mean_price": 0.14233745634555817,
+   "mean_pred": 0.12045068746135677,
+   "win_rate": 0.12461300309597523,
+   "gap_win_minus_price_pp": -1.7724453249582939
+  },
+  {
+   "model": "xgboost",
+   "decile": 2,
+   "price_lo": 0.2,
+   "n": 2353,
+   "mean_price": 0.24541860818862915,
+   "mean_pred": 0.21856735186565066,
+   "win_rate": 0.22864428389290267,
+   "gap_win_minus_price_pp": -1.6774324295726477
+  },
+  {
+   "model": "xgboost",
+   "decile": 3,
+   "price_lo": 0.3,
+   "n": 2224,
+   "mean_price": 0.3422931432723999,
+   "mean_pred": 0.3088240016332623,
+   "win_rate": 0.3255395683453237,
+   "gap_win_minus_price_pp": -1.6753574927076187
+  },
+  {
+   "model": "xgboost",
+   "decile": 4,
+   "price_lo": 0.4,
+   "n": 2210,
+   "mean_price": 0.44799551367759705,
+   "mean_pred": 0.4163901601703121,
+   "win_rate": 0.42036199095022625,
+   "gap_win_minus_price_pp": -2.7633522727370794
+  },
+  {
+   "model": "xgboost",
+   "decile": 5,
+   "price_lo": 0.5,
+   "n": 1991,
+   "mean_price": 0.5410447120666504,
+   "mean_pred": 0.5034124832852949,
+   "win_rate": 0.496735308890005,
+   "gap_win_minus_price_pp": -4.430940317664539
+  },
+  {
+   "model": "xgboost",
+   "decile": 6,
+   "price_lo": 0.6,
+   "n": 1411,
+   "mean_price": 0.6432175636291504,
+   "mean_pred": 0.5984214511610868,
+   "win_rate": 0.622962437987243,
+   "gap_win_minus_price_pp": -2.0255125641907346
+  },
+  {
+   "model": "xgboost",
+   "decile": 7,
+   "price_lo": 0.7,
+   "n": 1233,
+   "mean_price": 0.7451500296592712,
+   "mean_pred": 0.6985991318972248,
+   "win_rate": 0.6853203568532036,
+   "gap_win_minus_price_pp": -5.982967280606766
+  },
+  {
+   "model": "xgboost",
+   "decile": 8,
+   "price_lo": 0.8,
+   "n": 1114,
+   "mean_price": 0.8443536758422852,
+   "mean_pred": 0.8108794717536152,
+   "win_rate": 0.8061041292639138,
+   "gap_win_minus_price_pp": -3.824954657837132
+  },
+  {
+   "model": "xgboost",
+   "decile": 9,
+   "price_lo": 0.9,
+   "n": 1401,
+   "mean_price": 0.9527836441993713,
+   "mean_pred": 0.9272891553005816,
+   "win_rate": 0.9043540328336902,
+   "gap_win_minus_price_pp": -4.842961136568114
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 0,
+   "price_lo": 0.0,
+   "n": 5226,
+   "mean_price": 0.03303291276097298,
+   "mean_pred": 0.020882478287456707,
+   "win_rate": 0.025449674703406047,
+   "gap_win_minus_price_pp": -0.758323805756693
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 1,
+   "price_lo": 0.1,
+   "n": 2584,
+   "mean_price": 0.14233745634555817,
+   "mean_pred": 0.11538374548600071,
+   "win_rate": 0.12461300309597523,
+   "gap_win_minus_price_pp": -1.7724453249582939
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 2,
+   "price_lo": 0.2,
+   "n": 2353,
+   "mean_price": 0.24541860818862915,
+   "mean_pred": 0.21632854449865518,
+   "win_rate": 0.22864428389290267,
+   "gap_win_minus_price_pp": -1.6774324295726477
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 3,
+   "price_lo": 0.3,
+   "n": 2224,
+   "mean_price": 0.3422931432723999,
+   "mean_pred": 0.3052273501119436,
+   "win_rate": 0.3255395683453237,
+   "gap_win_minus_price_pp": -1.6753574927076187
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 4,
+   "price_lo": 0.4,
+   "n": 2210,
+   "mean_price": 0.44799551367759705,
+   "mean_pred": 0.416114693711516,
+   "win_rate": 0.42036199095022625,
+   "gap_win_minus_price_pp": -2.7633522727370794
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 5,
+   "price_lo": 0.5,
+   "n": 1991,
+   "mean_price": 0.5410447120666504,
+   "mean_pred": 0.5057487010297196,
+   "win_rate": 0.496735308890005,
+   "gap_win_minus_price_pp": -4.430940317664539
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 6,
+   "price_lo": 0.6,
+   "n": 1411,
+   "mean_price": 0.6432175636291504,
+   "mean_pred": 0.6144557003430827,
+   "win_rate": 0.622962437987243,
+   "gap_win_minus_price_pp": -2.0255125641907346
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 7,
+   "price_lo": 0.7,
+   "n": 1233,
+   "mean_price": 0.7451500296592712,
+   "mean_pred": 0.7209629665906122,
+   "win_rate": 0.6853203568532036,
+   "gap_win_minus_price_pp": -5.982967280606766
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 8,
+   "price_lo": 0.8,
+   "n": 1114,
+   "mean_price": 0.8443536758422852,
+   "mean_pred": 0.8264979597054007,
+   "win_rate": 0.8061041292639138,
+   "gap_win_minus_price_pp": -3.824954657837132
+  },
+  {
+   "model": "isotonic_per_cat",
+   "decile": 9,
+   "price_lo": 0.9,
+   "n": 1401,
+   "mean_price": 0.9527836441993713,
+   "mean_pred": 0.9439983266664351,
+   "win_rate": 0.9043540328336902,
+   "gap_win_minus_price_pp": -4.842961136568114
+  }
+ ],
+ "favorite_longshot_group_test": [
+  {
+   "name": "Sports",
+   "n": 12746,
+   "longshot_n": 2734,
+   "longshot_gap_pp": -0.5321875236377983,
+   "mid_gap_pp": -2.773865458921465,
+   "favorite_n": 929,
+   "favorite_gap_pp": -7.1862207483039064,
+   "logit_slope": 0.9074940085411072,
+   "logit_intercept": -0.17105942964553833,
+   "period": "test"
+  },
+  {
+   "name": "Other",
+   "n": 3351,
+   "longshot_n": 1320,
+   "longshot_gap_pp": -0.5507574840025466,
+   "mid_gap_pp": -1.7801351853818481,
+   "favorite_n": 289,
+   "favorite_gap_pp": -8.86851324342114,
+   "logit_slope": 0.8756065964698792,
+   "logit_intercept": -0.19656021893024445,
+   "period": "test"
+  }
+ ],
+ "favorite_longshot_group_fit": [
+  {
+   "name": "Sports",
+   "n": 37508,
+   "longshot_n": 10439,
+   "longshot_gap_pp": -1.4301175391314898,
+   "mid_gap_pp": -1.2361503062300827,
+   "favorite_n": 2144,
+   "favorite_gap_pp": -3.37686369668192,
+   "logit_slope": 0.9978464841842651,
+   "logit_intercept": -0.08866709470748901,
+   "period": "fit"
+  },
+  {
+   "name": "Weather",
+   "n": 29321,
+   "longshot_n": 12975,
+   "longshot_gap_pp": -1.3421964044745487,
+   "mid_gap_pp": -1.21311410209623,
+   "favorite_n": 594,
+   "favorite_gap_pp": -0.17676437743986417,
+   "logit_slope": 1.0873075723648071,
+   "logit_intercept": -0.01787952333688736,
+   "period": "fit"
+  },
+  {
+   "name": "Finance",
+   "n": 11043,
+   "longshot_n": 6414,
+   "longshot_gap_pp": -0.07857781241606965,
+   "mid_gap_pp": -0.5152224922401083,
+   "favorite_n": 1607,
+   "favorite_gap_pp": -1.3354050274880347,
+   "logit_slope": 0.9570054411888123,
+   "logit_intercept": -0.08448388427495956,
+   "period": "fit"
+  },
+  {
+   "name": "Entertainment",
+   "n": 8507,
+   "longshot_n": 4463,
+   "longshot_gap_pp": -1.6999776132693611,
+   "mid_gap_pp": -5.767906674227491,
+   "favorite_n": 1950,
+   "favorite_gap_pp": -0.30461398760477376,
+   "logit_slope": 1.1158584356307983,
+   "logit_intercept": -0.3060932755470276,
+   "period": "fit"
+  },
+  {
+   "name": "Other",
+   "n": 8140,
+   "longshot_n": 4425,
+   "longshot_gap_pp": -1.29988693205987,
+   "mid_gap_pp": -3.9117359540156604,
+   "favorite_n": 1517,
+   "favorite_gap_pp": 0.7462149241603933,
+   "logit_slope": 1.0813748836517334,
+   "logit_intercept": -0.17156808078289032,
+   "period": "fit"
+  },
+  {
+   "name": "Media",
+   "n": 6494,
+   "longshot_n": 2474,
+   "longshot_gap_pp": -2.5735649711654953,
+   "mid_gap_pp": -8.940912689434388,
+   "favorite_n": 1126,
+   "favorite_gap_pp": 0.23445966612170022,
+   "logit_slope": 1.0857387781143188,
+   "logit_intercept": -0.42683103680610657,
+   "period": "fit"
+  },
+  {
+   "name": "Politics",
+   "n": 4877,
+   "longshot_n": 2269,
+   "longshot_gap_pp": -1.1824590551723146,
+   "mid_gap_pp": -3.459057371359653,
+   "favorite_n": 1057,
+   "favorite_gap_pp": 1.198684329003119,
+   "logit_slope": 1.1013087034225464,
+   "logit_intercept": -0.16167162358760834,
+   "period": "fit"
+  },
+  {
+   "name": "Crypto",
+   "n": 3877,
+   "longshot_n": 1319,
+   "longshot_gap_pp": 2.0644423820874835,
+   "mid_gap_pp": -1.1666673936961636,
+   "favorite_n": 614,
+   "favorite_gap_pp": -0.45276165785153033,
+   "logit_slope": 0.9375099539756775,
+   "logit_intercept": -0.011746416799724102,
+   "period": "fit"
+  }
+ ],
+ "strategy": {
+  "isotonic_per_cat@24h": {
+   "chosen_threshold_on_val": 0.02,
+   "grid": {
+    "0.01": {
+     "n_bets": 9497,
+     "hit_rate": 0.6517847741392019,
+     "hit_rate_ci95": [
+      0.6378858910932617,
+      0.6646595801249935
+     ],
+     "avg_price_paid": 0.626734758916812,
+     "avg_pnl_cents_per_contract": 1.2348214653789251,
+     "avg_pnl_ci95_cents": [
+      0.15380845308587773,
+      2.1905523191892144
+     ],
+     "avg_gross_pnl_cents": 2.505001522238987,
+     "roi_on_cost": 0.01970245702525055,
+     "roi_ci95": [
+      0.0024622515589837026,
+      0.03498406960407855
+     ],
+     "total_pnl_dollars_1_contract_each": 117.27099456703652,
+     "p_roi_positive": 0.9833333333333333
+    },
+    "0.02": {
+     "n_bets": 7274,
+     "hit_rate": 0.6359637063513885,
+     "hit_rate_ci95": [
+      0.6225931187679166,
+      0.6488236179250104
+     ],
+     "avg_price_paid": 0.6092617546129078,
+     "avg_pnl_cents_per_contract": 1.3669232464353716,
+     "avg_pnl_ci95_cents": [
+      0.2140182345892629,
+      2.3810151756321254
+     ],
+     "avg_gross_pnl_cents": 2.670195173848075,
+     "roi_on_cost": 0.022435730391510315,
+     "roi_ci95": [
+      0.003483596874695875,
+      0.03942538151978089
+     ],
+     "total_pnl_dollars_1_contract_each": 99.42999694570892,
+     "p_roi_positive": 0.99
+    },
+    "0.03": {
+     "n_bets": 5077,
+     "hit_rate": 0.606263541461493,
+     "hit_rate_ci95": [
+      0.588678446139706,
+      0.6237405627534234
+     ],
+     "avg_price_paid": 0.5732755569401033,
+     "avg_pnl_cents_per_contract": 1.923340504532116,
+     "avg_pnl_ci95_cents": [
+      0.4081823052454173,
+      3.3612392255360604
+     ],
+     "avg_gross_pnl_cents": 3.2987984521389713,
+     "roi_on_cost": 0.033550017635464426,
+     "roi_ci95": [
+      0.0070060830887663725,
+      0.059411174058350044
+     ],
+     "total_pnl_dollars_1_contract_each": 97.64799741509552,
+     "p_roi_positive": 0.99
+    },
+    "0.05": {
+     "n_bets": 2444,
+     "hit_rate": 0.5572831423895254,
+     "hit_rate_ci95": [
+      0.5350964044243919,
+      0.5833645071097922
+     ],
+     "avg_price_paid": 0.5166039288321391,
+     "avg_pnl_cents_per_contract": 2.6306054801248773,
+     "avg_pnl_ci95_cents": [
+      0.7395128014743183,
+      4.645505639857426
+     ],
+     "avg_gross_pnl_cents": 4.067921355738626,
+     "roi_on_cost": 0.05092112803074798,
+     "roi_ci95": [
+      0.014308153539295248,
+      0.089328226321537
+     ],
+     "total_pnl_dollars_1_contract_each": 64.291997934252,
+     "p_roi_positive": 0.9966666666666667
+    },
+    "0.08": {
+     "n_bets": 702,
+     "hit_rate": 0.5925925925925926,
+     "hit_rate_ci95": [
+      0.554554162312783,
+      0.627118769778481
+     ],
+     "avg_price_paid": 0.5395868953922366,
+     "avg_pnl_cents_per_contract": 3.785612455078338,
+     "avg_pnl_ci95_cents": [
+      0.0605293923991916,
+      7.171824331870982
+     ],
+     "avg_gross_pnl_cents": 5.300569720035605,
+     "roi_on_cost": 0.07015760552017299,
+     "roi_ci95": [
+      0.001139673162446933,
+      0.13353288404887473
+     ],
+     "total_pnl_dollars_1_contract_each": 26.574999434649932,
+     "p_roi_positive": 0.9733333333333334
+    },
+    "0.1": {
+     "n_bets": 467,
+     "hit_rate": 0.6059957173447538,
+     "hit_rate_ci95": [
+      0.547515825420623,
+      0.6548186757617018
+     ],
+     "avg_price_paid": 0.5474946468079371,
+     "avg_pnl_cents_per_contract": 4.3040685097844475,
+     "avg_pnl_ci95_cents": [
+      -0.6042926739252087,
+      8.783657912795459
+     ],
+     "avg_gross_pnl_cents": 5.850107053681666,
+     "roi_on_cost": 0.07861389211526536,
+     "roi_ci95": [
+      -0.010976097457111993,
+      0.16433800822844305
+     ],
+     "total_pnl_dollars_1_contract_each": 20.099999940693372,
+     "p_roi_positive": 0.9533333333333334
+    },
+    "0.15": {
+     "n_bets": 250,
+     "hit_rate": 0.596,
+     "hit_rate_ci95": [
+      0.5386106750392464,
+      0.6640243518751573
+     ],
+     "avg_price_paid": 0.5255599997639656,
+     "avg_pnl_cents_per_contract": 5.404000023603438,
+     "avg_pnl_ci95_cents": [
+      -0.09297360985727582,
+      11.43393254575709
+     ],
+     "avg_gross_pnl_cents": 7.044000023603439,
+     "roi_on_cost": 0.10282365526353662,
+     "roi_ci95": [
+      -0.0017726039318702218,
+      0.21655715916406532
+     ],
+     "total_pnl_dollars_1_contract_each": 13.510000059008597,
+     "p_roi_positive": 0.9666666666666667
+    }
+   },
+   "headline": {
+    "n_bets": 7274,
+    "hit_rate": 0.6359637063513885,
+    "hit_rate_ci95": [
+     0.620269823626304,
+     0.6519390210740993
+    ],
+    "avg_price_paid": 0.6092617546129078,
+    "avg_pnl_cents_per_contract": 1.3669232464353716,
+    "avg_pnl_ci95_cents": [
+     0.2724581931817257,
+     2.514041241106152
+    ],
+    "avg_gross_pnl_cents": 2.670195173848075,
+    "roi_on_cost": 0.022435730391510315,
+    "roi_ci95": [
+     0.004465002018506769,
+     0.04117694307350739
+    ],
+    "total_pnl_dollars_1_contract_each": 99.42999694570892,
+    "p_roi_positive": 0.991
+   },
+   "slip_1c": {
+    "n_bets": 7274,
+    "hit_rate": 0.6359637063513885,
+    "hit_rate_ci95": [
+     0.6202452751370819,
+     0.6499742027808442
+    ],
+    "avg_price_paid": 0.6192617546129078,
+    "avg_pnl_cents_per_contract": 0.3811795015907181,
+    "avg_pnl_ci95_cents": [
+     -0.7644736972087685,
+     1.4653917613993324
+    ],
+    "avg_gross_pnl_cents": 1.6701951738480758,
+    "roi_on_cost": 0.006155385808203,
+    "roi_ci95": [
+     -0.012302375313711754,
+     0.02364656756107763
+    ],
+    "total_pnl_dollars_1_contract_each": 27.726996945708837,
+    "p_roi_positive": 0.725
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 242,
+     "hit_rate": 0.8429752066115702,
+     "avg_pnl_cents": 5.1582644394729735,
+     "roi": 0.06608608152783291
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 288,
+     "hit_rate": 0.7465277777777778,
+     "avg_pnl_cents": 1.780555546345809,
+     "roi": 0.024805301469636686
+    },
+    {
+     "group": "Finance",
+     "n_bets": 113,
+     "hit_rate": 0.672566371681416,
+     "avg_pnl_cents": 0.7079646710009683,
+     "roi": 0.0108474586993858
+    },
+    {
+     "group": "Media",
+     "n_bets": 480,
+     "hit_rate": 0.5666666666666667,
+     "avg_pnl_cents": 3.2941667847583687,
+     "roi": 0.06334682345558149
+    },
+    {
+     "group": "Other",
+     "n_bets": 1178,
+     "hit_rate": 0.7139219015280136,
+     "avg_pnl_cents": 0.5410016084111999,
+     "roi": 0.00777138128783421
+    },
+    {
+     "group": "Politics",
+     "n_bets": 229,
+     "hit_rate": 0.6899563318777293,
+     "avg_pnl_cents": 4.974672444509626,
+     "roi": 0.07919360368330566
+    },
+    {
+     "group": "Sports",
+     "n_bets": 4086,
+     "hit_rate": 0.5653450807635829,
+     "avg_pnl_cents": 1.1572197134091862,
+     "roi": 0.02144204491024744
+    },
+    {
+     "group": "Weather",
+     "n_bets": 638,
+     "hit_rate": 0.8338557993730408,
+     "avg_pnl_cents": -0.5134796239879447,
+     "roi": -0.006188488204916471
+    }
+   ]
+  },
+  "isotonic_per_cat@6h": {
+   "chosen_threshold_on_val": 0.02,
+   "grid": {
+    "0.01": {
+     "n_bets": 20258,
+     "hit_rate": 0.6192121630960609,
+     "hit_rate_ci95": [
+      0.6103084386046176,
+      0.6278792976421452
+     ],
+     "avg_price_paid": 0.590751309063286,
+     "avg_pnl_cents_per_contract": 1.4477588162501374,
+     "avg_pnl_ci95_cents": [
+      0.6757534050571788,
+      2.148738206277574
+     ],
+     "avg_gross_pnl_cents": 2.846085403277486,
+     "roi_on_cost": 0.024507077581355678,
+     "roi_ci95": [
+      0.011439270586219373,
+      0.03649334854662186
+     ],
+     "total_pnl_dollars_1_contract_each": 293.28698099595283,
+     "p_roi_positive": 1.0
+    },
+    "0.02": {
+     "n_bets": 15634,
+     "hit_rate": 0.6067545094025841,
+     "hit_rate_ci95": [
+      0.5966269255267928,
+      0.6162245842845266
+     ],
+     "avg_price_paid": 0.5771856217060009,
+     "avg_pnl_cents_per_contract": 1.5240500847408336,
+     "avg_pnl_ci95_cents": [
+      0.6007784906047593,
+      2.2851927074940535
+     ],
+     "avg_gross_pnl_cents": 2.956888769658322,
+     "roi_on_cost": 0.026404851878259954,
+     "roi_ci95": [
+      0.010391211730125137,
+      0.03949591136454378
+     ],
+     "total_pnl_dollars_1_contract_each": 238.26999024838193,
+     "p_roi_positive": 1.0
+    },
+    "0.03": {
+     "n_bets": 11468,
+     "hit_rate": 0.5882455528426928,
+     "hit_rate_ci95": [
+      0.5766329934687326,
+      0.5997429911292681
+     ],
+     "avg_price_paid": 0.5569375662057084,
+     "avg_pnl_cents_per_contract": 1.6485000937646956,
+     "avg_pnl_ci95_cents": [
+      0.5897915472042696,
+      2.57620423529365
+     ],
+     "avg_gross_pnl_cents": 3.1307986636984255,
+     "roi_on_cost": 0.029599369728200584,
+     "roi_ci95": [
+      0.010562100174506546,
+      0.04627297384833879
+     ],
+     "total_pnl_dollars_1_contract_each": 189.0499907529353,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 5317,
+     "hit_rate": 0.5681775437276659,
+     "hit_rate_ci95": [
+      0.5529570895522389,
+      0.5854504187557082
+     ],
+     "avg_price_paid": 0.5296200874485937,
+     "avg_pnl_cents_per_contract": 2.31700197547164,
+     "avg_pnl_ci95_cents": [
+      0.9890871510635946,
+      3.5861978945767823
+     ],
+     "avg_gross_pnl_cents": 3.8557456279072246,
+     "roi_on_cost": 0.04374837794830685,
+     "roi_ci95": [
+      0.018737889556577576,
+      0.06796811802209149
+     ],
+     "total_pnl_dollars_1_contract_each": 123.1949950358271,
+     "p_roi_positive": 1.0
+    },
+    "0.08": {
+     "n_bets": 807,
+     "hit_rate": 0.6133828996282528,
+     "hit_rate_ci95": [
+      0.5759699372455902,
+      0.6443955516186847
+     ],
+     "avg_price_paid": 0.537583644274516,
+     "avg_pnl_cents_per_contract": 6.031350566352608,
+     "avg_pnl_ci95_cents": [
+      2.9504804134439793,
+      9.187189725757907
+     ],
+     "avg_gross_pnl_cents": 7.579925535373675,
+     "roi_on_cost": 0.11219371404969142,
+     "roi_ci95": [
+      0.05479118605418021,
+      0.17011915573274006
+     ],
+     "total_pnl_dollars_1_contract_each": 48.67299907046555,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 398,
+     "hit_rate": 0.6457286432160804,
+     "hit_rate_ci95": [
+      0.59455,
+      0.6950083980684442
+     ],
+     "avg_price_paid": 0.5357035184700285,
+     "avg_pnl_cents_per_contract": 9.44773860525845,
+     "avg_pnl_ci95_cents": [
+      4.6700010794869025,
+      14.09131682277374
+     ],
+     "avg_gross_pnl_cents": 11.002512474605187,
+     "roi_on_cost": 0.17636133195916337,
+     "roi_ci95": [
+      0.08594458571848124,
+      0.2620270287025708
+     ],
+     "total_pnl_dollars_1_contract_each": 37.60199964892863,
+     "p_roi_positive": 1.0
+    },
+    "0.15": {
+     "n_bets": 203,
+     "hit_rate": 0.6551724137931034,
+     "hit_rate_ci95": [
+      0.5874570446735395,
+      0.720633590881926
+     ],
+     "avg_price_paid": 0.510443349263351,
+     "avg_pnl_cents_per_contract": 12.832512364305298,
+     "avg_pnl_ci95_cents": [
+      6.04350303879352,
+      19.83317007250163
+     ],
+     "avg_gross_pnl_cents": 14.47290645297525,
+     "roi_on_cost": 0.2513993449581547,
+     "roi_ci95": [
+      0.11772181963987001,
+      0.39409439835162496
+     ],
+     "total_pnl_dollars_1_contract_each": 26.05000009953976,
+     "p_roi_positive": 1.0
+    }
+   },
+   "headline": {
+    "n_bets": 15634,
+    "hit_rate": 0.6067545094025841,
+    "hit_rate_ci95": [
+     0.5957141927109834,
+     0.61722463361942
+    ],
+    "avg_price_paid": 0.5771856217060009,
+    "avg_pnl_cents_per_contract": 1.5240500847408336,
+    "avg_pnl_ci95_cents": [
+     0.6659633709089117,
+     2.3803594845302367
+    ],
+    "avg_gross_pnl_cents": 2.956888769658322,
+    "roi_on_cost": 0.026404851878259954,
+    "roi_ci95": [
+     0.011536188187701026,
+     0.041234682287662104
+    ],
+    "total_pnl_dollars_1_contract_each": 238.26999024838193,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 15634,
+    "hit_rate": 0.6067545094025841,
+    "hit_rate_ci95": [
+     0.596302278079728,
+     0.6166391507792804
+    ],
+    "avg_price_paid": 0.5871856217060007,
+    "avg_pnl_cents_per_contract": 0.5341818488447087,
+    "avg_pnl_ci95_cents": [
+     -0.3611730130177982,
+     1.3793768110809617
+    ],
+    "avg_gross_pnl_cents": 1.9568887696583228,
+    "roi_on_cost": 0.00909732508934235,
+    "roi_ci95": [
+     -0.006158511627119458,
+     0.02345703140953201
+    ],
+    "total_pnl_dollars_1_contract_each": 83.51399024838175,
+    "p_roi_positive": 0.867
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 734,
+     "hit_rate": 0.829700272479564,
+     "avg_pnl_cents": 3.124114381446824,
+     "roi": 0.039612015309269916
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 247,
+     "hit_rate": 0.7368421052631579,
+     "avg_pnl_cents": 0.1846154738413653,
+     "roi": 0.0025459227343490793
+    },
+    {
+     "group": "Finance",
+     "n_bets": 239,
+     "hit_rate": 0.7322175732217573,
+     "avg_pnl_cents": 2.0410042600402263,
+     "roi": 0.029188608106712307
+    },
+    {
+     "group": "Media",
+     "n_bets": 380,
+     "hit_rate": 0.5947368421052631,
+     "avg_pnl_cents": 7.352631659805773,
+     "roi": 0.14489446845295076
+    },
+    {
+     "group": "Other",
+     "n_bets": 1938,
+     "hit_rate": 0.6274509803921569,
+     "avg_pnl_cents": -0.7611972052430973,
+     "roi": -0.012256361488749605
+    },
+    {
+     "group": "Politics",
+     "n_bets": 296,
+     "hit_rate": 0.7297297297297297,
+     "avg_pnl_cents": 13.921959506629689,
+     "roi": 0.24122812253881104
+    },
+    {
+     "group": "Sports",
+     "n_bets": 11704,
+     "hit_rate": 0.5798872180451128,
+     "avg_pnl_cents": 1.3431902902907413,
+     "roi": 0.02435203410534695
+    },
+    {
+     "group": "Weather",
+     "n_bets": 69,
+     "hit_rate": 0.7391304347826086,
+     "avg_pnl_cents": -7.759420190729957,
+     "roi": -0.09593262745323616
+    }
+   ]
+  },
+  "platt_per_cat@24h": {
+   "chosen_threshold_on_val": 0.01,
+   "grid": {
+    "0.01": {
+     "n_bets": 9127,
+     "hit_rate": 0.6344910704503123,
+     "hit_rate_ci95": [
+      0.6212327759170078,
+      0.647235618344723
+     ],
+     "avg_price_paid": 0.6039311935845773,
+     "avg_pnl_cents_per_contract": 1.7259011302022915,
+     "avg_pnl_ci95_cents": [
+      0.6956007183975783,
+      2.6487275833769806
+     ],
+     "avg_gross_pnl_cents": 3.055987686573499,
+     "roi_on_cost": 0.028577777543802075,
+     "roi_ci95": [
+      0.01147827309361982,
+      0.04413123517921273
+     ],
+     "total_pnl_dollars_1_contract_each": 157.52299615356316,
+     "p_roi_positive": 1.0
+    },
+    "0.02": {
+     "n_bets": 6923,
+     "hit_rate": 0.6255958399537772,
+     "hit_rate_ci95": [
+      0.6070789511034376,
+      0.6415245226376812
+     ],
+     "avg_price_paid": 0.5929423665904153,
+     "avg_pnl_cents_per_contract": 1.9179834767377522,
+     "avg_pnl_ci95_cents": [
+      0.8196143369196791,
+      3.06053566824887
+     ],
+     "avg_gross_pnl_cents": 3.2653473363361933,
+     "roi_on_cost": 0.03234687863116772,
+     "roi_ci95": [
+      0.013772696769285506,
+      0.05135551342525586
+     ],
+     "total_pnl_dollars_1_contract_each": 132.7819960945546,
+     "p_roi_positive": 1.0
+    },
+    "0.03": {
+     "n_bets": 4550,
+     "hit_rate": 0.6129670329670329,
+     "hit_rate_ci95": [
+      0.5937286949136011,
+      0.636166151976337
+     ],
+     "avg_price_paid": 0.5745890115463471,
+     "avg_pnl_cents_per_contract": 2.4656702739367105,
+     "avg_pnl_ci95_cents": [
+      1.248839656617755,
+      3.882420619086982
+     ],
+     "avg_gross_pnl_cents": 3.8378021420685795,
+     "roi_on_cost": 0.042911893969239716,
+     "roi_ci95": [
+      0.02192555199095829,
+      0.06740178874367575
+     ],
+     "total_pnl_dollars_1_contract_each": 112.18799746412033,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 1377,
+     "hit_rate": 0.6339869281045751,
+     "hit_rate_ci95": [
+      0.5934024564372405,
+      0.6691818266576635
+     ],
+     "avg_price_paid": 0.5992883078797234,
+     "avg_pnl_cents_per_contract": 2.060058100916547,
+     "avg_pnl_ci95_cents": [
+      -0.658043352424472,
+      4.774796380123555
+     ],
+     "avg_gross_pnl_cents": 3.4698620224851755,
+     "roi_on_cost": 0.03437507579957656,
+     "roi_ci95": [
+      -0.011116840993976257,
+      0.07990975583982829
+     ],
+     "total_pnl_dollars_1_contract_each": 28.36700004962085,
+     "p_roi_positive": 0.93
+    },
+    "0.08": {
+     "n_bets": 556,
+     "hit_rate": 0.6348920863309353,
+     "hit_rate_ci95": [
+      0.5851409487150458,
+      0.6822860962566845
+     ],
+     "avg_price_paid": 0.5751618708503975,
+     "avg_pnl_cents_per_contract": 4.466546727909886,
+     "avg_pnl_ci95_cents": [
+      0.3633142414747168,
+      8.621341299107922
+     ],
+     "avg_gross_pnl_cents": 5.973021548053772,
+     "roi_on_cost": 0.07765721189594742,
+     "roi_ci95": [
+      0.006406476853397446,
+      0.1482836692511602
+     ],
+     "total_pnl_dollars_1_contract_each": 24.83399980717897,
+     "p_roi_positive": 0.99
+    },
+    "0.1": {
+     "n_bets": 425,
+     "hit_rate": 0.6070588235294118,
+     "hit_rate_ci95": [
+      0.5587566705193784,
+      0.6621228448275862
+     ],
+     "avg_price_paid": 0.5536705881006577,
+     "avg_pnl_cents_per_contract": 3.780705895816578,
+     "avg_pnl_ci95_cents": [
+      -1.0275240565625778,
+      8.859602429664815
+     ],
+     "avg_gross_pnl_cents": 5.338823542875402,
+     "roi_on_cost": 0.06828439106339602,
+     "roi_ci95": [
+      -0.01839389885989219,
+      0.16247436751360855
+     ],
+     "total_pnl_dollars_1_contract_each": 16.068000057220456,
+     "p_roi_positive": 0.94
+    },
+    "0.15": {
+     "n_bets": 250,
+     "hit_rate": 0.596,
+     "hit_rate_ci95": [
+      0.5117315969539786,
+      0.6710011218513156
+     ],
+     "avg_price_paid": 0.5436400007009506,
+     "avg_pnl_cents_per_contract": 3.555599929904936,
+     "avg_pnl_ci95_cents": [
+      -3.8910250374343995,
+      10.150192358585596
+     ],
+     "avg_gross_pnl_cents": 5.235999929904938,
+     "roi_on_cost": 0.06540357452211884,
+     "roi_ci95": [
+      -0.07322443309707523,
+      0.1851905293666449
+     ],
+     "total_pnl_dollars_1_contract_each": 8.88899982476234,
+     "p_roi_positive": 0.82
+    }
+   },
+   "headline": {
+    "n_bets": 9127,
+    "hit_rate": 0.6344910704503123,
+    "hit_rate_ci95": [
+     0.6195889003094696,
+     0.6486973056424064
+    ],
+    "avg_price_paid": 0.6039311935845773,
+    "avg_pnl_cents_per_contract": 1.7259011302022915,
+    "avg_pnl_ci95_cents": [
+     0.7471974746688373,
+     2.628509060715149
+    ],
+    "avg_gross_pnl_cents": 3.055987686573499,
+    "roi_on_cost": 0.028577777543802075,
+    "roi_ci95": [
+     0.012414915770486232,
+     0.043465599413041234
+    ],
+    "total_pnl_dollars_1_contract_each": 157.52299615356316,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 9127,
+    "hit_rate": 0.6344910704503123,
+    "hit_rate_ci95": [
+     0.6215459225391665,
+     0.6481194112122465
+    ],
+    "avg_price_paid": 0.6139311935845772,
+    "avg_pnl_cents_per_contract": 0.7393557154986641,
+    "avg_pnl_ci95_cents": [
+     -0.21451481904505204,
+     1.6663408005373501
+    ],
+    "avg_gross_pnl_cents": 2.055987686573499,
+    "roi_on_cost": 0.012042973597444485,
+    "roi_ci95": [
+     -0.0035139431544629856,
+     0.027076597825363504
+    ],
+    "total_pnl_dollars_1_contract_each": 67.48099615356307,
+    "p_roi_positive": 0.937
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 260,
+     "hit_rate": 0.823076923076923,
+     "avg_pnl_cents": 3.8161539059304266,
+     "roi": 0.04927248429794406
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 353,
+     "hit_rate": 0.7563739376770539,
+     "avg_pnl_cents": 4.684702523149781,
+     "roi": 0.06704370348035679
+    },
+    {
+     "group": "Finance",
+     "n_bets": 148,
+     "hit_rate": 0.6486486486486487,
+     "avg_pnl_cents": 0.8493243183839949,
+     "roi": 0.013524854649122082
+    },
+    {
+     "group": "Media",
+     "n_bets": 520,
+     "hit_rate": 0.5403846153846154,
+     "avg_pnl_cents": 2.993846173590191,
+     "roi": 0.06022204212158884
+    },
+    {
+     "group": "Other",
+     "n_bets": 1396,
+     "hit_rate": 0.7242120343839542,
+     "avg_pnl_cents": 0.27220626331246583,
+     "roi": 0.0038373754707623623
+    },
+    {
+     "group": "Politics",
+     "n_bets": 295,
+     "hit_rate": 0.7728813559322034,
+     "avg_pnl_cents": 3.0901695149126693,
+     "roi": 0.04231733391473377
+    },
+    {
+     "group": "Sports",
+     "n_bets": 5202,
+     "hit_rate": 0.5574778931180315,
+     "avg_pnl_cents": 1.6366973487397458,
+     "roi": 0.031087311442590703
+    },
+    {
+     "group": "Weather",
+     "n_bets": 922,
+     "hit_rate": 0.8297180043383948,
+     "avg_pnl_cents": 1.124728889259107,
+     "roi": 0.01391367399332297
+    }
+   ]
+  },
+  "platt_per_cat@6h": {
+   "chosen_threshold_on_val": 0.02,
+   "grid": {
+    "0.01": {
+     "n_bets": 18406,
+     "hit_rate": 0.5644898402694773,
+     "hit_rate_ci95": [
+      0.5541896349022121,
+      0.5741951688936094
+     ],
+     "avg_price_paid": 0.5285640561123973,
+     "avg_pnl_cents_per_contract": 2.1083721786114054,
+     "avg_pnl_ci95_cents": [
+      1.3003117538440185,
+      2.790655023133363
+     ],
+     "avg_gross_pnl_cents": 3.5925784157080054,
+     "roi_on_cost": 0.0398886786611738,
+     "roi_ci95": [
+      0.02462892058012455,
+      0.052478578445871685
+     ],
+     "total_pnl_dollars_1_contract_each": 388.06698319521524,
+     "p_roi_positive": 1.0
+    },
+    "0.02": {
+     "n_bets": 13881,
+     "hit_rate": 0.5514011958792594,
+     "hit_rate_ci95": [
+      0.5394054214019902,
+      0.5638653929141114
+     ],
+     "avg_price_paid": 0.5138224923008887,
+     "avg_pnl_cents_per_contract": 2.2697715176958724,
+     "avg_pnl_ci95_cents": [
+      1.3530308816617742,
+      3.1356405155813394
+     ],
+     "avg_gross_pnl_cents": 3.7578703578370733,
+     "roi_on_cost": 0.04417423432617503,
+     "roi_ci95": [
+      0.026337508767732155,
+      0.06049779666998471
+     ],
+     "total_pnl_dollars_1_contract_each": 315.066984371364,
+     "p_roi_positive": 1.0
+    },
+    "0.03": {
+     "n_bets": 8156,
+     "hit_rate": 0.5335948994605199,
+     "hit_rate_ci95": [
+      0.5177630379176965,
+      0.5489702597358025
+     ],
+     "avg_price_paid": 0.4960532128676597,
+     "avg_pnl_cents_per_contract": 2.3092446769417316,
+     "avg_pnl_ci95_cents": [
+      1.2549092382951492,
+      3.37090894159155
+     ],
+     "avg_gross_pnl_cents": 3.754168659286019,
+     "roi_on_cost": 0.04655235803417339,
+     "roi_ci95": [
+      0.025020104871899283,
+      0.06782962780648223
+     ],
+     "total_pnl_dollars_1_contract_each": 188.34199585136764,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 2000,
+     "hit_rate": 0.6935,
+     "hit_rate_ci95": [
+      0.6717181299945416,
+      0.7165008576793416
+     ],
+     "avg_price_paid": 0.6586650000922382,
+     "avg_pnl_cents_per_contract": 2.03904999077618,
+     "avg_pnl_ci95_cents": [
+      0.2391711747752939,
+      3.8939752406096098
+     ],
+     "avg_gross_pnl_cents": 3.4834999907761817,
+     "roi_on_cost": 0.030957315031019346,
+     "roi_ci95": [
+      0.003622613285593885,
+      0.05852364120188241
+     ],
+     "total_pnl_dollars_1_contract_each": 40.78099981552361,
+     "p_roi_positive": 0.99
+    },
+    "0.08": {
+     "n_bets": 468,
+     "hit_rate": 0.6645299145299145,
+     "hit_rate_ci95": [
+      0.6165044488180905,
+      0.7150404149774633
+     ],
+     "avg_price_paid": 0.5637820508553941,
+     "avg_pnl_cents_per_contract": 8.577136794802469,
+     "avg_pnl_ci95_cents": [
+      4.2384995421464176,
+      13.123865660746276
+     ],
+     "avg_gross_pnl_cents": 10.074786367452043,
+     "roi_on_cost": 0.15213568402521635,
+     "roi_ci95": [
+      0.0767064282409758,
+      0.2327980317081983
+     ],
+     "total_pnl_dollars_1_contract_each": 40.14100019967555,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 366,
+     "hit_rate": 0.6557377049180327,
+     "hit_rate_ci95": [
+      0.6112720297175321,
+      0.7005949300541331
+     ],
+     "avg_price_paid": 0.5347814202471509,
+     "avg_pnl_cents_per_contract": 10.537158521732998,
+     "avg_pnl_ci95_cents": [
+      5.905604912351961,
+      14.930609875101789
+     ],
+     "avg_gross_pnl_cents": 12.095628467088188,
+     "roi_on_cost": 0.19703673543600705,
+     "roi_ci95": [
+      0.10823571247068482,
+      0.28113919388152386
+     ],
+     "total_pnl_dollars_1_contract_each": 38.56600018954277,
+     "p_roi_positive": 1.0
+    },
+    "0.15": {
+     "n_bets": 226,
+     "hit_rate": 0.6548672566371682,
+     "hit_rate_ci95": [
+      0.5848291113418886,
+      0.7178981806575168
+     ],
+     "avg_price_paid": 0.5280530970972196,
+     "avg_pnl_cents_per_contract": 11.00575223718069,
+     "avg_pnl_ci95_cents": [
+      4.096664979015975,
+      17.140225923067202
+     ],
+     "avg_gross_pnl_cents": 12.68141595399485,
+     "roi_on_cost": 0.20842131781218257,
+     "roi_ci95": [
+      0.0798228407760094,
+      0.3321090644034845
+     ],
+     "total_pnl_dollars_1_contract_each": 24.87300005602836,
+     "p_roi_positive": 1.0
+    }
+   },
+   "headline": {
+    "n_bets": 13881,
+    "hit_rate": 0.5514011958792594,
+    "hit_rate_ci95": [
+     0.5396728359053259,
+     0.5645440819032245
+    ],
+    "avg_price_paid": 0.5138224923008887,
+    "avg_pnl_cents_per_contract": 2.2697715176958724,
+    "avg_pnl_ci95_cents": [
+     1.351703849057325,
+     3.180448837787566
+    ],
+    "avg_gross_pnl_cents": 3.7578703578370733,
+    "roi_on_cost": 0.04417423432617503,
+    "roi_ci95": [
+     0.0263015241338964,
+     0.061872849187702604
+    ],
+    "total_pnl_dollars_1_contract_each": 315.066984371364,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 13881,
+    "hit_rate": 0.5514011958792594,
+    "hit_rate_ci95": [
+     0.5392922155501114,
+     0.5624313461911108
+    ],
+    "avg_price_paid": 0.5238224923008885,
+    "avg_pnl_cents_per_contract": 1.271522112033454,
+    "avg_pnl_ci95_cents": [
+     0.3891812367817385,
+     2.168277586606564
+    ],
+    "avg_gross_pnl_cents": 2.757870357837074,
+    "roi_on_cost": 0.024273912073693088,
+    "roi_ci95": [
+     0.007413424781377779,
+     0.041392845857718616
+    ],
+    "total_pnl_dollars_1_contract_each": 176.49998437136378,
+    "p_roi_positive": 0.997
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 698,
+     "hit_rate": 0.8696275071633238,
+     "avg_pnl_cents": 3.222063089083122,
+     "roi": 0.03887506114890617
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 254,
+     "hit_rate": 0.7598425196850394,
+     "avg_pnl_cents": 7.1688977827589335,
+     "roi": 0.10578018128939681
+    },
+    {
+     "group": "Finance",
+     "n_bets": 207,
+     "hit_rate": 0.6908212560386473,
+     "avg_pnl_cents": 5.148309158947731,
+     "roi": 0.08213487441738777
+    },
+    {
+     "group": "Media",
+     "n_bets": 387,
+     "hit_rate": 0.5943152454780362,
+     "avg_pnl_cents": 7.213178242939386,
+     "roi": 0.14183730385566204
+    },
+    {
+     "group": "Other",
+     "n_bets": 2035,
+     "hit_rate": 0.6353808353808353,
+     "avg_pnl_cents": -0.11100742099765552,
+     "roi": -0.0017842623358006711
+    },
+    {
+     "group": "Politics",
+     "n_bets": 322,
+     "hit_rate": 0.8012422360248447,
+     "avg_pnl_cents": 10.543788850927573,
+     "roi": 0.15439992776126582
+    },
+    {
+     "group": "Sports",
+     "n_bets": 9854,
+     "hit_rate": 0.4903592449766592,
+     "avg_pnl_cents": 2.1179925373396804,
+     "roi": 0.046714114243507486
+    },
+    {
+     "group": "Weather",
+     "n_bets": 96,
+     "hit_rate": 0.7604166666666666,
+     "avg_pnl_cents": -10.294791516878954,
+     "roi": -0.12037758676630494
+    }
+   ]
+  },
+  "logit_multi@24h": {
+   "chosen_threshold_on_val": 0.02,
+   "grid": {
+    "0.01": {
+     "n_bets": 7838,
+     "hit_rate": 0.681934166879306,
+     "hit_rate_ci95": [
+      0.6695601529962335,
+      0.6931654002266175
+     ],
+     "avg_price_paid": 0.6557399846492684,
+     "avg_pnl_cents_per_contract": 1.3369226884286016,
+     "avg_pnl_ci95_cents": [
+      0.4565696338002633,
+      2.271601539105471
+     ],
+     "avg_gross_pnl_cents": 2.6194182230037493,
+     "roi_on_cost": 0.020388000117816107,
+     "roi_ci95": [
+      0.00695374938136962,
+      0.03468356016273657
+     ],
+     "total_pnl_dollars_1_contract_each": 104.7880003190338,
+     "p_roi_positive": 0.9966666666666667
+    },
+    "0.02": {
+     "n_bets": 4997,
+     "hit_rate": 0.6850110066039624,
+     "hit_rate_ci95": [
+      0.670736371872326,
+      0.6986346694984938
+     ],
+     "avg_price_paid": 0.6520632382527766,
+     "avg_pnl_cents_per_contract": 1.9630578036997244,
+     "avg_pnl_ci95_cents": [
+      0.627484776610894,
+      3.207410451020419
+     ],
+     "avg_gross_pnl_cents": 3.294776835118577,
+     "roi_on_cost": 0.030105328571501715,
+     "roi_ci95": [
+      0.00959149872132124,
+      0.04936917806634911
+     ],
+     "total_pnl_dollars_1_contract_each": 98.09399845087523,
+     "p_roi_positive": 0.9966666666666667
+    },
+    "0.03": {
+     "n_bets": 3043,
+     "hit_rate": 0.6713769306605324,
+     "hit_rate_ci95": [
+      0.6543080754955554,
+      0.688195771550157
+     ],
+     "avg_price_paid": 0.6293821890694292,
+     "avg_pnl_cents_per_contract": 2.7823857595046557,
+     "avg_pnl_ci95_cents": [
+      1.15164410145272,
+      4.373909119203485
+     ],
+     "avg_gross_pnl_cents": 4.199474159110309,
+     "roi_on_cost": 0.04420820620326962,
+     "roi_ci95": [
+      0.01830970763897035,
+      0.06976794302949876
+     ],
+     "total_pnl_dollars_1_contract_each": 84.66799866172667,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 1186,
+     "hit_rate": 0.6686340640809444,
+     "hit_rate_ci95": [
+      0.6379988045427376,
+      0.697491447729916
+     ],
+     "avg_price_paid": 0.5907588536343827,
+     "avg_pnl_cents_per_contract": 6.276475513458853,
+     "avg_pnl_ci95_cents": [
+      3.730778090317318,
+      9.166655226123662
+     ],
+     "avg_gross_pnl_cents": 7.787521044656157,
+     "roi_on_cost": 0.10624429028605516,
+     "roi_ci95": [
+      0.06351512037870048,
+      0.15642169914469561
+     ],
+     "total_pnl_dollars_1_contract_each": 74.438999589622,
+     "p_roi_positive": 1.0
+    },
+    "0.08": {
+     "n_bets": 365,
+     "hit_rate": 0.684931506849315,
+     "hit_rate_ci95": [
+      0.6349835706462212,
+      0.7417354501810831
+     ],
+     "avg_price_paid": 0.5654794519078241,
+     "avg_pnl_cents_per_contract": 10.38465754894361,
+     "avg_pnl_ci95_cents": [
+      5.234192759149326,
+      16.08328926308664
+     ],
+     "avg_gross_pnl_cents": 11.94520549414909,
+     "roi_on_cost": 0.18364341116034677,
+     "roi_ci95": [
+      0.0897258664130661,
+      0.29456018450929117
+     ],
+     "total_pnl_dollars_1_contract_each": 37.904000053644175,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 149,
+     "hit_rate": 0.6577181208053692,
+     "hit_rate_ci95": [
+      0.5704380341880342,
+      0.7507094594594594
+     ],
+     "avg_price_paid": 0.5089932889146292,
+     "avg_pnl_cents_per_contract": 13.272483189073986,
+     "avg_pnl_ci95_cents": [
+      3.6912138149154274,
+      23.14240193591569
+     ],
+     "avg_gross_pnl_cents": 14.872483189073984,
+     "roi_on_cost": 0.26075949286828626,
+     "roi_ci95": [
+      0.06818744807389754,
+      0.47568638365277405
+     ],
+     "total_pnl_dollars_1_contract_each": 19.775999951720237,
+     "p_roi_positive": 0.99
+    },
+    "0.15": {
+     "n_bets": 13,
+     "hit_rate": 0.6923076923076923,
+     "hit_rate_ci95": [
+      0.18437500000000007,
+      0.9444444444444444
+     ],
+     "avg_price_paid": 0.3569230746764403,
+     "avg_pnl_cents_per_contract": 32.000000224663665,
+     "avg_pnl_ci95_cents": [
+      -22.52843655060977,
+      59.50013866172894
+     ],
+     "avg_gross_pnl_cents": 33.5384617631252,
+     "roi_on_cost": 0.8965517360756927,
+     "roi_ci95": [
+      -0.5883745859971629,
+      1.7801995279353469
+     ],
+     "total_pnl_dollars_1_contract_each": 4.160000029206277,
+     "p_roi_positive": 0.8566666666666667
+    }
+   },
+   "headline": {
+    "n_bets": 4997,
+    "hit_rate": 0.6850110066039624,
+    "hit_rate_ci95": [
+     0.6707613265088583,
+     0.7000395515842305
+    ],
+    "avg_price_paid": 0.6520632382527766,
+    "avg_pnl_cents_per_contract": 1.9630578036997244,
+    "avg_pnl_ci95_cents": [
+     0.6643249115324734,
+     3.277553704817484
+    ],
+    "avg_gross_pnl_cents": 3.294776835118577,
+    "roi_on_cost": 0.030105328571501715,
+    "roi_ci95": [
+     0.010167641020928457,
+     0.050418911397304256
+    ],
+    "total_pnl_dollars_1_contract_each": 98.09399845087523,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 4997,
+    "hit_rate": 0.6850110066039624,
+    "hit_rate_ci95": [
+     0.6693082636703938,
+     0.7001799994675311
+    ],
+    "avg_price_paid": 0.6620632382527765,
+    "avg_pnl_cents_per_contract": 0.9845707114443701,
+    "avg_pnl_ci95_cents": [
+     -0.32879487012402825,
+     2.3174244005662445
+    ],
+    "avg_gross_pnl_cents": 2.2947768351185767,
+    "roi_on_cost": 0.014871248765340147,
+    "roi_ci95": [
+     -0.00495620490900814,
+     0.034905079604392035
+    ],
+    "total_pnl_dollars_1_contract_each": 49.19899845087518,
+    "p_roi_positive": 0.933
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 236,
+     "hit_rate": 0.8347457627118644,
+     "avg_pnl_cents": 4.7457627219037475,
+     "roi": 0.061098685424365536
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 296,
+     "hit_rate": 0.8040540540540541,
+     "avg_pnl_cents": 5.524324326438677,
+     "roi": 0.07482725486993452
+    },
+    {
+     "group": "Finance",
+     "n_bets": 93,
+     "hit_rate": 0.5161290322580645,
+     "avg_pnl_cents": -4.939784976359337,
+     "roi": -0.08949931863446198
+    },
+    {
+     "group": "Media",
+     "n_bets": 417,
+     "hit_rate": 0.6714628297362111,
+     "avg_pnl_cents": 3.582973583403536,
+     "roi": 0.057620516134725734
+    },
+    {
+     "group": "Other",
+     "n_bets": 982,
+     "hit_rate": 0.7291242362525459,
+     "avg_pnl_cents": 0.6054989050398519,
+     "roi": 0.008524730094733209
+    },
+    {
+     "group": "Politics",
+     "n_bets": 254,
+     "hit_rate": 0.8267716535433071,
+     "avg_pnl_cents": 4.8165354014498964,
+     "roi": 0.06274167862271654
+    },
+    {
+     "group": "Sports",
+     "n_bets": 2092,
+     "hit_rate": 0.6042065009560229,
+     "avg_pnl_cents": 1.6000955529396992,
+     "roi": 0.027920825879497048
+    },
+    {
+     "group": "Weather",
+     "n_bets": 600,
+     "hit_rate": 0.745,
+     "avg_pnl_cents": 1.2336667449474326,
+     "roi": 0.01709745334745803
+    }
+   ]
+  },
+  "logit_multi@6h": {
+   "chosen_threshold_on_val": 0.03,
+   "grid": {
+    "0.01": {
+     "n_bets": 15345,
+     "hit_rate": 0.6237862495927012,
+     "hit_rate_ci95": [
+      0.614257896066698,
+      0.6324694721628034
+     ],
+     "avg_price_paid": 0.6055138482254893,
+     "avg_pnl_cents_per_contract": 0.4140306222213513,
+     "avg_pnl_ci95_cents": [
+      -0.4111449991685996,
+      1.1155160482500335
+     ],
+     "avg_gross_pnl_cents": 1.8272401367211892,
+     "roi_on_cost": 0.006837673877066624,
+     "roi_ci95": [
+      -0.006764114924845905,
+      0.018444854358300365
+     ],
+     "total_pnl_dollars_1_contract_each": 63.532998979866356,
+     "p_roi_positive": 0.86
+    },
+    "0.02": {
+     "n_bets": 8783,
+     "hit_rate": 0.6291699874758055,
+     "hit_rate_ci95": [
+      0.6181225897252315,
+      0.6410289598979168
+     ],
+     "avg_price_paid": 0.6030513494782686,
+     "avg_pnl_cents_per_contract": 1.1662188037386725,
+     "avg_pnl_ci95_cents": [
+      0.05886149831554429,
+      2.258894297325762
+     ],
+     "avg_gross_pnl_cents": 2.6118637997537024,
+     "roi_on_cost": 0.01933863185527451,
+     "roi_ci95": [
+      0.0009687846770595164,
+      0.037175379973018875
+     ],
+     "total_pnl_dollars_1_contract_each": 102.4289975323676,
+     "p_roi_positive": 0.9866666666666667
+    },
+    "0.03": {
+     "n_bets": 4786,
+     "hit_rate": 0.6349770162975344,
+     "hit_rate_ci95": [
+      0.6176687688619589,
+      0.6515886097871152
+     ],
+     "avg_price_paid": 0.5972231512494631,
+     "avg_pnl_cents_per_contract": 2.2987880927720323,
+     "avg_pnl_ci95_cents": [
+      0.8037910525621264,
+      3.650304116216163
+     ],
+     "avg_gross_pnl_cents": 3.775386504807136,
+     "roi_on_cost": 0.03849127563060289,
+     "roi_ci95": [
+      0.013528636553014386,
+      0.06088625605532258
+     ],
+     "total_pnl_dollars_1_contract_each": 110.01999812006946,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 1544,
+     "hit_rate": 0.6457253886010362,
+     "hit_rate_ci95": [
+      0.6192040378387238,
+      0.6720417108360396
+     ],
+     "avg_price_paid": 0.5604468914969714,
+     "avg_pnl_cents_per_contract": 7.010168363256233,
+     "avg_pnl_ci95_cents": [
+      4.573967364682773,
+      9.812081567158021
+     ],
+     "avg_gross_pnl_cents": 8.527849710406494,
+     "roi_on_cost": 0.1250817601027611,
+     "roi_ci95": [
+      0.0817871980625085,
+      0.1763240856387032
+     ],
+     "total_pnl_dollars_1_contract_each": 108.23699952867625,
+     "p_roi_positive": 1.0
+    },
+    "0.08": {
+     "n_bets": 415,
+     "hit_rate": 0.653012048192771,
+     "hit_rate_ci95": [
+      0.6034641026916762,
+      0.7028998753635229
+     ],
+     "avg_price_paid": 0.5109638553247394,
+     "avg_pnl_cents_per_contract": 12.665060250658582,
+     "avg_pnl_ci95_cents": [
+      7.504661518480139,
+      17.369132019983756
+     ],
+     "avg_gross_pnl_cents": 14.204819286803167,
+     "roi_on_cost": 0.2478660695600356,
+     "roi_ci95": [
+      0.14702059048809674,
+      0.34469521492500926
+     ],
+     "total_pnl_dollars_1_contract_each": 52.56000004023312,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 178,
+     "hit_rate": 0.5898876404494382,
+     "hit_rate_ci95": [
+      0.5201035781544256,
+      0.6710276629838914
+     ],
+     "avg_price_paid": 0.44741573034042725,
+     "avg_pnl_cents_per_contract": 12.729213482811208,
+     "avg_pnl_ci95_cents": [
+      4.953602754269804,
+      21.226377209331865
+     ],
+     "avg_gross_pnl_cents": 14.247191010901098,
+     "roi_on_cost": 0.28450527372217943,
+     "roi_ci95": [
+      0.11017411207893264,
+      0.47765052957473614
+     ],
+     "total_pnl_dollars_1_contract_each": 22.65799999940395,
+     "p_roi_positive": 1.0
+    },
+    "0.15": {
+     "n_bets": 42,
+     "hit_rate": 0.6190476190476191,
+     "hit_rate_ci95": [
+      0.4886175710594315,
+      0.7591463414634145
+     ],
+     "avg_price_paid": 0.34095238078208195,
+     "avg_pnl_cents_per_contract": 26.380952397982277,
+     "avg_pnl_ci95_cents": [
+      12.296335467032408,
+      41.350714974848515
+     ],
+     "avg_gross_pnl_cents": 27.809523826553708,
+     "roi_on_cost": 0.7737430176457261,
+     "roi_ci95": [
+      0.33356037548536854,
+      1.277353999464497
+     ],
+     "total_pnl_dollars_1_contract_each": 11.080000007152556,
+     "p_roi_positive": 1.0
+    }
+   },
+   "headline": {
+    "n_bets": 4786,
+    "hit_rate": 0.6349770162975344,
+    "hit_rate_ci95": [
+     0.6194105809698253,
+     0.6512156286802834
+    ],
+    "avg_price_paid": 0.5972231512494631,
+    "avg_pnl_cents_per_contract": 2.2987880927720323,
+    "avg_pnl_ci95_cents": [
+     0.9636843274970435,
+     3.7369575203553427
+    ],
+    "avg_gross_pnl_cents": 3.775386504807136,
+    "roi_on_cost": 0.03849127563060289,
+    "roi_ci95": [
+     0.016186243842784956,
+     0.06284896921966403
+    ],
+    "total_pnl_dollars_1_contract_each": 110.01999812006946,
+    "p_roi_positive": 0.999
+   },
+   "slip_1c": {
+    "n_bets": 4786,
+    "hit_rate": 0.6349770162975344,
+    "hit_rate_ci95": [
+     0.6194991260108992,
+     0.6510655666720488
+    ],
+    "avg_price_paid": 0.6072231512494629,
+    "avg_pnl_cents_per_contract": 1.313037988300656,
+    "avg_pnl_ci95_cents": [
+     -0.04389042136457026,
+     2.6949523768474064
+    ],
+    "avg_gross_pnl_cents": 2.7753865048071353,
+    "roi_on_cost": 0.021623648334205655,
+    "roi_ci95": [
+     -0.0007197562005265973,
+     0.04440288846447179
+    ],
+    "total_pnl_dollars_1_contract_each": 62.84199812006939,
+    "p_roi_positive": 0.97
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 395,
+     "hit_rate": 0.8050632911392405,
+     "avg_pnl_cents": 2.31417721922639,
+     "roi": 0.030031539576920528
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 178,
+     "hit_rate": 0.8370786516853933,
+     "avg_pnl_cents": 9.644943985393208,
+     "roi": 0.13224464899768776
+    },
+    {
+     "group": "Finance",
+     "n_bets": 121,
+     "hit_rate": 0.5371900826446281,
+     "avg_pnl_cents": -1.9107438374895716,
+     "roi": -0.03526540637329453
+    },
+    {
+     "group": "Media",
+     "n_bets": 284,
+     "hit_rate": 0.6936619718309859,
+     "avg_pnl_cents": 8.819718275334631,
+     "roi": 0.14929073719938282
+    },
+    {
+     "group": "Other",
+     "n_bets": 991,
+     "hit_rate": 0.6670030272452069,
+     "avg_pnl_cents": -0.928960690951854,
+     "roi": -0.014037388980289542
+    },
+    {
+     "group": "Politics",
+     "n_bets": 269,
+     "hit_rate": 0.8029739776951673,
+     "avg_pnl_cents": 4.571747203365134,
+     "roi": 0.061370327739128185
+    },
+    {
+     "group": "Sports",
+     "n_bets": 2488,
+     "hit_rate": 0.5582797427652733,
+     "avg_pnl_cents": 2.340634982493911,
+     "roi": 0.045111586625455065
+    }
+   ]
+  },
+  "xgboost@24h": {
+   "chosen_threshold_on_val": 0.08,
+   "grid": {
+    "0.01": {
+     "n_bets": 9484,
+     "hit_rate": 0.6542598059890342,
+     "hit_rate_ci95": [
+      0.6398508521223669,
+      0.6678730425410347
+     ],
+     "avg_price_paid": 0.6273703079655741,
+     "avg_pnl_cents_per_contract": 1.438348790114876,
+     "avg_pnl_ci95_cents": [
+      0.4996120351530281,
+      2.396718751380155
+     ],
+     "avg_gross_pnl_cents": 2.6889498023460026,
+     "roi_on_cost": 0.02292663155798892,
+     "roi_ci95": [
+      0.00798642447129396,
+      0.038048628000971106
+     ],
+     "total_pnl_dollars_1_contract_each": 136.41299925449482,
+     "p_roi_positive": 1.0
+    },
+    "0.02": {
+     "n_bets": 7380,
+     "hit_rate": 0.6589430894308943,
+     "hit_rate_ci95": [
+      0.6437652368756508,
+      0.6739602093545533
+     ],
+     "avg_price_paid": 0.6279024391437611,
+     "avg_pnl_cents_per_contract": 1.8436449745127819,
+     "avg_pnl_ci95_cents": [
+      0.6097721936561762,
+      2.9017220968391384
+     ],
+     "avg_gross_pnl_cents": 3.1040650287133245,
+     "roi_on_cost": 0.029361965483473317,
+     "roi_ci95": [
+      0.009698777387675597,
+      0.04606744932677837
+     ],
+     "total_pnl_dollars_1_contract_each": 136.0609991190433,
+     "p_roi_positive": 1.0
+    },
+    "0.03": {
+     "n_bets": 5322,
+     "hit_rate": 0.6465614430665163,
+     "hit_rate_ci95": [
+      0.6268981149265886,
+      0.6663387309357937
+     ],
+     "avg_price_paid": 0.6084423152171985,
+     "avg_pnl_cents_per_contract": 2.4996805414143055,
+     "avg_pnl_ci95_cents": [
+      1.053934028234566,
+      4.048445138262499
+     ],
+     "avg_gross_pnl_cents": 3.8119127849317813,
+     "roi_on_cost": 0.04108327903725734,
+     "roi_ci95": [
+      0.017525166787195463,
+      0.0663347201707371
+     ],
+     "total_pnl_dollars_1_contract_each": 133.03299841406934,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 2940,
+     "hit_rate": 0.5938775510204082,
+     "hit_rate_ci95": [
+      0.5673697658952114,
+      0.6223711161333139
+     ],
+     "avg_price_paid": 0.5435340141167952,
+     "avg_pnl_cents_per_contract": 3.6036394046470006,
+     "avg_pnl_ci95_cents": [
+      1.5038909092772033,
+      6.045943331830118
+     ],
+     "avg_gross_pnl_cents": 5.0343536903612875,
+     "roi_on_cost": 0.06630016357858785,
+     "roi_ci95": [
+      0.027719902101918895,
+      0.11177611570386008
+     ],
+     "total_pnl_dollars_1_contract_each": 105.94699849662183,
+     "p_roi_positive": 1.0
+    },
+    "0.08": {
+     "n_bets": 1603,
+     "hit_rate": 0.5820336868371803,
+     "hit_rate_ci95": [
+      0.5476028953746911,
+      0.6179838681710529
+     ],
+     "avg_price_paid": 0.5063755461296586,
+     "avg_pnl_cents_per_contract": 6.088646260396583,
+     "avg_pnl_ci95_cents": [
+      3.2355735616482986,
+      8.969068443486812
+     ],
+     "avg_gross_pnl_cents": 7.565814070752168,
+     "roi_on_cost": 0.12023973722533535,
+     "roi_ci95": [
+      0.06508219347736732,
+      0.17564222827386772
+     ],
+     "total_pnl_dollars_1_contract_each": 97.60099955415723,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 1180,
+     "hit_rate": 0.5771186440677966,
+     "hit_rate_ci95": [
+      0.5369647993354447,
+      0.6243588144522547
+     ],
+     "avg_price_paid": 0.4842372887278512,
+     "avg_pnl_cents_per_contract": 7.775169432299619,
+     "avg_pnl_ci95_cents": [
+      4.670537001037268,
+      11.281387548497367
+     ],
+     "avg_gross_pnl_cents": 9.288135533994538,
+     "roi_on_cost": 0.16056527684445598,
+     "roi_ci95": [
+      0.09811698480223584,
+      0.22848836122539634
+     ],
+     "total_pnl_dollars_1_contract_each": 91.74699930113552,
+     "p_roi_positive": 1.0
+    },
+    "0.15": {
+     "n_bets": 679,
+     "hit_rate": 0.5684830633284241,
+     "hit_rate_ci95": [
+      0.5143388794456066,
+      0.6236288864008268
+     ],
+     "avg_price_paid": 0.46201767340104954,
+     "avg_pnl_cents_per_contract": 9.072459464018754,
+     "avg_pnl_ci95_cents": [
+      4.476402889938132,
+      14.73812530473945
+     ],
+     "avg_gross_pnl_cents": 10.64653899273746,
+     "roi_on_cost": 0.19636606966209066,
+     "roi_ci95": [
+      0.1001391631967637,
+      0.3161172907157096
+     ],
+     "total_pnl_dollars_1_contract_each": 61.60199976068735,
+     "p_roi_positive": 1.0
+    }
+   },
+   "headline": {
+    "n_bets": 1603,
+    "hit_rate": 0.5820336868371803,
+    "hit_rate_ci95": [
+     0.5493461528430216,
+     0.6173865137623453
+    ],
+    "avg_price_paid": 0.5063755461296586,
+    "avg_pnl_cents_per_contract": 6.088646260396583,
+    "avg_pnl_ci95_cents": [
+     3.268586768493769,
+     9.058561046430116
+    ],
+    "avg_gross_pnl_cents": 7.565814070752168,
+    "roi_on_cost": 0.12023973722533535,
+    "roi_ci95": [
+     0.06479133564873461,
+     0.17786320621639928
+    ],
+    "total_pnl_dollars_1_contract_each": 97.60099955415723,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 1603,
+    "hit_rate": 0.5820336868371803,
+    "hit_rate_ci95": [
+     0.5478785436626927,
+     0.6166666311620655
+    ],
+    "avg_price_paid": 0.5163755461296584,
+    "avg_pnl_cents_per_contract": 5.089394856778367,
+    "avg_pnl_ci95_cents": [
+     2.328672526707393,
+     7.994812451259127
+    ],
+    "avg_gross_pnl_cents": 6.565814070752168,
+    "roi_on_cost": 0.09855995108452432,
+    "roi_ci95": [
+     0.04479744290965854,
+     0.15373213374515715
+    ],
+    "total_pnl_dollars_1_contract_each": 81.58299955415723,
+    "p_roi_positive": 1.0
+   },
+   "per_group": [
+    {
+     "group": "Entertainment",
+     "n_bets": 89,
+     "hit_rate": 0.550561797752809,
+     "avg_pnl_cents": 2.1179774812098295,
+     "roi": 0.04115720429169292
+    },
+    {
+     "group": "Finance",
+     "n_bets": 56,
+     "hit_rate": 0.7857142857142857,
+     "avg_pnl_cents": 16.487499880258525,
+     "roi": 0.27155882102162754
+    },
+    {
+     "group": "Media",
+     "n_bets": 382,
+     "hit_rate": 0.5759162303664922,
+     "avg_pnl_cents": 2.3960733085714705,
+     "roi": 0.04461613473298357
+    },
+    {
+     "group": "Other",
+     "n_bets": 131,
+     "hit_rate": 0.5114503816793893,
+     "avg_pnl_cents": 0.04045783850072773,
+     "roi": 0.0008167632647067395
+    },
+    {
+     "group": "Politics",
+     "n_bets": 179,
+     "hit_rate": 0.6815642458100558,
+     "avg_pnl_cents": 17.462569906325314,
+     "roi": 0.35451967992778916
+    },
+    {
+     "group": "Sports",
+     "n_bets": 725,
+     "hit_rate": 0.5489655172413793,
+     "avg_pnl_cents": 5.282482714718785,
+     "roi": 0.10973324445369567
+    }
+   ]
+  },
+  "xgboost@6h": {
+   "chosen_threshold_on_val": 0.05,
+   "grid": {
+    "0.01": {
+     "n_bets": 18825,
+     "hit_rate": 0.6213545816733068,
+     "hit_rate_ci95": [
+      0.6124645148929286,
+      0.6310084473039252
+     ],
+     "avg_price_paid": 0.5965099602437035,
+     "avg_pnl_cents_per_contract": 1.133678610423804,
+     "avg_pnl_ci95_cents": [
+      0.4290560975984634,
+      1.8542287433884297
+     ],
+     "avg_gross_pnl_cents": 2.4844621429603255,
+     "roi_on_cost": 0.0190051916310105,
+     "roi_ci95": [
+      0.007195489508241105,
+      0.031200429494042423
+     ],
+     "total_pnl_dollars_1_contract_each": 213.41499841228108,
+     "p_roi_positive": 1.0
+    },
+    "0.02": {
+     "n_bets": 13704,
+     "hit_rate": 0.6248540572095739,
+     "hit_rate_ci95": [
+      0.614270959731517,
+      0.6354389353330715
+     ],
+     "avg_price_paid": 0.5991936662143028,
+     "avg_pnl_cents_per_contract": 1.2212127714477126,
+     "avg_pnl_ci95_cents": [
+      0.3511960084098494,
+      2.15454907565618
+     ],
+     "avg_gross_pnl_cents": 2.5660390995271065,
+     "roi_on_cost": 0.020380935919488564,
+     "roi_ci95": [
+      0.005884243305241056,
+      0.03620380822138881
+     ],
+     "total_pnl_dollars_1_contract_each": 167.3549981991945,
+     "p_roi_positive": 0.9866666666666667
+    },
+    "0.03": {
+     "n_bets": 9882,
+     "hit_rate": 0.6190042501517912,
+     "hit_rate_ci95": [
+      0.6049291208504803,
+      0.6314364952140797
+     ],
+     "avg_price_paid": 0.5877039062609059,
+     "avg_pnl_cents_per_contract": 1.7533393880765908,
+     "avg_pnl_ci95_cents": [
+      0.6236651283096313,
+      2.8188936685584935
+     ],
+     "avg_gross_pnl_cents": 3.130034389088533,
+     "roi_on_cost": 0.029833720167553417,
+     "roi_ci95": [
+      0.010642890153529622,
+      0.048003400450829216
+     ],
+     "total_pnl_dollars_1_contract_each": 173.2649983297287,
+     "p_roi_positive": 1.0
+    },
+    "0.05": {
+     "n_bets": 5371,
+     "hit_rate": 0.5876000744740272,
+     "hit_rate_ci95": [
+      0.5681206423324623,
+      0.6043525275146879
+     ],
+     "avg_price_paid": 0.5368981569356214,
+     "avg_pnl_cents_per_contract": 3.601470845257452,
+     "avg_pnl_ci95_cents": [
+      1.9748384314190532,
+      4.963177626322653
+     ],
+     "avg_gross_pnl_cents": 5.070191753840584,
+     "roi_on_cost": 0.06707921788767285,
+     "roi_ci95": [
+      0.03699322002638173,
+      0.0925584961192901
+     ],
+     "total_pnl_dollars_1_contract_each": 193.43499909877772,
+     "p_roi_positive": 1.0
+    },
+    "0.08": {
+     "n_bets": 2764,
+     "hit_rate": 0.5593342981186686,
+     "hit_rate_ci95": [
+      0.5337948014597482,
+      0.584628593834633
+     ],
+     "avg_price_paid": 0.4879088281638996,
+     "avg_pnl_cents_per_contract": 5.620368992582544,
+     "avg_pnl_ci95_cents": [
+      3.498861019765773,
+      7.749910234724829
+     ],
+     "avg_gross_pnl_cents": 7.142546995476902,
+     "roi_on_cost": 0.11519301697682206,
+     "roi_ci95": [
+      0.07225385704562293,
+      0.15893160793097993
+     ],
+     "total_pnl_dollars_1_contract_each": 155.34699895498153,
+     "p_roi_positive": 1.0
+    },
+    "0.1": {
+     "n_bets": 2050,
+     "hit_rate": 0.5492682926829269,
+     "hit_rate_ci95": [
+      0.5188955471242592,
+      0.5804661704275107
+     ],
+     "avg_price_paid": 0.46743414659689114,
+     "avg_pnl_cents_per_contract": 6.64092680372552,
+     "avg_pnl_ci95_cents": [
+      4.05550076267612,
+      9.184130504713533
+     ],
+     "avg_gross_pnl_cents": 8.18341460860357,
+     "roi_on_cost": 0.14207192290238407,
+     "roi_ci95": [
+      0.08824925793904077,
+      0.19622105953840432
+     ],
+     "total_pnl_dollars_1_contract_each": 136.1389994763732,
+     "p_roi_positive": 1.0
+    },
+    "0.15": {
+     "n_bets": 1142,
+     "hit_rate": 0.5096322241681261,
+     "hit_rate_ci95": [
+      0.4726878573009326,
+      0.5525617930064961
+     ],
+     "avg_price_paid": 0.43468476389901756,
+     "avg_pnl_cents_per_contract": 5.915499091709452,
+     "avg_pnl_ci95_cents": [
+      2.721421053293041,
+      9.736325169505578
+     ],
+     "avg_gross_pnl_cents": 7.494746026910855,
+     "roi_on_cost": 0.13608710456397993,
+     "roi_ci95": [
+      0.06292452776225632,
+      0.22065576282247154
+     ],
+     "total_pnl_dollars_1_contract_each": 67.55499962732195,
+     "p_roi_positive": 1.0
+    }
+   },
+   "headline": {
+    "n_bets": 5371,
+    "hit_rate": 0.5876000744740272,
+    "hit_rate_ci95": [
+     0.5696110230772867,
+     0.6047600518836992
+    ],
+    "avg_price_paid": 0.5368981569356214,
+    "avg_pnl_cents_per_contract": 3.601470845257452,
+    "avg_pnl_ci95_cents": [
+     2.0788039084347467,
+     5.046147101325756
+    ],
+    "avg_gross_pnl_cents": 5.070191753840584,
+    "roi_on_cost": 0.06707921788767285,
+    "roi_ci95": [
+     0.039231485617318713,
+     0.0942075872645987
+    ],
+    "total_pnl_dollars_1_contract_each": 193.43499909877772,
+    "p_roi_positive": 1.0
+   },
+   "slip_1c": {
+    "n_bets": 5371,
+    "hit_rate": 0.5876000744740272,
+    "hit_rate_ci95": [
+     0.5689291520237463,
+     0.6050737826340179
+    ],
+    "avg_price_paid": 0.5468981569356212,
+    "avg_pnl_cents_per_contract": 2.6073915304185005,
+    "avg_pnl_ci95_cents": [
+     1.114608579786613,
+     4.0902415002700065
+    ],
+    "avg_gross_pnl_cents": 4.070191753840584,
+    "roi_on_cost": 0.04767599775849003,
+    "roi_ci95": [
+     0.020401993812465123,
+     0.07429387299057204
+    ],
+    "total_pnl_dollars_1_contract_each": 140.04299909877767,
+    "p_roi_positive": 1.0
+   },
+   "per_group": [
+    {
+     "group": "Crypto",
+     "n_bets": 164,
+     "hit_rate": 0.7865853658536586,
+     "avg_pnl_cents": 9.94695122741708,
+     "roi": 0.14752215603975846
+    },
+    {
+     "group": "Entertainment",
+     "n_bets": 161,
+     "hit_rate": 0.6645962732919255,
+     "avg_pnl_cents": 5.346583925530036,
+     "roi": 0.08916511426157434
+    },
+    {
+     "group": "Finance",
+     "n_bets": 149,
+     "hit_rate": 0.697986577181208,
+     "avg_pnl_cents": 6.995973218667426,
+     "roi": 0.11377428625535568
+    },
+    {
+     "group": "Media",
+     "n_bets": 335,
+     "hit_rate": 0.6268656716417911,
+     "avg_pnl_cents": 8.435223852618416,
+     "roi": 0.1597489959370156
+    },
+    {
+     "group": "Other",
+     "n_bets": 797,
+     "hit_rate": 0.5595984943538268,
+     "avg_pnl_cents": 0.9885821292660602,
+     "roi": 0.01850877296224098
+    },
+    {
+     "group": "Politics",
+     "n_bets": 267,
+     "hit_rate": 0.7528089887640449,
+     "avg_pnl_cents": 17.802621720781488,
+     "roi": 0.31758535439791263
+    },
+    {
+     "group": "Sports",
+     "n_bets": 3455,
+     "hit_rate": 0.559479015918958,
+     "avg_pnl_cents": 2.0564109777472637,
+     "roi": 0.03924079954763939
+    }
+   ]
+  }
+ }
+}

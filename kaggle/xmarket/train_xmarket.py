@@ -12,10 +12,14 @@ Set XM_SMOKE=1 to run the whole thing on a small synthetic dataset (no download)
 import glob, io, json, math, os, re, shutil, subprocess, sys, tarfile, time, urllib.request
 T0 = time.time()
 SMOKE = os.environ.get("XM_SMOKE") == "1"
+LOCAL = os.environ.get("XM_LOCAL") == "1"   # run on the Mac (Kaggle egress to the data hosts was blocked)
+MOD = int(os.environ.get("XM_MOD", "1"))     # keep markets with hash(ticker) % MOD == 0
 URL = "https://s3.jbecker.dev/data.tar.zst"
-OUT = "/tmp/xm_smoke_out" if SMOKE else "/kaggle/working/xmarket_out"
+OUT = "/tmp/xm_smoke_out" if SMOKE else ("/tmp/xm_local_out" if LOCAL else "/kaggle/working/xmarket_out")
 os.makedirs(OUT, exist_ok=True)
-if not SMOKE:
+if LOCAL:
+    os.environ.update({"WANDB_MODE": "offline", "WANDB_DIR": OUT, "WANDB_SILENT": "true"})
+elif not SMOKE:
     os.environ.update({"WANDB_MODE": "offline", "WANDB_DIR": "/kaggle/working", "WANDB_SILENT": "true"})
     subprocess.run("pip install -q wandb duckdb zstandard 2>&1 | tail -2", shell=True)
 else:
@@ -46,7 +50,7 @@ RED = None
 
 def pick_dir():
     best, free = None, -1
-    for d in ["/kaggle/tmp", "/tmp"] if not SMOKE else ["/tmp"]:
+    for d in ["/tmp/xm_local"] if LOCAL else (["/kaggle/tmp", "/tmp"] if not SMOKE else ["/tmp"]):
         try:
             os.makedirs(d, exist_ok=True)
             f = shutil.disk_usage(d).free
@@ -64,19 +68,21 @@ def extract():
     RED = f"{base}/kalshi_red"
     shutil.rmtree(RED, ignore_errors=True)
     os.makedirs(RED)
-    arc = f"{base}/data.tar.zst"
-    use_file = free > 45e9
-    if use_file:
-        for attempt in range(8):
-            rc = subprocess.run(f"curl -L -sS -C - --retry 10 --retry-all-errors --retry-delay 5 -o {arc} {URL}", shell=True).returncode
-            if rc == 0:
-                break
-            log("curl rc", rc, "retrying")
-        log(f"downloaded {os.path.getsize(arc) / 1e9:.1f} GB")
-        src_cmd = ["zstd", "-dc", "-T0", arc]
-    else:
-        log("not enough disk for the archive; streaming through a pipe")
-        src_cmd = ["bash", "-c", f"curl -L -sS --retry 10 --retry-all-errors {URL} | zstd -dc -T0"]
+    # Kaggle's resolver failed on s3.jbecker.dev in attempt 1: probe plain DNS, then pinned Cloudflare IPs
+    opts = None
+    for cand in ["", "--resolve s3.jbecker.dev:443:172.67.73.34", "--resolve s3.jbecker.dev:443:104.26.10.33",
+                 "--resolve s3.jbecker.dev:443:104.26.11.33"]:
+        r = subprocess.run(f"curl -sSI -m 25 {cand} {URL} | head -3", shell=True, capture_output=True, text=True)
+        log("probe", repr(cand), "->", (r.stdout + r.stderr).strip().replace("\n", " | ")[:200])
+        if "200" in r.stdout:
+            opts = cand
+            break
+    if opts is None:
+        raise SystemExit("cannot reach s3.jbecker.dev from this kernel (DNS and pinned-IP probes failed)")
+    # stream straight through a pipe (download overlaps extraction); disk is not needed for the archive
+    src_cmd = ["bash", "-c", f"curl -L -sS {opts} --retry 10 --retry-all-errors {URL} | zstd -dc -T0"]
+    use_file = False
+    arc = None
     if not shutil.which("zstd"):
         sh("apt-get install -y -q zstd 2>&1 | tail -1")
     if not shutil.which("zstd"):
@@ -127,11 +133,66 @@ def extract():
                 f"{n_trade_rows / 1e6:.1f}M trades kept")
     flush()
     proc.wait()
-    if use_file:
-        os.remove(arc)
     log(f"extraction done: {sizes}, {n_trade_rows} trades")
     assert mk_parts and n_trade_rows > 0, "no kalshi data found in archive"
     return pd.concat(mk_parts, ignore_index=True), n_trade_rows
+
+
+HF = "https://huggingface.co/datasets/TrevorJS/kalshi-trades/resolve/main"
+HF_FILES = [f"markets-{i:04d}.parquet" for i in range(4)] + [f"trades-{i:04d}.parquet" for i in range(16)]
+
+
+def extract_hf():
+    """s3.jbecker.dev is unreachable from Kaggle kernels (egress block). Fallback: TrevorJS/kalshi-trades on Hugging Face
+    (CC-BY-4.0, built on Andrew Becker's Kalshi dump, 154.5M trades / 17.5M markets, Jun 2021 - Jan 2026)."""
+    global RED
+    from concurrent.futures import ThreadPoolExecutor
+    base, free = pick_dir()
+    RED = f"{base}/kalshi_red"
+    shutil.rmtree(RED, ignore_errors=True)
+    os.makedirs(RED)
+    dl = f"{base}/hf"
+    os.makedirs(dl, exist_ok=True)
+    r = subprocess.run(f"curl -sSI -m 30 {HF}/markets-0000.parquet | head -1", shell=True, capture_output=True, text=True)
+    log("HF probe:", (r.stdout + r.stderr).strip())
+    if not any(k in r.stdout for k in ("200", "302", "307")):
+        raise SystemExit("huggingface unreachable too")
+    def get(f):
+        try:
+            pq.ParquetFile(f"{dl}/{f}")
+            return f
+        except Exception:
+            pass
+        for a in range(5):
+            if subprocess.run(f"curl -L -sS --retry 5 --retry-all-errors -o {dl}/{f} {HF}/{f}", shell=True).returncode == 0:
+                return f
+        raise RuntimeError("download failed " + f)
+    with ThreadPoolExecutor(6) as ex:
+        for f in ex.map(get, HF_FILES):
+            log("downloaded", f, f"{os.path.getsize(dl + '/' + f) / 1e6:.0f} MB")
+    MK = ["ticker", "event_ticker", "market_type", "status", "last_price", "volume", "open_interest", "result", "created_time", "open_time", "close_time"]
+    mk_parts = []
+    for f in HF_FILES[:4]:
+        t = pq.read_table(f"{dl}/{f}", columns=MK)
+        t = t.filter(pc.is_in(t["result"], value_set=pa.array(["yes", "no"])))
+        t = t.filter(pc.invert(pc.starts_with(t["ticker"], "KXMVE")))
+        d_ = t.to_pandas()
+        if MOD > 1:
+            d_ = d_[pd.util.hash_pandas_object(d_["ticker"], index=False).values % MOD == 0]
+        mk_parts.append(d_)
+        log("markets", f, len(mk_parts[-1]))
+    n_rows = 0
+    for i, f in enumerate(HF_FILES[4:]):
+        t = pq.read_table(f"{dl}/{f}", columns=["ticker", "count", "yes_price", "taker_side", "created_time"])
+        t = t.filter(pc.invert(pc.starts_with(t["ticker"], "KXMVE")))
+        ts = pc.divide(pc.cast(pc.cast(t["created_time"], pa.timestamp("us", tz="UTC")), pa.int64()), 1_000_000)
+        r = pa.table({"ticker": t["ticker"], "ts": ts, "price": pc.cast(t["yes_price"], pa.int16()),
+                      "cnt": pc.cast(t["count"], pa.int32()), "tyes": pc.cast(pc.equal(t["taker_side"], "yes"), pa.int8())})
+        pq.write_table(r, f"{RED}/p{i:05d}.parquet", compression="zstd")
+        n_rows += r.num_rows
+        os.remove(f"{dl}/{f}")
+        log("trades", f, r.num_rows)
+    return pd.concat(mk_parts, ignore_index=True), n_rows
 
 
 def synth():
@@ -170,14 +231,14 @@ def synth():
     return pd.DataFrame(rows), len(tr)
 
 
-mk_raw, n_trades_kept = synth() if SMOKE else extract()
+mk_raw, n_trades_kept = synth() if SMOKE else extract_hf()
 log("raw market rows:", len(mk_raw))
 
 # ---------------------------------------------------------------- 2. settled binary markets + categories
 mk = mk_raw.copy()
-for c in ["created_time", "open_time", "close_time", "_fetched_at"]:
+for c in ["created_time", "open_time", "close_time"]:
     mk[c] = pd.to_datetime(mk[c], utc=True, errors="coerce")
-mk = mk.sort_values("_fetched_at").drop_duplicates("ticker", keep="last")
+mk = mk.drop_duplicates("ticker", keep="last")
 n_all = len(mk)
 mk = mk[mk["result"].isin(["yes", "no"])]
 n_settled = len(mk)
@@ -213,7 +274,7 @@ log("groups:", mk["group"].value_counts().head(15).to_dict())
 
 # ---------------------------------------------------------------- price features from trades BEFORE each cutoff
 con = duckdb.connect()
-con.execute(f"PRAGMA memory_limit='{'4GB' if SMOKE else '22GB'}'; PRAGMA temp_directory='{RED}/_tmp';")
+con.execute(f"PRAGMA memory_limit='{'4GB' if (SMOKE or LOCAL) else '22GB'}'; PRAGMA temp_directory='{RED}/_tmp';")
 con.register("mk", mk[["ticker", "close_ts", "open_ts"]].assign(open_ts=lambda d: d["open_ts"].astype("float64")))
 aggs = []
 for tag, S in H:
@@ -247,7 +308,7 @@ for c in w.columns:
         w[c] = w[c].astype("float32")
 
 # compact reusable table (wide) as a kernel output
-keep_cols = ["ticker", "event_ticker", "series", "group", "cat", "title", "created_time", "open_time", "close_time", "volume",
+keep_cols = ["ticker", "event_ticker", "series", "group", "cat", "created_time", "open_time", "close_time", "volume",
              "open_interest", "result", "y", "first_ts", "last_trade_ts_all", "n_trades_all"] + [c for c in w.columns if re.search(r"_(24h|6h|1h)$", c)]
 w[keep_cols].to_parquet(f"{OUT}/kalshi_settled_markets.parquet", compression="zstd", index=False)
 log(f"saved settled table {os.path.getsize(OUT + '/kalshi_settled_markets.parquet') / 1e6:.0f} MB, {len(w)} rows")
@@ -300,16 +361,15 @@ for c in L.select_dtypes("float64").columns:
     L[c] = L[c].astype("float32")
 log("long table:", L.shape)
 
-# event-level time split with embargo
-ev_close = L.groupby("event")["close_ts"].max()
-t_test = np.quantile(w["event_ticker"].map(ev_close).dropna().values, 0.80)
-L["ev_close"] = L["event"].map(ev_close)
+# time split on MARKET close time (older -> train, newest ~20% -> test) with a 2-day embargo, and every event that has any
+# market on the newer side is removed from the older side (no same-event leakage)
+t_test = np.quantile(w["close_ts"].values, 0.80)
 EMB = 2 * 86400
-test = L[L["ev_close"] >= t_test]
-trainall = L[L["ev_close"] < t_test - EMB]
-t_val = np.quantile(trainall["ev_close"].values, 0.85)
-val = trainall[trainall["ev_close"] >= t_val]
-fit = trainall[trainall["ev_close"] < t_val - EMB]
+test = L[L["close_ts"] >= t_test]
+older = L[(L["close_ts"] < t_test - EMB) & ~L["event"].isin(set(test["event"]))]
+t_val = np.quantile(older["close_ts"].values, 0.85)
+val = older[older["close_ts"] >= t_val]
+fit = older[(older["close_ts"] < t_val - EMB) & ~older["event"].isin(set(val["event"]))]
 ts_fmt = lambda t: pd.to_datetime(int(t), unit="s").strftime("%Y-%m-%d")
 SPLIT = {"fit_rows": len(fit), "val_rows": len(val), "test_rows": len(test),
          "fit_markets": int(fit.ticker.nunique()), "val_markets": int(val.ticker.nunique()), "test_markets": int(test.ticker.nunique()),
@@ -341,7 +401,7 @@ def sub(df, n):
     return df if len(df) <= n else df.sample(n, random_state=0)
 
 # global Platt (logit-linear) and isotonic
-sf = sub(fit, 3_000_000)
+sf = sub(fit, 1_500_000)
 lr = LogisticRegression(C=1e6, max_iter=300).fit(sf[["logit_p"]].values, sf["y"].values)
 put("platt_global", lr.predict_proba(val[["logit_p"]].values)[:, 1], lr.predict_proba(test[["logit_p"]].values)[:, 1])
 iso = IsotonicRegression(y_min=0.001, y_max=0.999, out_of_bounds="clip").fit(sf["price"].values, sf["y"].values)
@@ -387,7 +447,7 @@ def lrX(df):
         X["g_" + g] = G[g].values
         X["lp_" + g] = G[g].values * df["logit_p"].values
     return X
-sf2 = sub(fit, 2_000_000)
+sf2 = sub(fit, 1_000_000)
 Xf = lrX(sf2)
 mu, sd = Xf.mean(), Xf.std().replace(0, 1)
 lrm = LogisticRegression(C=1.0, max_iter=400).fit(((Xf - mu) / sd).values, sf2["y"].values)
@@ -399,16 +459,18 @@ XF = ["price", "logit_p", "h", "vwap24", "vwap_all", "mom6", "mom24", "price_vs_
       "yes_share24", "hrs_since_last", "lifetime_h", "close_hour", "close_dow", "mom6_missing", "group_c", "cat_c", "series_c"]
 def dm(df):
     return xgb.DMatrix(df[XF], label=df["y"].values, base_margin=lg(df["price"].values), enable_categorical=True)
-dfit = sub(fit, 25_000_000)
+HAVE_GPU = "GPU" in sh("nvidia-smi -L 2>&1")
+log("have gpu:", HAVE_GPU)
+dfit = sub(fit, 25_000_000 if HAVE_GPU else 3_000_000)
 dtr, dva, dte = dm(dfit), dm(val), dm(test)
-base = dict(objective="binary:logistic", eval_metric="logloss", eta=0.05, max_depth=6, min_child_weight=50, subsample=0.8,
+base = dict(objective="binary:logistic", eval_metric="logloss", eta=0.05 if HAVE_GPU else 0.15, max_depth=6, min_child_weight=50, subsample=0.8,
             colsample_bytree=0.8, reg_lambda=5.0, tree_method="hist", max_cat_to_onehot=8, max_bin=256)
 def train_xgb(dev):
     p = dict(base, device=dev)
-    return xgb.train(p, dtr, num_boost_round=300 if SMOKE else 3000, evals=[(dtr, "fit"), (dva, "val")],
+    return xgb.train(p, dtr, num_boost_round=300 if SMOKE else (3000 if HAVE_GPU else 500), evals=[(dtr, "fit"), (dva, "val")],
                      early_stopping_rounds=100, verbose_eval=100)
 try:
-    bst = train_xgb("cuda")
+    bst = train_xgb("cuda" if HAVE_GPU else "cpu")
 except Exception as e:
     log("cuda failed, falling back to cpu:", repr(e)[:200])
     bst = train_xgb("cpu")
@@ -617,7 +679,7 @@ try:
     run.finish()
 except Exception as e:
     log("wandb offline logging failed:", repr(e)[:300])
-if not SMOKE:
+if not SMOKE and not LOCAL:
     for d in glob.glob("/kaggle/working/wandb/offline-run-*"):
         log("offline run dir:", d)
 shutil.rmtree(RED, ignore_errors=True)
