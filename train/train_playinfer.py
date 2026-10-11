@@ -12,6 +12,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+try:
+    import wandb  # runs are logged OFFLINE on the GPU box, then synced from the Mac (no API key on the box)
+except ImportError:
+    wandb = None
+WANDB = dict(project="kalshi-knows", mode="offline")
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, log_loss
 from sklearn.preprocessing import StandardScaler
@@ -114,6 +119,8 @@ def train_mlp(Xtr, ytr, Xva, yva, scaler):
                         nn.Linear(256, 128), nn.ReLU(), nn.Linear(128, len(CLASSES))).to(dev)
     opt = torch.optim.AdamW(net.parameters(), lr=2e-3, weight_decay=1e-4)
     best, best_state = 1e9, None
+    run = wandb.init(**WANDB, group="mlp", job_type="train", name="mlp-256x256x128",
+                     config={"layers": [256, 256, 128], "lr": 2e-3, "epochs": 40, "batch": 2048}, reinit=True) if wandb else None
     for epoch in range(40):
         net.train()
         perm = torch.randperm(len(xt), device=dev)
@@ -125,10 +132,15 @@ def train_mlp(Xtr, ytr, Xva, yva, scaler):
         with torch.no_grad():
             pv = torch.softmax(net(xv), 1).cpu().numpy()
         ll = log_loss(yva, np.clip(pv, 1e-6, 1), labels=list(range(len(CLASSES))))
+        if run:
+            run.log({"epoch": epoch, "val/logloss": ll, "train/last_batch_loss": float(loss)})
         if ll < best:
             best, best_state = ll, {k: v.detach().cpu().clone() for k, v in net.state_dict().items()}
     net.load_state_dict(best_state)
     net.eval()
+    if run:
+        run.summary["best_val_logloss"] = best
+        run.finish()
 
     def predict(X):
         with torch.no_grad():
@@ -172,8 +184,17 @@ def main():
                   "min_child_weight": float(10 ** rng.uniform(0, 1.5)), "lambda": float(10 ** rng.uniform(-1, 1)),
                   "eval_metric": "mlogloss"}
         dtr, dva = xgb.DMatrix(Xtr, ytr), xgb.DMatrix(Xva, yva)
-        bst = xgb.train(params, dtr, 2000, evals=[(dva, "val")], early_stopping_rounds=50, verbose_eval=False)
+        er = {}
+        bst = xgb.train(params, dtr, 2000, evals=[(dva, "val")], early_stopping_rounds=50, verbose_eval=False,
+                        evals_result=er)
         ll = bst.best_score
+        if wandb:
+            run = wandb.init(**WANDB, group="xgb-sweep", job_type="sweep", name=f"xgb-trial-{t:02d}",
+                             config={**params, "train_rows": len(Xtr), "seasons": f"{args.start}-2023"}, reinit=True)
+            for i, v in enumerate(er["val"]["mlogloss"]):
+                run.log({"val/mlogloss": v, "boosting_round": i})
+            run.summary.update({"best_val_mlogloss": ll, "best_iteration": bst.best_iteration})
+            run.finish()
         print(f"trial {t} depth={params['max_depth']} lr={params['learning_rate']:.3f} val_logloss={ll:.4f} iters={bst.best_iteration}")
         if ll < best[0]:
             best = (ll, params, bst)
@@ -186,6 +207,18 @@ def main():
     print(json.dumps(results, indent=1))
 
     winner = "xgboost_gpu" if best[0] <= mlp_val else "mlp_gpu"
+    if wandb:
+        run = wandb.init(**WANDB, group="comparison", job_type="eval", name="sim-test-2025-26", reinit=True,
+                         config={"test_seasons": "2025-2026", "train_rows": int(len(tr)), "min_delta": MIN_DELTA})
+        tbl = wandb.Table(columns=["model", "accuracy", "top2", "log_loss", "n"],
+                          data=[[r["model"], r["accuracy"], r["top2"], r["log_loss"], r["n"]] for r in results])
+        run.log({"sim_test": tbl,
+                 "sim_test_accuracy": wandb.plot.bar(tbl, "model", "accuracy", title="Held-out 2025-26 seasons: accuracy"),
+                 "label_distribution": wandb.Table(columns=["category", "share"],
+                                                   data=[[k, float(v)] for k, v in tr.category.value_counts(normalize=True).items()])})
+        pred = pte_xgb.argmax(1)
+        run.log({"confusion_xgb": wandb.plot.confusion_matrix(y_true=yte.tolist(), preds=pred.tolist(), class_names=CLASSES)})
+        run.finish()
     out = {"classes": CLASSES, "features": FEATURES, "min_delta": MIN_DELTA, "winner": winner,
            "xgb_params": best[1], "xgb_val_logloss": best[0], "mlp_val_logloss": mlp_val,
            "sim_test": results, "train_rows": int(len(tr)), "seconds": time.time() - t0}
@@ -196,7 +229,7 @@ def main():
     sd = {k: v.cpu().numpy().tolist() for k, v in net.state_dict().items()}
     json.dump({"state_dict": sd, "mean": scaler.mean_.tolist(), "scale": scaler.scale_.tolist()}, open(OUT / "playinfer_mlp.json", "w"))
 
-    if args.real and Path(args.real).exists():
+    if False and args.real and Path(args.real).exists():  # real-Kalshi stage now lives in eval_real.py (Mac)
         real = pd.read_parquet(args.real)
         real = real[real["delta_home"].abs() >= 0.05].copy()
         if "is_quiet" in real:
