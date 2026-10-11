@@ -498,6 +498,11 @@ def kalshi_loop():
 
 def dutchbook_loop():
     fallback = ROOT / "docs" / "data" / "dutchbook.json"
+    if fallback.exists():   # serve the last snapshot while the first live scan runs
+        try:
+            ENGINE.dutchbook, ENGINE.dutchbook_src = tiers.tag_dutchbook(json.loads(fallback.read_text())), "docs/data/dutchbook.json"
+        except ValueError:
+            pass
     while not _stop.is_set():
         res, src = None, None
         try:
