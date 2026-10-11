@@ -271,13 +271,16 @@ function renderReceipts() {
   const c = { n: list.length, correct: 0, wrong: 0, no_match: 0, swing_hit: 0, pending: 0 };
   list.forEach((a) => { c[gradeOf(a)] = (c[gradeOf(a)] || 0) + 1; });
   const t = S.tally && S.source?.kind === 'live' && S.tally.n >= c.n ? { ...c, ...S.tally } : c;
-  const parts = [`${t.n} alert${t.n === 1 ? '' : 's'}`, `<b class="g-ok">${t.correct} right</b>`, `<b class="g-bad">${t.wrong} wrong</b>`, `<b class="g-miss">${t.no_match} no matching play</b>`];
+  const parts = [`${t.n} alert${t.n === 1 ? '' : 's'}`, `<b class="g-ok">${t.correct} right</b>`, `<b class="g-bad">${t.wrong} wrong</b>`, `<b class="g-miss">${t.no_match} no TD/turnover/20+ yd play</b>`];
   if (t.swing_hit) parts.push(`${t.swing_hit} real play, not named`);
   if (t.pending) parts.push(`${t.pending} grading`);
   $('#rc-tally').innerHTML = `${S.source?.kind === 'live' ? 'Today' : 'This replay'}: ${parts.join(' · ')}`;
   const graded = t.n - (t.pending || 0), hits = t.correct + t.wrong;
+  // Lead with what a user acts on: when we NAME a play, how often is it right? Unnamed "big swing" alerts are
+  // graded too, and shown honestly (a real play behind it, or the market moved on a stop/penalty/kickoff).
   $('#rc-acc').innerHTML = graded > 0
-    ? `Running accuracy: <b>${pct(t.correct / graded)}</b> of graded alerts named a real play correctly (${t.correct} of ${graded}).${hits ? ` When we named a play and ESPN shows a real one, we were right ${t.correct} of ${hits} times.` : ''}`
+    ? `${hits ? `When we named the play: <b>${t.correct} of ${hits} right (${pct(t.correct / hits)})</b>. ` : 'No named plays graded yet. '}`
+      + `Big-swing alerts: ${t.swing_hit || 0} had a real TD, turnover or 20+ yard play behind them; ${t.no_match} moved on something we don't classify (stops, penalties, kickoffs) and count as misses.`
     : 'No graded alerts yet. Each one is graded about 90 seconds after it fires.';
   $('#rc-empty').hidden = list.length > 0;
   body.innerHTML = list.map((a) => {
