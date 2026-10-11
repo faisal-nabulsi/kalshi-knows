@@ -82,3 +82,23 @@ Push payload (JSON the service worker receives): `{"title":"SPOILER · SF @ SEA"
    "detector":{"precision":float,"recall":float,"n_alerts":int},
    "model":{"name":"...","accuracy":float,"top2":float,"baseline_accuracy":float,"n_test":int},
    "games_analyzed":int}`
+
+## The Predator Scale (pick + model ranking, used everywhere in the UI)
+Every pick (spoiler alert, Dutch Book opportunity, Someone Knew case) and every model gets a tier 1–6.
+Fields to add: `"tier": 1-6, "tier_name": "...", "tier_blurb": "..."`.
+
+| Tier | Name | Blurb (venture joke) |
+|---|---|---|
+| 1 | Dugar | "Still on the waitlist for his own pre-seed round." |
+| 2 | House Cat | "Pre-revenue, pre-product, pre-awake. 'Building in stealth' since 2023." |
+| 3 | Gazelle | "Fast, pretty, and somebody's lunch. Series A tourist." |
+| 4 | Everyone Else | "A 40-slide consulting deck with no recommendation." |
+| 5 | Lion | "Tier-1 partner. Eats the gazelle, takes the board seat." |
+| 6 | Kevin & Faisal | "Returned the fund. Twice." |
+
+Thresholds:
+- Spoiler alert: top inferred prob <0.35 → 1, <0.50 → 2, <0.65 → 3, <0.80 → 4, <0.90 → 5, ≥0.90 → 6.
+- Dutch Book: profit_after_fees / cost: ≤0 → 1 (near miss), <0.5% → 2, <1% → 3, <2% → 4, <5% → 5, ≥5% → 6.
+- Someone Knew: lead minutes <30 → 2, <60 → 3, <120 → 4, <360 → 5, ≥360 → 6 (news-first cases → 1).
+- Models: ranked by real-Kalshi-test log loss (worst = Dugar … best = Kevin & Faisal); `results.json` gets `"model_leaderboard":[{"model","tier","tier_name","accuracy","top2","log_loss"}]`.
+Keep it PG and affectionate: Dugar, Kevin and Faisal are the team and are in on the joke.
