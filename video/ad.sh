@@ -1,12 +1,12 @@
 #!/bin/zsh
-# One-command re-render of the ~69 s pitch ad -> video/kalshi-knows-ad.mp4
-# Env: VOICE=am_michael (am_adam, am_puck, ...)  SPEED=1.0  AD_HERO=a_12  SITE=...
-# Human voice: drop video/voice_override/NN.wav (NN = line id printed below) and re-run.
+# One-command re-render of the ~45 s story ad -> video/kalshi-knows-ad.mp4
+# Voice: ElevenLabs premade (ELEVEN_VOICE=Liam) if ~/.config/elevenlabs/key exists, else edge-tts (EDGE_VOICE=en-US-AndrewMultilingualNeural). ENGINE=edge|elevenlabs to force.
+# Human voice: drop video/voice_override/{hook,story,proof,more,close}.wav and re-run.
 set -e
 cd "$(dirname "$0")"; PY=../.venv/bin/python
-$PY ad_data.py
-$PY ad_audio.py
-$PY ad_frames.py
-$PY ad_tour.py
-$PY ad_compose.py
+$PY ad2_script.py >/dev/null
+$PY ad2_audio.py
+$PY ad2_frames.py
+$PY ad2_tour.py
+$PY ad2_compose.py
 ffprobe -v error -show_entries format=duration,size -of default=nw=1 kalshi-knows-ad.mp4
