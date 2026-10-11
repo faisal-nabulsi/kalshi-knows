@@ -149,8 +149,8 @@ svg .pline { fill: none; stroke: var(--ink); stroke-width: 2.25; stroke-linejoin
 svg .pline-cold { fill: none; stroke: var(--cold); stroke-width: 2; }
 svg .pline-sig { fill: none; stroke: var(--sig); stroke-width: 2.4; }
 svg .stream-line { stroke: var(--cold); stroke-width: 1.5; stroke-dasharray: 5 4; }
-svg .lbl-cold { fill: var(--cold); font: 600 11px var(--mono); letter-spacing: .1em; }
-svg .lbl-sig { fill: var(--sig); font: 600 11px var(--mono); letter-spacing: .1em; }
+svg .lbl-cold { fill: var(--cold); font: 600 11px var(--mono); letter-spacing: .1em; paint-order: stroke; stroke: #0a0a0a; stroke-width: 4px; stroke-linejoin: round; }
+svg .lbl-sig { fill: var(--sig); font: 600 11px var(--mono); letter-spacing: .1em; paint-order: stroke; stroke: #0a0a0a; stroke-width: 4px; stroke-linejoin: round; }
 svg .al-line { stroke: var(--sig); stroke-width: 1.5; }
 svg .al-chip { fill: var(--sig); }
 svg .al-txt { fill: var(--bg); font: 700 11px var(--mono); letter-spacing: .04em; }

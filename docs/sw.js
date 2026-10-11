@@ -1,6 +1,6 @@
 // Kalshi Knows service worker: app shell, network-first data, web push.
 // Bump VERSION on every deploy that changes the shell; activate() deletes older caches.
-const VERSION = 'kk-v5';
+const VERSION = 'kk-v6';
 const SHELL = ['./', './index.html', './styles.css', './js/app.js', './js/util.js', './js/data.js', './js/charts.js',
   './js/hero3d.js', './js/push.js', './js/qr.js', './js/emblems.js', './manifest.webmanifest', './icons/icon-192.png', './icons/badge-96.png',
   './icons/apple-touch-icon.png', './icons/favicon-64.png'];

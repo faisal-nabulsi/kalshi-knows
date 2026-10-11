@@ -131,10 +131,10 @@ export function caseChart(el, c) {
   const by = 14;
   if (xn - xm > 24) {
     g += `<path d="M${f1(xm)},${by + 6}V${by}H${f1(xn)}V${by + 6}" class="bracket"/>`;
-    g += `<text x="${f1((xm + xn) / 2)}" y="${by - 4}" class="lbl-sig" text-anchor="middle">${dur(c.lead_minutes)} EARLY</text>`;
+    g += `<text x="${f1(Math.min(Math.max((xm + xn) / 2, padL + 45), w - 60))}" y="${by - 4}" class="lbl-sig" text-anchor="middle">${dur(c.lead_minutes)} EARLY</text>`;
   } else if (xm - xn > 24) {
     g += `<path d="M${f1(xn)},${by + 6}V${by}H${f1(xm)}V${by + 6}" class="bracket bracket-cold"/>`;
-    g += `<text x="${f1((xm + xn) / 2)}" y="${by - 4}" class="lbl-cold" text-anchor="middle">NEWS CAME ${dur(c.lead_minutes)} FIRST</text>`;
+    g += `<text x="${f1(Math.min(Math.max((xm + xn) / 2, padL + 90), w - 100))}" y="${by - 4}" class="lbl-cold" text-anchor="middle">NEWS CAME ${dur(c.lead_minutes)} FIRST</text>`;
   }
   const mLeft = xn < xm ? xm + 97 > w - padR : xm - 92 > padL;
   const mTop = xn < xm && mLeft; // news first and no room on the right: lift it clear of FIRST ARTICLE
@@ -144,6 +144,9 @@ export function caseChart(el, c) {
     const nLeft = xn - 100 > padL;
     g += `<text x="${f1(nLeft ? xn - 5 : xn + 5)}" y="${nLeft ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nLeft ? 'end' : 'start'}">FIRST ARTICLE</text>`;
   } else g += `<text x="${f1(nRight ? xn + 5 : xn - 5)}" y="${nRight ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nRight ? 'start' : 'end'}">FIRST ARTICLE</text>`;
+  // the stored price trace can stop well before the article; say so instead of letting the line just vanish
+  const xe = X(s.at(-1)[0]);
+  if (xn - xe > 90 && s.at(-1)[0] > c.move_start_ms) g += `<text x="${f1(xe + 6)}" y="${f1(Y(s.at(-1)[1]) + (s.at(-1)[1] > 0.5 ? 16 : -8))}" class="ax">PRICE TRACE ENDS</text>`;
   g += `<text x="${padL}" y="${h - 6}" class="ax">${clock(t0, { sec: false })}</text>`;
   g += `<text x="${w - padR}" y="${h - 6}" class="ax" text-anchor="end">${clock(t1, { sec: false })}</text>`;
   el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Price moved ${dur(c.lead_minutes)} ${c.lead_minutes < 0 ? 'after' : 'before'} the first article">${g}</svg>`;
