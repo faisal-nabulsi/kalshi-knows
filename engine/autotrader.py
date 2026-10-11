@@ -206,25 +206,39 @@ def order_body(o: dict) -> dict:
             "time_in_force": "immediate_or_cancel"}
 
 
+def order_body_v2(o: dict) -> dict:
+    """Kalshi V2 create-order (POST /portfolio/events/orders; the v1 endpoint now returns 410).
+    side 'bid' = buy YES at `price`; buying NO at p is the same as selling YES ('ask') at 1 - p."""
+    if o["side"] == "yes":
+        side, price = "bid", o["limit_price"]
+    else:
+        side, price = "ask", 1 - o["limit_price"]
+    return {"ticker": o["ticker"], "client_order_id": o["client_order_id"], "side": side,
+            "count": f"{float(o['count']):.2f}", "price": f"{min(max(price, 0.01), 0.99):.4f}",
+            "time_in_force": "immediate_or_cancel", "self_trade_prevention_type": "taker_at_cross"}
+
+
 def demo_place(o: dict):
-    body = order_body(o)
-    try:
-        d = demo_signed("POST", "/portfolio/orders", body)
-    except RuntimeError as e:
-        if "400" not in str(e):
-            raise
-        body = {k: v for k, v in body.items() if not k.endswith("_price")}
-        body[f"{o['side']}_price_dollars"] = f"{o['limit_price']:.4f}"
-        d = demo_signed("POST", "/portfolio/orders", body)
-    od = d.get("order") or d
-    o["demo"] = {"order_id": od.get("order_id"), "status": od.get("status"), "fills": []}
-    o["status"] = "submitted"
+    body = order_body_v2(o)
+    d = demo_signed("POST", "/portfolio/events/orders", body)
+    n = float(d.get("fill_count") or 0)
+    avg = float(d["average_fill_price"]) if d.get("average_fill_price") else None
+    if avg is not None and o["side"] == "no":
+        avg = 1 - avg                                  # we sold YES; report the NO price we effectively paid
+    o["demo"] = {"order_id": d.get("order_id"), "status": "filled" if n >= float(o["count"]) else ("partial" if n else "unfilled"),
+                 "fill_count": n, "remaining": d.get("remaining_count"), "ts_ms": d.get("ts_ms"),
+                 "fee_paid": d.get("average_fee_paid"), "request": body, "fills": []}
+    with LOCK:
+        if n:
+            o.update(avg_price=round(avg, 4), filled=int(n), fees=round(float(d.get("average_fee_paid") or 0) * n, 4),
+                     fills=[{"price": avg, "count": int(n)}])
+        o["status"] = o["demo"]["status"]
 
 
 def demo_refresh(o: dict):
     oid = (o.get("demo") or {}).get("order_id")
-    if not oid:
-        return
+    if not oid or (o.get("demo") or {}).get("status") in ("filled", "unfilled", "partial"):
+        return                                         # V2 IOC orders are final when placed
     od = demo_signed("GET", f"/portfolio/orders/{oid}").get("order") or {}
     fl = demo_signed("GET", "/portfolio/fills", params={"order_id": oid}).get("fills") or []
     fills = []
