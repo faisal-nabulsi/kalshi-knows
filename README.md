@@ -12,6 +12,7 @@ Prediction markets know things before you do. Kalshi's price moves **~7 seconds*
 | **Training runs (W&B)** | https://wandb.ai/faisal_nabulsi-berkeley2025/kalshi-knows · consolidated results run: https://wandb.ai/faisal_nabulsi-berkeley2025/kalshi-knows/runs/g7xxxcch |
 | **Every number, with definitions + sources** | [STATS.md](STATS.md) (use section 0 for slides) |
 | **Slide plan (9 slides, 5 min) + Q&A** | [SLIDES.md](SLIDES.md) |
+| **Demo script, what's proven on Kalshi's demo exchange, pre-flight checklist** | [DEMO.md](DEMO.md) · ledger: [results/demo_ledger.json](results/demo_ledger.json) |
 | **What judges score → our evidence** | [JUDGING.md](JUDGING.md) |
 | **Training plan + model choices** | [TRAINING.md](TRAINING.md) |
 | **Market + competitor research (2 rounds, fact-checked)** | [research/BRIEF.md](research/BRIEF.md), [research/market.md](research/market.md), [research/features.md](research/features.md), [research/touts.md](research/touts.md), [research/ai-algos.md](research/ai-algos.md) |
