@@ -24,7 +24,7 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 
 **Live today (engine/logs/20261011, /api/health tally at 1:25pm):** 30 alerts; named plays 4 of 4 correct (0 wrong); 10 "big swing" alerts on a real play; 15 with no matching TD/FG/turnover/20+ yd play (stops, penalties, kickoffs); 1 pending. Best: "Steelers touchdown (80%)", 32 s before ESPN's feed; takeaways 38.6–64.8 s before.
 
-**Pre-registered untouched test on today's early games:** pending (results/today_test.json, ~1:50pm).
+**Pre-registered untouched test on today's early games (run once at 1:36pm; research/PREREG.md, results/today_test.json):** frozen model, 7 unseen games. PRIMARY live-size jumps: 65.6% vs 46.9% always-other (+18.8 pts, 95% CI −13 to +33; n=32, 6 games), named calls 2/2 correct. All jumps: 72.6% vs 61.1% (+11.5, CI −1 to +19; n=113), named calls 8/9 (89%). Same direction as offline; one morning is too small for a tight interval. Production then switched to the audited-label model.
 
 **Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
 
