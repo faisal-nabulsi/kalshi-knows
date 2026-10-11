@@ -734,8 +734,13 @@ def alerts(since_ms: int = 0, game_id: str | None = None):
 
 
 @app.get("/api/stream")
-async def stream(request: Request, full: int = 0):
+async def stream(request: Request, full: int = 0, force: int = 0):
     step = 1 if full else 4
+    if request.headers.get("cf-ray") and not force:
+        # Cloudflare quick tunnels buffer SSE in 128 KB blocks (documented limitation), so events would arrive
+        # ~15 s late. Fail fast (EventSource stops on non-200) so clients fall back to /api/ws or polling.
+        return JSONResponse({"error": "SSE is buffered by Cloudflare quick tunnels; use wss://<api>/api/ws "
+                                      "or poll /api/games + /api/alerts", "ws": "/api/ws"}, status_code=503)
 
     async def gen():
         last_seq = ENGINE.seq
@@ -850,7 +855,7 @@ def main():
     if a.replay:
         CFG.update(mode="replay", replay=a.replay, speed=a.speed, game=a.game, loop=a.loop)
     CFG["push"] = not a.no_push
-    uvicorn.run(app, host="0.0.0.0", port=a.port, log_level="warning")
+    uvicorn.run(app, host="0.0.0.0", port=a.port, log_level="warning", timeout_graceful_shutdown=3)
 
 
 if __name__ == "__main__":
