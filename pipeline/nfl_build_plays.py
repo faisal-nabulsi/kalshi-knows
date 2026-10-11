@@ -48,14 +48,15 @@ def build_game(gid):
         pc=prev_clock.get(per)
         cl=secs(pc) if pc else 900 if per<5 else 600
         gsr=(max(0,4-per)*900+cl) if per<=4 else cl
+        has=bool(pos) and (st.get('down') or 0)>=1
         sd=None
         if pos: sd=(ph-pa) if pos==home else (pa-ph)
         rows.append(dict(game_id=gid,play_id=p['id'],seq=int(p['sequenceNumber']),wallclock_ms=ms(p['wallclock']) if p.get('wallclock') else None,
             period=per,clock=clk,type_text=t,text=p['text'],category=cat,team=team,stat_yards=yds,is_scoring=bool(p['scoringPlay']),
-            qtr=per,game_seconds_remaining=gsr,score_differential=sd,posteam=pos if t in SCRIM else None,
-            posteam_is_home=(pos==home) if (pos and t in SCRIM) else None,
-            down=st.get('down') if t in SCRIM else None,ydstogo=st.get('distance') if t in SCRIM else None,
-            yardline_100=st.get('yardsToEndzone') if t in SCRIM else None,
+            qtr=per,game_seconds_remaining=gsr,score_differential=sd,posteam=pos if has else None,
+            posteam_is_home=(pos==home) if (pos and has) else None,
+            down=st.get('down') if has else None,ydstogo=st.get('distance') if has else None,
+            yardline_100=st.get('yardsToEndzone') if has else None,
             espn_wp_home=wpd.get(p['id'],(None,None))[0],espn_wp_delta=wpd.get(p['id'],(None,None))[1],home=home,away=away,home_score_pre=ph,away_score_pre=pa,home_score=hs,away_score=as_))
         if t not in ('End Period','End of Half','End of Game','End of Regulation','Two-minute warning'): prev_clock[per]=clk
         ph,pa=hs,as_
