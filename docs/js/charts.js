@@ -160,7 +160,7 @@ export function lagChart(el, res) {
     { k: 'THE PLAY', v: 0, cls: 'bone', note: 'real time' },
     { k: 'KALSHI MOVES', v: ml.median_s ?? 2.6, lo: ml.p25_s, hi: ml.p75_s, cls: 'sig', note: `median of ${ml.n_plays ?? '–'} plays` },
     { k: 'ANTENNA TV', v: 19, cls: 'cold', note: 'over the air' },
-    { k: 'OUR ALERT', v: 30, cls: 'sig', note: 'about 30 s after the play (28-33 s today)' },
+    { k: 'OUR FIRST BUZZ', v: 20, cls: 'sig', note: 'about 15-25 s after the play (two-stage alerts, measured today); the named call follows ~8 s later' },
     { k: 'CABLE TV', v: 38, cls: 'cold', note: 'cable box' },
     { k: 'PEACOCK', v: sd.best_stream ?? 48, cls: 'cold', note: 'fastest stream' },
     { k: 'NFL+', v: sd.worst_stream ?? 62, cls: 'cold', note: 'slowest stream' },
