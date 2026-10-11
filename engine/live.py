@@ -149,13 +149,21 @@ class Engine:
         g = self.games.get(gid, {})
         st = self.states.get(gid) or deque()
         snap = None
+        field = None   # latest snapshot that still knows possession/down/yardline (ESPN blanks them between plays)
         for ts, s in st:
             if ts <= t:
                 snap = s
+                if s.get("possession") and t - ts <= 180_000:
+                    field = s
+                elif s.get("possession"):
+                    field = s if t - ts <= 180_000 else field
             else:
                 break
         if snap is None:
             snap = st[0][1] if st else {k: g.get(k) for k in SNAP_KEYS}
+        if not snap.get("possession") and field is not None:
+            snap = dict(snap, possession=field.get("possession"), down=field.get("down"),
+                        ydstogo=field.get("ydstogo"), yardline_100=field.get("yardline_100"))
         pos = snap.get("possession")
         home, away = g.get("home"), g.get("away")
         hs, as_ = snap.get("home_score") or 0, snap.get("away_score") or 0
