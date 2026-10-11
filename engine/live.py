@@ -502,7 +502,17 @@ def dutchbook_loop():
         res, src = None, None
         try:
             from engine import dutchbook  # written by the dutchbook agent
+            if hasattr(dutchbook, "_get") and not getattr(dutchbook._get, "_limited", False):
+                _orig = dutchbook._get
+
+                def _limited_get(*a, **k):   # share the process-wide Kalshi rate limiter (<= 4 req/s total)
+                    kalshi.LIMITER.wait()
+                    return _orig(*a, **k)
+                _limited_get._limited = True
+                dutchbook._get = _limited_get
+            t0 = time.time()
             res = dutchbook.scan()
+            log.info("dutchbook scan: %d opportunities in %.0fs", len((res or {}).get("opportunities") or []), time.time() - t0)
             src = "live"
         except Exception as e:
             log.warning("dutchbook scan unavailable: %s", e)
