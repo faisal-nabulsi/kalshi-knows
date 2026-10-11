@@ -1,0 +1,19 @@
+[{"stream_name":"stdout","time":4.948420165,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 835.4/835.4 kB 5.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":5.020093336,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 394.3/394.3 kB 17.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":5.086878596,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 604.4/604.4 kB 19.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":5.691386878,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.9/53.9 MB 37.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":5.748986291,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 846.4/846.4 kB 43.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stderr","time":14.012727342,"data":"ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n"}
+,{"stream_name":"stderr","time":14.012755974,"data":"bigframes 2.48.0 requires google-cloud-bigquery-storage\u003c3.0.0,\u003e=2.30.0, which is not installed.\n"}
+,{"stream_name":"stdout","time":21.566509133,"data":"data dir /kaggle/input/datasets/faisalnabulsi/kk-grpo-data torch 2.11.0+cu128 cuda True\n"}
+,{"stream_name":"stderr","time":39.104999375,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":40.156255264,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stderr","time":48.084816137,"data":"\rLoading weights:   0%|          | 0/290 [00:00\u003c?, ?it/s]\rLoading weights:   0%|          | 1/290 [00:00\u003c01:34,  3.05it/s]\rLoading weights:  88%|████████▊ | 256/290 [00:00\u003c00:00, 751.13it/s]\rLoading weights: 100%|██████████| 290/290 [00:00\u003c00:00, 632.27it/s]\n"}
+,{"stream_name":"stdout","time":97.048978155,"data":"FINAL_JSON {\"grpo\": {\"full_2026\": {\"n\": 2634, \"bets\": 198, \"invalid\": 0, \"pnl_total\": -9.08, \"pnl_per_bet\": -0.0459, \"win_rate\": 0.6414, \"mix\": {\"PASS\": 2436, \"BUY_HOME\": 194, \"BUY_AWAY\": 4}, \"pnl_per_bet_ci95\": [-0.2539, 0.0892]}, \"betbench150\": {\"n\": 150, \"bets\": 16, \"invalid\": 0, \"pnl_total\": -1.63, \"pnl_per_bet\": -0.1019, \"win_rate\": 0.5, \"mix\": {\"PASS\": 134, \"BUY_HOME\": 15, \"BUY_AWAY\": 1}, \"pnl_per_bet_ci95\": [-0.4254, 0.2]}}}\n"}
+,{"stream_name":"stderr","time":102.21123347,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":102.211257057,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":102.405281054,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":102.405302902,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":103.12608048,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":103.993425491,"data":"[NbConvertApp] Writing 300613 bytes to __results__.html\n"}
+]

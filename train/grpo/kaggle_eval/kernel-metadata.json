@@ -1,0 +1,1 @@
+{"id": "faisalnabulsi/kk-grpo-eval", "title": "kk-grpo-eval", "code_file": "kk_grpo_eval.py", "language": "python", "kernel_type": "script", "is_private": true, "enable_gpu": true, "enable_internet": true, "dataset_sources": ["faisalnabulsi/kk-grpo-data", "faisalnabulsi/kk-grpo-lora"], "competition_sources": [], "kernel_sources": []}
