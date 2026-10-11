@@ -1,0 +1,164 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#0a0a0b;--bg2:#111113;--bg3:#18181b;--line:#34343a;--ink:#ede8df;--ink2:#a9a49b;--ink3:#6f6b64;--sig:#ff4d1a;--cold:#7f93a6;--disp:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;--mono:'IBM Plex Mono',Menlo,monospace;--body:'Archivo',Arial,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;background:#000}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--body)}
+.sc{position:absolute;inset:0;display:none}
+.disp{font-family:var(--disp);font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.005em}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.abs{position:absolute}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50}
+.grain{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);pointer-events:none;z-index:40}
+.sig{color:var(--sig)}.cold{color:var(--cold)}
+</style></head><body><div id="stage">
+<div class="sc" id="cold"></div><div class="sc" id="money"></div><div class="sc" id="how"></div><div class="sc" id="close"></div>
+<div class="flash" id="flash"></div><div class="grain"></div></div>
+<script>
+const D=window.DATA, $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), lerp=(a,b,t)=>a+(b-a)*t;
+const eo=t=>1-Math.pow(1-cl(t),3), eio=t=>{t=cl(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+const back=t=>{t=cl(t);const c=1.7;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const hsh=n=>{const x=Math.sin(n*127.1)*43758.5453;return x-Math.floor(x)};
+const f1=x=>x.toFixed(1), TEAM={NYG:'Giants',WSH:'Commanders',WAS:'Commanders'};
+let flash=0;
+// ---------------- COLD OPEN (17.5 s)
+function cold(t){
+  const L=D.ladder, rows=[['KALSHI MOVES',D.market_median,1],...L.map(([n,v])=>[n+(n==='ANTENNA'?' TV':''),v,0])];
+  const p=eio((t-2.6)/0.8), sh=t<0.6?(1-t/0.6)*14:0, slam=t<0.3?lerp(1.5,1,eo(t/0.3)):1;
+  let x=lerp(110,70,p), y=lerp(120,36,p), s=lerp(1,0.3,p)*slam;
+  let h=`<div class="abs disp" style="left:${x+Math.sin(t*90)*sh}px;top:${y+Math.cos(t*77)*sh}px;transform-origin:0 0;transform:scale(${s});font-size:290px;opacity:${t<0.04?0:1}">YOUR STREAM<br>IS LYING<br><span class="cold">TO YOU.</span></div>`;
+  if(p>0.2) h+=`<div class="abs mono" style="left:76px;top:316px;font-size:22px;letter-spacing:.18em;color:var(--ink2);opacity:${p}">SUPER BOWL LX · SECONDS BEHIND LIVE, BY HOW YOU WATCH · STATS PERFORM LATENCY STUDY</div>`;
+  const c=cl((t-3.2)/9.6)*Math.max(...rows.map(r=>r[1]))*1.06, X0=380, W=1260, mx=66, top=380, rh=76;
+  if(p>0.3){
+    for(let g=0;g<=60;g+=10) h+=`<div class="abs" style="left:${X0+W*g/mx}px;top:${top-10}px;width:2px;height:${rh*rows.length+20}px;background:#232327"></div><div class="abs mono" style="left:${X0+W*g/mx-18}px;top:${top+rh*rows.length+14}px;font-size:20px;color:var(--ink3)">${g}s</div>`;
+    h+=`<div class="abs mono" style="left:${X0-2}px;top:${top-30}px;height:${rh*rows.length+40}px;width:4px;background:var(--ink)"></div>`;
+    rows.forEach(([n,v,k],i)=>{const done=c>=v, w=W*Math.min(c,v)/mx, col=k?'var(--sig)':'var(--cold2,#44505c)';
+      const pop=done?1+0.35*Math.max(0,1-(c-v)/2):1, hot=t>13.8&&k, dim=t>13.8&&!k?0.45:1;
+      h+=`<div class="abs mono" style="left:70px;top:${top+i*rh+18}px;width:290px;font-size:25px;letter-spacing:.1em;color:${k?'var(--sig)':'var(--ink2)'};opacity:${p*dim}">${n}</div>`;
+      h+=`<div class="abs" style="left:${X0}px;top:${top+i*rh+10}px;height:44px;width:${w}px;background:${k?'var(--sig)':'#4a5663'};opacity:${dim};${hot?'box-shadow:0 0 40px rgba(255,77,26,.7)':''}"></div>`;
+      if(done) h+=`<div class="abs disp" style="left:${X0+w+18}px;top:${top+i*rh-4}px;font-size:${k?74:62}px;line-height:1;transform-origin:0 50%;transform:scale(${pop});color:${k?'var(--sig)':'var(--cold)'};opacity:${dim}">${k?f1(v):v} s</div>`;});
+    h+=`<div class="abs mono" style="right:90px;top:36px;text-align:right;font-size:26px;color:var(--ink2);letter-spacing:.14em;opacity:${t>3?1:0}">SECONDS AFTER THE PLAY<div class="disp" style="font-size:150px;color:var(--ink);line-height:1;letter-spacing:0">${t<3.2?'0':Math.round(Math.min(c,66))}</div></div>`;
+  }
+  $('cold').innerHTML=h; if(t<0.14) flash=1-t/0.14;
+}
+// ---------------- MONEY SHOT (38 s)
+const K=0.3, T0=2.0;
+function money(t){
+  const H=D.hero, S=D.state, r=Math.max(0,(t-T0)/K), tA=T0+K*H.alert_lag_s, tE=T0+K*H.espn_after_s, tP=T0+K*H.price_start_s;
+  let h=`<div class="abs" style="left:960px;top:0;width:2px;height:1080px;background:var(--line)"></div>`;
+  h+=`<div class="abs mono" style="left:0;width:1920px;top:22px;text-align:center;font-size:26px;letter-spacing:.14em;color:var(--ink2)">SECONDS SINCE THE REAL PLAY <span style="color:var(--ink);font-size:44px;vertical-align:-4px">+${f1(Math.min(r,H.espn_after_s))}</span> <span style="font-size:18px;color:var(--ink3)">(TIME COMPRESSED 3.3×)</span></div>`;
+  // left: label + chart
+  h+=`<div class="abs mono" style="left:70px;top:90px;font-size:22px;letter-spacing:.16em;color:var(--sig)">YOUR PHONE · KALSHI KNOWS</div>`;
+  const cw=820,ch=230,cx=70,cy=135, ser=D.series, lo=Math.min(...ser.map(a=>a[1]))-.03, hi=Math.max(...ser.map(a=>a[1]))+.03, rmin=-40, rmax=100;
+  const px=rr=>cx+(rr-rmin)/(rmax-rmin)*cw, py=p=>cy+ch-(p-lo)/(hi-lo)*ch;
+  let path='', last=null; ser.forEach(([rr,p])=>{ if(rr<=r){path+=(path?'L':'M')+px(rr).toFixed(1)+' '+py(p).toFixed(1);last=[rr,p];}});
+  h+=`<svg class="abs" style="left:0;top:0" width="960" height="420"><rect x="${cx}" y="${cy}" width="${cw}" height="${ch}" fill="#111113" stroke="#2e2e33"/>`;
+  [0.6,0.7,0.8].forEach(g=>{if(g>lo&&g<hi)h+=`<line x1="${cx}" x2="${cx+cw}" y1="${py(g)}" y2="${py(g)}" stroke="#232327"/><text x="${cx+6}" y="${py(g)-5}" fill="#6f6b64" font-size="15" font-family="IBM Plex Mono">${Math.round(g*100)}¢</text>`});
+  h+=`<line x1="${px(0)}" x2="${px(0)}" y1="${cy}" y2="${cy+ch}" stroke="#ede8df" stroke-dasharray="4 4"/><text x="${px(0)+6}" y="${cy+ch-10}" fill="#ede8df" font-size="16" font-family="IBM Plex Mono">THE PLAY</text>`;
+  if(r>=H.alert_lag_s)h+=`<line x1="${px(H.alert_lag_s)}" x2="${px(H.alert_lag_s)}" y1="${cy}" y2="${cy+ch}" stroke="#ff4d1a" stroke-dasharray="4 4"/><text x="${px(H.alert_lag_s)+6}" y="${cy+ch-10}" fill="#ff4d1a" font-size="16" font-family="IBM Plex Mono">PUSH SENT</text>`;
+  if(path)h+=`<path d="${path}" fill="none" stroke="#ff4d1a" stroke-width="4" stroke-linejoin="round"/>`;
+  if(last)h+=`<circle cx="${px(last[0])}" cy="${py(last[1])}" r="8" fill="#ff4d1a"/>`;
+  h+=`</svg>`;
+  h+=`<div class="abs mono" style="left:${cx+8}px;top:${cy+6}px;font-size:16px;letter-spacing:.1em;color:var(--ink2)">KALSHI PRICE · ${H.team} TO WIN</div>`;
+  if(last)h+=`<div class="abs disp" style="left:${cx+cw-190}px;top:${cy+10}px;width:180px;text-align:right;font-size:70px;color:${t>=tP?'var(--sig)':'var(--ink)'};line-height:1">${Math.round(last[1]*100)}¢</div>`;
+  if(t>=tP&&t<tP+2.2)h+=`<div class="abs mono" style="left:${cx+cw/2-100}px;top:${cy-30}px;font-size:20px;color:var(--sig);letter-spacing:.14em;opacity:${1-(t-tP)/2.2*0.4}">▲ PRICE LINE SPIKES</div>`;
+  // phone
+  const sinceA=t-tA, shake=(sinceA>0&&sinceA<0.8)?Math.sin(sinceA*70)*14*(1-sinceA/0.8):0;
+  const pw=440, phh=900, pxl=260+shake, pyt=420;
+  const nIn=sinceA<0?0:back(sinceA/0.45), ny=lerp(-190,0,cl(nIn,0,1.15));
+  h+=`<div class="abs" style="left:${pxl}px;top:${pyt}px;width:${pw}px;height:${phh}px;border-radius:78px;background:#0c0c0e;border:12px solid #2a2a30;box-shadow:0 0 0 2px #444,0 30px 90px rgba(0,0,0,.8),0 0 ${sinceA>0&&sinceA<1.5?60:0}px rgba(255,77,26,.45);overflow:hidden">
+   <div class="abs" style="inset:0;background:radial-gradient(120% 60% at 30% 0%,#2a1a14 0,#0c0c0e 60%),#0c0c0e"></div>
+   <div class="abs" style="left:50%;top:14px;margin-left:-62px;width:124px;height:34px;border-radius:20px;background:#000"></div>
+   <div class="abs" style="left:0;right:0;top:84px;text-align:center;font:600 26px var(--body);color:#ede8df;opacity:.85">${H.date}</div>
+   <div class="abs" style="left:0;right:0;top:112px;text-align:center;font:600 148px/1 var(--body);color:#ede8df;letter-spacing:-.03em">${H.time}</div>
+   <div class="abs" style="left:18px;right:18px;top:${330+ny}px;opacity:${cl(nIn*3)};border-radius:30px;background:rgba(40,40,46,.92);padding:20px 22px;border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 40px rgba(0,0,0,.6)">
+     <div style="display:flex;align-items:center;gap:12px"><img src="../docs/icons/icon-192.png" style="width:44px;height:44px;border-radius:11px"><div style="font:600 21px var(--body);color:#ede8df;flex:1">SPOILER · ${H.short}</div><div style="font:500 18px var(--body);color:#a9a49b">now</div></div>
+     <div style="font:500 26px/1.25 var(--body);color:#ede8df;margin-top:12px">${H.headline}</div></div>
+   <div class="abs" style="left:150px;right:150px;bottom:14px;height:8px;border-radius:5px;background:#ede8df;opacity:.6"></div></div>`;
+  if(sinceA>0&&sinceA<1.1) for(let i=0;i<3;i++){const q=cl((sinceA-i*0.18)/0.7); if(q>0&&q<1)h+=`<div class="abs" style="left:${pxl-20-q*50}px;top:${pyt+300-q*50}px;width:${pw+40+q*100}px;height:${400+q*100}px;border:3px solid rgba(255,77,26,${0.7*(1-q)});border-radius:90px"></div>`;}
+  // right: stream
+  const rx=1010; const rev=t>=tE, sinceE=t-tE;
+  h+=`<div class="abs mono" style="left:${rx}px;top:90px;font-size:22px;letter-spacing:.16em;color:var(--cold)">YOUR STREAM</div>`;
+  const aS=S.away_score??0, hS=S.home_score??0, sit=S.situation||'';
+  const bug=(rv)=>`<div class="abs" style="left:${rx}px;top:136px;width:850px;height:84px;display:flex;font-family:var(--disp);font-weight:800;text-transform:uppercase;background:#15151a;border:2px solid #34343a">
+     <div style="width:210px;padding:12px 20px;font-size:50px;line-height:1.05;border-right:2px solid #34343a">${H.away} <b style="color:${rv?'#ede8df':'#ede8df'}">${aS}</b></div>
+     <div style="width:210px;padding:12px 20px;font-size:50px;line-height:1.05;border-right:2px solid #34343a">${H.home} <b>${hS}</b></div>
+     <div style="flex:1;padding:12px 18px;background:#ff4d1a;color:#0a0a0b;font-size:34px;line-height:1.5;letter-spacing:.04em">${H.period==2?'2ND':H.period+'TH'} ${H.clock}</div>
+     <div style="width:170px;padding:22px 14px;font:500 22px var(--mono);color:#a9a49b;text-align:center">${rv?'1ST &amp; 10':'2ND &amp; 8'}</div></div>`;
+  h+=bug(rev);
+  // field
+  const fx=rx, fy=250, fw=850, fh=300, bx=fx+fw*(rev?0.25:0.47);
+  h+=`<div class="abs" style="left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;background:linear-gradient(#17301f,#122618);border:2px solid #34343a;overflow:hidden">`;
+  for(let i=0;i<=10;i++)h+=`<div class="abs" style="left:${fw*(0.08+0.084*i)}px;top:0;width:2px;height:${fh}px;background:rgba(237,232,223,${i==5?.55:.22})"></div>`;
+  h+=`<div class="abs disp" style="left:0;top:0;width:${fw*0.08}px;height:${fh}px;background:#27384a;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:40px;line-height:${fw*0.08}px;color:#a9a49b">${H.away}</div>
+      <div class="abs disp" style="right:0;top:0;width:${fw*0.08}px;height:${fh}px;background:#4a2630;writing-mode:vertical-rl;text-align:center;font-size:40px;line-height:${fw*0.08}px;color:#a9a49b">${H.home}</div>
+      <div class="abs" style="left:${bx-fx-4}px;top:0;width:8px;height:${fh}px;background:#4aa3ff;opacity:.9"></div>
+      <div class="abs" style="left:${fw*(rev?0.25-0.1:0.57)}px;top:0;width:6px;height:${fh}px;background:#ffd23a;opacity:.9"></div>
+      <div class="abs mono" style="left:${bx-fx-70}px;top:${fh-52}px;width:140px;text-align:center;font-size:20px;background:#0a0a0b;color:#ede8df;padding:4px 0;letter-spacing:.1em">${rev?'WSH BALL':'NYG BALL'}</div>
+      <div class="abs" style="left:${bx-fx-18}px;top:${fh/2-18}px;width:36px;height:36px;border-radius:50%;background:#7a4a2b;border:3px solid #ede8df;transform:scale(${rev?1+Math.max(0,.5-sinceE)*1.2:1})"></div></div>`;
+  // counter
+  const cnt=t<tA?0:Math.min(H.lead_s,(t-tA)/K);
+  h+=`<div class="abs" style="left:${rx}px;top:570px;width:850px;height:150px;border:2px solid ${t>=tA?'#44505c':'#232327'};background:#111113">
+     <div class="abs mono" style="left:24px;top:16px;font-size:20px;letter-spacing:.14em;color:var(--ink2)">SECONDS SINCE YOUR PHONE BUZZED</div>
+     <div class="abs disp" style="left:24px;top:44px;font-size:96px;line-height:1;color:${rev?'var(--sig)':'var(--ink)'}">+${f1(cnt)} s</div>
+     <div class="abs mono" style="right:24px;top:62px;font-size:22px;color:var(--ink3);text-align:right">STREAMS RUN<br>${D.ladder[2][1]}–${D.ladder[4][1]} s BEHIND</div></div>`;
+  // ESPN box
+  const lab=/FUMBLES/.test(H.play_text)&&/sacked/.test(H.play_text)?`STRIP-SACK, ${(TEAM[H.team]||H.team).toUpperCase()} BALL`:(/TOUCHDOWN/.test(H.play_text)?`TOUCHDOWN, ${(TEAM[H.team]||H.team).toUpperCase()}`:H.headline.toUpperCase());
+  const first=H.play_text.split(/(?<=\.)\s/).slice(0,2).join(' ');
+  const typed=rev?first.slice(0,Math.floor(sinceE*140)):'';
+  h+=`<div class="abs" style="left:${rx}px;top:740px;width:850px;height:190px;border:2px solid ${rev?'#ff4d1a':'#232327'};background:${rev?'#1a0f0b':'#0e0e10'}">
+     <div class="abs mono" style="left:24px;top:14px;font-size:20px;letter-spacing:.14em;color:${rev?'var(--sig)':'var(--ink3)'}">ESPN PLAY-BY-PLAY FEED</div>
+     ${rev?`<div class="abs disp" style="left:24px;top:44px;font-size:${sinceE<0.25?84-sinceE*100:62}px;line-height:1;color:var(--ink)">${lab}</div><div class="abs mono" style="left:24px;top:112px;width:800px;font-size:19px;line-height:1.35;color:var(--ink2)">${typed}</div>`
+          :`<div class="abs mono" style="left:24px;top:80px;font-size:30px;color:var(--ink3);opacity:${.4+.6*(Math.sin(t*6)>0)}">waiting for the play…</div>`}</div>`;
+  h+=`<div class="abs mono" style="left:70px;top:1046px;font-size:20px;color:var(--ink3);letter-spacing:.06em;z-index:30">Recreation of a real alert from today · real timestamps</div>`;
+  // stat card
+  const sc=t-(tE+0.9);
+  if(sc>0){const a=eo(sc/0.35);
+    h+=`<div class="abs" style="left:230px;top:${300+(1-a)*40}px;width:1460px;height:380px;background:rgba(10,10,11,.94);border:3px solid var(--sig);opacity:${a};text-align:center;box-shadow:0 0 120px rgba(255,77,26,.35);z-index:20">
+      <div class="mono" style="font-size:30px;letter-spacing:.2em;color:var(--ink2);margin-top:34px">KALSHI KNEW</div>
+      <div class="disp" style="font-size:210px;line-height:1.02;color:var(--sig)">${f1(H.lead_s)} s</div>
+      <div class="mono" style="font-size:32px;letter-spacing:.14em;margin-top:6px">BEFORE ESPN'S OWN FEED SHOWED THE PLAY</div></div>`;}
+  $('money').innerHTML=h;
+  if(sinceE>=0&&sinceE<0.5) flash=Math.max(flash,.9*(1-sinceE/0.5));
+  if(Math.abs(t-tA)<0.0001) flash=0;
+}
+// ---------------- HOW IT WORKS (28 s)
+function how(t){
+  let h=`<div class="abs disp" style="left:90px;top:50px;font-size:120px">HOW IT <span class="sig">WORKS</span></div>`;
+  const cards=[[0.3,'01','28 SEASONS OF NFL PLAYS',`Pretrained on ${D.train_rows.toLocaleString()} simulated price jumps built from play-by-play`],
+    [6.2,'02',`~${(Math.round(D.n_real/100)*100).toLocaleString()} REAL KALSHI JUMPS`,'Fine-tuned on real order-book moves from 2025-26, labels audited play by play'],
+    [12.0,'03','LIVE ENGINE + PUSH','Watches the public order book, reads the jump, pushes the play to your phone']];
+  cards.forEach(([t0,n,tt,sub],i)=>{const a=eo((t-t0)/0.5); if(a<=0)return; const x=90+i*610;
+    h+=`<div class="abs" style="left:${x}px;top:${220+(1-a)*60}px;width:540px;height:440px;background:var(--bg3);border:2px solid ${t>t0+0.5&&t<t0+5.8?'var(--sig)':'var(--line)'};padding:34px;opacity:${a}">
+      <div class="mono sig" style="font-size:26px;letter-spacing:.2em">${n}</div>
+      <div class="disp" style="font-size:80px;line-height:.9;margin-top:22px">${tt}</div>
+      <div style="font:400 29px/1.35 var(--body);color:var(--ink2);margin-top:26px">${sub}</div></div>`;
+    if(i<2&&t>cards[i+1][0]) h+=`<div class="abs disp sig" style="left:${x+548}px;top:380px;font-size:60px">→</div>`;});
+  const a=eo((t-18)/0.6);
+  if(a>0){const Hn=D.honest, acc=Hn.acc*100, base=Hn.base!=null?Hn.base*100:null, cb=D.claude, kk=cb.rows.find(r=>r.model.startsWith('Kalshi')), cc=cb.rows.find(r=>r.model.startsWith('Claude'));
+    const g=cl((t-18.4)/1.4); const bw=700;
+    h+=`<div class="abs" style="left:90px;top:${700+(1-a)*40}px;width:1740px;height:250px;background:#111113;border:2px solid var(--line);opacity:${a}">
+     <div class="abs mono" style="left:30px;top:20px;font-size:21px;letter-spacing:.16em;color:var(--sig)">THE HONEST NUMBER · NAMES THE PLAY RIGHT · ${Hn.label.toUpperCase()}${Hn.n?` · n=${Hn.n}`:''}</div>
+     <div class="abs disp" style="left:30px;top:56px;font-size:150px;line-height:1;color:var(--sig)">${Math.round(acc*g)}%</div>
+     <div class="abs" style="left:300px;top:70px;width:${bw}px"><div style="height:44px;width:${bw*acc/100*g}px;background:var(--sig)"></div><div class="mono" style="font-size:20px;margin:4px 0 12px;color:var(--ink2)">KALSHI KNOWS</div>
+       ${base!=null?`<div style="height:44px;width:${bw*base/100*g}px;background:#4a5663"></div><div class="mono" style="font-size:20px;margin-top:4px;color:var(--ink2)">ALWAYS GUESS "NOTHING BIG" · ${Math.round(base)}%</div>`:''}</div>
+     <div class="abs" style="left:1100px;top:64px;width:600px;border-left:2px solid var(--line);padding-left:30px"><div class="mono" style="font-size:20px;letter-spacing:.14em;color:var(--ink2)">HEAD-TO-HEAD VS CLAUDE OPUS 5.5 · n=${cb.n}</div>
+       <div class="disp" style="font-size:78px;line-height:1.05;margin-top:14px">${(kk.accuracy*100).toFixed(1)}% <span class="cold">vs</span> ${(cc.accuracy*100).toFixed(1)}%</div>
+       <div class="mono" style="font-size:20px;color:var(--ink2)">A TIE ON ACCURACY, BETTER CALIBRATED</div></div></div>`;}
+  $('how').innerHTML=h;
+}
+// ---------------- CLOSE (20 s)
+function close_(t){
+  const a=eo(t/0.4), b=eo((t-1.2)/0.5), c=eo((t-7.2)/0.5), d=eo((t-12.2)/0.5), e=eo((t-15)/0.5);
+  let h=`<div class="abs disp" style="left:90px;top:${110+(1-a)*40}px;font-size:150px;opacity:${a}">NOT COMPETING<br>WITH KALSHI.</div>
+   <div class="abs disp sig" style="left:90px;top:${420+(1-b)*40}px;width:1100px;font-size:92px;line-height:.9;opacity:${b}">THE INTELLIGENCE LAYER ON TOP OF PREDICTION MARKETS.</div>
+   <div class="abs" style="left:90px;top:${790+(1-c)*30}px;opacity:${c}"><div class="mono" style="font-size:22px;letter-spacing:.2em;color:var(--ink2)">TEAM</div><div class="disp" style="font-size:78px;line-height:1.05">FAISAL NABULSI · KEVIN · DUGAR</div></div>
+   <div class="abs" style="left:1330px;top:${110+(1-d)*30}px;opacity:${d};text-align:center"><img src="assets/qr.png" style="width:470px;height:470px;display:block;box-shadow:0 0 80px rgba(255,77,26,.3)"><div class="mono" style="font-size:25px;letter-spacing:.06em;margin-top:18px">kalshi-knows.pages.dev</div>
+     <div class="mono" style="font-size:20px;letter-spacing:.12em;color:var(--sig);margin-top:14px">PUBLIC DATA ONLY. NO REAL MONEY.</div></div>
+   <div class="abs mono" style="left:90px;top:1040px;font-size:22px;color:var(--ink2);letter-spacing:.06em;opacity:${e};z-index:30">Narration: AI voice (original character)</div>`;
+  $('close').innerHTML=h; if(t<0.12) flash=.8*(1-t/.12);
+}
+window.render=(scene,t)=>{flash=0;for(const s of ['cold','money','how','close'])$(s).style.display=s===scene?'block':'none';
+  ({cold,money,how,close:close_})[scene](t); $('flash').style.opacity=flash; return true;};
+</script></body></html>
