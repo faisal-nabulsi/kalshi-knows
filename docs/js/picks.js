@@ -4,7 +4,7 @@ const pc = (x) => `${Math.round(x * 100)}%`;
 const ago = (ms) => { const m = Math.round((Date.now() - ms) / 60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : `${Math.round(m / 60)} h ago`; };
 function closesIn(ms) {
   const h = (ms - Date.now()) / 3600000;
-  if (h <= 0) return 'closed';
+  if (h <= 0) return 'already settled';
   return h < 1 ? `${Math.round(h * 60)} min` : h < 48 ? `${Math.floor(h)} h ${Math.round((h % 1) * 60)} min` : `${Math.round(h / 24)} days`;
 }
 const CSS = `
@@ -49,7 +49,7 @@ function card(p, near) {
     </dl>
     <div class="pk-bar" title="grey = market price, orange = our probability (for ${esc(p.side)})"><i class="m" style="left:${(mkt * 100).toFixed(1)}%"></i><i class="o" style="left:${(mine * 100).toFixed(1)}%"></i></div>
     <div class="pk-foot mono"><span>EV after fees <b>${p.ev_cents_per_contract >= 0 ? '+' : ''}${p.ev_cents_per_contract.toFixed(1)}¢</b>/contract</span>
-      <span>closes in ${closesIn(p.close_ms)}</span><span>${esc(p.category || 'Other')}</span><span>${esc(p.horizon)} bucket</span>
+      <span>${(p.close_ms - Date.now()) <= 0 ? 'settled' : 'closes in ' + closesIn(p.close_ms)}</span><span>${esc(p.category || 'Other')}</span><span>${esc(p.horizon)} bucket</span>
       <span class="pk-tier ${esc(p.tier)}">TIER ${esc(p.tier)}</span></div>
   </article>`;
 }
