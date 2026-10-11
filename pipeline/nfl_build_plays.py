@@ -40,7 +40,7 @@ def build_game(gid):
                 qt=q['type']['text']
                 if qt in ('Penalty','Timeout','Official Timeout','Two-minute warning','End Period'): continue
                 qp=ids.get(str(((q.get('start') or {}).get('team') or {}).get('id')))
-                if qt in SCRIM and qp and qp!=pos and (q.get('start') or {}).get('down')==1 and not (en.get('down')==1): cat='TURNOVER'; team=qp
+                if qt in SCRIM and qp and qp!=pos and (q.get('start') or {}).get('down')==1: cat='TURNOVER'; team=qp  # fixed: the old 'not end-down==1' check was always false on a change of possession (train/audit)
                 break
         if cat=='OTHER' and t in ('Rush','Pass Reception') and yds>=20: cat='BIG_PLAY'; team=pos
         # pre-play state
