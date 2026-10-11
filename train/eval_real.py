@@ -121,13 +121,14 @@ def main():
     P_xgb = bst.predict(xgb.DMatrix(X, feature_names=FEATURES), iteration_range=(0, spec["best_iteration"] + 1))
     prior = np.array([PRIOR[c] for c in CLASSES])
     Z = np.log(np.clip(P_xgb, 1e-6, 1))
+    P_cal = cv_logreg(Z, y, groups)
     real = [
         metrics(y, np.tile(prior, (len(y), 1)), "majority_prior"),
         metrics(y, rule_of_thumb(X), "rule_of_thumb"),
         metrics(y, cv_logreg(X.to_numpy(), y, groups), "kalshi_only_logistic"),  # trained only on real Kalshi data
         metrics(y, mlp_predict(X), "mlp_gpu"),
         metrics(y, P_xgb, "xgboost_gpu"),
-        metrics(y, cv_logreg(Z, y, groups), "xgboost_calibrated_on_kalshi"),
+        metrics(y, P_cal, "xgboost_calibrated_on_kalshi"),
     ]
     for r in real:
         print(f"{r['model']:30s} acc={r['accuracy']:.3f} top2={r['top2']:.3f} logloss={r['log_loss']:.3f}")
@@ -149,6 +150,29 @@ def main():
     elif (dst / "calib.json").exists():
         (dst / "calib.json").unlink()
     print("deployed to engine/model; calibration", "ON" if use_calib else "OFF")
+    if "--wandb" in sys.argv:
+        log_wandb(real, leaderboard, y, P_cal, a)
+
+
+def log_wandb(real, leaderboard, y, P_cal, a):
+    import wandb
+    lag = json.loads((ROOT / "results/market_lag.json").read_text()) if (ROOT / "results/market_lag.json").exists() else {}
+    run = wandb.init(project="kalshi-knows", group="comparison", job_type="eval", name="real-kalshi-test-2026",
+                     config={"test": "real Kalshi jumps aligned to ESPN plays, 2026 season", "rows": int(len(y)),
+                             "games": int(a["game_id"].nunique()), "cv": "GroupKFold(5) by game", "min_abs_delta": 0.05})
+    tbl = wandb.Table(columns=["tier", "predator_scale", "model", "accuracy", "top2", "log_loss", "n"],
+                      data=[[r["tier"], r["tier_name"], r["model"], r["accuracy"], r["top2"], r["log_loss"], r["n"]] for r in leaderboard])
+    run.log({"predator_scale_leaderboard": tbl,
+             "real_accuracy": wandb.plot.bar(tbl, "model", "accuracy", title="Play-type accuracy on REAL Kalshi jumps"),
+             "confusion_calibrated": wandb.plot.confusion_matrix(y_true=y.tolist(), preds=P_cal.argmax(1).tolist(), class_names=CLASSES)})
+    png = ROOT / "results/market_lag.png"
+    if png.exists():
+        run.log({"market_lag_vs_stream_delay": wandb.Image(str(png))})
+    best = max(real, key=lambda r: r["accuracy"])
+    run.summary.update({"best_model": best["model"], "best_accuracy": best["accuracy"], "best_top2": best["top2"],
+                        "market_lag_median_s": (lag.get("overall") or lag).get("median_s")})
+    run.finish()
+    print("logged to W&B:", run.url if hasattr(run, "url") else "")
 
 
 if __name__ == "__main__":

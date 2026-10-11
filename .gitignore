@@ -12,3 +12,5 @@ train/out/raw/
 infra/instance_*.txt
 train/out/playinfer_*.json
 engine/model/playinfer_xgb.json
+train/wandb_runs/
+wandb/
