@@ -26,6 +26,10 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 
 **Pre-registered untouched test on today's early games (run once at 1:36pm; research/PREREG.md, results/today_test.json):** frozen model, 7 unseen games. PRIMARY live-size jumps: 65.6% vs 46.9% always-other (+18.8 pts, 95% CI −13 to +33; n=32, 6 games), named calls 2/2 correct. All jumps: 72.6% vs 61.1% (+11.5, CI −1 to +19; n=113), named calls 8/9 (89%). Same direction as offline; one morning is too small for a tight interval. Production then switched to the audited-label model.
 
+**Works beyond NFL (cross-market model, train/xmarket/REPORT.md):** trained on 4.36M settled Kalshi markets (2021–Dec 2025, all categories), tested on an unseen month (Jan 2026, 70,249 markets): Brier 0.1236 vs 0.1270 for the raw market price (2.7% better, 95% CI 2.2–3.1%); gains largest 1 h before close and in Sports, Finance, Crypto, Entertainment. Paper strategy (model vs price gap ≥ 8 pts, 24 h out, after fees): +12.0% ROI (CI 6.5–17.8%, 1,603 bets) — one test month, suggestive only.
+
+**Auto-bettor on Kalshi's demo exchange (play money):** real signed order placed and filled at 2:05pm — buy 1 YES "49ers win" at $0.39, fee $0.0167, order 01a12cc9-43b0-7d31-af6a-b259485bac52; mode = demo; rules: SF/SEA named call ≥80% → buy 5 YES on that team to win ($25/day cap, kill switch).
+
 **Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
 
 ## 1. Speed: the market vs the play, the stream, and ESPN
