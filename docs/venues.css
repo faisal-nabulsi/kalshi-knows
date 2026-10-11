@@ -1,0 +1,26 @@
+/* "Two venues, one game" panel (docs/js/venues.js) */
+.venues { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.venues[hidden] { display: none; }
+.vn-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.vn-title { margin: 0; font: 800 1.15rem/1.1 var(--display); letter-spacing: .04em; text-transform: uppercase; }
+.vn-key { font-size: .72rem; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+.vn-sw { display: inline-block; width: 14px; height: 3px; margin-left: 8px; }
+.vn-sw.vn-kalshi { background: var(--sig); } .vn-sw.vn-poly { background: var(--cold); }
+.vn-grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 10px; }
+.vn-card { background: var(--bg2); border: 1px solid var(--line); padding: 10px 12px 12px; min-width: 0; }
+.vn-row { display: flex; justify-content: space-between; align-items: baseline; }
+.vn-name { font-family: var(--display); font-size: 1.05rem; letter-spacing: .03em; }
+.vn-clock { font-size: .72rem; color: var(--ink2); }
+.vn-prices { display: flex; gap: 10px; flex-wrap: wrap; font-size: .8rem; margin: 4px 0 6px; align-items: baseline; }
+.vn-kalshi-t { color: var(--sig); } .vn-poly-t { color: var(--cold); }
+.vn-gap { margin-left: auto; color: var(--ink); background: var(--bg3); padding: 0 .4em; }
+.vn-svg { display: block; width: 100%; height: 84px; background: var(--bg); }
+.vn-grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.vn-svg .vn-grid { stroke: var(--line); }
+.vn-ax { fill: var(--ink3); font: 9px var(--mono); }
+.vn-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.vn-line.vn-kalshi { stroke: var(--sig); } .vn-line.vn-poly { stroke: var(--cold); }
+.vn-badge { display: inline-block; margin-top: 8px; font-size: .72rem; padding: 2px 8px; border: 1px solid var(--line2); color: var(--ink2); }
+.vn-badge.vn-k { border-color: var(--sig); color: var(--sig); } .vn-badge.vn-p { border-color: var(--cold); color: var(--cold); }
+.vn-badge-none { color: var(--ink3); }
+.vn-note { margin: 10px 0 0; font-size: .68rem; color: var(--ink3); line-height: 1.4; }

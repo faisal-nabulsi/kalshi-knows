@@ -128,6 +128,17 @@ const BENCH = [
 ];
 
 // ------------------------------------------------------------ LIVE
+// "Two venues, one game" panel under the game tiles: lazy-loaded, silent if the engine has no /api/venues
+let venuesUnmount = null;
+function mountVenuesPanel(api) {
+  try {
+    venuesUnmount?.(); venuesUnmount = null;
+    let el = document.getElementById('venues');
+    if (!el) { el = document.createElement('div'); el.id = 'venues'; document.getElementById('games')?.after(el); }
+    import('./venues.js').then((m) => { venuesUnmount = m.mountVenues(el, api); }).catch(() => {});
+  } catch (e) { /* optional panel */ }
+}
+
 const featured = () => {
   const g = S.games;
   if (!g.length) return null;
@@ -686,6 +697,7 @@ async function boot() {
     S.source.addEventListener('status', (e) => { if (e.detail.ok || Date.now() - S.source.lastGamesAt < 12000) okMode(); else setMode('warn', 'RECONNECTING'); });
     S.source.addEventListener('games', okMode);
     syncAuto(route);
+    if (!serverReplay) mountVenuesPanel(live.api);
   };
   const live = await resolveApi();
   if (live) startLive(live);

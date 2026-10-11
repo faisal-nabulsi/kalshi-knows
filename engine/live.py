@@ -24,6 +24,7 @@ from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 
 from engine import autotrader, espn, infer, kalshi, push, tiers
+from engine import kalshi_ws  # --- kalshi_ws: production WebSocket market data (read-only)
 
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE_DIR = ROOT / "engine"
@@ -72,6 +73,10 @@ HISTORY_MS = 20 * 60 * 1000
 POLL_S = float(os.environ.get("KALSHI_POLL_S", 1.75))
 CONFIRM_MS = 150_000
 CONFIRM_TYPES = {"TD", "FG", "TURNOVER", "SAFETY", "BIG_PLAY"}
+# --- two-stage alerts: stage 1 ("provisional") at detection, stage 2 ("called") CALL_DELAY later, same id
+PROVISIONAL_PUSH_MIN = float(os.environ.get("PROVISIONAL_PUSH_MIN", "0.10"))
+PUSH_MIN_SWING = float(os.environ.get("PUSH_MIN_SWING", "0.12"))
+# --- end two-stage alerts config
 
 CFG = {"mode": "live", "replay": None, "speed": 10.0, "game": None, "loop": False, "push": True, "log": True}
 
@@ -220,7 +225,10 @@ class Engine:
                 d["pending"] = None
                 d["last_fire"] = ts
                 if CALL_DELAY_MS > 0:
-                    d["call"] = {"pend": dict(pend, confirmed_ms=ts), "at": ts + CALL_DELAY_MS}
+                    # --- two-stage alerts: stage 1 now, stage 2 updates the same id at the call
+                    aid = self._provisional(gid, ts, pend, p)
+                    d["call"] = {"pend": dict(pend, confirmed_ms=ts, aid=aid), "at": ts + CALL_DELAY_MS}
+                    # --- end two-stage alerts
                 else:
                     self._fire(gid, ts, pend, p)
                 return
@@ -236,6 +244,39 @@ class Engine:
             d["pending"] = {"t0": ts, "p_before": lo[1], "t_before": lo[0], "sign": 1}
         elif down >= THRESH:
             d["pending"] = {"t0": ts, "p_before": hi[1], "t_before": hi[0], "sign": -1}
+
+    # --- two-stage alerts (stage 1)
+    def _provisional(self, gid: str, ts: int, pend: dict, p_home: float) -> str:
+        """Stage 1, the moment the jump is confirmed: 'Big swing to the {Nickname}', no play named yet."""
+        g = self.games[gid]
+        home_up = pend["sign"] > 0
+        team = g["home"] if home_up else g["away"]
+        pb_h = pend["p_before"]
+        pb, pa = (pb_h, p_home) if home_up else (1 - pb_h, 1 - p_home)
+        self.n_alert += 1
+        aid = f"{'r_' if CFG['mode'] == 'replay' else 'a_'}{self.n_alert}"
+        alert = {"id": aid, "ts_ms": ts, "game_id": gid, "team": team, "stage": "provisional",
+                 "provisional_ms": ts, "called_ms": None,
+                 "p_before": round(pb, 4), "p_after": round(pa, 4), "delta": round(pa - pb, 4),
+                 "inferred": [], "headline": f"Big swing to the {infer.NICK.get(team, team)}",
+                 "named": False, "gate_reason": None, "confirmed": None, **tiers.alert_tier(0.0),
+                 "short_name": g.get("short_name"), "home": g.get("home"), "away": g.get("away"),
+                 "p_home_before": round(pb_h, 4), "p_home_after": round(p_home, 4),
+                 "jump_started_ms": pend["t_before"], "detected_ms": pend["t0"],
+                 "infer_source": None, "period": g.get("period"), "clock": g.get("clock"),
+                 "pushed": None, "updated_ms": ts}
+        self.alerts.append(alert)
+        self.alert_by_id[aid] = alert
+        log.info("ALERT %s (provisional) %s %s Δ%.3f", aid, g.get("short_name"), alert["headline"], alert["delta"])
+        self._emit(alert)
+        if CFG["push"] and abs(alert["delta"]) >= PROVISIONAL_PUSH_MIN:
+            alert["pushed"] = "provisional"
+            try:
+                push.send_all(push.alert_payload(alert, g))     # tag = alert id; stage 2 replaces it in place
+            except Exception as e:
+                log.warning("push failed: %s", e)
+        return aid
+    # --- end two-stage alerts (stage 1)
 
     def _fire(self, gid: str, ts: int, pend: dict, p_after_home: float):
         g = self.games[gid]
@@ -255,11 +296,19 @@ class Engine:
         bad = [k for k in ("posteam", "down", "yardline_100") if state.get(k) in (None, "")]
         if state.get("field_age_s") is None or state["field_age_s"] > 60:
             bad.append("stale_state")
-        self.n_alert += 1
-        prefix = "r_" if CFG["mode"] == "replay" else "a_"
-        aid = f"{prefix}{self.n_alert}"
+        # --- two-stage alerts (stage 2): update the provisional alert in place when there is one
+        prev = self.alert_by_id.get(pend.get("aid") or "")
+        if prev is None:
+            self.n_alert += 1
+            prefix = "r_" if CFG["mode"] == "replay" else "a_"
+            aid = f"{prefix}{self.n_alert}"
+        else:
+            aid = prev["id"]
+        # --- end two-stage alerts (stage 2)
         top = inferred[0]["prob"] if inferred else 0
         alert = {"id": aid, "ts_ms": ts, "game_id": gid, "team": team,
+                 "stage": "called", "called_ms": ts,
+                 "provisional_ms": prev.get("provisional_ms") if prev else None,
                  "p_before": round(pb, 4), "p_after": round(pa, 4), "delta": round(pa - pb, 4),
                  "inferred": inferred,
                  "headline": infer.headline(inferred, team) if not bad else infer.headline([{"type": "OTHER", "prob": 1.0}], team),
@@ -272,13 +321,23 @@ class Engine:
                  "state": state, "infer_source": infer.source(),
                  "period": g.get("period"), "clock": g.get("clock"),
                  "updated_ms": ts}
-        self.alerts.append(alert)
-        self.alert_by_id[aid] = alert
+        if prev is not None:      # --- two-stage alerts: same dict, same id (grading/receipts follow it)
+            alert["pushed"] = prev.get("pushed")
+            prev.update(alert)
+            alert = prev
+        else:
+            alert["pushed"] = None
+            self.alerts.append(alert)
+            self.alert_by_id[aid] = alert
         log.info("ALERT %s %s %s Δ%.3f %s", aid, g.get("short_name"), alert["headline"], alert["delta"], alert["tier_name"])
         self._emit(alert)
-        # Buzz phones only when it's worth it: a confident named call, or a very large swing (site shows every alert)
-        worth_push = alert.get("named") or abs(alert.get("delta") or 0) >= float(os.environ.get("PUSH_MIN_SWING", "0.12"))
+        # Buzz phones only when it's worth it: a confident named call, or a very large swing (site shows every alert).
+        # Two-stage: if stage 1 already buzzed and stage 2 names nothing, don't buzz again; otherwise reuse the tag.
+        worth_push = alert.get("named") or abs(alert.get("delta") or 0) >= PUSH_MIN_SWING
+        if alert.get("pushed") == "provisional" and not alert.get("named"):
+            worth_push = False
         if CFG["push"] and worth_push:
+            alert["pushed"] = "called"
             body_alert = dict(alert)
             payload = push.alert_payload(body_alert, g)
             payload["body"] = f"{alert['headline']} · Tier: {alert['tier_name']}. Your stream shows it in ~30s."
@@ -322,6 +381,8 @@ class Engine:
             for a in self.alerts:
                 if a["game_id"] != gid or a["confirmed"] is not None:
                     continue
+                if a.get("stage") == "provisional" and ref - (a.get("provisional_ms") or a["ts_ms"]) < CALL_DELAY_MS + 60_000:
+                    continue      # --- two-stage alerts: grade only after the call (stage 2)
                 if ref - a["ts_ms"] > CONFIRM_MS + 30_000:
                     if "espn_nearest" not in a and ref - a["ts_ms"] > 1_800_000:
                         a["espn_nearest"] = None     # stale (e.g. restored after a restart): don't re-emit
@@ -437,6 +498,25 @@ class Engine:
 
 
 ENGINE = Engine()
+
+
+# --- kalshi_ws: production WebSocket market data (read-only; engine/kalshi_ws.py) -------------------
+def _ws_targets() -> dict:
+    """{kalshi ticker: (game_id, "home"|"away")} for every game the engine tracks (live + soon/just-ended)."""
+    out = {}
+    with ENGINE.lock:
+        for gid in ENGINE.tracked_ids():
+            g = ENGINE.games[gid]
+            if g.get("kalshi_home"):
+                out[g["kalshi_home"]] = (gid, "home")
+            if g.get("kalshi_away"):
+                out[g["kalshi_away"]] = (gid, "away")
+    return out
+
+
+KWS = kalshi_ws.Feed(targets=_ws_targets, on_quote=lambda gid, ts, p, d: ENGINE.on_quote(gid, ts, p, d),
+                     enabled=os.environ.get("MARKET_WS", "1") != "0")
+# --- end kalshi_ws ------------------------------------------------------------------------------------
 
 
 def _should_track(g: dict) -> bool:
@@ -566,7 +646,7 @@ def kalshi_loop():
                 q = kalshi.quotes([t for pair in tick.values() for t in pair])
                 ts = now_ms()
                 for gid, (ht, at) in tick.items():
-                    live_fresh = time.time() - last_book.get(gid, 0) < 8
+                    live_fresh = time.time() - last_book.get(gid, 0) < 8 or KWS.fresh(gid, 8)   # --- kalshi_ws
                     if live_fresh:
                         continue          # the order book is fresher; don't mix in the cached quote
                     p, detail = kalshi.home_prob(q.get(ht), q.get(at))
@@ -591,7 +671,10 @@ def kalshi_loop():
             b, a = px["bid"], px["ask"]
             if b is not None and a is not None and 0 < b <= a <= 1 and a - b <= 0.12:
                 ts = now_ms()
-                ENGINE.on_quote(gid, ts, (a + b) / 2, {"hb": b, "ha": round(a, 4), "src": "book"})
+                if KWS.fresh(gid):   # --- kalshi_ws: socket is live for this game; poll only measures its lead
+                    KWS.note_poll(gid, ts, (a + b) / 2)
+                else:                # socket off/stale (>5 s silent): REST order book feeds the engine as before
+                    ENGINE.on_quote(gid, ts, (a + b) / 2, {"hb": b, "ha": round(a, 4), "src": "book"})
                 ENGINE.kalshi_ok_ms = ts
             ENGINE.kalshi_err = None
         except Exception as e:
@@ -798,6 +881,7 @@ def _startup():
         load_today()
         for fn in (espn_loop, summary_loop, kalshi_loop):
             threading.Thread(target=fn, daemon=True, name=fn.__name__).start()
+        KWS.start()   # --- kalshi_ws (stays off without ~/.kalshi/prod_key_id + prod_private_key.pem)
     threading.Thread(target=dutchbook_loop, daemon=True, name="dutchbook").start()
     try:  # --- autotrader (demo/dry-run only)
         autotrader.start(lambda: ENGINE)
@@ -826,7 +910,8 @@ def health():
             "threshold": THRESH, "threshold_source": THRESH_SRC, "window_s": WINDOW_MS / 1000,
             "kalshi_ok_ms": ENGINE.kalshi_ok_ms, "espn_ok_ms": ENGINE.espn_ok_ms,
             "kalshi_err": ENGINE.kalshi_err, "espn_err": ENGINE.espn_err, "unmatched": ENGINE.unmatched,
-            "subscribers": len(push.load_subs()), "infer_source": infer.source()}
+            "subscribers": len(push.load_subs()), "infer_source": infer.source(),
+            "ws": KWS.status()}   # --- kalshi_ws
 
 
 @app.get("/api/games")
@@ -980,6 +1065,12 @@ def main():
         CFG.update(mode="replay", replay=a.replay, speed=a.speed, game=a.game, loop=a.loop)
     CFG["push"] = not a.no_push
     uvicorn.run(app, host="0.0.0.0", port=a.port, log_level="warning", timeout_graceful_shutdown=3)
+
+
+try:
+    from engine import venues as _venues; _venues.mount(app, ENGINE)
+except Exception as _e:  # optional Polymarket panel; never block the engine
+    log.warning("venues not mounted: %s", _e)
 
 
 if __name__ == "__main__":
