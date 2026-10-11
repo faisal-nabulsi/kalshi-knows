@@ -1,0 +1,286 @@
+{
+ "cv_by_game": {
+  "always_other": {
+   "all": {
+    "acc": 0.676,
+    "always_other": 0.676,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_precision": null,
+    "named_calls": 0,
+    "n": 8808,
+    "games": 332
+   },
+   "live": {
+    "acc": 0.6,
+    "always_other": 0.6,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_precision": null,
+    "named_calls": 0,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "smart_fan_logistic (state + jump)": {
+   "all": {
+    "acc": 0.694,
+    "always_other": 0.676,
+    "lift": 0.018,
+    "lift_ci95": [
+     0.011,
+     0.025
+    ],
+    "named_precision": 0.384,
+    "named_calls": 112,
+    "n": 8808,
+    "games": 332
+   },
+   "live": {
+    "acc": 0.628,
+    "always_other": 0.6,
+    "lift": 0.028,
+    "lift_ci95": [
+     0.014,
+     0.043
+    ],
+    "named_precision": 0.381,
+    "named_calls": 97,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "xgb_no_pretraining (state + shape)": {
+   "all": {
+    "acc": 0.741,
+    "always_other": 0.676,
+    "lift": 0.065,
+    "lift_ci95": [
+     0.057,
+     0.074
+    ],
+    "named_precision": 0.618,
+    "named_calls": 123,
+    "n": 8808,
+    "games": 332
+   },
+   "live": {
+    "acc": 0.7,
+    "always_other": 0.6,
+    "lift": 0.099,
+    "lift_ci95": [
+     0.08,
+     0.117
+    ],
+    "named_precision": 0.536,
+    "named_calls": 69,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "stage1_plus_state (no price shape)": {
+   "all": {
+    "acc": 0.77,
+    "always_other": 0.676,
+    "lift": 0.094,
+    "lift_ci95": [
+     0.085,
+     0.104
+    ],
+    "named_precision": 0.791,
+    "named_calls": 550,
+    "n": 8808,
+    "games": 332
+   },
+   "live": {
+    "acc": 0.737,
+    "always_other": 0.6,
+    "lift": 0.137,
+    "lift_ci95": [
+     0.117,
+     0.157
+    ],
+    "named_precision": 0.795,
+    "named_calls": 200,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "PRODUCTION stage2 (stage1 + state + shape)": {
+   "all": {
+    "acc": 0.776,
+    "always_other": 0.676,
+    "lift": 0.099,
+    "lift_ci95": [
+     0.09,
+     0.11
+    ],
+    "named_precision": 0.767,
+    "named_calls": 567,
+    "n": 8808,
+    "games": 332
+   },
+   "live": {
+    "acc": 0.738,
+    "always_other": 0.6,
+    "lift": 0.138,
+    "lift_ci95": [
+     0.118,
+     0.158
+    ],
+    "named_precision": 0.747,
+    "named_calls": 241,
+    "n": 2940,
+    "games": 296
+   }
+  }
+ },
+ "temporal_2025_to_2026": {
+  "always_other": {
+   "all": {
+    "acc": 0.647,
+    "always_other": 0.647,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_precision": null,
+    "named_calls": 0,
+    "n": 1596,
+    "games": 64
+   },
+   "live": {
+    "acc": 0.571,
+    "always_other": 0.571,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_precision": null,
+    "named_calls": 0,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "smart_fan_logistic (state + jump)": {
+   "all": {
+    "acc": 0.682,
+    "always_other": 0.647,
+    "lift": 0.036,
+    "lift_ci95": [
+     0.023,
+     0.052
+    ],
+    "named_precision": 0.385,
+    "named_calls": 26,
+    "n": 1596,
+    "games": 64
+   },
+   "live": {
+    "acc": 0.64,
+    "always_other": 0.571,
+    "lift": 0.069,
+    "lift_ci95": [
+     0.033,
+     0.108
+    ],
+    "named_precision": 0.391,
+    "named_calls": 23,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "xgb_no_pretraining (state + shape)": {
+   "all": {
+    "acc": 0.736,
+    "always_other": 0.647,
+    "lift": 0.089,
+    "lift_ci95": [
+     0.067,
+     0.115
+    ],
+    "named_precision": 0.667,
+    "named_calls": 15,
+    "n": 1596,
+    "games": 64
+   },
+   "live": {
+    "acc": 0.698,
+    "always_other": 0.571,
+    "lift": 0.127,
+    "lift_ci95": [
+     0.083,
+     0.176
+    ],
+    "named_precision": 0.625,
+    "named_calls": 8,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "stage1_plus_state (no price shape)": {
+   "all": {
+    "acc": 0.776,
+    "always_other": 0.647,
+    "lift": 0.13,
+    "lift_ci95": [
+     0.104,
+     0.159
+    ],
+    "named_precision": 0.816,
+    "named_calls": 114,
+    "n": 1596,
+    "games": 64
+   },
+   "live": {
+    "acc": 0.74,
+    "always_other": 0.571,
+    "lift": 0.169,
+    "lift_ci95": [
+     0.121,
+     0.224
+    ],
+    "named_precision": 0.811,
+    "named_calls": 37,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "PRODUCTION stage2 (stage1 + state + shape)": {
+   "all": {
+    "acc": 0.766,
+    "always_other": 0.647,
+    "lift": 0.12,
+    "lift_ci95": [
+     0.09,
+     0.147
+    ],
+    "named_precision": 0.783,
+    "named_calls": 120,
+    "n": 1596,
+    "games": 64
+   },
+   "live": {
+    "acc": 0.729,
+    "always_other": 0.571,
+    "lift": 0.158,
+    "lift_ci95": [
+     0.11,
+     0.218
+    ],
+    "named_precision": 0.745,
+    "named_calls": 51,
+    "n": 569,
+    "games": 58
+   }
+  }
+ }
+}

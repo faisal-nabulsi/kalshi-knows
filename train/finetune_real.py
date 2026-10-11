@@ -244,13 +244,18 @@ def main():
             "fire_train": FIRE_TRAIN, "table": table, "labels": rows["category"].value_counts().to_dict(),
             "n_windows": int(len(df)), "n_fires": int(len(rows)), "temporal": temporal, "mm_features": use_mm,
             "seasons": {int(k): int(v) for k, v in rows["season"].value_counts().items()}}
-    if best == "stack_xgb":
-        b = xgb.train(xparams, xgb.DMatrix(F.to_numpy(), y), 300)
-        b.save_model(str(dst / "stage2_xgb.json"))
-        meta["features"] = list(F.columns)
+    # PRODUCTION = stage-1 log-probs + game state, NO price-shape features: same-row eval (train/eval_same_rows.py)
+    # shows equal accuracy (73.7 vs 73.8%), higher named-call precision (79.5 vs 74.7%; 81% on the 2025->2026 split),
+    # and no train/serve skew (shape features are computed from trades in training but order-book polls live).
+    prod_cols = simcols + STATE
+    b = xgb.train(xparams, xgb.DMatrix(F[prod_cols].to_numpy(), y), 300)
+    b.save_model(str(dst / "stage2_xgb.json"))
+    meta["features"] = prod_cols
+    meta["best"] = "stack_xgb"
+    meta["production"] = "stage1_plus_state (no price shape)"
     (OUT / "finetune_metrics.json").write_text(json.dumps(meta, indent=1, default=float))
     (dst / "stage2_meta.json").write_text(json.dumps(meta, indent=1, default=float))
-    print("best:", best, "| exported" if best == "stack_xgb" else "| production model unchanged")
+    print("best by CV:", best, "| exported production model: stage1 + state (see eval_same_rows.py)")
 
     if use_wandb:
         import wandb
