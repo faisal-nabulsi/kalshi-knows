@@ -11,6 +11,10 @@ function urlBase64ToUint8Array(b64) {
   return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)));
 }
 
+// navigator.serviceWorker.ready never settles if registration failed; don't let the button hang on it
+const swReady = (ms = 8000) => Promise.race([navigator.serviceWorker.ready,
+  new Promise((_, rej) => setTimeout(() => rej(new Error('the service worker did not start; reload and try again')), ms))]);
+
 export function registerSW() {
   if (!('serviceWorker' in navigator)) return;
   navigator.serviceWorker.register('./sw.js', { scope: './' }).catch((e) => console.warn('sw', e));
@@ -63,7 +67,7 @@ export function initPush(getApi) {
     if (perm !== 'granted') { note(perm === 'denied' ? 'Notifications are blocked. Turn them on in Settings > Notifications > Kalshi Knows.' : 'No permission, no spoilers.', true); return; }
     try {
       note('Subscribing…');
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await swReady();
       if (!vapid) await prefetch();
       if (!vapid) throw new Error('no VAPID key from the server');
       let sub = await reg.pushManager.getSubscription();
@@ -92,7 +96,20 @@ export function initPush(getApi) {
   sheet?.addEventListener('click', (e) => { if (e.target === sheet) $('#sheet-x').click(); });
   if (isIOS && !standalone && !PRESENT) setTimeout(() => showSheet(false), 7000);
 
+  // Already subscribed on this device: re-send the subscription so a restarted engine (or a dropped one) still has it.
+  async function resync() {
+    const api = getApi();
+    if (!api || !pushOK || Notification.permission !== 'granted' || !store.get('sub', false)) return;
+    try {
+      const reg = await swReady();
+      const sub = await reg.pushManager.getSubscription();
+      await prefetch();
+      if (!sub || (vapid && store.get('vapid', '') !== vapid)) { store.set('sub', false); render(); return; }
+      await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(sub.toJSON()) });
+    } catch {}
+  }
+
   render();
-  prefetch();
+  prefetch().then(resync);
   return { render: () => { render(); prefetch(); } };
 }

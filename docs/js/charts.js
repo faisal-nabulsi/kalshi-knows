@@ -23,7 +23,8 @@ function linePath(pts) {
 export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
   const { w, h } = size(el, 220);
   const big = w > 900;
-  const padL = big ? 56 : 34, padR = big ? 150 : 84, padT = big ? 46 : 38, padB = big ? 34 : 28;
+  const present = document.documentElement.classList.contains('present');
+  const padL = big ? 56 : 34, padR = big ? (present ? 200 : 150) : 84, padT = big ? 46 : 38, padB = big ? 34 : 28;
   const hist = (game.history || []).filter((d) => d && d[0] <= now + 5000);
   const t1 = now;
   const win = (document.documentElement.classList.contains('present') ? 8 : 12) * 60e3;
@@ -55,8 +56,14 @@ export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
   if (xs < w - padR - 2) {
     g += `<rect x="${f1(xs)}" y="${padT}" width="${f1(w - padR - xs)}" height="${h - padT - padB}" fill="url(#hatch)"/>`;
     g += `<line x1="${f1(xs)}" x2="${f1(xs)}" y1="${padT - 22}" y2="${h - padB}" class="stream-line"/>`;
-    g += `<text x="${f1(xs - 6)}" y="${padT - 26}" class="lbl-cold" text-anchor="end">${w < 640 ? 'YOUR STREAM' : 'YOUR STREAM IS HERE'}</text>`;
-    g += `<text x="${f1((xs + w - padR) / 2)}" y="${padT - 26}" class="lbl-sig" text-anchor="middle">${delay}s AHEAD</text>`;
+    // the delay label goes over the hatched gap when it fits; otherwise it joins the stream label
+    const ahead = `${delay}s AHEAD`, cw = present ? 9.4 : 7.6;
+    if (w - padR - xs >= ahead.length * cw + 4) {
+      g += `<text x="${f1(xs - 6)}" y="${padT - 26}" class="lbl-cold" text-anchor="end">${w < 640 ? 'YOUR STREAM' : 'YOUR STREAM IS HERE'}</text>`;
+      g += `<text x="${f1((xs + w - padR) / 2)}" y="${padT - 26}" class="lbl-sig" text-anchor="middle">${ahead}</text>`;
+    } else {
+      g += `<text x="${f1(xs - 6)}" y="${padT - 26}" class="lbl-cold" text-anchor="end">${w < 640 ? 'YOUR STREAM' : 'YOUR STREAM IS HERE'} <tspan class="lbl-sig">· ${delay}s BEHIND</tspan></text>`;
+    }
   }
   // area + line
   if (pts.length > 1) {
@@ -72,7 +79,6 @@ export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
     const top = a.inferred?.[0];
     const lab = `${PLAY_SHORT[top?.type] || 'JUMP'} ${a.team || ''}`;
     g += `<line x1="${f1(x)}" x2="${f1(x)}" y1="${padT - 4}" y2="${h - padB}" class="al-line"/>`;
-    const present = document.documentElement.classList.contains('present');
     const cw = lab.length * (present ? 9.4 : 7.4) + 12, chH = present ? 21 : 17;
     const flip = x + cw > w - padR + 40;
     const cx = flip ? x - cw + 1 : x - 1;
@@ -126,14 +132,21 @@ export function caseChart(el, c) {
   if (xn - xm > 24) {
     g += `<path d="M${f1(xm)},${by + 6}V${by}H${f1(xn)}V${by + 6}" class="bracket"/>`;
     g += `<text x="${f1((xm + xn) / 2)}" y="${by - 4}" class="lbl-sig" text-anchor="middle">${dur(c.lead_minutes)} EARLY</text>`;
+  } else if (xm - xn > 24) {
+    g += `<path d="M${f1(xn)},${by + 6}V${by}H${f1(xm)}V${by + 6}" class="bracket bracket-cold"/>`;
+    g += `<text x="${f1((xm + xn) / 2)}" y="${by - 4}" class="lbl-cold" text-anchor="middle">NEWS CAME ${dur(c.lead_minutes)} FIRST</text>`;
   }
-  const mLeft = xm - 92 > padL;
-  g += `<text x="${f1(mLeft ? xm - 5 : xm + 5)}" y="${h - padB - 8}" class="lbl-sig" text-anchor="${mLeft ? 'end' : 'start'}">PRICE MOVES</text>`;
+  const mLeft = xn < xm ? xm + 97 > w - padR : xm - 92 > padL;
+  const mTop = xn < xm && mLeft; // news first and no room on the right: lift it clear of FIRST ARTICLE
+  g += `<text x="${f1(mLeft ? xm - 5 : xm + 5)}" y="${mTop ? padT + 14 : h - padB - 8}" class="lbl-sig" text-anchor="${mLeft ? 'end' : 'start'}">PRICE MOVES</text>`;
   const nRight = xn + 100 < w - padR;
-  g += `<text x="${f1(nRight ? xn + 5 : xn - 5)}" y="${nRight ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nRight ? 'start' : 'end'}">FIRST ARTICLE</text>`;
+  if (xn < xm) { // news first: label the article on the far side so it never sits on PRICE MOVES
+    const nLeft = xn - 100 > padL;
+    g += `<text x="${f1(nLeft ? xn - 5 : xn + 5)}" y="${nLeft ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nLeft ? 'end' : 'start'}">FIRST ARTICLE</text>`;
+  } else g += `<text x="${f1(nRight ? xn + 5 : xn - 5)}" y="${nRight ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nRight ? 'start' : 'end'}">FIRST ARTICLE</text>`;
   g += `<text x="${padL}" y="${h - 6}" class="ax">${clock(t0, { sec: false })}</text>`;
   g += `<text x="${w - padR}" y="${h - 6}" class="ax" text-anchor="end">${clock(t1, { sec: false })}</text>`;
-  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Price moved ${dur(c.lead_minutes)} before the first article">${g}</svg>`;
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Price moved ${dur(c.lead_minutes)} ${c.lead_minutes < 0 ? 'after' : 'before'} the first article">${g}</svg>`;
 }
 
 // ---------------------------------------------------------------- PROOF: latency race
@@ -163,7 +176,7 @@ export function lagChart(el, res) {
     if (r.v > 0) g += `<rect class="hbar bar-${r.cls}" x="${padL}" y="${f1(yc - bh / 2)}" width="${f1(X(r.v) - padL)}" height="${bh}" style="--d:${i * 120}ms"/>`;
     else g += `<rect class="hbar bar-bone" x="${padL - 1}" y="${f1(yc - bh)}" width="3" height="${bh * 2}"/>`;
     if (r.lo != null && r.hi != null) g += `<line x1="${f1(X(r.lo))}" x2="${f1(X(r.hi))}" y1="${f1(yc + bh)}" y2="${f1(yc + bh)}" class="iqr"/>`;
-    g += `<text x="${f1(Math.max(X(r.v), padL) + 10)}" y="${f1(yc + 6)}" class="row-v row-v-${r.cls}">${r.v === 0 ? '0 s' : `${r.v} s`}</text>`;
+    g += `<text x="${f1(Math.max(X(r.v), padL) + 10)}" y="${f1(yc + 6)}" class="row-v row-v-${r.cls}">${r.v === 0 ? '0 s' : `${Number.isInteger(r.v) ? r.v : r.v.toFixed(1)} s`}</text>`;
   });
   el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Kalshi moves ${rows[1].v} seconds after a play; streams show it ${rows[3].v} to ${rows[4].v} seconds after">${g}</svg>`;
 }

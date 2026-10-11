@@ -1,12 +1,14 @@
 // Kalshi Knows service worker: app shell, network-first data, web push.
-const VERSION = 'kk-v4';
+// Bump VERSION on every deploy that changes the shell; activate() deletes older caches.
+const VERSION = 'kk-v5';
 const SHELL = ['./', './index.html', './styles.css', './js/app.js', './js/util.js', './js/data.js', './js/charts.js',
   './js/hero3d.js', './js/push.js', './js/qr.js', './js/emblems.js', './manifest.webmanifest', './icons/icon-192.png', './icons/badge-96.png',
   './icons/apple-touch-icon.png', './icons/favicon-64.png'];
 const CDN = /^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));
+  // cache: 'reload' skips the HTTP cache, so a new SW never precaches a stale file
+  e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(new Request(u, { cache: 'reload' })).catch(() => null)))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
@@ -15,7 +17,11 @@ self.addEventListener('activate', (e) => {
 async function networkFirst(req, noStore) {
   const cache = await caches.open(VERSION);
   try {
-    const res = await fetch(req, noStore ? { cache: 'no-store' } : undefined);
+    // data/config: never cached by the browser. Shell files: revalidate (GitHub Pages sends max-age=600, which would
+    // otherwise serve a stale app.js for 10 minutes after a deploy). Navigations can't take a RequestInit, so rebuild them.
+    const res = req.mode === 'navigate'
+      ? await fetch(new Request(req.url, { cache: 'no-cache', credentials: 'same-origin', redirect: 'manual' }))
+      : await fetch(req, { cache: noStore ? 'no-store' : 'no-cache' });
     const len = +(res.headers.get('content-length') || 0);
     if (res.ok && len < 3e6) cache.put(req, res.clone()).catch(() => {});
     return res;

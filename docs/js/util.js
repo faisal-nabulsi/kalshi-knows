@@ -46,7 +46,8 @@ export function dateShort(ms) {
   return new Date(ms).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
 export function dur(min) {
-  if (min == null) return '–';
+  if (min == null || !Number.isFinite(+min)) return '–';
+  min = Math.abs(+min); // callers say "early" or "late"; the number is always a length of time
   if (min < 1) return `${Math.round(min * 60)} s`;
   if (min < 120) return `${Math.round(min)} min`;
   if (min < 48 * 60) return `${(min / 60).toFixed(min < 600 ? 1 : 0)} hr`;
@@ -73,6 +74,19 @@ export const nick = (abbr) => EXTRA_TEAMS[abbr] || TEAMS[abbr] || abbr || '';
 export const PLAY = { TD: 'Touchdown', FG: 'Field goal', TURNOVER: 'Turnover', BIG_PLAY: 'Big play', SAFETY: 'Safety', OTHER: 'Big swing' };
 export const PLAY_SHORT = { TD: 'TD', FG: 'FG', TURNOVER: 'TURNOVER', BIG_PLAY: 'BIG PLAY', SAFETY: 'SAFETY', OTHER: 'SWING' };
 export const PLAY_POINTS = { TD: 7, FG: 3, SAFETY: 2 };
+// An alert's before/after win probability from the alerted team's side, so the move always reads upward.
+// The live engine sends team-side numbers (plus p_home_*); older recordings sent the home side.
+export function teamProbs(a) {
+  if (!a) return { before: 0, after: 0 };
+  if (a.p_home_before != null && a.p_home_after != null && a.home) {
+    const home = a.team === a.home;
+    return { before: home ? a.p_home_before : 1 - a.p_home_before, after: home ? a.p_home_after : 1 - a.p_home_after };
+  }
+  const b = a.p_before ?? 0, f = a.p_after ?? 0;
+  return f >= b ? { before: b, after: f } : { before: 1 - b, after: 1 - f };
+}
+// Price for display, or a dash when the market has no quote yet (pregame, settled).
+export const centsOr = (p, dash = '–') => (p == null || !Number.isFinite(+p) ? dash : cents(p));
 
 // ---------- the Predator Scale ----------
 export const TIERS = {

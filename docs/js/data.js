@@ -8,7 +8,7 @@ export async function resolveApi() {
     const cfg = override ? { api: override } : await fetchJSON('config.json', { timeout: 4000 });
     const api = (cfg?.api || '').replace(/\/+$/, '');
     if (!api) return null;
-    const health = await fetchJSON(`${api}/api/health`, { timeout: 4500 });
+    const health = await fetchJSON(`${api}/api/health`, { timeout: 6000 });
     if (health?.ok) return { api, health };
   } catch (e) { /* offline → replay */ }
   return null;
@@ -110,9 +110,14 @@ export class ReplaySource extends EventTarget {
     this.t0 = this.hist[0]?.[0] ?? Date.now();
     this.t1 = this.hist.at(-1)?.[0] ?? this.t0 + 60e3;
     this.recorded = this.t0;
-    const first = this.alerts[0];
-    this.setCursor(first ? Math.max(this.t0, first.ts_ms - 14e3) : this.t0);
+    this.setCursor(this.startCursor());
     this.fired = new Set(); this.confirmedSent = new Set();
+  }
+  // open on the first alert the model is confident about (a named play type, 60%+), so the first spoiler is a good one
+  startCursor() {
+    const strong = this.alerts.find((a) => { const t = a.inferred?.[0]; return t && t.type !== 'OTHER' && (t.prob || 0) >= 0.6; });
+    const first = strong || this.alerts[0];
+    return first ? Math.max(this.t0, first.ts_ms - 14e3) : this.t0;
   }
   emit(type, detail) { this.dispatchEvent(new CustomEvent(type, { detail })); }
   setCursor(c) { this.baseCursor = c; this.baseWall = performance.now(); this.last = c; }
@@ -124,6 +129,7 @@ export class ReplaySource extends EventTarget {
     this.timer = setInterval(() => this.tick(), 250);
     this.gamesTimer = setInterval(() => this.emitGames(), 2000);
   }
+  stop() { clearInterval(this.timer); clearInterval(this.gamesTimer); }
   nextAlert() { const c = this.now(); return this.alerts.find((a) => a.ts_ms > c + 1000); }
   skip() {
     const n = this.nextAlert() || this.alerts[0];
@@ -137,8 +143,9 @@ export class ReplaySource extends EventTarget {
     let c = this.now();
     if (c > this.t1 + 8e3) { // loop
       this.reset();
-      const first = this.alerts[0];
-      this.setCursor(first ? Math.max(this.t0, first.ts_ms - 14e3) : this.t0);
+      this.setCursor(this.startCursor());
+      // alerts before the start point go straight into the feed again
+      for (const a of this.alerts) if (a.ts_ms <= this.baseCursor) { this.fired.add(a.id); this.confirmedSent.add(a.id); this.emit('alert', { ...a, _initial: true }); }
       c = this.now(); this.emitGames();
     }
     for (const a of this.alerts) {

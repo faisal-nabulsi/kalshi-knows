@@ -1,7 +1,7 @@
 // Kalshi Knows: page orchestration.
 import {
   $, $$, h, esc, clamp, int, pct, cents, usd, clock, dateShort, dur, ago, nick, PLAY, PLAY_SHORT, PRESENT, SITE_URL, params,
-  loadData, fetchJSON, store, EXTRA_TEAMS, emblem, TIER_CRIT, playFx, onVisible, countUp, tierOf, tierAlert, tierDutch, tierKnew, tierBadge, tierLadder, TIERS,
+  loadData, fetchJSON, store, EXTRA_TEAMS, emblem, teamProbs, centsOr, TIER_CRIT, playFx, onVisible, countUp, tierOf, tierAlert, tierDutch, tierKnew, tierBadge, tierLadder, TIERS,
 } from './util.js';
 import { resolveApi, LiveSource, ReplaySource } from './data.js';
 import { liveChart, sparkline, caseChart, lagChart, payoffChart } from './charts.js';
@@ -26,8 +26,9 @@ function tickClock() {
 }
 setInterval(tickClock, 1000); tickClock();
 
-function setMode(mode, text) {
-  const b = $('#mode-badge'); b.dataset.mode = mode; $('#mode-text').textContent = text;
+function setMode(mode, text, detail = '') {
+  const b = $('#mode-badge'); b.dataset.mode = mode;
+  $('#mode-text').innerHTML = `${esc(text)}${detail ? `<span class="mode-detail"> · ${esc(detail)}</span>` : ''}`;
 }
 
 // nav highlight
@@ -136,26 +137,28 @@ function renderGameBug(g) {
   const prev = lastScores[key] || {};
   const bumpA = prev.a != null && prev.a !== g.away_score, bumpH = prev.h != null && prev.h !== g.home_score;
   lastScores[key] = { a: g.away_score, h: g.home_score };
+  const hasP = g.p_home != null;
   const p = g.p_home ?? 0.5;
   el.innerHTML = `
-    <div class="gb-team ${g.possession === g.away ? 'poss' : ''}"><span class="gb-abbr">${esc(g.away)}</span><span class="gb-nick">${esc(nick(g.away))}</span><span class="gb-score ${bumpA ? 'bump' : ''}">${g.away_score ?? 0}</span><span class="gb-p mono">${cents(1 - p)}</span></div>
-    <div class="gb-team ${g.possession === g.home ? 'poss' : ''}"><span class="gb-abbr">${esc(g.home)}</span><span class="gb-nick">${esc(nick(g.home))}</span><span class="gb-score ${bumpH ? 'bump' : ''}">${g.home_score ?? 0}</span><span class="gb-p mono">${cents(p)}</span></div>
+    <div class="gb-team ${g.possession === g.away ? 'poss' : ''}"><span class="gb-abbr">${esc(g.away)}</span><span class="gb-nick">${esc(nick(g.away))}</span><span class="gb-score ${bumpA ? 'bump' : ''}">${g.away_score ?? 0}</span><span class="gb-p mono">${hasP ? cents(1 - p) : '–'}</span></div>
+    <div class="gb-team ${g.possession === g.home ? 'poss' : ''}"><span class="gb-abbr">${esc(g.home)}</span><span class="gb-nick">${esc(nick(g.home))}</span><span class="gb-score ${bumpH ? 'bump' : ''}">${g.home_score ?? 0}</span><span class="gb-p mono">${hasP ? cents(p) : '–'}</span></div>
     <div class="gb-clock mono"><b>${esc(per)}</b>${g.situation ? `<span>${esc(g.situation)}</span>` : ''}</div>`;
-  $('#hb-game').innerHTML = `<b>${esc(g.away)} ${g.away_score ?? 0}</b> <i>at</i> <b>${esc(g.home)} ${g.home_score ?? 0}</b> <span class="mono">${esc(per)} · ${esc(g.home)} ${pct(p)}</span>`;
+  $('#hb-game').innerHTML = `<b>${esc(g.away)} ${g.away_score ?? 0}</b> <i>at</i> <b>${esc(g.home)} ${g.home_score ?? 0}</b> <span class="mono">${esc(per)}${hasP ? ` · ${esc(g.home)} ${pct(p)}` : ''}</span>`;
 }
 
 function renderGames() {
   const el = $('#games');
   const f = featured();
-  const others = S.games.filter((g) => g !== f);
+  const rank = { in: 0, pre: 1, post: 2 };
+  const others = S.games.filter((g) => g !== f).sort((a, b) => (rank[a.status] ?? 1) - (rank[b.status] ?? 1));
   if (!others.length) { el.innerHTML = ''; return; }
   el.innerHTML = `<p class="games-head mono">OTHER GAMES · TAP TO WATCH</p>` + others.map((g) => `
     <button class="game-row" data-id="${esc(g.game_id)}">
       <span class="gr-name">${esc(g.short_name || `${g.away} @ ${g.home}`)}</span>
       <span class="gr-score mono">${g.away_score ?? 0}–${g.home_score ?? 0}</span>
-      <span class="gr-clock mono">${g.status === 'in' ? `Q${g.period ?? ''} ${esc(g.clock || '')}` : esc((g.status || '').toUpperCase())}</span>
+      <span class="gr-clock mono">${g.status === 'in' ? `Q${g.period ?? ''} ${esc(g.clock || '')}` : g.status === 'post' ? 'FINAL' : g.status === 'pre' ? 'PREGAME' : esc((g.status || '').toUpperCase())}</span>
       ${sparkline((g.history || []).slice(-300), 110, 28)}
-      <span class="gr-p mono">${esc(g.home)} ${cents(g.p_home)}</span>
+      <span class="gr-p mono">${g.p_home != null ? `${esc(g.home)} ${cents(g.p_home)}` : '–'}</span>
     </button>`).join('');
   $$('.game-row', el).forEach((b) => b.addEventListener('click', () => { S.featured = b.dataset.id; store.set('featured', S.featured); renderLive(); }));
 }
@@ -177,14 +180,15 @@ function feedItem(a) {
   const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
   const t = tierOf(a, tierAlert);
   const c = a.confirmed;
+  const tp = teamProbs(a);
   const lead = Math.max(0, beforeStream(a));
   const game = S.games.find((g) => g.game_id === a.game_id);
   return `<li class="fi ${c ? 'fi-conf' : 'fi-pend'}" data-id="${esc(a.id)}">
     <div class="fi-top mono"><span>${clock(a.ts_ms)}</span><span>${esc(game?.short_name || '')}</span></div>
-    <div class="fi-play"><b>${esc(nick(a.team) || a.team)}</b> ${esc(PLAY[top.type] || top.type)} <span class="fi-move mono">${pct(a.p_before)}→${pct(a.p_after)}</span></div>
+    <div class="fi-play"><b>${esc(nick(a.team) || a.team)}</b> ${esc(PLAY[top.type] || top.type)} <span class="fi-move mono">${pct(tp.before)}→${pct(tp.after)}</span></div>
     ${tierBadge(t)}
     ${c ? `<p class="fi-text">${esc(c.play_text || '')}</p>
-      <p class="fi-lead"><span class="sig">Kalshi knew ${lead.toFixed(0)}s before your stream.</span>${c.lead_s != null ? ` <span class="mono">ESPN's feed caught up ${(+c.lead_s).toFixed(0)}s later.</span>` : ''}</p>`
+      <p class="fi-lead">${lead >= 1 ? `<span class="sig">Kalshi knew ${lead.toFixed(0)}s before your stream.</span>` : `<span>On ${esc((S.delays.find((d) => d.v === S.delay)?.k || 'your stream').toLowerCase())}, you saw this one first.</span>`}${c.lead_s > 0 ? ` <span class="mono">Beat ESPN's own play-by-play by ${(+c.lead_s).toFixed(0)}s.</span>` : ''}</p>`
       : `<p class="fi-text mono fi-wait">${pct(top.prob)} sure · waiting for the play-by-play to confirm</p>`}
   </li>`;
 }
@@ -195,6 +199,15 @@ function renderFeed() {
   $('#feed').innerHTML = list.map((a) => { const html = feedItem(a); if (feedSeen.has(a.id)) return html; feedSeen.add(a.id); return html.replace('class="fi ', 'class="fi fi-new '); }).join('');
   $('#feed-count').textContent = String(S.alerts.size);
   $('#feed-empty').hidden = list.length > 0;
+  const leads = [...S.alerts.values()].map((a) => +a.confirmed?.lead_s).filter((v) => v > 0).sort((a, b) => a - b);
+  const sum = $('#feed-sum');
+  if (sum) {
+    sum.hidden = !leads.length;
+    const med = leads.length ? leads[Math.floor((leads.length - 1) / 2)] : 0;
+    sum.innerHTML = leads.length <= 4
+      ? `Beat ESPN's own play-by-play by <b>${leads.map((v) => `${v.toFixed(1)}s`).join(' · ')}</b>`
+      : `Beat ESPN's own play-by-play by a median <b>${med.toFixed(1)}s</b> across ${leads.length} confirmed plays`;
+  }
 }
 
 function onAlert(a) {
@@ -236,10 +249,11 @@ const TO = {
     $('#to-when').textContent = `MARKET MOVED ${clock(this.t0, { tenth: true })}`;
     const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
     $('#to-team').textContent = nick(a.team) || a.team || '';
-    $('#to-play').dataset.pre = `UP ${Math.round(Math.abs(a.delta ?? (a.p_after - a.p_before)) * 100)}¢`;
+    $('#to-play').dataset.pre = `UP ${Math.round(Math.abs(teamProbs(a).after - teamProbs(a).before) * 100)}¢`;
     $('#to-play').dataset.post = PLAY[top.type] || top.type;
     $('#to-play').textContent = $('#to-play').dataset.pre;
-    $('#to-sure').innerHTML = `<b>${pct(top.prob)} SURE</b> · ${esc(a.team)} ${pct(a.p_before)} → ${pct(a.p_after)}`;
+    const tp = teamProbs(a);
+    $('#to-sure').innerHTML = `<b>${pct(top.prob)} SURE</b> · ${esc(a.team)} ${pct(tp.before)} → ${pct(tp.after)}`;
     $('#to-alt').textContent = (a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ') ? `or: ${(a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ')}` : '';
     let tierEl = $('#to-tier');
     if (!tierEl) { tierEl = h('<div class="to-tier" id="to-tier"></div>'); $('.to-count').appendChild(tierEl); }
@@ -341,7 +355,7 @@ function renderKnew(data, mock) {
       <div class="case-body">
         <div class="case-chart" data-case="${i}"></div>
         <div class="case-side">
-          <div class="case-lead-n"><span>${esc(dur(c.lead_minutes).split(' ')[0])}</span><em>${esc(dur(c.lead_minutes).split(' ')[1] || '')}<br>head start</em></div>
+          <div class="case-lead-n ${c.lead_minutes < 0 ? 'case-late' : ''}"><span>${esc(dur(c.lead_minutes).split(' ')[0])}</span><em>${esc(dur(c.lead_minutes).split(' ')[1] || '')}<br>${c.lead_minutes < 0 ? 'behind the news' : 'head start'}</em></div>
           ${tierBadge(t, { blurb: true })}
         </div>
       </div>
@@ -449,14 +463,19 @@ renderScale();
 let tickerSig = '';
 function renderTicker() {
   const items = [];
-  S.games.forEach((g) => items.push(`<span class="tk"><b>${esc(g.short_name || `${g.away} @ ${g.home}`)}</b> ${esc(g.home)} <em class="mono">${cents(g.p_home)}</em> · ${esc(g.away)} <em class="mono">${cents(1 - (g.p_home ?? 0.5))}</em></span>`));
+  const rank = { in: 0, pre: 1, post: 2 };
+  S.games.slice().sort((a, b) => (rank[a.status] ?? 1) - (rank[b.status] ?? 1)).forEach((g) => {
+    const name = `<b>${esc(g.short_name || `${g.away} @ ${g.home}`)}</b>`;
+    if (g.p_home == null) { items.push(`<span class="tk">${name} <em class="mono">${g.status === 'post' ? 'FINAL' : 'KICKOFF SOON'}</em></span>`); return; }
+    items.push(`<span class="tk">${name} ${esc(g.home)} <em class="mono">${cents(g.p_home)}</em> · ${esc(g.away)} <em class="mono">${cents(1 - g.p_home)}</em></span>`);
+  });
   const last = S.lastAlert;
   if (last) items.push(`<span class="tk tk-sig"><b>LAST SPOILER</b> ${esc(last.headline || '')}</span>`);
   if (S.db) {
     items.push(S.dbNear ? `<span class="tk"><b>DUTCH BOOK</b> 0 free lunches, ${int((S.db.near_misses || []).length)} traps</span>` : `<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
     (S.dbOpps || []).slice(0, 3).forEach((o) => items.push(o._near ? `<span class="tk">${esc(o.title)} <em class="mono">looks free, isn't</em></span>` : `<span class="tk">${esc(o.title)} <em class="mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</em></span>`));
   }
-  (S.knew?.cases || []).slice(0, 3).forEach((c) => items.push(`<span class="tk"><b>SOMEONE KNEW</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} early</em></span>`));
+  (S.knew?.cases || []).slice().sort((a, b) => (b.lead_minutes || 0) - (a.lead_minutes || 0)).slice(0, 3).forEach((c) => items.push(`<span class="tk"><b>SOMEONE KNEW</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} ${c.lead_minutes < 0 ? 'after the news' : 'early'}</em></span>`));
   const sig = items.join('');
   if (sig === tickerSig || !items.length) return;
   tickerSig = sig;
@@ -483,32 +502,56 @@ async function boot() {
   onVisible($('#proof'), () => renderProof(S.results, resMock), { threshold: 0.05 });
 
   // live or replay
-  const live = await resolveApi();
-  if (live) {
+  const onGames = (e) => { S.games = e.detail || []; S.games.forEach((g) => Object.assign(EXTRA_TEAMS, g.team_names || {})); renderLive(); renderTicker(); };
+  const onAlertEv = (e) => onAlert(e.detail);
+  const startLive = (live) => {
     S.api = live.api;
     S.source = new LiveSource(live.api, live.health);
     const serverReplay = live.health.mode === 'replay';
-    setMode(serverReplay ? 'replay' : 'live', serverReplay ? 'LIVE SERVER · REPLAY' : 'LIVE');
+    const okMode = () => setMode(serverReplay ? 'replay' : 'live', serverReplay ? 'REPLAY' : 'LIVE', serverReplay ? 'live server' : '');
+    okMode();
     $('#live-meta').textContent = `KALSHI PUBLIC ORDER BOOK · ${int(live.health.games_tracked)} GAMES TRACKED · UPDATES EVERY ~2 S`;
-    const okMode = () => setMode(serverReplay ? 'replay' : 'live', serverReplay ? 'LIVE SERVER · REPLAY' : 'LIVE');
+    $('#skip-btn').hidden = true;
     S.source.addEventListener('status', (e) => { if (e.detail.ok || Date.now() - S.source.lastGamesAt < 12000) okMode(); else setMode('warn', 'RECONNECTING'); });
     S.source.addEventListener('games', okMode);
-  } else {
+  };
+  const live = await resolveApi();
+  if (live) startLive(live);
+  else {
     const { data: rep, mock } = await loadData('replay');
     if (rep?.history?.length) {
       S.source = new ReplaySource(rep);
-      setMode('replay', `REPLAY · recorded ${dateShort(S.source.recorded)}`);
+      setMode('replay', 'REPLAY', `recorded ${dateShort(S.source.recorded)}`);
       $('#live-meta').innerHTML = `REPLAY OF ${esc(rep.game?.short_name || '')}, RECORDED ${esc(dateShort(S.source.recorded).toUpperCase())} · REAL SPEED${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
       $('#skip-btn').hidden = false;
-      $('#skip-btn').addEventListener('click', () => S.source.skip());
+      $('#skip-btn').addEventListener('click', () => S.source.skip?.());
       S.source.addEventListener('reset', () => { S.alerts.clear(); S.shownTakeover.clear(); renderFeed(); });
     } else {
       setMode('off', 'OFF AIR');
       S.source = { kind: 'none', now: () => Date.now(), addEventListener() {}, start() {} };
     }
+    // The live server may just have been slow to answer (quick tunnels hiccup). Keep checking, and switch over
+    // in place when it answers, without reloading the page. Never switch in the middle of a spoiler.
+    {
+      const retry = setInterval(async () => {
+        if (!$('#takeover').hidden) return;
+        const back = await resolveApi();
+        if (!back || !$('#takeover').hidden) return;
+        clearInterval(retry);
+        S.source.stop?.();
+        S.alerts.clear(); S.shownTakeover.clear(); S.games = []; S.lastAlert = null;
+        renderFeed();
+        startLive(back);
+        S.source.addEventListener('games', onGames);
+        S.source.addEventListener('alert', onAlertEv);
+        S.source.start();
+        S.push?.render();
+        loadDb();
+      }, 15000);
+    }
   }
-  S.source.addEventListener('games', (e) => { S.games = e.detail || []; S.games.forEach((g) => Object.assign(EXTRA_TEAMS, g.team_names || {})); renderLive(); renderTicker(); });
-  S.source.addEventListener('alert', (e) => onAlert(e.detail));
+  S.source.addEventListener('games', onGames);
+  S.source.addEventListener('alert', onAlertEv);
   S.source.start();
   setInterval(() => { if (S.games.length) renderLive(); }, 1000);
 
@@ -518,14 +561,16 @@ async function boot() {
 
   // other sections
   knewP.then(({ data, mock }) => { renderKnew(data, mock); renderTicker(); });
-  const loadDb = async () => {
-    if (S.api) {
-      try { const d = await fetchJSON(`${S.api}/api/dutchbook`, { timeout: 15000 }); if (d?.opportunities) { renderDutch(d, { live: true }); renderTicker(); return true; } } catch {}
-    }
+  // snapshot right away; the live scan replaces it when (if) the engine answers
+  let dbLive = false;
+  async function loadDb() {
+    if (!S.api) return false;
+    try { const d = await fetchJSON(`${S.api}/api/dutchbook`, { timeout: 15000 }); if (d?.opportunities) { dbLive = true; renderDutch(d, { live: true }); renderTicker(); return true; } } catch {}
     return false;
-  };
-  if (!(await loadDb())) dbP.then(({ data, mock }) => { renderDutch(data, { mock }); renderTicker(); });
-  if (S.api) setInterval(loadDb, 60000);
+  }
+  dbP.then(({ data, mock }) => { if (!dbLive) { renderDutch(data, { mock }); renderTicker(); } });
+  loadDb();
+  setInterval(loadDb, 60000);
 
   // QR codes
   const url = SITE_URL;
@@ -537,6 +582,17 @@ async function boot() {
   addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { renderLive(); drawCases(); if (S.results && $('#lag-chart').innerHTML) lagChart($('#lag-chart'), S.results); if (S.dbOpps?.length) renderDbDetail(S.dbOpps[dbSel ?? 0]); }, 150); });
 }
 
+// presenter QR: shows over the hero and the install section only (it would cover the live feed). Q pins it on.
+const pqrIn = new Map();
+function pqrUpdate() {
+  const pq = $('#pqr'); if (!pq) return;
+  pq.classList.toggle('pqr-off', !pq.dataset.pin && ![...pqrIn.values()].some(Boolean));
+}
+if (PRESENT) {
+  const io = new IntersectionObserver((es) => { es.forEach((e) => pqrIn.set(e.target, e.isIntersecting)); pqrUpdate(); }, { rootMargin: '-35% 0px -35% 0px' });
+  ['#top', '#get', '.foot'].forEach((q) => { const el = $(q); if (el) io.observe(el); });
+}
+
 // keyboard: presenter controls
 addEventListener('keydown', (e) => {
   if (e.target.matches('input, textarea')) return;
@@ -545,6 +601,7 @@ addEventListener('keydown', (e) => {
   else if (k === 't' && S.lastAlert) TO.open(S.lastAlert, { demo: true });
   else if (k === 'n' && S.source?.skip) S.source.skip();
   else if (k === 'r') TO.reveal();
+  else if (k === 'q' && PRESENT) { const pq = $('#pqr'); pq.dataset.pin = pq.dataset.pin ? '' : '1'; pqrUpdate(); }
   else if ('123456'.includes(k) && k) $(['#live', '#knew', '#dutch', '#proof', '#scale', '#get'][+k - 1])?.scrollIntoView({ behavior: 'smooth' });
 });
 
