@@ -28,6 +28,9 @@ P&L is dollars per $1 contract. CI = 95% bootstrap interval that resamples whole
 
 On the 150-prompt blind subset: buy-the-favorite = 150 bets, 72.0% win rate, -$0.023/bet (CI -$0.102 to +$0.054); follow-the-jump = 128 bets, 54.7%, -$0.048/bet (CI -$0.119 to +$0.020).
 
+Blind Claude baseline on the same 150 prompts (answered without the key, file `claude_betbench.json`): 12 bets, 7 wins (58%), +$0.92 total (+$0.077 per bet).
+That is only 12 bets, so it is not evidence of a real edge; one or two different outcomes would flip the sign.
+
 **Mac run status.** The Mac has 8 GB of memory, so GRPO ran at about 10 seconds per step and only reached 23 steps (1 prompt x 8 answers per step) before it was stopped to free the Mac for the live demo.
 No checkpoint was saved, so the base-vs-GRPO test-set comparison was not run on the Mac.
 The full run (more steps on a T4 GPU, plus base-vs-GRPO evaluation) is moving to Kaggle as kernel `faisalnabulsi/kk-grpo`.
