@@ -1,0 +1,1 @@
+{"classes": ["TD", "FG", "TURNOVER", "SAFETY", "BIG_PLAY", "OTHER"], "features": ["qtr", "game_seconds_remaining", "score_diff_home", "posteam_is_home", "down", "ydstogo", "yardline_100", "p_home_before", "delta_home", "abs_delta", "delta_pos"], "best_iteration": 617}

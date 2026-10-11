@@ -1,0 +1,164 @@
+{
+ "classes": [
+  "TD",
+  "FG",
+  "TURNOVER",
+  "SAFETY",
+  "BIG_PLAY",
+  "OTHER"
+ ],
+ "features": [
+  "qtr",
+  "game_seconds_remaining",
+  "score_diff_home",
+  "posteam_is_home",
+  "down",
+  "ydstogo",
+  "yardline_100",
+  "p_home_before",
+  "delta_home",
+  "abs_delta",
+  "delta_pos"
+ ],
+ "sim_test": [
+  {
+   "model": "majority_prior",
+   "accuracy": 0.7072,
+   "top2": 0.8123,
+   "log_loss": 0.9927
+  },
+  {
+   "model": "rule_of_thumb",
+   "accuracy": 0.1699,
+   "top2": 0.2368,
+   "log_loss": 3.2652
+  },
+  {
+   "model": "logistic_regression",
+   "accuracy": 0.7493,
+   "top2": 0.9546,
+   "log_loss": 0.6551
+  },
+  {
+   "model": "xgboost_gpu",
+   "accuracy": 0.8591,
+   "top2": 0.9862,
+   "log_loss": 0.3388
+  },
+  {
+   "model": "mlp_gpu",
+   "accuracy": 0.8506,
+   "top2": 0.985,
+   "log_loss": 0.3609
+  }
+ ],
+ "real_kalshi_test": [
+  {
+   "model": "majority_prior",
+   "accuracy": 0.0,
+   "top2": 0.4028776978417266,
+   "log_loss": 2.4674074639267696,
+   "n": 417
+  },
+  {
+   "model": "rule_of_thumb",
+   "accuracy": 0.5995203836930456,
+   "top2": 0.8345323741007195,
+   "log_loss": 1.6298512489711199,
+   "n": 417
+  },
+  {
+   "model": "kalshi_only_logistic",
+   "accuracy": 0.7218225419664268,
+   "top2": 0.9088729016786571,
+   "log_loss": 0.7605225117803661,
+   "n": 417
+  },
+  {
+   "model": "mlp_gpu",
+   "accuracy": 0.6282973621103117,
+   "top2": 0.9424460431654677,
+   "log_loss": 0.9199068972761999,
+   "n": 417
+  },
+  {
+   "model": "xgboost_gpu",
+   "accuracy": 0.5875299760191847,
+   "top2": 0.9328537170263789,
+   "log_loss": 0.9369387030601501,
+   "n": 417
+  },
+  {
+   "model": "xgboost_calibrated_on_kalshi",
+   "accuracy": 0.8968824940047961,
+   "top2": 0.9760191846522782,
+   "log_loss": 0.3009735161840977,
+   "n": 417
+  }
+ ],
+ "model_leaderboard": [
+  {
+   "model": "xgboost_calibrated_on_kalshi",
+   "accuracy": 0.8968824940047961,
+   "top2": 0.9760191846522782,
+   "log_loss": 0.3009735161840977,
+   "n": 417,
+   "tier": 6,
+   "tier_name": "Kevin & Faisal"
+  },
+  {
+   "model": "kalshi_only_logistic",
+   "accuracy": 0.7218225419664268,
+   "top2": 0.9088729016786571,
+   "log_loss": 0.7605225117803661,
+   "n": 417,
+   "tier": 5,
+   "tier_name": "Lion"
+  },
+  {
+   "model": "mlp_gpu",
+   "accuracy": 0.6282973621103117,
+   "top2": 0.9424460431654677,
+   "log_loss": 0.9199068972761999,
+   "n": 417,
+   "tier": 4,
+   "tier_name": "Everyone Else"
+  },
+  {
+   "model": "xgboost_gpu",
+   "accuracy": 0.5875299760191847,
+   "top2": 0.9328537170263789,
+   "log_loss": 0.9369387030601501,
+   "n": 417,
+   "tier": 3,
+   "tier_name": "Gazelle"
+  },
+  {
+   "model": "rule_of_thumb",
+   "accuracy": 0.5995203836930456,
+   "top2": 0.8345323741007195,
+   "log_loss": 1.6298512489711199,
+   "n": 417,
+   "tier": 2,
+   "tier_name": "House Cat"
+  },
+  {
+   "model": "majority_prior",
+   "accuracy": 0.0,
+   "top2": 0.4028776978417266,
+   "log_loss": 2.4674074639267696,
+   "n": 417,
+   "tier": 1,
+   "tier_name": "Dugar"
+  }
+ ],
+ "train_rows": 244434,
+ "train_seasons": "1999-2023",
+ "real_label_dist": {
+  "BIG_PLAY": 168,
+  "TD": 132,
+  "TURNOVER": 105,
+  "FG": 12
+ },
+ "real_games": 62
+}
