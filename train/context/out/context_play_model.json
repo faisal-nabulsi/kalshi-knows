@@ -1,0 +1,478 @@
+{
+ "rows_identical_to_stage2_matrix": true,
+ "n_rows": 8808,
+ "features": {
+  "venue_weather": [
+   "indoor",
+   "grass",
+   "temp",
+   "wind"
+  ],
+  "lines": [
+   "spread_pos",
+   "total_line"
+  ],
+  "rest_div_primetime": [
+   "rest_diff_pos",
+   "div_game",
+   "primetime"
+  ],
+  "qb_injuries": [
+   "backup_qb_pos",
+   "backup_qb_def",
+   "qb_out_pos",
+   "qb_out_def",
+   "inj_out_pos",
+   "inj_out_def"
+  ],
+  "ALL_context": [
+   "indoor",
+   "grass",
+   "temp",
+   "wind",
+   "spread_pos",
+   "total_line",
+   "rest_diff_pos",
+   "div_game",
+   "primetime",
+   "backup_qb_pos",
+   "backup_qb_def",
+   "qb_out_pos",
+   "qb_out_def",
+   "inj_out_pos",
+   "inj_out_def"
+  ]
+ },
+ "cv_by_game": {
+  "PRODUCTION (stage1 + state)": {
+   "acc": 0.7371,
+   "always_other": 0.6003,
+   "log_loss": 0.6315,
+   "named_precision": 0.795,
+   "named_calls": 200,
+   "named_precision_ci95": [
+    0.737,
+    0.851
+   ],
+   "d_acc_vs_prod": 0.0,
+   "d_acc_ci95": [
+    0.0,
+    0.0
+   ],
+   "d_logloss_vs_prod": 0.0,
+   "d_logloss_ci95": [
+    0.0,
+    0.0
+   ],
+   "d_named_precision_ci95": [
+    0.0,
+    0.0
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "+ venue_weather": {
+   "acc": 0.7337,
+   "always_other": 0.6003,
+   "log_loss": 0.6304,
+   "named_precision": 0.8088,
+   "named_calls": 204,
+   "named_precision_ci95": [
+    0.747,
+    0.864
+   ],
+   "d_acc_vs_prod": -0.0034,
+   "d_acc_ci95": [
+    -0.009,
+    0.003
+   ],
+   "d_logloss_vs_prod": -0.0011,
+   "d_logloss_ci95": [
+    -0.004,
+    0.002
+   ],
+   "d_named_precision_ci95": [
+    -0.02,
+    0.048
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "+ lines": {
+   "acc": 0.7344,
+   "always_other": 0.6003,
+   "log_loss": 0.6305,
+   "named_precision": 0.7635,
+   "named_calls": 203,
+   "named_precision_ci95": [
+    0.701,
+    0.822
+   ],
+   "d_acc_vs_prod": -0.0027,
+   "d_acc_ci95": [
+    -0.009,
+    0.003
+   ],
+   "d_logloss_vs_prod": -0.001,
+   "d_logloss_ci95": [
+    -0.004,
+    0.002
+   ],
+   "d_named_precision_ci95": [
+    -0.069,
+    0.003
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "+ rest_div_primetime": {
+   "acc": 0.732,
+   "always_other": 0.6003,
+   "log_loss": 0.6319,
+   "named_precision": 0.8122,
+   "named_calls": 197,
+   "named_precision_ci95": [
+    0.751,
+    0.869
+   ],
+   "d_acc_vs_prod": -0.0051,
+   "d_acc_ci95": [
+    -0.01,
+    -0.0
+   ],
+   "d_logloss_vs_prod": 0.0004,
+   "d_logloss_ci95": [
+    -0.002,
+    0.003
+   ],
+   "d_named_precision_ci95": [
+    -0.01,
+    0.045
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "+ qb_injuries": {
+   "acc": 0.7327,
+   "always_other": 0.6003,
+   "log_loss": 0.6304,
+   "named_precision": 0.7905,
+   "named_calls": 210,
+   "named_precision_ci95": [
+    0.729,
+    0.849
+   ],
+   "d_acc_vs_prod": -0.0044,
+   "d_acc_ci95": [
+    -0.01,
+    0.002
+   ],
+   "d_logloss_vs_prod": -0.0011,
+   "d_logloss_ci95": [
+    -0.004,
+    0.002
+   ],
+   "d_named_precision_ci95": [
+    -0.039,
+    0.029
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "+ ALL_context": {
+   "acc": 0.7333,
+   "always_other": 0.6003,
+   "log_loss": 0.632,
+   "named_precision": 0.7905,
+   "named_calls": 210,
+   "named_precision_ci95": [
+    0.733,
+    0.844
+   ],
+   "d_acc_vs_prod": -0.0037,
+   "d_acc_ci95": [
+    -0.01,
+    0.003
+   ],
+   "d_logloss_vs_prod": 0.0005,
+   "d_logloss_ci95": [
+    -0.003,
+    0.004
+   ],
+   "d_named_precision_ci95": [
+    -0.047,
+    0.036
+   ],
+   "n": 2940,
+   "games": 296
+  },
+  "placebo: ALL_context shuffled across games (5 seeds)": [
+   {
+    "acc": 0.7282,
+    "d_acc_vs_prod": -0.0088,
+    "d_logloss_vs_prod": 0.0023,
+    "named_precision": 0.8073,
+    "named_calls": 192
+   },
+   {
+    "acc": 0.7279,
+    "d_acc_vs_prod": -0.0092,
+    "d_logloss_vs_prod": 0.0043,
+    "named_precision": 0.799,
+    "named_calls": 194
+   },
+   {
+    "acc": 0.7296,
+    "d_acc_vs_prod": -0.0075,
+    "d_logloss_vs_prod": 0.0031,
+    "named_precision": 0.7598,
+    "named_calls": 204
+   },
+   {
+    "acc": 0.734,
+    "d_acc_vs_prod": -0.0031,
+    "d_logloss_vs_prod": 0.0051,
+    "named_precision": 0.7908,
+    "named_calls": 196
+   },
+   {
+    "acc": 0.7367,
+    "d_acc_vs_prod": -0.0003,
+    "d_logloss_vs_prod": 0.0047,
+    "named_precision": 0.7619,
+    "named_calls": 189
+   }
+  ]
+ },
+ "temporal_2025_to_2026": {
+  "PRODUCTION (stage1 + state)": {
+   "acc": 0.7399,
+   "always_other": 0.5712,
+   "log_loss": 0.626,
+   "named_precision": 0.8108,
+   "named_calls": 37,
+   "named_precision_ci95": [
+    0.674,
+    0.935
+   ],
+   "d_acc_vs_prod": 0.0,
+   "d_acc_ci95": [
+    0.0,
+    0.0
+   ],
+   "d_logloss_vs_prod": 0.0,
+   "d_logloss_ci95": [
+    0.0,
+    0.0
+   ],
+   "d_named_precision_ci95": [
+    0.0,
+    0.0
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "+ venue_weather": {
+   "acc": 0.7346,
+   "always_other": 0.5712,
+   "log_loss": 0.6255,
+   "named_precision": 0.7447,
+   "named_calls": 47,
+   "named_precision_ci95": [
+    0.604,
+    0.88
+   ],
+   "d_acc_vs_prod": -0.0053,
+   "d_acc_ci95": [
+    -0.018,
+    0.007
+   ],
+   "d_logloss_vs_prod": -0.0005,
+   "d_logloss_ci95": [
+    -0.006,
+    0.005
+   ],
+   "d_named_precision_ci95": [
+    -0.182,
+    0.023
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "+ lines": {
+   "acc": 0.7399,
+   "always_other": 0.5712,
+   "log_loss": 0.6163,
+   "named_precision": 0.7436,
+   "named_calls": 39,
+   "named_precision_ci95": [
+    0.576,
+    0.889
+   ],
+   "d_acc_vs_prod": 0.0,
+   "d_acc_ci95": [
+    -0.013,
+    0.012
+   ],
+   "d_logloss_vs_prod": -0.0097,
+   "d_logloss_ci95": [
+    -0.017,
+    -0.002
+   ],
+   "d_named_precision_ci95": [
+    -0.177,
+    0.0
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "+ rest_div_primetime": {
+   "acc": 0.7346,
+   "always_other": 0.5712,
+   "log_loss": 0.6252,
+   "named_precision": 0.8421,
+   "named_calls": 38,
+   "named_precision_ci95": [
+    0.706,
+    0.96
+   ],
+   "d_acc_vs_prod": -0.0053,
+   "d_acc_ci95": [
+    -0.018,
+    0.007
+   ],
+   "d_logloss_vs_prod": -0.0008,
+   "d_logloss_ci95": [
+    -0.005,
+    0.004
+   ],
+   "d_named_precision_ci95": [
+    0.002,
+    0.077
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "+ qb_injuries": {
+   "acc": 0.7329,
+   "always_other": 0.5712,
+   "log_loss": 0.6267,
+   "named_precision": 0.7805,
+   "named_calls": 41,
+   "named_precision_ci95": [
+    0.639,
+    0.902
+   ],
+   "d_acc_vs_prod": -0.007,
+   "d_acc_ci95": [
+    -0.019,
+    0.003
+   ],
+   "d_logloss_vs_prod": 0.0007,
+   "d_logloss_ci95": [
+    -0.005,
+    0.007
+   ],
+   "d_named_precision_ci95": [
+    -0.089,
+    0.014
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "+ ALL_context": {
+   "acc": 0.7329,
+   "always_other": 0.5712,
+   "log_loss": 0.6193,
+   "named_precision": 0.7442,
+   "named_calls": 43,
+   "named_precision_ci95": [
+    0.581,
+    0.893
+   ],
+   "d_acc_vs_prod": -0.007,
+   "d_acc_ci95": [
+    -0.021,
+    0.006
+   ],
+   "d_logloss_vs_prod": -0.0067,
+   "d_logloss_ci95": [
+    -0.015,
+    0.002
+   ],
+   "d_named_precision_ci95": [
+    -0.199,
+    0.023
+   ],
+   "n": 569,
+   "games": 58
+  },
+  "placebo: ALL_context shuffled across games (5 seeds)": [
+   {
+    "acc": 0.7364,
+    "d_acc_vs_prod": -0.0035,
+    "d_logloss_vs_prod": -0.0054,
+    "named_precision": 0.8108,
+    "named_calls": 37
+   },
+   {
+    "acc": 0.7223,
+    "d_acc_vs_prod": -0.0176,
+    "d_logloss_vs_prod": 0.0035,
+    "named_precision": 0.7805,
+    "named_calls": 41
+   },
+   {
+    "acc": 0.7293,
+    "d_acc_vs_prod": -0.0105,
+    "d_logloss_vs_prod": 0.0051,
+    "named_precision": 0.8056,
+    "named_calls": 36
+   },
+   {
+    "acc": 0.7329,
+    "d_acc_vs_prod": -0.007,
+    "d_logloss_vs_prod": 0.0092,
+    "named_precision": 0.7317,
+    "named_calls": 41
+   },
+   {
+    "acc": 0.7241,
+    "d_acc_vs_prod": -0.0158,
+    "d_logloss_vs_prod": 0.0083,
+    "named_precision": 0.7949,
+    "named_calls": 39
+   }
+  ]
+ },
+ "gain_share_full_model": {
+  "sim_TD": 0.1341,
+  "sim_TURNOVER": 0.1206,
+  "sim_BIG_PLAY": 0.1205,
+  "sim_OTHER": 0.108,
+  "sim_FG": 0.0744,
+  "yardline_100": 0.0585,
+  "down": 0.0451,
+  "qtr": 0.0291,
+  "game_seconds_remaining": 0.0291,
+  "ydstogo": 0.0265,
+  "backup_qb_pos": 0.0233,
+  "sim_SAFETY": 0.019,
+  "temp": 0.0157,
+  "inj_out_pos": 0.0156,
+  "grass": 0.0152,
+  "spread_pos": 0.0151,
+  "rest_diff_pos": 0.015,
+  "posteam_is_home": 0.0146,
+  "total_line": 0.0146,
+  "score_diff_home": 0.0146,
+  "wind": 0.0145,
+  "qb_out_pos": 0.0142,
+  "backup_qb_def": 0.0141,
+  "inj_out_def": 0.0131,
+  "primetime": 0.0121,
+  "div_game": 0.0113,
+  "qb_out_def": 0.0062,
+  "indoor": 0.0059
+ }
+}

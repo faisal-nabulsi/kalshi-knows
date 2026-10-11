@@ -54,3 +54,7 @@ This file is not edited after the analysis runs; anything added later goes under
 ## Deviations
 
 (none at time of writing)
+
+- 2026-10-11 ~12:55 PDT (after the run): added a descriptive "gross ROI at last trade, no fee" column to every
+  result. No rule, threshold, entry time, fee model or survival criterion was changed. H3 had 0 qualifying trades
+  in 2026 (no cold/windy games in weeks 1-5), so it is reported as untestable.
