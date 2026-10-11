@@ -204,6 +204,11 @@ function playMs(a) {
 // seconds between our alert and the moment the chosen stream shows the play
 function beforeStream(a) { return S.delay - (a.ts_ms - playMs(a)) / 1000; }
 
+// what ESPN says happened; swing plays (no TD/FG/turnover/20+ yd play, but ESPN's win probability moved 5+ pts)
+const isSwing = (c) => c?.play_type === 'SWING';
+const swingLabel = (c) => `Real swing play${c.swing_kind && c.swing_kind !== 'Swing play' ? `: ${c.swing_kind}` : ''}${c.swing_detail ? ` — ${c.swing_detail}` : ''}`;
+const confText = (c) => !c ? '' : isSwing(c) ? `${swingLabel(c)}${c.play_text ? ` · ${c.play_text}` : ''}` : (c.play_text || '');
+const isReplay = () => S.source?.kind === 'replay' || S.source?.serverMode === 'replay';
 const callOf = (a) => {
   const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
   const team = nick(a.team) || a.team || '';
@@ -219,7 +224,7 @@ function feedItem(a) {
   return `<li class="fi ${c ? 'fi-conf' : 'fi-pend'} ${S.unveiled.has(a.id) ? 'unveil' : ''}" data-id="${esc(a.id)}">
     <div class="fi-top mono"><span>${clock(a.ts_ms)}</span><span>${esc(game?.short_name || a.short_name || '')}</span></div>
     <div class="shroud"><div class="fi-play"><b>${esc(call.team)}</b> ${esc(call.play)} <span class="fi-move mono">${pct(tp.before)}→${pct(tp.after)}</span></div>
-    ${c ? `<p class="fi-text">${esc(c.play_text || '')}</p>
+    ${c ? `<p class="fi-text">${esc(confText(c))}</p>
       <p class="fi-lead">${lead >= 1 ? `<span class="sig">${lead.toFixed(0)}s before ${esc(S.delayK)} showed it.</span>` : `<span>On ${esc(S.delayK)}, you saw this one first.</span>`}${c.lead_s > 0 ? ` <span class="mono">Arrived ${(+c.lead_s).toFixed(0)}s before the same play showed up in ESPN's public play-by-play feed.</span>` : ''}</p>`
       : `<p class="fi-text mono fi-wait">${call.prob != null ? `${pct(top.prob)} sure · ` : ''}${gradeOf(a) === 'no_match' ? 'ESPN shows no matching play' : 'waiting for the play-by-play to confirm'}</p>`}</div>
     <span class="shroud-tap mono">Spoiler Shield · tap to reveal</span>
@@ -245,7 +250,8 @@ function renderFeed() {
 function onAlert(a) {
   if (!a?.id) return;
   const prev = S.alerts.get(a.id);
-  if (prev && !!prev.confirmed === !!a.confirmed && (prev.grade ?? null) === (a.grade ?? null) && !a._initial) return; // nothing new
+  if (prev && !!prev.confirmed === !!a.confirmed && (prev.grade ?? null) === (a.grade ?? null)
+    && (prev.stage ?? null) === (a.stage ?? null) && prev.headline === a.headline && !a._initial) return; // nothing new (stage 1 -> 2 is new)
   const merged = { ...prev, ...a, confirmed: a.confirmed || prev?.confirmed || null };
   S.alerts.set(a.id, merged);
   S.day.set(a.id, { ...S.day.get(a.id), ...merged });
@@ -261,9 +267,27 @@ function onAlert(a) {
 }
 
 // ------------------------------------------------------------ RECEIPTS (every alert today, graded)
+// Old recordings (docs/data/replay.json) carry only the nearest ESPN play's text: look its type/team up in the
+// recording's play list (the beneficiary team: the recovering team on a fumble, the defense on an interception).
+function legacyGrade(a) {
+  const c = a.confirmed, plays = S.source?.plays || [];
+  const same = (x) => x.wallclock_ms === c.espn_wallclock_ms;
+  const p = plays.find((x) => same(x) && x.text && c.play_text && x.text.slice(0, 30) === c.play_text.slice(0, 30)) || plays.find(same);
+  if (!p || !p.type || p.type === 'OTHER' || p.team !== a.team) return 'no_match';
+  if (callOf(a).prob == null) return 'swing_hit';          // unnamed "big swing": never WRONG
+  return a.inferred?.[0]?.type === p.type ? 'correct' : 'wrong';
+}
 function gradeOf(a) {
-  if ('grade' in a) return a.grade || 'pending';
-  if (a.confirmed) return a.confirmed.inferred_correct ? 'correct' : 'wrong';
+  const unnamed = callOf(a).prob == null;                  // "Big swing to X": nothing named, so it can't be WRONG
+  if ('grade' in a && a.grade !== undefined) {
+    const g = a.grade || 'pending';
+    return g === 'wrong' && unnamed ? 'swing_hit' : g === 'correct' && unnamed ? 'swing_hit' : g;
+  }
+  if (a.confirmed) {
+    if (a.confirmed.play_type == null && a.confirmed.inferred_correct == null) return legacyGrade(a);
+    if (unnamed) return 'swing_hit';
+    return a.confirmed.inferred_correct ? 'correct' : 'wrong';
+  }
   if ('espn_nearest' in a) return 'no_match';
   return 'pending';
 }
@@ -279,36 +303,59 @@ function dayAlerts() {
 function renderReceipts() {
   const body = $('#rc-body'); if (!body) return;
   const list = dayAlerts().sort((a, b) => b.ts_ms - a.ts_ms);
-  const c = { n: list.length, correct: 0, wrong: 0, no_match: 0, swing_hit: 0, pending: 0 };
-  list.forEach((a) => { c[gradeOf(a)] = (c[gradeOf(a)] || 0) + 1; });
-  const t = S.tally && S.source?.kind === 'live' && S.tally.n >= c.n ? { ...c, ...S.tally } : c;
-  const parts = [`${t.n} alert${t.n === 1 ? '' : 's'}`, `<b class="g-ok">${t.correct} right</b>`, `<b class="g-bad">${t.wrong} wrong</b>`, `<b class="g-miss">${t.no_match} no TD/turnover/20+ yd play</b>`];
-  if (t.swing_hit) parts.push(`${t.swing_hit} real play, not named`);
+  // FUNNEL, counted from the same rows the table shows: real play -> swing play -> no matching play -> grading
+  const t = { n: list.length, correct: 0, wrong: 0, no_match: 0, swing_hit: 0, pending: 0, real: 0, realNamed: 0, realSwing: 0, swing: 0, swingNamed: 0 };
+  list.forEach((a) => {
+    const g = gradeOf(a); t[g] = (t[g] || 0) + 1;
+    if (g === 'correct' || g === 'wrong' || g === 'swing_hit') {
+      const named = g !== 'swing_hit';
+      if (isSwing(a.confirmed)) { t.swing++; if (named) t.swingNamed++; } else { t.real++; if (named) t.realNamed++; else t.realSwing++; }
+    }
+  });
+  const realWrong = t.realNamed - t.correct;
+  const namedTxt = t.realNamed ? `${t.realNamed} named${realWrong ? `: ${t.correct} right, ${realWrong} wrong` : t.realNamed > 1 ? ', all right' : ', right'}` : '';
+  const realBits = [namedTxt, t.realSwing ? `${t.realSwing} big swing${t.realSwing === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ');
+  const parts = [`<b class="g-ok">${t.real} tied to a TD, FG, turnover or 20+ yd play</b>${realBits ? ` (${realBits})` : ''}`,
+    `<b class="g-swing">${t.swing} on another play that swung ESPN's win odds 5+ pts</b> (stops, conversions, missed FGs, returns${t.swingNamed ? `; ${t.swingNamed} of them we'd named wrong` : ''})`,
+    `<b class="g-miss">${t.no_match} no matching play</b>`];
   if (t.pending) parts.push(`${t.pending} grading`);
-  $('#rc-tally').innerHTML = `${S.source?.kind === 'live' ? 'Today' : 'This replay'}: ${parts.join(' · ')}`;
+  $('#rc-tally').innerHTML = `${S.source?.kind === 'live' && !isReplay() ? 'Today' : 'This replay'}, ${t.n} alert${t.n === 1 ? '' : 's'}: ${parts.join(' · ')}`;
   const graded = t.n - (t.pending || 0), hits = t.correct + t.wrong;
-  // Lead with what a user acts on: when we NAME a play, how often is it right? Unnamed "big swing" alerts are
-  // graded too, and shown honestly (a real play behind it, or the market moved on a stop/penalty/kickoff).
+  // Lead with what a user acts on: when we NAME a play, how often is it right? Then how each alert was graded.
   $('#rc-acc').innerHTML = graded > 0
     ? `${hits ? `When we named the play: <b>${t.correct} of ${hits} right (${pct(t.correct / hits)})</b>. ` : 'No named plays graded yet. '}`
-      + `Big-swing alerts: ${t.swing_hit || 0} had a real TD, turnover or 20+ yard play behind them; ${t.no_match} moved on something we don't classify (stops, penalties, kickoffs) and count as misses.`
-    : 'No graded alerts yet. Each one is graded about 90 seconds after it fires.';
+      + `Every alert is checked against ESPN's play-by-play: first for a TD, field goal, turnover or 20+ yard play by that team, then for any play that moved ESPN's own win probability 5+ points toward that team. If neither, it counts as a miss.`
+    : 'No graded alerts yet. Each one is graded within about 3 minutes of firing.';
   $('#rc-empty').hidden = list.length > 0;
-  body.innerHTML = list.map((a) => {
+  // no-match rows are collapsed by default (the count above is never hidden)
+  let more = $('#rc-more');
+  if (!more) {
+    more = document.createElement('button');
+    more.id = 'rc-more'; more.type = 'button'; more.className = 'mono';
+    more.style.cssText = 'display:block;margin:12px 24px 18px;padding:8px 12px;background:none;color:var(--ink2);border:1px dashed var(--line);font-size:.8rem;letter-spacing:.06em;cursor:pointer';
+    more.addEventListener('click', () => { S.rcAll = !S.rcAll; renderReceipts(); });
+    body.closest('table')?.after(more);
+  }
+  more.hidden = !t.no_match;
+  more.textContent = S.rcAll ? `Hide the ${t.no_match} with no matching play` : `Show all (${t.no_match} more with no matching play)`;
+  const rows = S.rcAll ? list : list.filter((a) => gradeOf(a) !== 'no_match');
+  body.innerHTML = rows.map((a) => {
     const g = gradeOf(a);
-    const [gl, gc] = GRADE[g] || GRADE.pending;
+    let [gl, gc] = GRADE[g] || GRADE.pending;
+    if (g === 'swing_hit' && isSwing(a.confirmed)) gl = 'REAL SWING PLAY';
     const call = callOf(a);
     const matched = g === 'correct' || g === 'wrong' || g === 'swing_hit';
     const lead = beforeStream(a), espn = +a.confirmed?.lead_s;
     const hs = matched
       ? `${lead >= 1 ? `<b class="sig">${lead.toFixed(0)} s</b> before ${esc(S.delayK)}` : `none on ${esc(S.delayK)}`}${espn > 0 ? `<em>${espn.toFixed(0)} s before ESPN's public feed</em>` : ''}`
       : g === 'pending' ? `<span class="rc-dim">grading</span>` : `<span class="rc-dim">no play to beat</span>`;
-    const detail = a.confirmed?.play_text ? `ESPN: ${a.confirmed.play_text}` : g === 'no_match' && a.espn_nearest?.play_text ? `Nearest ESPN play: ${a.espn_nearest.play_text}` : '';
+    const detail = isSwing(a.confirmed) ? `${swingLabel(a.confirmed)}${a.confirmed.play_text ? ` · ESPN: ${a.confirmed.play_text}` : ''}`
+      : a.confirmed?.play_text ? `ESPN: ${a.confirmed.play_text}` : g === 'no_match' && a.espn_nearest?.play_text ? `Nearest ESPN play: ${a.espn_nearest.play_text}` : '';
     const game = S.games.find((x) => x.game_id === a.game_id);
     return `<tr class="rc-row ${gc} ${S.unveiled.has(a.id) ? 'unveil' : ''}" data-id="${esc(a.id)}">
       <td class="mono rc-time">${clock(a.ts_ms, { sec: false })}</td>
       <td class="rc-game mono">${esc(game?.short_name || a.short_name || '')}</td>
-      <td class="rc-call"><span class="shroud"><b>${esc(call.team)}</b> ${esc(call.play)}${detail ? `<small>${esc(detail.length > 140 ? `${detail.slice(0, 138)}…` : detail)}</small>` : ''}</span><span class="shroud-tap mono">Spoiler Shield · tap to reveal</span></td>
+      <td class="rc-call"><span class="shroud"><b>${esc(call.team)}</b> ${esc(call.play)}${detail ? `<small>${esc(detail.length > 170 ? `${detail.slice(0, 168)}…` : detail)}</small>` : ''}</span><span class="shroud-tap mono">Spoiler Shield · tap to reveal</span></td>
       <td class="num mono rc-sure">${call.prob != null ? pct(call.prob) : '–'}</td>
       <td class="rc-g"><span class="rc-grade mono">${gl}</span></td>
       <td class="rc-lead mono">${hs}</td></tr>`;
@@ -355,16 +402,14 @@ const TO = {
     el.dataset.tier = tierOf(a, tierAlert).tier;
     const g = S.games.find((x) => x.game_id === a.game_id);
     $('#to-game').textContent = g?.short_name || a.game_id || '';
-    $('#to-when').textContent = `MARKET MOVED ${clock(this.t0, { tenth: true })}`;
+    $('#to-when').textContent = `${isReplay() ? 'REPLAY · ' : ''}MARKET MOVED ${clock(this.t0, { tenth: true })}`;
     const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
     $('#to-team').textContent = nick(a.team) || a.team || '';
     $('#to-play').dataset.pre = `UP ${Math.round(Math.abs(teamProbs(a).after - teamProbs(a).before) * 100)}¢`;
     $('#to-play').dataset.post = callOf(a).play;
     $('#to-play').textContent = $('#to-play').dataset.pre;
-    const tp = teamProbs(a);
-    $('#to-sure').innerHTML = `<b>${pct(top.prob)} SURE</b> · ${esc(a.team)} ${pct(tp.before)} → ${pct(tp.after)}`;
-    $('#to-alt').textContent = (a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ') ? `or: ${(a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ')}` : '';
-    $('#to-lower').innerHTML = `<span class="to-lower-tag">KALSHI KNOWS</span><span>The price moved at ${clock(this.t0, { tenth: true })}. You're on <b>${esc(S.delayK)}</b>, about ${S.delay}s behind real life.${S.source.kind === 'replay' ? ' <em>REPLAY</em>' : ''}</span>`;
+    this.setCall(a);
+    $('#to-lower').innerHTML = `<span class="to-lower-tag">KALSHI KNOWS</span><span>The price moved at ${clock(this.t0, { tenth: true })}. You're on <b>${esc(S.delayK)}</b>, about ${S.delay}s behind real life.${isReplay() ? ' <em>REPLAY of a real alert from earlier today</em>' : ''}</span>`;
     this.renderVotes();
     requestAnimationFrame(() => { el.classList.add('shown'); fitText($('#to-play')); fitText($('#to-team')); });
     this.revealT = setTimeout(() => this.reveal(), reduceMotion ? 0 : 4200);
@@ -379,9 +424,23 @@ const TO = {
     $('#to-play').textContent = $('#to-play').dataset.post;
     fitText($('#to-play')); fitText($('#to-team'));
   },
+  // confidence + alternatives; stage 1 ("big swing", nothing named yet) -> stage 2 (the call) updates in place
+  setCall(a) {
+    const call = callOf(a), tp = teamProbs(a);
+    const sure = a.stage === 'provisional' ? 'NAMING THE PLAY…' : call.prob != null ? `${pct(call.prob)} SURE` : 'TOO CLOSE TO NAME';
+    $('#to-sure').innerHTML = `<b>${sure}</b> · ${esc(a.team)} ${pct(tp.before)} → ${pct(tp.after)}`;
+    const alts = call.prob != null ? (a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ') : '';
+    $('#to-alt').textContent = alts ? `or: ${alts}` : '';
+  },
   update(a) {
     this.alert = a;
-    if (a.confirmed && $('#takeover').classList.contains('done')) $('#to-alt').textContent = a.confirmed.play_text || '';
+    const el = $('#takeover'), call = callOf(a);
+    if (!el.hidden && call.play !== $('#to-play').dataset.post) {   // the named call landed while the takeover is up
+      $('#to-play').dataset.post = call.play;
+      if (el.classList.contains('revealed')) { $('#to-play').textContent = call.play; fitText($('#to-play')); }
+      this.setCall(a);
+    }
+    if (a.confirmed && el.classList.contains('done')) $('#to-alt').textContent = confText(a.confirmed);
   },
   tick() {
     const el = $('#takeover'); if (el.hidden) return;
@@ -394,7 +453,7 @@ const TO = {
       el.classList.add('done'); this.reveal();
       $('#to-count-label').textContent = 'ON YOUR STREAM';
       $('#to-pre').textContent = 'YOUR STREAM JUST CAUGHT UP';
-      if (this.alert.confirmed?.play_text) $('#to-alt').textContent = this.alert.confirmed.play_text;
+      if (this.alert.confirmed?.play_text) $('#to-alt').textContent = confText(this.alert.confirmed);
       this.closeT = setTimeout(() => this.close(), PRESENT ? 9000 : 7000);
     } else if (rem > 0) $('#to-count-label').textContent = 'ON YOUR STREAM IN';
     // votes
@@ -503,9 +562,21 @@ function renderDutch(data, { mock = false, live = false } = {}) {
   const total = opps.reduce((s, o) => s + Math.max(0, o.profit_after_fees || 0), 0);
   const amt = $('#db-amount');
   const fmt = (v) => `$${int(v)}`;
-  $('.db-label').innerHTML = opps.length ? 'of free money on Kalshi after fees <span class="sig">right now</span>' : 'of free money left on Kalshi <span class="sig">after fees</span>';
-  if (amt.dataset.seen) countUp(amt, total, fmt, 900);
-  else onVisible(amt, () => { amt.dataset.seen = 1; countUp(amt, total, fmt, 2200); }, { threshold: 0.4 });
+  if (opps.length) {
+    amt.style.cssText = ''; delete amt.dataset.funnel; amt.parentElement.style.gridTemplateColumns = '';
+    $('.db-label').innerHTML = 'of free money on Kalshi after fees <span class="sig">right now</span>'; $('.db-label').style.maxWidth = '';
+    if (amt.dataset.seen) countUp(amt, total, fmt, 900);
+    else onVisible(amt, () => { amt.dataset.seen = 1; countUp(amt, total, fmt, 2200); }, { threshold: 0.4 });
+  } else {
+    // Zero after fees is the finding, not a broken counter: show the funnel instead of "$0"
+    const nLooked = all.filter((o) => (o.profit_before_fees || 0) > 0).length;
+    amt.dataset.funnel = 1; amt.dataset.seen = 1;
+    amt.parentElement.style.gridTemplateColumns = '1fr';     // one column: funnel line, then the headline
+    amt.style.cssText = 'grid-row:auto;font-size:clamp(1.6rem,4vw,3.6rem);line-height:1.1;letter-spacing:0;color:var(--ink)';
+    amt.innerHTML = `${int(data.scanned_markets)} markets scanned <span class="sig">→</span> ${int(nLooked)} looked free <span class="sig">→</span> 0 survive Kalshi's fees`;
+    $('.db-label').innerHTML = `Fees are Kalshi's moat. <span class="sig">Every "free money" set below is a trap or gets eaten by the fee.</span>`;
+    $('.db-label').style.maxWidth = '40ch';
+  }
   $('#db-sub').textContent = `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets · ${nBefore} arbitrages before fees · ${nAfter} after · ${nTrap} traps where the list isn't complete`;
   S.dbOpps = rows; S.dbNear = showNear;
   $('.db-list-head').innerHTML = showNear ? `<span>LOOKS FREE · ISN&rsquo;T ${tierBadge(tierOf({ tier: 1 }, () => 1))}</span><span>WORST CASE</span>` : '<span>OPPORTUNITY</span><span>PROFIT AFTER FEES</span>';

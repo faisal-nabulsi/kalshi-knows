@@ -86,8 +86,14 @@ export class LiveSource extends EventTarget {
     es.addEventListener('error', () => { this.emit('status', { ok: false }); if (es.readyState === 2) setTimeout(() => this.connectSSE(), 5000); });
   }
   async guess(alert_id, nickname, guess) {
+    // The server keeps one vote per nickname; auto-nicknames have only 900 values, so add a per-device id
+    // (otherwise two phones that drew the same "Couch Coach NNN" overwrite each other's vote).
+    let dev = null;
+    try { dev = localStorage.getItem('kk_voter'); if (!dev) { dev = Math.random().toString(36).slice(2, 10); localStorage.setItem('kk_voter', dev); } } catch {}
+    dev = dev || (this._dev ||= Math.random().toString(36).slice(2, 10));
+    const voter = `${String(nickname || 'Couch Coach').slice(0, 22)}#${dev}`;
     try {
-      await fetch(`${this.api}/api/guess`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ alert_id, nickname, guess }) });
+      await fetch(`${this.api}/api/guess`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ alert_id, nickname: voter, guess }) });
     } catch {}
   }
   async guesses(alert_id) {

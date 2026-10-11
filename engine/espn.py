@@ -141,6 +141,14 @@ def fetch_plays(event_id: str, home_id: str, away_id: str, home: str, away: str)
         ids = {p.get("id") for p in raw}
         raw.extend(p for p in (cur.get("plays") or []) if p.get("id") not in ids)
     id2abbr = {str(home_id): home, str(away_id): away}
+    # ESPN's own win probability AFTER each play (home perspective); delta vs the previous play that has one.
+    wp = {}
+    for w in d.get("winprobability") or []:
+        try:
+            wp[str(w.get("playId"))] = float(w["homeWinPercentage"])
+        except (KeyError, TypeError, ValueError):
+            continue
+    prev_wp = None
     out = []
     prev_h = prev_a = 0
     for p in raw:
@@ -179,6 +187,62 @@ def fetch_plays(event_id: str, home_id: str, away_id: str, home: str, away: str)
         else:
             team = off
         q["team"] = team
+        w = wp.get(q["id"])
+        if w is not None:
+            q["wp_home"] = round(w, 4)
+            q["wp_delta_home"] = round(w - prev_wp, 4) if prev_wp is not None else None
+            prev_wp = w
         prev_h, prev_a = hs, as_
         out.append(q)
     return out
+
+
+# ---------------------------------------------------------------- swing plays (no TD/FG/turnover/20+ yd play)
+
+def _ord(n) -> str:
+    return {1: "1st", 2: "2nd", 3: "3rd", 4: "4th"}.get(n, "")
+
+
+_NOT_A_SNAP = re.compile(r"end of|end period|end quarter|end game|timeout|two-minute|coin toss|end of half", re.I)
+
+
+def is_snap(p: dict) -> bool:
+    """False for clock/admin rows (timeouts, end of quarter) whose WP change is just carry-over."""
+    return not _NOT_A_SNAP.search(p.get("type_text") or "") and not _NOT_A_SNAP.search((p.get("text") or "")[:20])
+
+
+def swing_kind(p: dict, team: str | None) -> tuple[str, str]:
+    """Plain-English (kind, detail) for a play that moved ESPN's win probability in `team`'s favour."""
+    t = (p.get("type_text") or "").lower()
+    text = (p.get("text") or "").lower()
+    down, dist, yds = p.get("start_down"), p.get("start_dist"), p.get("yards") or 0
+    late = down in (3, 4)
+    if "field goal" in t and ("miss" in t or "no good" in text or "missed" in text):
+        m = re.search(r"(\d+)\s*(?:yd|yard)", text)
+        return "Missed field goal", f"{m.group(1)}-yard try no good" if m else "kick no good"
+    if "punt" in t or "kickoff" in t or "return" in t:
+        what = "punt" if "punt" in t or "punts" in text else "kickoff" if "kick" in t or "kicks" in text else "kick"
+        if "muff" in text:
+            return "Return / special teams", f"muffed {what}"
+        if team is not None and p.get("offense") == team:      # the kicking team gained
+            return "Return / special teams", f"{what} pins them deep" if what == "punt" else f"{what} coverage"
+        return "Return / special teams", f"{what} return"
+    if p.get("penalty") or t == "penalty" or "penalty" in t:
+        m = re.search(r"penalty on ([a-z]{2,3})-", text)
+        return "Penalty swing", f"flag on {m.group(1).upper()}" if m else "flag on the play"
+    defense = team is not None and p.get("offense") not in (None, team)
+    if defense:
+        if "sack" in t or "sacked" in text:
+            return "Defensive stop", f"{_ord(down)}-down sack" if late else "sack"
+        if late and "incomplet" in text:
+            return "Defensive stop", f"{_ord(down)}-down incompletion"
+        if late and dist is not None and yds < dist:
+            return "Defensive stop", f"{_ord(down)}-down stop" + (f" ({yds:+d} yds)" if yds else "")
+        if "incomplet" in text:
+            return "Swing play", "incomplete pass"
+        return "Swing play", f"stop for {yds:+d} yds" if yds else "defense holds"
+    if late and dist is not None and yds >= dist:
+        return "Big conversion", f"converts {_ord(down)} & {dist}" + (f" ({yds} yds)" if yds else "")
+    if yds:
+        return "Swing play", f"{yds:+d} yards"
+    return "Swing play", ""

@@ -73,12 +73,31 @@ HISTORY_MS = 20 * 60 * 1000
 POLL_S = float(os.environ.get("KALSHI_POLL_S", 1.75))
 CONFIRM_MS = 150_000
 CONFIRM_TYPES = {"TD", "FG", "TURNOVER", "SAFETY", "BIG_PLAY"}
+# Swing plays: no TD/FG/turnover/20+ yd play, but ESPN's own win probability moved >= 5 pts toward the alert team
+SWING_MIN_WP = float(os.environ.get("SWING_MIN_WP", "0.05"))
+SWING_PRE_MS, SWING_POST_MS = 20_000, 90_000      # match window around the jump start (research/PREREG.md)
 # --- two-stage alerts: stage 1 ("provisional") at detection, stage 2 ("called") CALL_DELAY later, same id
 PROVISIONAL_PUSH_MIN = float(os.environ.get("PROVISIONAL_PUSH_MIN", "0.10"))
 PUSH_MIN_SWING = float(os.environ.get("PUSH_MIN_SWING", "0.12"))
 # --- end two-stage alerts config
 
-CFG = {"mode": "live", "replay": None, "speed": 10.0, "game": None, "loop": False, "push": True, "log": True}
+CFG = {"mode": "live", "replay": None, "speed": 10.0, "game": None, "loop": False, "push": True, "log": True,
+       "start_ms": None}
+REPLAY_SIDECAR = os.environ.get("REPLAY_SIDECAR") == "1"   # engine/demo_replay.sh: 2nd instance next to the live one
+
+
+def _aid(n: int) -> str:
+    """Alert id. Replay ids start with "r_" (never traded, never counted) and carry a per-run tag."""
+    return f"r_{RUN_TAG}_{n}" if CFG["mode"] == "replay" else f"a_{n}"
+
+
+RUN_TAG = datetime.now().strftime("%H%M%S")
+
+
+def _replay_title(payload: dict) -> dict:
+    if CFG["mode"] == "replay":
+        payload["title"] = "REPLAY · " + payload.get("title", "")
+    return payload
 
 
 # ---------------------------------------------------------------- jsonl logs
@@ -254,7 +273,7 @@ class Engine:
         pb_h = pend["p_before"]
         pb, pa = (pb_h, p_home) if home_up else (1 - pb_h, 1 - p_home)
         self.n_alert += 1
-        aid = f"{'r_' if CFG['mode'] == 'replay' else 'a_'}{self.n_alert}"
+        aid = _aid(self.n_alert)
         alert = {"id": aid, "ts_ms": ts, "game_id": gid, "team": team, "stage": "provisional",
                  "provisional_ms": ts, "called_ms": None,
                  "p_before": round(pb, 4), "p_after": round(pa, 4), "delta": round(pa - pb, 4),
@@ -272,7 +291,7 @@ class Engine:
         if CFG["push"] and abs(alert["delta"]) >= PROVISIONAL_PUSH_MIN:
             alert["pushed"] = "provisional"
             try:
-                push.send_all(push.alert_payload(alert, g))     # tag = alert id; stage 2 replaces it in place
+                push.send_all(_replay_title(push.alert_payload(alert, g)))   # tag = alert id; stage 2 replaces it
             except Exception as e:
                 log.warning("push failed: %s", e)
         return aid
@@ -300,8 +319,7 @@ class Engine:
         prev = self.alert_by_id.get(pend.get("aid") or "")
         if prev is None:
             self.n_alert += 1
-            prefix = "r_" if CFG["mode"] == "replay" else "a_"
-            aid = f"{prefix}{self.n_alert}"
+            aid = _aid(self.n_alert)
         else:
             aid = prev["id"]
         # --- end two-stage alerts (stage 2)
@@ -341,6 +359,7 @@ class Engine:
             body_alert = dict(alert)
             payload = push.alert_payload(body_alert, g)
             payload["body"] = f"{alert['headline']} · Tier: {alert['tier_name']}. Your stream shows it in ~30s."
+            _replay_title(payload)
             try:
                 push.send_all(payload)
             except Exception as e:
@@ -367,6 +386,9 @@ class Engine:
             known = self.plays.setdefault(gid, {})
             for p in plays:
                 if p["id"] in known:
+                    if "wp_home" in p:     # ESPN win probability can arrive/revise after we first saw the play
+                        known[p["id"]]["wp_home"] = p["wp_home"]
+                        known[p["id"]]["wp_delta_home"] = p.get("wp_delta_home")
                     continue
                 p = dict(p, seen_ms=seen_ms if seen_ms is not None else p.get("seen_ms"))
                 known[p["id"]] = p
@@ -375,79 +397,141 @@ class Engine:
             JLOG.write("plays", {"game_id": gid, **p})
         self.try_confirm(gid, ref_ms if ref_ms is not None else (seen_ms or now_ms()))
 
-    def try_confirm(self, gid: str, ref: int):
+    # --- swing-play grading: a play that moved ESPN's own win probability >= 5 pts toward the alert team
+    def _swing_candidates(self, a: dict, plays: list[dict], used: set) -> tuple[list, bool]:
+        """(candidates largest-first, have_wp). Window: [jump start - 20 s, jump start + 90 s] (PREREG)."""
+        t0 = a.get("jump_started_ms") or a.get("detected_ms") or a["ts_ms"]
+        lo, hi = t0 - SWING_PRE_MS, t0 + SWING_POST_MS
+        home = a.get("home") or (self.games.get(a["game_id"]) or {}).get("home")
+        sign = 1 if a.get("team") == home else -1
+        have_wp, out = False, []
+        for p in plays:
+            wc = p.get("wallclock_ms")
+            if not wc or not (lo <= wc <= hi):
+                continue
+            if "wp_home" in p:
+                have_wp = True
+            d = p.get("wp_delta_home")
+            if d is None or p.get("id") in used or not espn.is_snap(p):
+                continue
+            if d * sign >= SWING_MIN_WP:
+                out.append((d * sign, p))
+        out.sort(key=lambda x: -x[0])
+        return out, have_wp
+
+    def _swing_window_covered(self, a: dict, plays: list[dict]) -> bool:
+        t0 = a.get("jump_started_ms") or a["ts_ms"]
+        return any((p.get("wallclock_ms") or 0) > t0 + SWING_POST_MS for p in plays)
+
+    def _confirm(self, a: dict, p: dict, ref: int, swing: float | None = None, notify: bool = True):
+        seen = p.get("seen_ms")
+        c = {
+            "play_id": p.get("id"),
+            "play_text": p.get("text"), "play_type": "SWING" if swing is not None else p.get("type"),
+            "espn_wallclock_ms": p.get("wallclock_ms"), "espn_seen_ms": seen,
+            "lead_s": round((seen - a["ts_ms"] - SUMMARY_HOT_MS) / 1000, 1) if seen is not None else None,
+            "lead_s_raw": round((seen - a["ts_ms"]) / 1000, 1) if seen is not None else None,
+            "market_lag_s": round((a["ts_ms"] - p["wallclock_ms"]) / 1000, 1) if p.get("wallclock_ms") else None,
+            "inferred_correct": swing is None and bool(a["inferred"]) and a["inferred"][0]["type"] == p.get("type"),
+        }
+        if swing is not None:
+            kind, detail = espn.swing_kind(p, a.get("team"))
+            c.update(swing_kind=kind, swing_detail=detail, wp_swing=round(swing, 3), espn_type=p.get("type_text"))
+        if p.get("wp_delta_home") is not None:
+            c["wp_delta_home"] = p["wp_delta_home"]
+        a["confirmed"] = c
+        named = a.get("named", True)
+        if swing is not None:
+            # named call (TD/FG/TURNOVER/BIG_PLAY) but only a swing play behind it -> wrong; "big swing" -> real swing
+            a["grade"] = "wrong" if named else "swing_hit"
+        else:
+            a["grade"] = ("correct" if c["inferred_correct"] else "wrong") if named \
+                else "swing_hit"           # a real play happened, but we only said "big swing"
+        a["graded_ms"] = ref
+        a["updated_ms"] = max(ref, a["ts_ms"], a.get("updated_ms") or 0)
+        log.info("CONFIRMED %s%s: %s (lead %.1fs)", a["id"], f" SWING {c.get('swing_kind')}" if swing is not None else "",
+                 (p.get("text") or "")[:80], c["lead_s"] or 0)
+        self._emit(a)
+        if notify and CFG["push"] and CFG["mode"] == "live":
+            # same tag -> iOS replaces the spoiler notification with its receipt
+            lead = c["lead_s"]
+            if swing is not None:
+                title = f"✓ Real swing play · {a.get('short_name') or ''}".strip(" ·")
+                body = f"{c['swing_kind']}" + (f" — {c['swing_detail']}" if c.get("swing_detail") else "") \
+                    + f": {(p.get('text') or '')[:80]}"
+            else:
+                title = f"✓ CONFIRMED · {a.get('short_name') or ''}".strip(" ·")
+                body = (p.get("text") or "")[:110]
+            if lead and lead > 0:
+                body += f" · Kalshi called it {lead:.0f}s before ESPN"
+            threading.Thread(target=push.send_all, args=({
+                "title": title, "body": body, "url": "./#live", "tag": a["id"]},), daemon=True).start()
+
+    def _named_match(self, a: dict, plays: list[dict], used: set):
+        best = None
+        for p in plays:
+            if p.get("type") not in CONFIRM_TYPES or p.get("team") != a["team"]:
+                continue
+            if p.get("id") in used:
+                continue          # already confirmed another alert
+            if p.get("wallclock_ms") and a.get("jump_started_ms") and p["wallclock_ms"] < a["jump_started_ms"] - 40_000:
+                continue          # too early: observed market lag after a play is 4-33 s
+            seen = p.get("seen_ms")
+            wc = p.get("wallclock_ms") or seen
+            if wc is None:
+                continue
+            if not (a["ts_ms"] - 150_000 <= wc <= a["ts_ms"] + 20_000):
+                continue
+            if seen is not None and seen > a["ts_ms"] + CONFIRM_MS:
+                continue
+            pri = 0 if p["type"] != "BIG_PLAY" else 1
+            key = (pri, abs(wc - (a["ts_ms"] - 10_000)))
+            if best is None or key < best[0]:
+                best = (key, p)
+        return best[1] if best else None
+
+    def try_confirm(self, gid: str, ref: int, backfill: bool = False):
         with self.lock:
             plays = list((self.plays.get(gid) or {}).values())
+            used = {x["confirmed"].get("play_id") for x in self.alerts if x.get("confirmed")}
             for a in self.alerts:
                 if a["game_id"] != gid or a["confirmed"] is not None:
                     continue
                 if a.get("stage") == "provisional" and ref - (a.get("provisional_ms") or a["ts_ms"]) < CALL_DELAY_MS + 60_000:
                     continue      # --- two-stage alerts: grade only after the call (stage 2)
-                if ref - a["ts_ms"] > CONFIRM_MS + 30_000:
-                    if "espn_nearest" not in a and ref - a["ts_ms"] > 1_800_000:
-                        a["espn_nearest"] = None     # stale (e.g. restored after a restart): don't re-emit
-                    if "espn_nearest" not in a:
-                        # unconfirmed: show what ESPN says happened around the jump
-                        near = [p for p in plays if p.get("wallclock_ms")
-                                and a["ts_ms"] - 90_000 <= p["wallclock_ms"] <= a["ts_ms"] + 5_000]
-                        near.sort(key=lambda p: -p["wallclock_ms"])
-                        a["espn_nearest"] = ({"play_text": near[0].get("text"), "play_type": near[0].get("type"),
-                                              "team": near[0].get("team"),
-                                              "espn_wallclock_ms": near[0]["wallclock_ms"],
-                                              "espn_seen_ms": near[0].get("seen_ms")} if near else None)
-                        a["grade"], a["graded_ms"] = "no_match", ref
-                        a["updated_ms"] = ref
-                        self._emit(a)
+                expired = ref - a["ts_ms"] > CONFIRM_MS + 30_000
+                fresh = not backfill and ref - a["ts_ms"] <= CONFIRM_MS + 90_000   # receipts push only while it matters
+                if not expired or a.get("grade") in (None, "pending") and "espn_nearest" not in a:
+                    p = self._named_match(a, plays, used)
+                    if p is not None:
+                        self._confirm(a, p, ref, notify=fresh)
+                        used.add(p.get("id"))
+                        continue
+                # no TD/FG/turnover/safety/20+ yd play: was there a play that swung ESPN's win probability >= 5 pts?
+                # Wait until ESPN's feed covers the whole window (or the alert expires) so a later TD still wins.
+                if expired or self._swing_window_covered(a, plays):
+                    cands, have_wp = self._swing_candidates(a, plays, used)
+                    if cands:
+                        sw, p = cands[0]
+                        self._confirm(a, p, ref, swing=sw, notify=fresh)
+                        used.add(p.get("id"))
+                        continue
+                if not expired:
                     continue
-                best = None
-                used = {x["confirmed"].get("play_id") for x in self.alerts if x.get("confirmed")}
-                for p in plays:
-                    if p.get("type") not in CONFIRM_TYPES or p.get("team") != a["team"]:
-                        continue
-                    if p.get("id") in used:
-                        continue          # already confirmed another alert
-                    if p.get("wallclock_ms") and a.get("jump_started_ms") and p["wallclock_ms"] < a["jump_started_ms"] - 40_000:
-                        continue          # too early: observed market lag after a play is 4-33 s
-                    seen = p.get("seen_ms")
-                    wc = p.get("wallclock_ms") or seen
-                    if wc is None:
-                        continue
-                    if not (a["ts_ms"] - 150_000 <= wc <= a["ts_ms"] + 20_000):
-                        continue
-                    if seen is not None and seen > a["ts_ms"] + CONFIRM_MS:
-                        continue
-                    pri = 0 if p["type"] != "BIG_PLAY" else 1
-                    key = (pri, abs(wc - (a["ts_ms"] - 10_000)))
-                    if best is None or key < best[0]:
-                        best = (key, p)
-                if best:
-                    p = best[1]
-                    seen = p.get("seen_ms")
-                    a["confirmed"] = {
-                        "play_id": p.get("id"),
-                        "play_text": p.get("text"), "play_type": p.get("type"),
-                        "espn_wallclock_ms": p.get("wallclock_ms"), "espn_seen_ms": seen,
-                        "lead_s": round((seen - a["ts_ms"] - SUMMARY_HOT_MS) / 1000, 1) if seen is not None else None,
-                        "lead_s_raw": round((seen - a["ts_ms"]) / 1000, 1) if seen is not None else None,
-                        "market_lag_s": round((a["ts_ms"] - p["wallclock_ms"]) / 1000, 1) if p.get("wallclock_ms") else None,
-                        "inferred_correct": bool(a["inferred"]) and a["inferred"][0]["type"] == p.get("type"),
-                    }
-                    a["grade"] = ("correct" if a["confirmed"]["inferred_correct"] else "wrong") if a.get("named", True) \
-                        else "swing_hit"           # a real play happened, but we only said "big swing"
-                    a["graded_ms"] = ref
-                    a["updated_ms"] = max(ref, a["ts_ms"])
-                    log.info("CONFIRMED %s: %s (lead %.1fs)", a["id"], (p.get("text") or "")[:80],
-                             a["confirmed"]["lead_s"] or 0)
+                if "espn_nearest" not in a and ref - a["ts_ms"] > 1_800_000 and not backfill:
+                    a["espn_nearest"] = None     # stale (e.g. restored after a restart): don't re-emit
+                if "espn_nearest" not in a or (backfill and a.get("grade") in (None, "pending")):
+                    # unconfirmed: show what ESPN says happened around the jump
+                    near = [p for p in plays if p.get("wallclock_ms")
+                            and a["ts_ms"] - 90_000 <= p["wallclock_ms"] <= a["ts_ms"] + 5_000]
+                    near.sort(key=lambda p: -p["wallclock_ms"])
+                    a["espn_nearest"] = ({"play_text": near[0].get("text"), "play_type": near[0].get("type"),
+                                          "team": near[0].get("team"),
+                                          "espn_wallclock_ms": near[0]["wallclock_ms"],
+                                          "espn_seen_ms": near[0].get("seen_ms")} if near else None)
+                    a["grade"], a["graded_ms"] = "no_match", ref
+                    a["updated_ms"] = ref
                     self._emit(a)
-                    if CFG["push"] and CFG["mode"] == "live":
-                        # same tag -> iOS replaces the spoiler notification with its receipt
-                        lead = a["confirmed"]["lead_s"]
-                        body = (p.get("text") or "")[:110]
-                        if lead and lead > 0:
-                            body += f" · Kalshi called it {lead:.0f}s before ESPN"
-                        threading.Thread(target=push.send_all, args=({
-                            "title": f"✓ CONFIRMED · {a.get('short_name') or ''}".strip(" ·"), "body": body,
-                            "url": "./#live", "tag": a["id"]},), daemon=True).start()
 
     def tally(self) -> dict:
         t = {"n": 0, "correct": 0, "wrong": 0, "swing_hit": 0, "no_match": 0, "pending": 0}
@@ -465,6 +549,8 @@ class Engine:
                     g = "pending"
                 a["grade"] = None if g == "pending" else g
             t[g] = t.get(g, 0) + 1
+            if (a.get("confirmed") or {}).get("play_type") == "SWING":
+                t["swing_play"] = t.get("swing_play", 0) + 1     # graded on a play that swung ESPN's win prob
         return t
 
     # ---- API views
@@ -582,8 +668,10 @@ def summary_loop():
     last: dict[str, float] = {}
     while not _stop.is_set():
         with ENGINE.lock:
-            live = [g for g in ENGINE.games.values() if g.get("status") == "in"]
-            hot = {a["game_id"] for a in ENGINE.alerts if a["confirmed"] is None and now_ms() - a["ts_ms"] < CONFIRM_MS + 30_000}
+            hot = {a["game_id"] for a in ENGINE.alerts if a["confirmed"] is None and now_ms() - a["ts_ms"] < CONFIRM_MS + 60_000}
+            # a game that just ended keeps being fetched while an alert on it is still grading
+            live = [g for g in ENGINE.games.values() if g.get("status") == "in"
+                    or (g["game_id"] in hot and g.get("home_id"))]
         for g in live:
             gid = g["game_id"]
             period = 4 if gid in hot else 8
@@ -719,6 +807,37 @@ def dutchbook_loop():
         _stop.wait(60)
 
 
+def backfill_grades():
+    """Re-grade today's restored alerts that have no confirmed play, using a fresh ESPN summary per game
+    (adds ESPN's win probability to the logged plays). <= 1 request/s; never pushes."""
+    with ENGINE.lock:
+        gids = sorted({a["game_id"] for a in ENGINE.alerts
+                       if not a["id"].startswith("r_") and a.get("confirmed") is None
+                       and now_ms() - a["ts_ms"] > CONFIRM_MS + 30_000})
+    n0 = ENGINE.tally()
+    for gid in gids:
+        if _stop.is_set():
+            return
+        g = ENGINE.games.get(gid) or {}
+        if not (g.get("home_id") and g.get("away_id")):
+            continue
+        try:
+            plays = espn.fetch_plays(gid, g["home_id"], g["away_id"], g["home"], g["away"])
+            with ENGINE.lock:
+                known = ENGINE.plays.setdefault(gid, {})
+                for p in plays:
+                    k = known.get(p["id"])
+                    if k is None:
+                        known[p["id"]] = dict(p, seen_ms=None)     # missed while the engine was down
+                    elif "wp_home" in p:
+                        k["wp_home"], k["wp_delta_home"] = p["wp_home"], p.get("wp_delta_home")
+            ENGINE.try_confirm(gid, now_ms(), backfill=True)
+        except Exception as e:
+            log.warning("backfill %s failed: %s", gid, e)
+        time.sleep(1.1)
+    log.info("BACKFILL grades over %d games: %s -> %s", len(gids), n0, ENGINE.tally())
+
+
 def load_today():
     """Restore today's alerts, plays (with original seen_ms) and recent history after a restart."""
     d = LOG_ROOT / datetime.now().strftime("%Y%m%d")
@@ -810,8 +929,20 @@ def replay_loop():
     log.info("REPLAY %s: %d events, speed %.1fx", meta.get("short_name"), len(evs), speed)
     while not _stop.is_set():
         t_first = next((e[0] for e in evs if e[1] == "q"), evs[0][0])
-        evs_run = [e for e in evs if e[0] >= t_first - 60_000]
-        t0 = evs_run[0][0]
+        pre = []
+        if CFG.get("start_ms"):
+            # --start-ms: play from that moment; apply the last scoreboard, earlier plays and the last 60 s of
+            # quotes instantly so the detector and the game state are exactly where they were.
+            st = int(CFG["start_ms"])
+            before = [e for e in evs if e[0] < st]
+            sbs = [e for e in before if e[1] == "sb"]
+            pre = sbs[-1:] + [e for e in before if e[1] == "play"] + [e for e in before if e[1] == "q" and e[0] >= st - 60_000]
+            pre.sort(key=lambda e: e[0])
+            evs_run = [e for e in evs if e[0] >= st]
+            t0 = st
+        else:
+            evs_run = [e for e in evs if e[0] >= t_first - 60_000]
+            t0 = evs_run[0][0]
         offset = now_ms() - t0          # virtual clock = original game time shifted to now
         start = time.time()
         with ENGINE.lock:
@@ -828,13 +959,14 @@ def replay_loop():
             if not path.suffix == ".json":
                 g.update({"home_score": 0, "away_score": 0})
             ENGINE.update_game(g, now_ms())
-        for ts, kind, payload in evs_run:
+        for i, (ts, kind, payload) in enumerate(pre + evs_run):
             if _stop.is_set():
                 return
-            target = start + (ts - t0) / 1000 / speed
-            delay = target - time.time()
-            if delay > 0:
-                time.sleep(delay)
+            if i >= len(pre):
+                target = start + (ts - t0) / 1000 / speed
+                delay = target - time.time()
+                if delay > 0:
+                    time.sleep(delay)
             vts = ts + offset
             if kind == "q":
                 ENGINE.on_quote(gid, vts, float(payload))
@@ -879,14 +1011,18 @@ def _startup():
         threading.Thread(target=replay_loop, daemon=True, name="replay").start()
     else:
         load_today()
+        threading.Thread(target=backfill_grades, daemon=True, name="backfill").start()
         for fn in (espn_loop, summary_loop, kalshi_loop):
             threading.Thread(target=fn, daemon=True, name=fn.__name__).start()
         KWS.start()   # --- kalshi_ws (stays off without ~/.kalshi/prod_key_id + prod_private_key.pem)
-    threading.Thread(target=dutchbook_loop, daemon=True, name="dutchbook").start()
-    try:  # --- autotrader (demo/dry-run only)
-        autotrader.start(lambda: ENGINE)
-    except Exception as e:
-        log.warning("autotrader not started: %s", e)
+    if REPLAY_SIDECAR and CFG["mode"] == "replay":
+        log.info("replay sidecar: dutch-book scanner and auto-bettor stay off (the live engine owns them)")
+    else:
+        threading.Thread(target=dutchbook_loop, daemon=True, name="dutchbook").start()
+        try:  # --- autotrader (demo/dry-run only)
+            autotrader.start(lambda: ENGINE)
+        except Exception as e:
+            log.warning("autotrader not started: %s", e)
     log.info("engine up: mode=%s threshold=%.3f (%s) window=%ds hold=%ds cooldown=%ds",
              CFG["mode"], THRESH, THRESH_SRC, WINDOW_MS // 1000, HOLD_MS // 1000, COOLDOWN_MS // 1000)
 
@@ -1059,10 +1195,11 @@ def main():
     ap.add_argument("--game", help="game_id to replay from a logs dir (default: biggest mover)")
     ap.add_argument("--loop", action="store_true", help="loop the replay forever")
     ap.add_argument("--no-push", action="store_true")
+    ap.add_argument("--start-ms", type=int, help="replay from this original epoch ms (instant pre-roll before it)")
     ap.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8000)))
     a = ap.parse_args()
     if a.replay:
-        CFG.update(mode="replay", replay=a.replay, speed=a.speed, game=a.game, loop=a.loop)
+        CFG.update(mode="replay", replay=a.replay, speed=a.speed, game=a.game, loop=a.loop, start_ms=a.start_ms)
     CFG["push"] = not a.no_push
     uvicorn.run(app, host="0.0.0.0", port=a.port, log_level="warning", timeout_graceful_shutdown=3)
 
