@@ -1,0 +1,51 @@
+sid,causal_play_id,manual_category,subtags,confidence,note
+S100,4017728692322,TD,none,high,TB 4th-and-1 rushing TD
+S101,4017729323584,TURNOVER,4th_down_stop,high,KC 4th-and-1 incomplete turnover on downs
+S102,4017727632671,TURNOVER,none,high,Maye intercepted
+S103,4017728934462,OTHER,unknown,low,3rd down conversion; dip then recovery late tie
+S104,4018729594171,TURNOVER,injury_timeout,high,Mayfield INT on 4th down
+S105,4017727221361,TD,none,high,Love 17 yd TD pass
+S106,4017729573537,SAFETY,sack,high,Buechele sacked in end zone
+S107,4017729661132,OTHER,missed_fg,high,NO 56 yd FG missed
+S108,40177280186,TURNOVER,none,high,Hill fumble recovered by NYJ
+S109,4017727652173,TD,none,high,Flacco 44 yd TD pass
+S110,4017727173094,OTHER,3rd_down_stop,med,CHI 3rd-and-1 loss of 5 at end of Q3
+S111,401772882358,BIG_PLAY,none,high,22 yd 4th down conversion catch
+S112,4017727143034,TD,none,high,Herbert TD to Allen
+S113,401772927642,SAFETY,none,high,PIT team safety
+S114,4017726321616,OTHER,sack,high,Rodgers sacked for -10 in red zone
+S115,4018729234427,OTHER,none,high,NO 4th-and-12 conversion 15 yds
+S116,4017729253132,TD,carry_in,med,2pt conversion embedded in earlier TD play
+S117,401772864396,SAFETY,none,high,Payne safety
+S118,4017728631221,OTHER,3rd_down_stop,high,GB 3rd down incomplete forces FG
+S119,4017727771360,BIG_PLAY,none,high,45 yd catch Flowers
+S120,4017729394731,OTHER,sack,high,OT sack of SF in red zone
+S121,4018729814762,OTHER,none,med,PHI 3rd down conversion late
+S122,4017729152565,OTHER,none,high,18 yd 3rd down catch upheld on challenge
+S123,4017729793368,TD,none,high,Hubbard 3 yd rushing TD
+S124,,OTHER,noise,med,single print spike to 0.90 then revert
+S125,4017728634341,TURNOVER,4th_down_stop|end_of_half_or_game,high,ARI 4th down incomplete ends game
+S126,4017729593130,OTHER,penalty_noplay|penalty,high,29 yd DPI to PHI 1
+S127,4017727664173,OTHER,none,med,IND 11 yd first down; INT follows
+S128,4018729454221,OTHER,sack,high,Mahomes sacked in OT
+S129,4017729593299,TD,none,high,Johnson 2 yd TD pass
+S130,4017728062582,SAFETY,sack,high,Goff sacked in end zone
+S131,401772914553,BIG_PLAY,none,high,Carter 22 yd run
+S132,401772917585,BIG_PLAY,none,high,Cooks 50 yd catch
+S133,4017729483649,TD,none,high,Robinson 6 yd TD
+S134,4017728151023,TD,none,high,London 9 yd TD
+S135,401772809604,BIG_PLAY,none,high,Dike 38 yd catch on 3rd down
+S136,,OTHER,noise,high,single print spike to 0.98 then revert
+S137,4017728391980,OTHER,3rd_down_stop,high,LAR 3rd-and-2 incomplete forces FG
+S138,4017727704109,BIG_PLAY,none,high,20 yd catch on 3rd-and-10 from own 7
+S139,4017727723867,TD,none,high,Henderson 69 yd TD run
+S140,401772837882,TD,none,high,Barkley 13 yd TD run
+S141,4017729572360,TURNOVER,4th_down_stop,high,LV 4th-and-1 stuffed
+S142,4017729321222,BIG_PLAY,none,high,Collins 53 yd catch
+S143,4017729582226,TURNOVER,carry_in,med,NE end zone INT; market reacted late
+S144,4017728363254,OTHER,3rd_down_stop,low,drop as PIT settles for FG down 10
+S145,4017727174011,TURNOVER,none,high,Daniels fumble recovered by CHI
+S146,4018729554023,OTHER,none,med,10 yd first down late tie
+S147,4018729364119,OTHER,3rd_down_stop,high,GB 3rd down incomplete forces tying FG
+S148,4017728814385,FG,end_of_half_or_game,high,walk-off FG
+S149,4018729272121,BIG_PLAY,none,high,Watson 32 yd catch

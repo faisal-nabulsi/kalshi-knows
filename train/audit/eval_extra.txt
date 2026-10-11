@@ -1,0 +1,12 @@
+label changes: 1218 of 8808 (13.8%); live 496 of 2940
+  -> TURNOVER via turnover-on-downs fix (F1): 204
+  -> re-anchored to a different play (F3): 1013 ; of which OTHER->named 776, named->OTHER 399, named->other named 43
+  named->OTHER because the anchor play's beneficiary contradicts the move direction: 63 (same play, direction/No-Play fix)
+  carry-in walk-back used: 132 | no ESPN play within [-30s,+40s] of jump: 98
+  live fires that are duplicates of the same physical jump: 593 of 2940
+truth=NEW labels: acc OLD-trained 0.700 NEW-trained 0.740 diff +0.039 CI [+0.027, +0.054]
+truth=OLD labels: acc OLD-trained 0.737 NEW-trained 0.697 diff -0.040 CI [-0.053, -0.025]
+OLD-trained named calls (live, >=.75): 200 by class {'TD': 106, 'FG': 30, 'TURNOVER': 63, 'SAFETY': 0, 'BIG_PLAY': 1} precision vs NEW 0.805
+NEW-trained named calls (live, >=.75): 514 by class {'TD': 115, 'FG': 28, 'TURNOVER': 317, 'SAFETY': 0, 'BIG_PLAY': 54} precision vs NEW 0.790
+7-class STOP: live n=185 ; argmax STOP 160 (precision 0.66, recall 0.57); STOP calls at >=0.75: 21
+  mean predicted P(STOP) on true STOP rows 0.44 vs others 0.03

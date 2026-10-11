@@ -1,0 +1,51 @@
+sid,causal_play_id,manual_category,subtags,confidence,note
+S050,4017726303935,OTHER,3rd_down_stop,low,dip after 3rd-down short catch; big drop later is 4th-down fumble
+S051,4017728524109,OTHER,sack|3rd_down_stop,high,3rd-down sack forces punt late 4Q
+S052,401772737636,BIG_PLAY,none,high,Herbert 24 yd scramble on 3rd and 19
+S053,401772745444,OTHER,penalty_noplay|penalty,med,encroachment on 4th and 2 gives first down
+S054,4017729473853,TD,none,high,42 yd TD pass plus 2pt
+S055,4018729762456,OTHER,sack,high,Mahomes sacked 8 yds on 2nd down
+S056,4018729503746,FG,none,high,go-ahead FG; earlier drop was 3rd-down sack
+S057,,OTHER,noise,med,single spike trade then drift; no decisive play
+S058,4017729394177,TURNOVER,none,high,goal-line fumble recovered by SF
+S059,4017727291157,BIG_PLAY,none,high,42 yd pass
+S060,,OTHER,unknown|noise,low,dip before 4th-down conversion then rebound
+S061,4017727704447,OTHER,none,med,2nd and 14 incompletion final minute; TD later
+S062,4017728031172,SAFETY,none,high,safety
+S063,401772898843,TD,none,high,65 yd TD run
+S064,4017729854540,OTHER,none,med,12 yd OT catch upheld on review
+S065,4017729823772,OTHER,none,med,2nd down loss late 4Q
+S066,4017727582699,BIG_PLAY,none,high,50 yd run
+S067,,OTHER,noise|end_of_half_or_game,med,rebound after end-of-half FG; thin market
+S068,401772882631,BIG_PLAY,none,med,41 yd catch to 4; market lagged ~15s
+S069,4017729394731,OTHER,sack,high,OT sack 9 yds pushes SF out of range
+S070,4018729313078,TURNOVER,sack,high,strip sack recovered by KC
+S071,401872659325,BIG_PLAY,none,high,49 yd pass to IND 2
+S072,4018729651473,TURNOVER,4th_down_stop,high,4th and 1 stuffed turnover on downs
+S073,4018729413750,OTHER,penalty_noplay|penalty,high,too many men on 4th and 1 gives first down
+S074,4017727242821,FG,none,high,57 yd FG
+S075,4017728203114,TURNOVER,none,high,interception
+S076,4017728501803,TURNOVER,none,high,fumble lost in red zone
+S077,401772721426,BIG_PLAY,none,med,23 yd 3rd-down catch; spiky prices
+S078,4017728041236,BIG_PLAY,none,high,33 yd pass on 3rd and 3
+S079,4017728433260,BIG_PLAY,none,high,32 yd pass
+S080,4017729831041,TURNOVER,none,high,interception
+S081,4018729494229,OTHER,none,med,2nd down incompletion late 4Q; held drop
+S082,4017727162041,TURNOVER,4th_down_stop,high,INT on 4th and 1 at goal line
+S083,4017728433694,SAFETY,penalty,high,holding in end zone safety
+S084,4017729803074,OTHER,penalty_noplay|penalty,med,holding wipes out 11 yd gain
+S085,,OTHER,noise,med,dip and rebound before 25 yd catch
+S086,4017729493762,OTHER,3rd_down_stop,med,3rd down short forces punt tie game; slow drift
+S087,4017728131492,TURNOVER,sack|4th_down_stop,high,strip sack on 4th down recovered
+S088,4017728251657,TURNOVER,none,med,INT; market lagged ~20s
+S089,4017729573942,FG,none,high,go-ahead FG final minute
+S090,4017726333536,BIG_PLAY,none,high,38 yd pass on 3rd and 10
+S091,4017728063836,OTHER,penalty_noplay|penalty,low,illegal block wipes out gain; small move
+S092,4017728563921,TD,none,high,1 yd go-ahead TD
+S093,4017729393987,FG,none,high,59 yd go-ahead FG
+S094,,OTHER,noise,med,dip-rebound; safety at -26 had no visible effect
+S095,4017728943418,OTHER,penalty_noplay|penalty|3rd_down_stop,med,delay of game on 3rd and 5 in red zone
+S096,401772736536,TD,kick_return,med,95 yd punt return TD; market lagged ~20s
+S097,4017727201734,OTHER,penalty_noplay|penalty,med,DPI on 4th down incompletion restores drive
+S098,4017728523393,BIG_PLAY,none,high,43 yd run
+S099,4017727584100,TD,none,high,go-ahead TD under 2 min

@@ -1,0 +1,40 @@
+
+######## all_8808_rows  (live regime |delta|>=0.08)
+cv_by_ga OLD  always_other                       acc=0.600 othr=0.600 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2940
+cv_by_ga OLD  PRODUCTION (stage1+state)          acc=0.737 othr=0.600 lift=+0.137 CI[0.117, 0.157] prec@.75=0.795 CI[0.737, 0.854] n_calls=200 n=2940 || vsNEW acc=0.700 prec=0.805 CI[0.75, 0.862] || vsMANUAL acc=0.7 live=0.667 prec=0.913(23)
+cv_by_ga OLD  stage2 +shape (stage1+state+micro) acc=0.738 othr=0.600 lift=+0.138 CI[0.118, 0.158] prec@.75=0.747 CI[0.697, 0.802] n_calls=241 n=2940 || vsNEW acc=0.707 prec=0.797 CI[0.745, 0.846] || vsMANUAL acc=0.693 live=0.667 prec=0.952(21)
+cv_by_ga NEW  always_other                       acc=0.498 othr=0.498 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2940
+cv_by_ga NEW  PRODUCTION (stage1+state)          acc=0.740 othr=0.498 lift=+0.241 CI[0.218, 0.266] prec@.75=0.79 CI[0.75, 0.828] n_calls=514 n=2940 || vsNEW acc=0.740 prec=0.79 CI[0.75, 0.828] || vsMANUAL acc=0.72 live=0.702 prec=0.875(32)
+cv_by_ga NEW  stage2 +shape (stage1+state+micro) acc=0.746 othr=0.498 lift=+0.247 CI[0.224, 0.274] prec@.75=0.812 CI[0.779, 0.844] n_calls=616 n=2940 || vsNEW acc=0.746 prec=0.812 CI[0.779, 0.844] || vsMANUAL acc=0.773 live=0.75 prec=0.971(35)
+cv_by_ga NEW7 always_other                       acc=0.477 othr=0.477 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2940
+cv_by_ga NEW7 PRODUCTION (stage1+state)          acc=0.718 othr=0.477 lift=+0.241 CI[0.216, 0.266] prec@.75=0.788 CI[0.751, 0.83] n_calls=430 n=2940 || vsNEW acc=0.719 prec=0.804 CI[0.767, 0.843] || vsMANUAL acc=0.72 live=0.679 prec=0.821(28)
+cv_by_ga NEW7 stage2 +shape (stage1+state+micro) acc=0.730 othr=0.477 lift=+0.253 CI[0.229, 0.28] prec@.75=0.818 CI[0.785, 0.853] n_calls=537 n=2940 || vsNEW acc=0.729 prec=0.83 CI[0.797, 0.866] || vsMANUAL acc=0.72 live=0.714 prec=0.9(30)
+temporal OLD  always_other                       acc=0.571 othr=0.571 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=569
+temporal OLD  PRODUCTION (stage1+state)          acc=0.740 othr=0.571 lift=+0.169 CI[0.121, 0.224] prec@.75=0.811 CI[0.677, 0.923] n_calls=37 n=569 || vsNEW acc=0.696 prec=0.865 CI[0.744, 0.981]
+temporal OLD  stage2 +shape (stage1+state+micro) acc=0.729 othr=0.571 lift=+0.158 CI[0.11, 0.218] prec@.75=0.745 CI[0.647, 0.857] n_calls=51 n=569 || vsNEW acc=0.684 prec=0.804 CI[0.686, 0.911]
+temporal NEW  always_other                       acc=0.473 othr=0.473 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=569
+temporal NEW  PRODUCTION (stage1+state)          acc=0.738 othr=0.473 lift=+0.265 CI[0.201, 0.342] prec@.75=0.789 CI[0.71, 0.859] n_calls=95 n=569 || vsNEW acc=0.738 prec=0.789 CI[0.71, 0.859]
+temporal NEW  stage2 +shape (stage1+state+micro) acc=0.749 othr=0.473 lift=+0.276 CI[0.211, 0.357] prec@.75=0.793 CI[0.717, 0.864] n_calls=121 n=569 || vsNEW acc=0.749 prec=0.793 CI[0.717, 0.864]
+temporal NEW7 always_other                       acc=0.455 othr=0.455 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=569
+temporal NEW7 PRODUCTION (stage1+state)          acc=0.715 othr=0.455 lift=+0.260 CI[0.195, 0.333] prec@.75=0.786 CI[0.667, 0.889] n_calls=70 n=569 || vsNEW acc=0.705 prec=0.806 CI[0.688, 0.907]
+temporal NEW7 stage2 +shape (stage1+state+micro) acc=0.742 othr=0.455 lift=+0.286 CI[0.22, 0.369] prec@.75=0.821 CI[0.738, 0.898] n_calls=106 n=569 || vsNEW acc=0.729 prec=0.854 CI[0.775, 0.93]
+
+######## dedup_one_per_jump  (live regime |delta|>=0.08)
+cv_by_ga OLD  always_other                       acc=0.510 othr=0.510 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2347
+cv_by_ga OLD  PRODUCTION (stage1+state)          acc=0.775 othr=0.510 lift=+0.266 CI[0.241, 0.291] prec@.75=0.836 CI[0.804, 0.874] n_calls=513 n=2347 || vsNEW acc=0.734 prec=0.799 CI[0.762, 0.839]
+cv_by_ga OLD  stage2 +shape (stage1+state+micro) acc=0.784 othr=0.510 lift=+0.274 CI[0.25, 0.299] prec@.75=0.844 CI[0.813, 0.881] n_calls=540 n=2347 || vsNEW acc=0.743 prec=0.819 CI[0.786, 0.858]
+cv_by_ga NEW  always_other                       acc=0.493 othr=0.493 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2347
+cv_by_ga NEW  PRODUCTION (stage1+state)          acc=0.752 othr=0.493 lift=+0.259 CI[0.234, 0.287] prec@.75=0.799 CI[0.764, 0.838] n_calls=482 n=2347 || vsNEW acc=0.752 prec=0.799 CI[0.764, 0.838]
+cv_by_ga NEW  stage2 +shape (stage1+state+micro) acc=0.765 othr=0.493 lift=+0.272 CI[0.247, 0.299] prec@.75=0.83 CI[0.796, 0.864] n_calls=576 n=2347 || vsNEW acc=0.765 prec=0.83 CI[0.796, 0.864]
+cv_by_ga NEW7 always_other                       acc=0.471 othr=0.471 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=2347
+cv_by_ga NEW7 PRODUCTION (stage1+state)          acc=0.742 othr=0.471 lift=+0.271 CI[0.247, 0.3] prec@.75=0.803 CI[0.769, 0.84] n_calls=462 n=2347 || vsNEW acc=0.731 prec=0.815 CI[0.778, 0.853]
+cv_by_ga NEW7 stage2 +shape (stage1+state+micro) acc=0.760 othr=0.471 lift=+0.289 CI[0.266, 0.316] prec@.75=0.835 CI[0.802, 0.865] n_calls=564 n=2347 || vsNEW acc=0.745 prec=0.841 CI[0.807, 0.874]
+temporal OLD  always_other                       acc=0.496 othr=0.496 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=474
+temporal OLD  PRODUCTION (stage1+state)          acc=0.781 othr=0.496 lift=+0.285 CI[0.212, 0.362] prec@.75=0.83 CI[0.737, 0.923] n_calls=94 n=474 || vsNEW acc=0.743 prec=0.798 CI[0.709, 0.885]
+temporal OLD  stage2 +shape (stage1+state+micro) acc=0.793 othr=0.496 lift=+0.297 CI[0.232, 0.375] prec@.75=0.85 CI[0.781, 0.917] n_calls=107 n=474 || vsNEW acc=0.741 prec=0.841 CI[0.78, 0.916]
+temporal NEW  always_other                       acc=0.466 othr=0.466 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=474
+temporal NEW  PRODUCTION (stage1+state)          acc=0.774 othr=0.466 lift=+0.308 CI[0.235, 0.391] prec@.75=0.767 CI[0.67, 0.865] n_calls=90 n=474 || vsNEW acc=0.774 prec=0.767 CI[0.67, 0.865]
+temporal NEW  stage2 +shape (stage1+state+micro) acc=0.755 othr=0.466 lift=+0.289 CI[0.221, 0.376] prec@.75=0.836 CI[0.773, 0.904] n_calls=116 n=474 || vsNEW acc=0.755 prec=0.836 CI[0.773, 0.904]
+temporal NEW7 always_other                       acc=0.447 othr=0.447 lift=+0.000 CI[0.0, 0.0] prec@.75=None CINone n_calls=0 n=474
+temporal NEW7 PRODUCTION (stage1+state)          acc=0.757 othr=0.447 lift=+0.310 CI[0.234, 0.399] prec@.75=0.762 CI[0.654, 0.869] n_calls=84 n=474 || vsNEW acc=0.736 prec=0.767 CI[0.647, 0.887]
+temporal NEW7 stage2 +shape (stage1+state+micro) acc=0.757 othr=0.447 lift=+0.310 CI[0.242, 0.386] prec@.75=0.847 CI[0.785, 0.907] n_calls=118 n=474 || vsNEW acc=0.732 prec=0.857 CI[0.779, 0.929]

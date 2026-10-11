@@ -1,0 +1,1104 @@
+{
+ "all_8808_rows": {
+  "cv_by_game|OLD|always_other": {
+   "self": {
+    "acc": 0.6,
+    "always_other": 0.6,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "cv_by_game|OLD|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.737,
+    "always_other": 0.6,
+    "lift": 0.137,
+    "lift_ci95": [
+     0.117,
+     0.157
+    ],
+    "named_prec": 0.795,
+    "named_prec_ci95": [
+     0.737,
+     0.854
+    ],
+    "named_calls": 200,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.7,
+    "always_other": 0.498,
+    "lift": 0.202,
+    "lift_ci95": [
+     0.182,
+     0.224
+    ],
+    "named_prec": 0.805,
+    "named_prec_ci95": [
+     0.75,
+     0.862
+    ],
+    "named_calls": 200,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.7,
+    "acc_live": 0.667,
+    "named_prec": 0.913,
+    "named_calls": 23,
+    "n": 150
+   }
+  },
+  "cv_by_game|OLD|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.738,
+    "always_other": 0.6,
+    "lift": 0.138,
+    "lift_ci95": [
+     0.118,
+     0.158
+    ],
+    "named_prec": 0.747,
+    "named_prec_ci95": [
+     0.697,
+     0.802
+    ],
+    "named_calls": 241,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.707,
+    "always_other": 0.498,
+    "lift": 0.209,
+    "lift_ci95": [
+     0.188,
+     0.231
+    ],
+    "named_prec": 0.797,
+    "named_prec_ci95": [
+     0.745,
+     0.846
+    ],
+    "named_calls": 241,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.693,
+    "acc_live": 0.667,
+    "named_prec": 0.952,
+    "named_calls": 21,
+    "n": 150
+   }
+  },
+  "cv_by_game|NEW|always_other": {
+   "self": {
+    "acc": 0.498,
+    "always_other": 0.498,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "cv_by_game|NEW|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.74,
+    "always_other": 0.498,
+    "lift": 0.241,
+    "lift_ci95": [
+     0.218,
+     0.266
+    ],
+    "named_prec": 0.79,
+    "named_prec_ci95": [
+     0.75,
+     0.828
+    ],
+    "named_calls": 514,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.74,
+    "always_other": 0.498,
+    "lift": 0.241,
+    "lift_ci95": [
+     0.218,
+     0.266
+    ],
+    "named_prec": 0.79,
+    "named_prec_ci95": [
+     0.75,
+     0.828
+    ],
+    "named_calls": 514,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.72,
+    "acc_live": 0.702,
+    "named_prec": 0.875,
+    "named_calls": 32,
+    "n": 150
+   }
+  },
+  "cv_by_game|NEW|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.746,
+    "always_other": 0.498,
+    "lift": 0.247,
+    "lift_ci95": [
+     0.224,
+     0.274
+    ],
+    "named_prec": 0.812,
+    "named_prec_ci95": [
+     0.779,
+     0.844
+    ],
+    "named_calls": 616,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.746,
+    "always_other": 0.498,
+    "lift": 0.247,
+    "lift_ci95": [
+     0.224,
+     0.274
+    ],
+    "named_prec": 0.812,
+    "named_prec_ci95": [
+     0.779,
+     0.844
+    ],
+    "named_calls": 616,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.773,
+    "acc_live": 0.75,
+    "named_prec": 0.971,
+    "named_calls": 35,
+    "n": 150
+   }
+  },
+  "cv_by_game|NEW7|always_other": {
+   "self": {
+    "acc": 0.477,
+    "always_other": 0.477,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2940,
+    "games": 296
+   }
+  },
+  "cv_by_game|NEW7|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.718,
+    "always_other": 0.477,
+    "lift": 0.241,
+    "lift_ci95": [
+     0.216,
+     0.266
+    ],
+    "named_prec": 0.788,
+    "named_prec_ci95": [
+     0.751,
+     0.83
+    ],
+    "named_calls": 430,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.719,
+    "always_other": 0.498,
+    "lift": 0.221,
+    "lift_ci95": [
+     0.199,
+     0.246
+    ],
+    "named_prec": 0.804,
+    "named_prec_ci95": [
+     0.767,
+     0.843
+    ],
+    "named_calls": 409,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.72,
+    "acc_live": 0.679,
+    "named_prec": 0.821,
+    "named_calls": 28,
+    "n": 150
+   }
+  },
+  "cv_by_game|NEW7|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.73,
+    "always_other": 0.477,
+    "lift": 0.253,
+    "lift_ci95": [
+     0.229,
+     0.28
+    ],
+    "named_prec": 0.818,
+    "named_prec_ci95": [
+     0.785,
+     0.853
+    ],
+    "named_calls": 537,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_NEW_truth": {
+    "acc": 0.729,
+    "always_other": 0.498,
+    "lift": 0.231,
+    "lift_ci95": [
+     0.21,
+     0.255
+    ],
+    "named_prec": 0.83,
+    "named_prec_ci95": [
+     0.797,
+     0.866
+    ],
+    "named_calls": 505,
+    "n": 2940,
+    "games": 296
+   },
+   "vs_manual150": {
+    "acc": 0.72,
+    "acc_live": 0.714,
+    "named_prec": 0.9,
+    "named_calls": 30,
+    "n": 150
+   }
+  },
+  "temporal_2025_to_2026|OLD|always_other": {
+   "self": {
+    "acc": 0.571,
+    "always_other": 0.571,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|OLD|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.74,
+    "always_other": 0.571,
+    "lift": 0.169,
+    "lift_ci95": [
+     0.121,
+     0.224
+    ],
+    "named_prec": 0.811,
+    "named_prec_ci95": [
+     0.677,
+     0.923
+    ],
+    "named_calls": 37,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.696,
+    "always_other": 0.473,
+    "lift": 0.223,
+    "lift_ci95": [
+     0.17,
+     0.288
+    ],
+    "named_prec": 0.865,
+    "named_prec_ci95": [
+     0.744,
+     0.981
+    ],
+    "named_calls": 37,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|OLD|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.729,
+    "always_other": 0.571,
+    "lift": 0.158,
+    "lift_ci95": [
+     0.11,
+     0.218
+    ],
+    "named_prec": 0.745,
+    "named_prec_ci95": [
+     0.647,
+     0.857
+    ],
+    "named_calls": 51,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.684,
+    "always_other": 0.473,
+    "lift": 0.211,
+    "lift_ci95": [
+     0.154,
+     0.276
+    ],
+    "named_prec": 0.804,
+    "named_prec_ci95": [
+     0.686,
+     0.911
+    ],
+    "named_calls": 51,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|always_other": {
+   "self": {
+    "acc": 0.473,
+    "always_other": 0.473,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.738,
+    "always_other": 0.473,
+    "lift": 0.265,
+    "lift_ci95": [
+     0.201,
+     0.342
+    ],
+    "named_prec": 0.789,
+    "named_prec_ci95": [
+     0.71,
+     0.859
+    ],
+    "named_calls": 95,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.738,
+    "always_other": 0.473,
+    "lift": 0.265,
+    "lift_ci95": [
+     0.201,
+     0.342
+    ],
+    "named_prec": 0.789,
+    "named_prec_ci95": [
+     0.71,
+     0.859
+    ],
+    "named_calls": 95,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.749,
+    "always_other": 0.473,
+    "lift": 0.276,
+    "lift_ci95": [
+     0.211,
+     0.357
+    ],
+    "named_prec": 0.793,
+    "named_prec_ci95": [
+     0.717,
+     0.864
+    ],
+    "named_calls": 121,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.749,
+    "always_other": 0.473,
+    "lift": 0.276,
+    "lift_ci95": [
+     0.211,
+     0.357
+    ],
+    "named_prec": 0.793,
+    "named_prec_ci95": [
+     0.717,
+     0.864
+    ],
+    "named_calls": 121,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|always_other": {
+   "self": {
+    "acc": 0.455,
+    "always_other": 0.455,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.715,
+    "always_other": 0.455,
+    "lift": 0.26,
+    "lift_ci95": [
+     0.195,
+     0.333
+    ],
+    "named_prec": 0.786,
+    "named_prec_ci95": [
+     0.667,
+     0.889
+    ],
+    "named_calls": 70,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.705,
+    "always_other": 0.473,
+    "lift": 0.232,
+    "lift_ci95": [
+     0.174,
+     0.306
+    ],
+    "named_prec": 0.806,
+    "named_prec_ci95": [
+     0.688,
+     0.907
+    ],
+    "named_calls": 67,
+    "n": 569,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.742,
+    "always_other": 0.455,
+    "lift": 0.286,
+    "lift_ci95": [
+     0.22,
+     0.369
+    ],
+    "named_prec": 0.821,
+    "named_prec_ci95": [
+     0.738,
+     0.898
+    ],
+    "named_calls": 106,
+    "n": 569,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.729,
+    "always_other": 0.473,
+    "lift": 0.257,
+    "lift_ci95": [
+     0.201,
+     0.333
+    ],
+    "named_prec": 0.854,
+    "named_prec_ci95": [
+     0.775,
+     0.93
+    ],
+    "named_calls": 96,
+    "n": 569,
+    "games": 58
+   }
+  }
+ },
+ "dedup_one_per_jump": {
+  "cv_by_game|OLD|always_other": {
+   "self": {
+    "acc": 0.51,
+    "always_other": 0.51,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|OLD|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.775,
+    "always_other": 0.51,
+    "lift": 0.266,
+    "lift_ci95": [
+     0.241,
+     0.291
+    ],
+    "named_prec": 0.836,
+    "named_prec_ci95": [
+     0.804,
+     0.874
+    ],
+    "named_calls": 513,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.734,
+    "always_other": 0.493,
+    "lift": 0.241,
+    "lift_ci95": [
+     0.216,
+     0.269
+    ],
+    "named_prec": 0.799,
+    "named_prec_ci95": [
+     0.762,
+     0.839
+    ],
+    "named_calls": 513,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|OLD|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.784,
+    "always_other": 0.51,
+    "lift": 0.274,
+    "lift_ci95": [
+     0.25,
+     0.299
+    ],
+    "named_prec": 0.844,
+    "named_prec_ci95": [
+     0.813,
+     0.881
+    ],
+    "named_calls": 540,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.743,
+    "always_other": 0.493,
+    "lift": 0.25,
+    "lift_ci95": [
+     0.228,
+     0.279
+    ],
+    "named_prec": 0.819,
+    "named_prec_ci95": [
+     0.786,
+     0.858
+    ],
+    "named_calls": 540,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW|always_other": {
+   "self": {
+    "acc": 0.493,
+    "always_other": 0.493,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.752,
+    "always_other": 0.493,
+    "lift": 0.259,
+    "lift_ci95": [
+     0.234,
+     0.287
+    ],
+    "named_prec": 0.799,
+    "named_prec_ci95": [
+     0.764,
+     0.838
+    ],
+    "named_calls": 482,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.752,
+    "always_other": 0.493,
+    "lift": 0.259,
+    "lift_ci95": [
+     0.234,
+     0.287
+    ],
+    "named_prec": 0.799,
+    "named_prec_ci95": [
+     0.764,
+     0.838
+    ],
+    "named_calls": 482,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.765,
+    "always_other": 0.493,
+    "lift": 0.272,
+    "lift_ci95": [
+     0.247,
+     0.299
+    ],
+    "named_prec": 0.83,
+    "named_prec_ci95": [
+     0.796,
+     0.864
+    ],
+    "named_calls": 576,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.765,
+    "always_other": 0.493,
+    "lift": 0.272,
+    "lift_ci95": [
+     0.247,
+     0.299
+    ],
+    "named_prec": 0.83,
+    "named_prec_ci95": [
+     0.796,
+     0.864
+    ],
+    "named_calls": 576,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW7|always_other": {
+   "self": {
+    "acc": 0.471,
+    "always_other": 0.471,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW7|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.742,
+    "always_other": 0.471,
+    "lift": 0.271,
+    "lift_ci95": [
+     0.247,
+     0.3
+    ],
+    "named_prec": 0.803,
+    "named_prec_ci95": [
+     0.769,
+     0.84
+    ],
+    "named_calls": 462,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.731,
+    "always_other": 0.493,
+    "lift": 0.238,
+    "lift_ci95": [
+     0.215,
+     0.265
+    ],
+    "named_prec": 0.815,
+    "named_prec_ci95": [
+     0.778,
+     0.853
+    ],
+    "named_calls": 426,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "cv_by_game|NEW7|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.76,
+    "always_other": 0.471,
+    "lift": 0.289,
+    "lift_ci95": [
+     0.266,
+     0.316
+    ],
+    "named_prec": 0.835,
+    "named_prec_ci95": [
+     0.802,
+     0.865
+    ],
+    "named_calls": 564,
+    "n": 2347,
+    "games": 295
+   },
+   "vs_NEW_truth": {
+    "acc": 0.745,
+    "always_other": 0.493,
+    "lift": 0.252,
+    "lift_ci95": [
+     0.231,
+     0.278
+    ],
+    "named_prec": 0.841,
+    "named_prec_ci95": [
+     0.807,
+     0.874
+    ],
+    "named_calls": 498,
+    "n": 2347,
+    "games": 295
+   }
+  },
+  "temporal_2025_to_2026|OLD|always_other": {
+   "self": {
+    "acc": 0.496,
+    "always_other": 0.496,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|OLD|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.781,
+    "always_other": 0.496,
+    "lift": 0.285,
+    "lift_ci95": [
+     0.212,
+     0.362
+    ],
+    "named_prec": 0.83,
+    "named_prec_ci95": [
+     0.737,
+     0.923
+    ],
+    "named_calls": 94,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.743,
+    "always_other": 0.466,
+    "lift": 0.276,
+    "lift_ci95": [
+     0.207,
+     0.354
+    ],
+    "named_prec": 0.798,
+    "named_prec_ci95": [
+     0.709,
+     0.885
+    ],
+    "named_calls": 94,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|OLD|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.793,
+    "always_other": 0.496,
+    "lift": 0.297,
+    "lift_ci95": [
+     0.232,
+     0.375
+    ],
+    "named_prec": 0.85,
+    "named_prec_ci95": [
+     0.781,
+     0.917
+    ],
+    "named_calls": 107,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.741,
+    "always_other": 0.466,
+    "lift": 0.274,
+    "lift_ci95": [
+     0.208,
+     0.354
+    ],
+    "named_prec": 0.841,
+    "named_prec_ci95": [
+     0.78,
+     0.916
+    ],
+    "named_calls": 107,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|always_other": {
+   "self": {
+    "acc": 0.466,
+    "always_other": 0.466,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.774,
+    "always_other": 0.466,
+    "lift": 0.308,
+    "lift_ci95": [
+     0.235,
+     0.391
+    ],
+    "named_prec": 0.767,
+    "named_prec_ci95": [
+     0.67,
+     0.865
+    ],
+    "named_calls": 90,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.774,
+    "always_other": 0.466,
+    "lift": 0.308,
+    "lift_ci95": [
+     0.235,
+     0.391
+    ],
+    "named_prec": 0.767,
+    "named_prec_ci95": [
+     0.67,
+     0.865
+    ],
+    "named_calls": 90,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.755,
+    "always_other": 0.466,
+    "lift": 0.289,
+    "lift_ci95": [
+     0.221,
+     0.376
+    ],
+    "named_prec": 0.836,
+    "named_prec_ci95": [
+     0.773,
+     0.904
+    ],
+    "named_calls": 116,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.755,
+    "always_other": 0.466,
+    "lift": 0.289,
+    "lift_ci95": [
+     0.221,
+     0.376
+    ],
+    "named_prec": 0.836,
+    "named_prec_ci95": [
+     0.773,
+     0.904
+    ],
+    "named_calls": 116,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|always_other": {
+   "self": {
+    "acc": 0.447,
+    "always_other": 0.447,
+    "lift": 0.0,
+    "lift_ci95": [
+     0.0,
+     0.0
+    ],
+    "named_prec": null,
+    "named_prec_ci95": null,
+    "named_calls": 0,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|PRODUCTION (stage1+state)": {
+   "self": {
+    "acc": 0.757,
+    "always_other": 0.447,
+    "lift": 0.31,
+    "lift_ci95": [
+     0.234,
+     0.399
+    ],
+    "named_prec": 0.762,
+    "named_prec_ci95": [
+     0.654,
+     0.869
+    ],
+    "named_calls": 84,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.736,
+    "always_other": 0.466,
+    "lift": 0.27,
+    "lift_ci95": [
+     0.202,
+     0.352
+    ],
+    "named_prec": 0.767,
+    "named_prec_ci95": [
+     0.647,
+     0.887
+    ],
+    "named_calls": 73,
+    "n": 474,
+    "games": 58
+   }
+  },
+  "temporal_2025_to_2026|NEW7|stage2 +shape (stage1+state+micro)": {
+   "self": {
+    "acc": 0.757,
+    "always_other": 0.447,
+    "lift": 0.31,
+    "lift_ci95": [
+     0.242,
+     0.386
+    ],
+    "named_prec": 0.847,
+    "named_prec_ci95": [
+     0.785,
+     0.907
+    ],
+    "named_calls": 118,
+    "n": 474,
+    "games": 58
+   },
+   "vs_NEW_truth": {
+    "acc": 0.732,
+    "always_other": 0.466,
+    "lift": 0.266,
+    "lift_ci95": [
+     0.206,
+     0.34
+    ],
+    "named_prec": 0.857,
+    "named_prec_ci95": [
+     0.779,
+     0.929
+    ],
+    "named_calls": 105,
+    "n": 474,
+    "games": 58
+   }
+  }
+ }
+}

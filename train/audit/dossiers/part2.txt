@@ -1,0 +1,368 @@
+### S050 | PHI @ GB | home-win-prob moved -0.020 (toward AWAY PHI) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.34 -36:0.31 -32:0.30 -28:0.27 -24:0.27 -20:0.28 -16:0.28 -12:0.28 -8:0.28 -4:0.27 +0:0.30 +4:0.26 +8:0.27 +12:0.25 +16:0.24 +20:0.27 +24:0.28 +28:0.14 +32:0.11 +36:0.07 +40:0.08 +44:0.13 +48:0.16 +52:0.21 +56:0.07 +60:0.06 +64:0.04 +68:0.03
+     -85s id=4017726303882 Q4 2:00 [Pass Incompletion] pos=GB 1&10@65 score PHI 10-7 GB | (Shotgun) J.Love pass incomplete short middle to J.Jacobs.
+     -43s id=4017726303912 Q4 1:56 [Pass Incompletion] pos=GB 2&10@65 score PHI 10-7 GB | (Shotgun) J.Love pass incomplete deep left to D.Wicks (A.Jackson).
+      +2s id=4017726303935 Q4 1:51 [Pass Reception] pos=GB 3&10@65 score PHI 10-7 GB | (Shotgun) J.Love pass short right to L.Musgrave to GB 44 for 9 yards (A.Jackson).
+     +23s id=4017726303960 Q4 1:30 [Fumble Recovery (Opponent)] pos=GB 4&1@56 score PHI 10-7 GB | (No Huddle, Shotgun) J.Jacobs right end to GB 40 for -4 yards (J.Phillips, R.Blankenship). FUMBLES (R.Blankenship), RECOVERED by PHI-R.Blankenship at GB 39.Penalty on GB, Illegal Formation, declined.
+
+### S051 | MIA @ CAR | home-win-prob moved +0.100 (toward HOME CAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.70 -36:0.71 -32:0.71 -28:0.69 -24:0.71 -20:0.72 -16:0.73 -12:0.74 -8:0.75 -4:0.75 +0:0.74 +4:0.74 +8:0.76 +12:0.76 +16:0.76 +20:0.81 +24:0.79 +28:0.82 +32:0.85 +36:0.86 +40:0.87 +44:0.88 +48:0.89 +52:0.90 +56:0.92 +60:0.93 +64:0.91 +68:0.92
+     -71s id=4017728524063 Q4 1:54 [Pass Incompletion] pos=MIA 1&10@78 score MIA 24-27 CAR | (Shotgun) T.Tagovailoa pass incomplete short left to J.Waddle (C.Thornton).
+     -30s id=4017728524086 Q4 1:51 [Pass Incompletion] pos=MIA 2&10@78 score MIA 24-27 CAR | (Shotgun) T.Tagovailoa pass incomplete deep right to J.Waddle.
+     +10s id=4017728524109 Q4 1:46 [Sack] pos=MIA 3&10@78 score MIA 24-27 CAR | (Shotgun) T.Tagovailoa sacked at MIA 15 for -7 yards (P.Jones).
+     +46s id=4017728524129 Q4 1:10 [Punt] pos=MIA 4&17@85 score MIA 24-27 CAR |  J.Bailey punts 58 yards to CAR 27, Center-J.Cardona, fair catch by D.Dallas.
+    +106s id=4017728524149 Q4 1:03 [Rush] pos=CAR 1&10@73 score MIA 24-27 CAR | R.Dowdle right guard to CAR 30 for 3 yards (Z.Sieler).
+
+### S052 | LAC @ NYG | home-win-prob moved -0.070 (toward AWAY LAC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.49 -36:0.49 -32:0.51 -28:0.51 -24:0.50 -20:0.50 -16:0.51 -12:0.51 -8:0.51 -4:0.51 +0:0.51 +4:0.51 +8:0.50 +12:0.47 +16:0.47 +20:0.45 +24:0.45 +28:0.45 +32:0.44 +36:0.44 +40:0.44 +44:0.44 +48:0.44 +52:0.44 +56:0.44 +60:0.44 +64:0.44 +68:0.43
+     -85s id=401772737591 Q1 8:02 [Pass Reception] pos=LAC 1&20@75 score LAC 0-7 NYG | (Shotgun) J.Herbert pass short right to O.Hampton to LAC 27 for 2 yards (T.Nubin).
+     -42s id=401772737616 Q1 7:23 [Sack] pos=LAC 2&18@73 score LAC 0-7 NYG | (Shotgun) J.Herbert sacked at LAC 26 for -1 yards (K.Thibodeaux).
+      +0s id=401772737636 Q1 6:41 [Rush] pos=LAC 3&19@74 score LAC 0-7 NYG | (Shotgun) J.Herbert scrambles left tackle pushed ob at 50 for 24 yards (J.Holland). LAC-J.Alt was injured during the play.
+     +69s id=401772737666 Q1 6:13 [Pass Incompletion] pos=LAC 1&10@50 score LAC 0-7 NYG | J.Herbert pass incomplete short right to K.Allen [A.Carter].
+    +111s id=401772737689 Q1 6:08 [Penalty] pos=LAC 2&10@50 score LAC 0-7 NYG | (Shotgun) J.Herbert pass short left to T.Conklin to NYG 43 for 7 yards (T.Nubin).PENALTY on NYG-B.Okereke, Defensive Offside, 5 yards, enforced at 50 - No Play.
+
+### S053 | DEN @ PHI | home-win-prob moved -0.040 (toward AWAY DEN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.66 -36:0.66 -32:0.67 -28:0.67 -24:0.67 -20:0.67 -16:0.70 -12:0.67 -8:0.68 -4:0.68 +0:0.69 +4:0.69 +8:0.69 +12:0.67 +16:0.64 +20:0.64 +24:0.63 +28:0.65 +32:0.66 +36:0.64 +40:0.64 +44:0.64 +48:0.63 +52:0.64 +56:0.66 +60:0.65 +64:0.66 +68:0.65
+     -95s id=401772745375 Q1 9:32 [Rush] pos=DEN 1&10@47 score DEN 0-0 PHI | (Shotgun) J.Dobbins right guard to PHI 46 for 1 yard (J.Carter).
+     -66s id=401772745397 Q1 9:03 [Rush] pos=DEN 2&9@46 score DEN 0-0 PHI | (No Huddle, Shotgun) J.Dobbins left guard to PHI 43 for 3 yards (J.Carter; Z.Baun).
+     -33s id=401772745419 Q1 8:30 [Pass Reception] pos=DEN 3&6@43 score DEN 0-0 PHI | (No Huddle, Shotgun) B.Nix pass short left to C.Sutton to PHI 39 for 4 yards (J.Campbell; Q.Mitchell).
+      +6s id=401772745444 Q1 7:51 [Penalty] pos=DEN 4&2@39 score DEN 0-0 PHI | (Shotgun) PENALTY on PHI-J.Carter, Encroachment, 5 yards, enforced at PHI 39 - No Play.
+     +47s id=401772745468 Q1 7:41 [Rush] pos=DEN 1&10@34 score DEN 0-0 PHI | R.Harvey left end to PHI 37 for -3 yards (A.Ojulari).
+     +87s id=401772745490 Q1 7:01 [Pass Incompletion] pos=DEN 2&13@37 score DEN 0-0 PHI | (Shotgun) B.Nix sacked at PHI 46 for -9 yards (C.DeJean). FUMBLES (C.DeJean), RECOVERED by PHI-J.Hunt at PHI 39.The Replay Official reviewed the fumble ruling, and the play was REVERSED.(Shotgun) B.Nix pass incomplete short left t
+
+### S054 | DAL @ DET | home-win-prob moved -0.120 (toward AWAY DAL) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.84 -36:0.84 -32:0.85 -28:0.85 -24:0.85 -20:0.85 -16:0.85 -12:0.85 -8:0.85 -4:0.85 +0:0.86 +4:0.76 +8:0.73 +12:0.73 +16:0.74 +20:0.74 +24:0.75 +28:0.75 +32:0.74 +36:0.75 +40:0.76 +44:0.75 +48:0.76 +52:0.76 +56:0.75 +60:0.75 +64:0.73 +68:0.73
+    -116s id=4017729473779 Q4 11:45 [Rush] pos=DAL 1&10@70 score DAL 19-30 DET | D.Prescott scrambles left end ran ob at DAL 42 for 12 yards (B.Branch).
+     -79s id=4017729473806 Q4 11:13 [Rush] pos=DAL 1&10@58 score DAL 19-30 DET | (Shotgun) J.Williams up the middle to DET 47 for 11 yards (A.Maddox).
+     -39s id=4017729473828 Q4 10:33 [Pass Reception] pos=DAL 1&10@47 score DAL 19-30 DET | (Shotgun) D.Prescott pass short right to R.Flournoy to DET 42 for 5 yards (J.Campbell).
+      -6s id=4017729473853 Q4 9:52 [Passing Touchdown] pos=DAL 2&5@42 score DAL 27-30 DET | D.Prescott pass deep right to R.Flournoy for 42 yards, TOUCHDOWN. TWO-POINT CONVERSION ATTEMPT. D.Prescott pass to J.Ferguson is complete. ATTEMPT SUCCEEDS.
+     +84s id=4017729473886 Q4 9:52 [Official Timeout] pos=- - score DAL 27-30 DET | Official Timeout at 09:52.
+
+### S055 | KC @ LV | home-win-prob moved +0.080 (toward HOME LV) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.39 -36:0.39 -32:0.39 -28:0.39 -24:0.39 -20:0.39 -16:0.39 -12:0.39 -8:0.39 -4:0.39 +0:0.38 +4:0.41 +8:0.46 +12:0.45 +16:0.46 +20:0.46 +24:0.46 +28:0.46 +32:0.46 +36:0.46 +40:0.46 +44:0.46 +48:0.44 +52:0.46 +56:0.48 +60:0.48 +64:0.48 +68:0.48
+     -90s id=4018729762408 Q3 10:25 [Pass Reception] pos=KC 1&10@68 score KC 10-13 LV | P.Mahomes pass short right to E.Johnson to KC 42 for 10 yards (N.Dean).
+     -47s id=4018729762433 Q3 9:42 [Pass Incompletion] pos=KC 1&10@58 score KC 10-13 LV | P.Mahomes pass incomplete short middle to T.Kelce (T.Hemingway).
+      -2s id=4018729762456 Q3 9:36 [Sack] pos=KC 2&10@58 score KC 10-13 LV | (Shotgun) P.Mahomes sacked at KC 34 for -8 yards (sack split by A.Butler and M.Crosby).
+     +42s id=4018729762476 Q3 8:53 [Pass Incompletion] pos=KC 3&18@66 score KC 10-13 LV | (Shotgun) P.Mahomes pass incomplete deep middle to T.Thornton [M.Crosby].
+     +84s id=4018729762499 Q3 8:45 [Punt] pos=KC 4&18@66 score KC 10-13 LV | M.Araiza punts 54 yards to LV 12, Center-J.Winchester, fair catch by M.Benson.
+    +103s id=4018729762509 Q3 8:38 [Official Timeout] pos=LV 1&10@0 score KC 10-13 LV | Official Timeout at 08:38.
+
+### S056 | CIN @ PIT | home-win-prob moved +0.060 (toward HOME PIT) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.67 -36:0.67 -32:0.67 -28:0.68 -24:0.67 -20:0.61 -16:0.59 -12:0.56 -8:0.56 -4:0.57 +0:0.57 +4:0.57 +8:0.57 +12:0.57 +16:0.58 +20:0.62 +24:0.62 +28:0.63 +32:0.63 +36:0.63 +40:0.62 +44:0.62 +48:0.63 +52:0.63 +56:0.63 +60:0.63 +64:0.62 +68:0.62
+     -78s id=4018729503704 Q4 3:48 [Rush] pos=PIT 2&11@11 score CIN 27-27 PIT | J.Warren left guard to CIN 5 for 6 yards (J.Allen; B.Carter).
+     -32s id=4018729503726 Q4 3:03 [Sack] pos=PIT 3&5@5 score CIN 27-27 PIT | (Shotgun) A.Rodgers sacked at CIN 15 for -10 yards (D.Lawrence).
+     +12s id=4018729503746 Q4 2:15 [Field Goal Good] pos=PIT 4&15@15 score CIN 27-30 PIT | C.Boswell 33 yard field goal is GOOD, Center-C.Kuntz, Holder-C.Johnston.
+     +88s id=4018729503766 Q4 2:15 [Kickoff] pos=- - score CIN 27-30 PIT | C.Boswell kicks 62 yards from PIT 35 to CIN 3. T.Brooks to CIN 30 for 27 yards (D.Slaughter).
+
+### S057 | KC @ JAX | home-win-prob moved -0.090 (toward AWAY KC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.43 -36:0.43 -32:0.42 -28:0.43 -24:0.42 -20:0.43 -16:0.43 -12:0.44 -8:0.43 -4:0.42 +0:0.50 +4:0.43 +8:0.41 +12:0.40 +16:0.41 +20:0.41 +24:0.39
+     -96s id=4017728143458 Q4 5:58 [Rush] pos=KC 2&1@58 score KC 21-24 JAX | (Shotgun) I.Pacheco up the middle to KC 43 for 1 yard (J.Hines-Allen; D.Hamilton).
+     -54s id=4017728143480 Q4 5:15 [Pass Reception] pos=KC 1&10@57 score KC 21-24 JAX | (Shotgun) P.Mahomes pass short left to I.Pacheco to KC 49 for 6 yards (F.Oluokun; E.Murray).
+      -8s id=4017728143505 Q4 4:29 [Rush] pos=KC 2&4@51 score KC 21-24 JAX | (Shotgun) P.Mahomes scrambles left end to JAX 46 for 5 yards (D.Gardeck).
+     +39s id=4017728143527 Q4 3:42 [Rush] pos=KC 1&10@46 score KC 21-24 JAX | K.Hunt up the middle to JAX 40 for 6 yards (A.Wingard; D.Hamilton).
+     +83s id=4017728143549 Q4 2:58 [Pass Reception] pos=KC 2&4@40 score KC 21-24 JAX | (Shotgun) P.Mahomes pass short right to T.Kelce to JAX 29 for 11 yards (E.Murray).
+
+### S058 | SF @ LAR | home-win-prob moved -0.120 (toward AWAY SF) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.79 -36:0.83 -32:0.81 -28:0.82 -24:0.74 -20:0.76 -16:0.82 -12:0.84 -8:0.86 -4:0.85 +0:0.84 +4:0.86 +8:0.88 +12:0.88 +16:0.91 +20:0.93 +24:0.72 +28:0.72 +32:0.59 +36:0.44 +40:0.32 +44:0.28 +48:0.18 +52:0.15 +56:0.15 +60:0.14 +64:0.15 +68:0.18
+     -90s id=4017729394115 Q4 1:56 [Rush] pos=LAR 1&10@31 score SF 23-20 LAR | (Shotgun) K.Williams right end to SF 11 for 20 yards (F.Warner).
+     -46s id=4017729394144 Q4 1:13 [Rush] pos=LAR 1&10@11 score SF 23-20 LAR | K.Williams up the middle to SF 7 for 4 yards (F.Warner; M.Sigle).PENALTY on SF-M.Williams, Illegal Use of Hands, 4 yards, enforced at SF 7.
+     +12s id=4017729394177 Q4 1:07 [Fumble Recovery (Opponent)] pos=LAR 1&3@3 score SF 23-20 LAR | K.Williams up the middle to SF 2 for 1 yard (A.Collins). FUMBLES (A.Collins), RECOVERED by SF-A.Collins at SF 1.
+    +106s id=4017729394215 Q4 1:05 [Rush] pos=SF 1&10@99 score SF 23-20 LAR | M.Jones up the middle to SF 2 for 1 yard (N.Landman).
+
+### S059 | DEN @ IND | home-win-prob moved -0.100 (toward AWAY DEN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.59 -36:0.57 -32:0.59 -28:0.59 -24:0.59 -20:0.60 -16:0.60 -12:0.60 -8:0.60 -4:0.60 +0:0.61 +4:0.58 +8:0.60 +12:0.52 +16:0.53 +20:0.52 +24:0.51 +28:0.53 +32:0.53 +36:0.53 +40:0.54 +44:0.54 +48:0.54 +52:0.54 +56:0.54 +60:0.54 +64:0.54 +68:0.54
+     -76s id=4017727291102 Q2 14:12 [Kickoff] pos=- - score DEN 7-13 IND | S.Shrader kicks 56 yards from IND 35 to DEN 9. M.Mims to DEN 33 for 24 yards (J.Bachie; A.Adebawore).
+     -30s id=4017727291132 Q2 14:05 [Pass Reception] pos=DEN 1&10@67 score DEN 7-13 IND | (Shotgun) B.Nix pass short left to T.Franklin to DEN 30 for -3 yards (K.Moore).
+      -4s id=4017727291157 Q2 13:39 [Pass Reception] pos=DEN 2&13@70 score DEN 7-13 IND | (No Huddle, Shotgun) B.Nix pass deep left to T.Franklin ran ob at IND 28 for 42 yards.
+     +32s id=4017727291187 Q2 13:09 [Rush] pos=DEN 1&10@28 score DEN 7-13 IND | (No Huddle, Shotgun) R.Harvey left guard to IND 25 for 3 yards (G.Stewart).
+     +68s id=4017727291209 Q2 12:29 [Pass Reception] pos=DEN 2&7@25 score DEN 7-13 IND | B.Nix pass short right to A.Trautman to IND 18 for 7 yards (M.Blackmon).
+    +108s id=4017727291234 Q2 11:50 [Pass Reception] pos=DEN 1&10@18 score DEN 7-13 IND | (Shotgun) B.Nix pass short left to T.Franklin to IND 2 for 16 yards (C.Bynum).
+
+### S060 | PIT @ NE | home-win-prob moved -0.100 (toward AWAY PIT) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.67 -36:0.69 -32:0.67 -28:0.69 -24:0.70 -20:0.70 -16:0.70 -12:0.70 -8:0.69 -4:0.71 +0:0.71 +4:0.71 +8:0.69 +12:0.69 +16:0.68 +20:0.63 +24:0.63 +28:0.66 +32:0.61 +36:0.63 +40:0.67 +44:0.70 +48:0.68 +52:0.67 +56:0.67 +60:0.70 +64:0.70 +68:0.70
+    -100s id=4017727323382 Q4 10:25 [Pass Reception] pos=NE 1&10@49 score PIT 14-14 NE |  (Shotgun) D.Maye pass short right to T.Henderson ran ob at PIT 43 for 6 yards (D.Slay).
+     -65s id=4017727323412 Q4 9:53 [Rush] pos=NE 2&4@43 score PIT 14-14 NE | T.Henderson up the middle to PIT 41 for 2 yards (K.Benton).
+     -22s id=4017727323434 Q4 9:10 [Rush] pos=NE 3&2@41 score PIT 14-14 NE | D.Maye left guard to PIT 40 for 1 yard (C.Holcomb).
+     +20s id=4017727323456 Q4 8:28 [Rush] pos=NE 4&1@40 score PIT 14-14 NE | D.Maye scrambles right end ran ob at PIT 33 for 7 yards (P.Queen).
+     +64s id=4017727323483 Q4 7:48 [Sack Opp Fumble Recovery] pos=NE 1&10@33 score PIT 14-14 NE | (Shotgun) D.Maye sacked at PIT 39 for -6 yards (N.Herbig). FUMBLES (N.Herbig) [N.Herbig], touched at PIT 37, RECOVERED by PIT-T.Watt at PIT 38. T.Watt to PIT 38 for no gain (M.Onwenu).
+
+### S061 | JAX @ HOU | home-win-prob moved -0.200 (toward AWAY JAX) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.49 -36:0.48 -32:0.47 -28:0.46 -24:0.44 -20:0.43 -16:0.45 -12:0.44 -8:0.44 -4:0.42 +0:0.44 +4:0.42 +8:0.44 +12:0.44 +16:0.43 +20:0.29 +24:0.30 +28:0.24 +32:0.23 +36:0.25 +40:0.25 +44:0.27 +48:0.28 +52:0.29 +56:0.32 +60:0.32 +64:0.79 +68:0.79
+     -83s id=4017727704423 Q4 0:41 [Penalty] pos=HOU 2&9@9 score JAX 29-24 HOU | (Shotgun) PENALTY on HST-J.Patterson, False Start, 5 yards, enforced at JAX 9 - No Play.
+     +12s id=4017727704447 Q4 0:41 [Pass Incompletion] pos=HOU 2&14@14 score JAX 29-24 HOU | (Shotgun) D.Mills pass incomplete short left to N.Collins (G.Newsome).
+     +53s id=4017727704470 Q4 0:31 [Rushing Touchdown] pos=HOU 3&14@14 score JAX 29-30 HOU | (Shotgun) D.Mills scrambles left end for 14 yards, TOUCHDOWN. TWO-POINT CONVERSION ATTEMPT. D.Mills rushes up the middle. ATTEMPT FAILS.
+
+### S062 | KC @ TEN | home-win-prob moved +0.080 (toward HOME TEN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.46 -36:0.46 -32:0.46 -28:0.44 -24:0.44 -20:0.47 -16:0.47 -12:0.47 -8:0.47 -4:0.47 +0:0.47 +4:0.47 +8:0.47 +12:0.51 +16:0.51 +20:0.55 +24:0.55 +28:0.55 +32:0.55 +36:0.53 +40:0.53 +44:0.53 +48:0.53 +52:0.52 +56:0.53 +60:0.53 +64:0.53 +68:0.53
+     -41s id=4017728031127 Q2 13:09 [Penalty] pos=KC 1&10@97 score KC 0-0 TEN | PENALTY on KC-E.Pole, False Start, 1 yard, enforced at KC 3 - No Play.
+      +6s id=4017728031172 Q2 13:06 [Safety] pos=KC 1&11@98 score KC 0-2 TEN | Jeffery Simmons Safety
+    +118s id=4017728031194 Q2 13:06 [Kickoff] pos=- - score KC 0-2 TEN | H.Butker kicks 65 yards from KC 20 to TEN 15. C.Dike ran ob at TEN 37 for 22 yards (C.Conner).PENALTY on KC-J.Hicks, Unnecessary Roughness, 15 yards, enforced at TEN 37.
+
+### S063 | TEN @ CLE | home-win-prob moved -0.130 (toward AWAY TEN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.47 -36:0.47 -32:0.47 -28:0.47 -24:0.47 -20:0.47 -16:0.46 -12:0.46 -8:0.46 -4:0.46 +0:0.48 +4:0.41 +8:0.41 +12:0.33 +16:0.35 +20:0.34 +24:0.34 +28:0.34 +32:0.33 +36:0.33 +40:0.33 +44:0.33 +48:0.33 +52:0.33 +56:0.33 +60:0.33 +64:0.33 +68:0.33
+     -59s id=401772898819 Q1 1:42 [Kickoff] pos=- - score TEN 7-3 CLE | A.Szmyt kicks 65 yards from CLV 35 to end zone, Touchback to the TEN 35.
+      -8s id=401772898843 Q1 1:29 [Rushing Touchdown] pos=TEN 1&10@65 score TEN 14-3 CLE | O.Udoh reported in as eligible.  T.Pollard right end for 65 yards, TOUCHDOWN. J.Slye extra point is GOOD, Center-M.Cox, Holder-J.Hekker.
+
+### S064 | LAR @ CHI | home-win-prob moved -0.090 (toward AWAY LAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.28 -36:0.29 -32:0.30 -28:0.29 -24:0.28 -20:0.26 -16:0.26 -12:0.27 -8:0.27 -4:0.28 +0:0.29 +4:0.28 +8:0.25 +12:0.22 +16:0.23 +20:0.21 +24:0.20 +28:0.20 +32:0.20 +36:0.17 +40:0.17 +44:0.15 +48:0.19 +52:0.20 +56:0.19 +60:0.17 +64:0.17 +68:0.18
+     -55s id=4017729854488 Q5 6:39 [Rush] pos=LAR 1&10@78 score LAR 17-17 CHI | P.Nacua right end to LA 26 for 4 yards (T.Edmunds).
+     -34s id=4017729854510 Q5 6:17 [Pass Reception] pos=LAR 2&6@74 score LAR 17-17 CHI | (No Huddle, Shotgun) M.Stafford pass short right to C.Parkinson pushed ob at LA 41 for 15 yards (T.Edmunds).
+      -6s id=4017729854540 Q5 5:51 [Pass Reception] pos=LAR 1&10@59 score LAR 17-17 CHI | (No Huddle, Shotgun) M.Stafford pass short left to D.Adams ran ob at CHI 47 for 12 yards.The Replay Official reviewed the pass completion ruling, and the play was Upheld. The ruling on the field stands.
+    +120s id=4017729854570 Q5 5:21 [Rush] pos=LAR 1&10@47 score LAR 17-17 CHI | B.Corum left tackle to CHI 43 for 4 yards (N.Wright; K.Gordon).
+
+### S065 | BUF @ DEN | home-win-prob moved -0.090 (toward AWAY BUF) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.40 -36:0.42 -32:0.41 -28:0.41 -24:0.41 -20:0.41 -16:0.41 -12:0.41 -8:0.41 -4:0.41 +0:0.42 +4:0.38 +8:0.35 +12:0.34 +16:0.34 +20:0.33 +24:0.33 +28:0.32 +32:0.32 +36:0.30 +40:0.31 +44:0.40
+     -74s id=4017729823717 Q4 4:06 [Pass Reception] pos=DEN 1&10@73 score BUF 27-23 DEN | B.Nix pass short right to C.Sutton ran ob at DEN 38 for 11 yards.
+     -46s id=4017729823747 Q4 3:59 [Pass Reception] pos=DEN 1&10@62 score BUF 27-23 DEN | (No Huddle, Shotgun) B.Nix pass short right to N.Adkins to DEN 39 for 1 yard (C.Benford).
+      -6s id=4017729823772 Q4 3:20 [Pass Reception] pos=DEN 2&9@61 score BUF 27-23 DEN | (Shotgun) B.Nix pass short left to M.Mims to DEN 37 for -2 yards (C.Bishop).
+     +36s id=4017729823797 Q4 2:38 [Pass Reception] pos=DEN 3&11@63 score BUF 27-23 DEN | (Shotgun) B.Nix pass deep right to C.Sutton to BUF 38 for 25 yards (C.Bishop). DEN-A.Forsyth was injured during the play.
+     +84s id=4017729823810 Q4 2:00 [Official Timeout] pos=DEN 1&10@0 score BUF 27-23 DEN | Two-Minute Warning
+
+### S066 | NYJ @ CIN | home-win-prob moved -0.070 (toward AWAY NYJ) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.92 -36:0.92 -32:0.93 -28:0.92 -24:0.93 -20:0.93 -16:0.93 -12:0.92 -8:0.92 -4:0.92 +0:0.93 +4:0.93 +8:0.93 +12:0.93 +16:0.87 +20:0.87 +24:0.86 +28:0.86 +32:0.85 +36:0.86 +40:0.86 +44:0.86 +48:0.86 +52:0.86 +56:0.85 +60:0.86 +64:0.86 +68:0.86
+    -108s id=4017727582620 Q3 10:43 [Rush] pos=NYJ 1&15@91 score NYJ 13-24 CIN | B.Hall up the middle to NYJ 18 for 9 yards (D.Knight).
+     -71s id=4017727582642 Q3 10:07 [Pass Reception] pos=NYJ 2&6@82 score NYJ 13-24 CIN | (Shotgun) J.Fields pass short right to A.Lazard to NYJ 23 for 5 yards (D.Hill).
+     -35s id=4017727582667 Q3 9:31 [Rush] pos=NYJ 3&1@77 score NYJ 13-24 CIN | (Shotgun) J.Fields right end pushed ob at NYJ 25 for 2 yards (C.Taylor-Britt; J.Battle).
+      +6s id=4017727582699 Q3 8:53 [Rush] pos=NYJ 1&10@75 score NYJ 13-24 CIN | (Shotgun) I.Davis right tackle to CIN 25 for 50 yards (J.Battle).
+     +52s id=4017727582721 Q3 8:08 [Rush] pos=NYJ 1&10@25 score NYJ 13-24 CIN | (Shotgun) B.Hall left end ran ob at CIN 16 for 9 yards (G.Stone).
+     +94s id=4017727582748 Q3 7:30 [Pass Reception] pos=NYJ 2&1@16 score NYJ 13-24 CIN | (Shotgun) J.Fields pass short left to M.Taylor to CIN 9 for 7 yards (G.Stone).Penalty on CIN-C.Taylor-Britt, Illegal Contact, declined.
+
+### S067 | BAL @ KC | home-win-prob moved +0.030 (toward HOME KC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.76 -36:0.73 -32:0.73 -28:0.75 -24:0.77 -20:0.77 -16:0.77 -12:0.76 -8:0.76 -4:0.77 +0:0.74 +4:0.74 +8:0.79 +12:0.79 +16:0.77 +20:0.77 +24:0.76 +28:0.77 +32:0.77 +36:0.76 +40:0.78 +44:0.78 +48:0.78 +52:0.78 +56:0.78 +60:0.77 +64:0.78 +68:0.78
+     -99s id=4017727412318 Q2 0:13 [Pass Incompletion] pos=BAL 2&4@30 score BAL 7-20 KC | (Shotgun) L.Jackson pass incomplete deep left to D.Hopkins (N.Williams).
+     -60s id=4017727412341 Q2 0:09 [Pass Reception] pos=BAL 3&4@30 score BAL 7-20 KC | (Shotgun) L.Jackson pass short left to M.Andrews to KC 24 for 6 yards (D.Tranquill).
+     -20s id=4017727412354 Q2 0:02 [Timeout] pos=BAL 1&10@0 score BAL 7-20 KC | Timeout #3 by BLT at 00:02.
+      -2s id=4017727412366 Q2 0:00 [Field Goal Good] pos=BAL 1&10@24 score BAL 10-20 KC | T.Loop 43 yard field goal is GOOD, Center-N.Moore, Holder-J.Stout.
+      -2s id=4017727412393 Q2 0:00 [End of Half] pos=- - score BAL 10-20 KC | END QUARTER 2
+
+### S068 | CAR @ ATL | home-win-prob moved +0.070 (toward HOME ATL) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.49 -36:0.49 -32:0.51 -28:0.51 -24:0.52 -20:0.51 -16:0.51 -12:0.50 -8:0.50 -4:0.50 +0:0.50 +4:0.50 +8:0.51 +12:0.51 +16:0.51 +20:0.55 +24:0.57 +28:0.57 +32:0.57 +36:0.59 +40:0.58 +44:0.58 +48:0.58 +52:0.58 +56:0.62 +60:0.56 +64:0.56 +68:0.58
+    -110s id=401772882554 Q1 5:25 [Kickoff] pos=- - score CAR 7-0 ATL | R.Fitzgerald kicks 63 yards from CAR 35 to ATL 2. N.Brooks to ATL 25 for 23 yards (P.Umanmielen).
+     -62s id=401772882584 Q1 5:19 [Pass Reception] pos=ATL 1&10@75 score CAR 7-0 ATL | (Shotgun) M.Penix pass deep middle to D.London to CAR 45 for 30 yards (C.Rozeboom; T.Moehrig).
+     -25s id=401772882609 Q1 4:42 [Rush] pos=ATL 1&10@45 score CAR 7-0 ATL | (No Huddle, Shotgun) B.Robinson left tackle to CAR 45 for no gain (A.Robinson; C.Cherelus).
+      +4s id=401772882631 Q1 4:12 [Pass Reception] pos=ATL 2&10@45 score CAR 7-0 ATL | (No Huddle, Shotgun) M.Penix pass short middle to D.London to CAR 4 for 41 yards (T.Moehrig).
+     +37s id=401772882656 Q1 3:33 [Rushing Touchdown] pos=ATL 1&4@4 score CAR 7-7 ATL | (No Huddle, Shotgun) B.Robinson right end for 4 yards, TOUCHDOWN.Penalty on CAR-T.Wharton, Defensive Holding, declined. Z.Gonzalez extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.
+    +107s id=401772882698 Q1 3:33 [Official Timeout] pos=- - score CAR 7-7 ATL | Official Timeout at 03:33.
+
+### S069 | SF @ LAR | home-win-prob moved +0.140 (toward HOME LAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.39 -36:0.38 -32:0.37 -28:0.39 -24:0.38 -20:0.39 -16:0.38 -12:0.38 -8:0.37 -4:0.37 +0:0.35 +4:0.43 +8:0.43 +12:0.48 +16:0.49 +20:0.49 +24:0.47 +28:0.47 +32:0.46 +36:0.47 +40:0.47 +44:0.48 +48:0.52 +52:0.58 +56:0.56 +60:0.56 +64:0.56 +68:0.56
+    -117s id=4017729394656 Q5 8:37 [Pass Reception] pos=SF 1&10@33 score SF 23-23 LAR | (Shotgun) M.Jones pass short left to J.Tonges to LA 27 for 6 yards (Q.Lake).
+     -81s id=4017729394681 Q5 8:01 [Pass Reception] pos=SF 2&4@27 score SF 23-23 LAR | (Shotgun) M.Jones pass short left to J.Tonges to LA 21 for 6 yards (K.Curl).
+     -40s id=4017729394706 Q5 7:20 [Pass Reception] pos=SF 1&10@21 score SF 23-23 LAR | (Shotgun) M.Jones pass short left to C.McCaffrey to LA 14 for 7 yards (C.Durant).
+      -5s id=4017729394731 Q5 6:45 [Sack] pos=SF 2&3@14 score SF 23-23 LAR | (Shotgun) M.Jones sacked at LA 23 for -9 yards (sack split by B.Young and K.Turner).
+     +39s id=4017729394751 Q5 6:01 [Pass Incompletion] pos=SF 3&12@23 score SF 23-23 LAR | (Shotgun) M.Jones pass incomplete short left to J.Tonges [B.Young].
+     +84s id=4017729394774 Q5 5:51 [Field Goal Good] pos=SF 4&12@23 score SF 26-23 LAR | E.Pineiro 41 yard field goal is GOOD, Center-J.Weeks, Holder-T.Morstead.
+
+### S070 | DEN @ KC | home-win-prob moved +0.040 (toward HOME KC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.91 -36:0.92 -32:0.92 -28:0.94 -24:0.93 -20:0.94 -16:0.93 -12:0.94 -8:0.93 -4:0.94 +0:0.93 +4:0.93 +8:0.93 +12:0.96 +16:0.97 +20:0.98 +24:0.97 +28:0.97 +32:0.97 +36:0.97 +40:0.97 +44:0.97 +48:0.97 +52:0.97 +56:0.97 +60:0.97 +64:0.97 +68:0.97
+    -104s id=4018729313019 Q3 1:09 [Penalty] pos=DEN 2&6@55 score DEN 10-24 KC | B.Nix pass short left to T.Franklin to KC 39 for 16 yards (N.Williams).PENALTY on DEN-T.Franklin, Offensive Pass Interference, 10 yards, enforced at DEN 45 - No Play.
+     -40s id=4018729313055 Q3 0:39 [Pass Incompletion] pos=DEN 2&16@65 score DEN 10-24 KC | (Shotgun) B.Nix pass incomplete short left to P.Bryant.
+      +4s id=4018729313078 Q3 0:35 [Sack Opp Fumble Recovery] pos=DEN 3&16@65 score DEN 10-24 KC | (Shotgun) B.Nix sacked at DEN 26 for -9 yards (F.Anudike-Uzomah). FUMBLES (F.Anudike-Uzomah), RECOVERED by KC-C.Jones at DEN 34.
+     +66s id=4018729313115 Q3 0:27 [Pass Incompletion] pos=KC 1&10@34 score DEN 10-24 KC | P.Mahomes pass incomplete short middle to T.Kelce [J.Elliss].
+    +108s id=4018729313138 Q3 0:23 [Pass Reception] pos=KC 2&10@34 score DEN 10-24 KC | (Shotgun) P.Mahomes pass short right to X.Worthy to DEN 29 for 5 yards (J.McMillian).
+    +108s id=4018729313163 Q3 0:00 [End Period] pos=KC 3&5@29 score DEN 10-24 KC | END QUARTER 3
+
+### S071 | BAL @ IND | home-win-prob moved -0.110 (toward AWAY BAL) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.54 -36:0.54 -32:0.54 -28:0.53 -24:0.53 -20:0.53 -16:0.53 -12:0.53 -8:0.53 -4:0.52 +0:0.52 +4:0.52 +8:0.52 +12:0.52 +16:0.49 +20:0.46 +24:0.46 +28:0.47 +32:0.41 +36:0.41 +40:0.41 +44:0.41 +48:0.41 +52:0.40 +56:0.41 +60:0.41 +64:0.41 +68:0.41
+     -36s id=401872659295 Q1 10:33 [Kickoff] pos=- - score BAL 0-6 IND | S.Shrader kicks 58 yards from IND 35 to BLT 7. C.Moore to BLT 49 for 42 yards (S.Shrader; A.Adebawore).
+     +10s id=401872659325 Q1 10:27 [Pass Reception] pos=BAL 1&10@51 score BAL 0-6 IND | L.Jackson pass deep left to Z.Flowers to IND 2 for 49 yards (J.Walley).
+     +73s id=401872659350 Q1 9:25 [Penalty] pos=BAL 1&2@2 score BAL 0-6 IND | PENALTY on BLT-M.Andrews, False Start, 5 yards, enforced at IND 2 - No Play.
+    +115s id=401872659374 Q1 9:04 [Rush] pos=BAL 1&7@7 score BAL 0-6 IND | D.Henry up the middle to IND 5 for 2 yards (L.Latu).
+
+### S072 | IND @ WSH | home-win-prob moved -0.100 (toward AWAY IND) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.46 -36:0.46 -32:0.45 -28:0.48 -24:0.47 -20:0.46 -16:0.45 -12:0.46 -8:0.46 -4:0.46 +0:0.46 +4:0.46 +8:0.46 +12:0.46 +16:0.45 +20:0.41 +24:0.35 +28:0.36 +32:0.36 +36:0.36 +40:0.37 +44:0.37 +48:0.37 +52:0.36 +56:0.37 +60:0.37 +64:0.37 +68:0.37
+    -116s id=4018729651398 Q2 9:53 [Rush] pos=WSH 1&10@63 score IND 0-6 WSH | C.Reynolds left tackle to WAS 41 for 4 yards (J.Walley; L.Latu).
+     -77s id=4018729651420 Q2 9:13 [Pass Incompletion] pos=WSH 2&6@59 score IND 0-6 WSH | A.Kaliakmanis pass incomplete short right [L.Latu].
+     -33s id=4018729651443 Q2 9:09 [Pass Reception] pos=WSH 3&6@59 score IND 0-6 WSH | (Shotgun) A.Kaliakmanis pass short right to A.Williams pushed ob at WAS 46 for 5 yards (C.Bynum).
+     +10s id=4018729651473 Q2 8:34 [Rush] pos=WSH 4&1@54 score IND 0-6 WSH | C.Reynolds up the middle to WAS 46 for no gain (J.Tillery; J.Carlies).
+     +43s id=4018729651484 Q2 8:30 [Official Timeout] pos=IND 1&10@0 score IND 0-6 WSH | Official Timeout at 08:30.
+
+### S073 | LV @ LAC | home-win-prob moved +0.130 (toward HOME LAC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.41 -36:0.41 -32:0.40 -28:0.40 -24:0.39 -20:0.40 -16:0.39 -12:0.40 -8:0.39 -4:0.38 +0:0.34 +4:0.39 +8:0.43 +12:0.47 +16:0.47 +20:0.48 +24:0.49 +28:0.48 +32:0.49 +36:0.48 +40:0.49 +44:0.25 +48:0.21 +52:0.22 +56:0.20 +60:0.18 +64:0.19 +68:0.16
+     -73s id=4018729413728 Q4 3:52 [Timeout] pos=LAC 4&1@0 score LV 17-14 LAC | Timeout #1 by LV at 03:52.
+      -6s id=4018729413750 Q4 3:52 [Penalty] pos=LAC 4&1@54 score LV 17-14 LAC | (Run formation) PENALTY on LV, Defensive Too Many Men on Field, 6 yards, enforced at LAC 46 - No Play.
+     +37s id=4018729413781 Q4 3:52 [Fumble Recovery (Opponent)] pos=LAC 1&10@48 score LV 17-14 LAC | (Shotgun) O.Hampton up the middle to LV 46 for 2 yards (N.Dean). FUMBLES (N.Dean), RECOVERED by LV-J.Chinn at LV 41. J.Chinn to LAC 16 for 43 yards (J.Herbert).
+
+### S074 | LAR @ TEN | home-win-prob moved +0.120 (toward HOME TEN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.39 -36:0.36 -32:0.35 -28:0.37 -24:0.37 -20:0.37 -16:0.37 -12:0.37 -8:0.37 -4:0.36 +0:0.34 +4:0.37 +8:0.41 +12:0.46 +16:0.46 +20:0.47 +24:0.47 +28:0.46 +32:0.45 +36:0.44 +40:0.45 +44:0.45 +48:0.43 +52:0.43 +56:0.45 +60:0.44 +64:0.44 +68:0.44
+    -110s id=4017727242768 Q3 4:48 [Sack] pos=TEN 2&7@35 score LAR 13-13 TEN | (Shotgun) C.Ward sacked at LA 41 for -6 yards (J.Stewart).Penalty on TEN-D.Moore, Offensive Holding, declined.
+     -49s id=4017727242799 Q3 4:20 [Rush] pos=TEN 3&13@41 score LAR 13-13 TEN | (Shotgun) C.Ward scrambles up the middle to LA 39 for 2 yards (K.Turner).
+      -6s id=4017727242821 Q3 3:32 [Field Goal Good] pos=TEN 4&11@39 score LAR 13-16 TEN |  J.Slye 57 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.
+     +11s id=4017727242831 Q3 3:32 [Official Timeout] pos=- - score LAR 13-16 TEN | Official Timeout at 03:32.
+
+### S075 | CAR @ SF | home-win-prob moved +0.040 (toward HOME SF) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.92 -36:0.93 -32:0.93 -28:0.92 -24:0.92 -20:0.92 -16:0.92 -12:0.92 -8:0.92 -4:0.92 +0:0.92 +4:0.92 +8:0.92 +12:0.94 +16:0.97 +20:0.97 +24:0.97 +28:0.97 +32:0.96 +36:0.97 +40:0.97 +44:0.97 +48:0.97 +52:0.98 +56:0.98 +60:0.97 +64:0.97 +68:0.98
+     -85s id=4017728203062 Q4 7:55 [Pass Reception] pos=CAR 2&7@44 score CAR 9-20 SF | (Shotgun) B.Young pass short left to J.Coker pushed ob at SF 35 for 9 yards (U.Stout).
+     -39s id=4017728203092 Q4 7:13 [Rush] pos=CAR 1&10@35 score CAR 9-20 SF | (Shotgun) B.Young scrambles left end ran ob at SF 33 for 2 yards (J.Elliott).
+      +4s id=4017728203114 Q4 6:33 [Pass Interception Return] pos=CAR 2&8@33 score CAR 9-20 SF | (Shotgun) B.Young pass short middle intended for T.McMillan INTERCEPTED by J.Brown at SF 22. J.Brown to SF 26 for 4 yards (T.McMillan).
+     +53s id=4017728203128 Q4 6:27 [Official Timeout] pos=SF 1&10@0 score CAR 9-20 SF | Official Timeout at 06:27.
+
+### S076 | DAL @ NYJ | home-win-prob moved -0.110 (toward AWAY DAL) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.37 -36:0.37 -32:0.37 -28:0.37 -24:0.37 -20:0.37 -16:0.36 -12:0.37 -8:0.36 -4:0.37 +0:0.39 +4:0.33 +8:0.30 +12:0.31 +16:0.28 +20:0.28 +24:0.29 +28:0.29 +32:0.28 +36:0.28 +40:0.28 +44:0.33 +48:0.28 +52:0.27 +56:0.27 +60:0.29 +64:0.28 +68:0.26
+    -117s id=4017728501731 Q2 4:17 [Pass Reception] pos=NYJ 1&20@43 score DAL 10-3 NYJ | (Shotgun) J.Fields pass short right to J.Reynolds to DAL 30 for 13 yards (T.Diggs; R.Steward).
+     -76s id=4017728501756 Q2 3:37 [Pass Reception] pos=NYJ 2&7@30 score DAL 10-3 NYJ | (Shotgun) J.Fields pass short middle to J.Reynolds to DAL 24 for 6 yards (S.James; K.Murray).
+     -53s id=4017728501781 Q2 3:14 [Rush] pos=NYJ 3&1@24 score DAL 10-3 NYJ | (No Huddle) J.Fields left guard to DAL 23 for 1 yard (D.Ezeiruaku; S.James).
+      -6s id=4017728501803 Q2 2:27 [Fumble Recovery (Opponent)] pos=NYJ 1&10@23 score DAL 10-3 NYJ | B.Hall left guard to DAL 13 for 10 yards (M.Liufau). FUMBLES (M.Liufau), RECOVERED by DAL-S.Williams at DAL 9. NYJ-B.Hall was injured during the play.
+    +113s id=4017728501824 Q2 2:18 [Official Timeout] pos=DAL 1&10@0 score DAL 10-3 NYJ | Official Timeout at 02:18.
+
+### S077 | PIT @ NYJ | home-win-prob moved +0.000 (toward AWAY PIT) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.44 -36:0.47 -32:0.47 -28:0.47 -24:0.48 -20:0.48 -16:0.48 -12:0.48 -8:0.48 -4:0.48 +0:0.40 +4:0.49 +8:0.49 +12:0.40 +16:0.40 +20:0.40 +24:0.40 +28:0.40 +32:0.40 +36:0.40 +40:0.40 +44:0.40 +48:0.40 +52:0.40 +56:0.40 +60:0.38 +64:0.39 +68:0.38
+     -95s id=401772721381 Q1 7:07 [Rush] pos=PIT 1&10@60 score PIT 0-3 NYJ | J.Warren left tackle to PIT 40 for no gain (J.Briggs; J.Johnson).
+     -53s id=401772721403 Q1 6:27 [Pass Incompletion] pos=PIT 2&10@60 score PIT 0-3 NYJ | (Shotgun) A.Rodgers pass incomplete short middle to D.Metcalf.
+     -10s id=401772721426 Q1 6:22 [Pass Reception] pos=PIT 3&10@60 score PIT 0-3 NYJ | (Shotgun) A.Rodgers pass short right to D.Metcalf pushed ob at NYJ 37 for 23 yards (A.Cisco).
+     +38s id=401772721451 Q1 5:40 [Pass Reception] pos=PIT 1&10@37 score PIT 0-3 NYJ | A.Rodgers pass short right to J.Smith to NYJ 31 for 6 yards (Qu.Williams).
+     +78s id=401772721476 Q1 5:04 [Rush] pos=PIT 2&4@31 score PIT 0-3 NYJ | (Shotgun) K.Gainwell left guard to NYJ 25 for 6 yards (F.Mauigoa; W.McDonald).
+    +120s id=401772721498 Q1 4:21 [Rush] pos=PIT 1&10@25 score PIT 0-3 NYJ | (Shotgun) K.Gainwell right tackle to NYJ 22 for 3 yards (H.Phillips).
+
+### S078 | NE @ BAL | home-win-prob moved -0.070 (toward AWAY NE) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.57 -36:0.57 -32:0.56 -28:0.56 -24:0.56 -20:0.56 -16:0.56 -12:0.56 -8:0.56 -4:0.55 +0:0.56 +4:0.56 +8:0.56 +12:0.53 +16:0.50 +20:0.49 +24:0.49 +28:0.49 +32:0.49 +36:0.48 +40:0.48 +44:0.48
+     -74s id=4017728041180 Q2 10:21 [Pass Reception] pos=NE 1&10@75 score NE 7-7 BAL | D.Maye pass short right to D.Douglas pushed ob at NE 31 for 6 yards (A.Gilman; R.Smith).
+     -33s id=4017728041212 Q2 9:43 [Rush] pos=NE 2&4@69 score NE 7-7 BAL | B.Brown reported in as eligible.  R.Stevenson left guard to NE 32 for 1 yard (B.Urban).
+      +5s id=4017728041236 Q2 9:05 [Pass Reception] pos=NE 3&3@68 score NE 7-7 BAL | (Shotgun) D.Maye pass deep middle to S.Diggs pushed ob at BLT 35 for 33 yards (N.Wiggins).
+     +51s id=4017728041271 Q2 8:23 [Pass Reception] pos=NE 1&10@35 score NE 7-7 BAL | (Shotgun) D.Maye pass short left to T.Henderson to BLT 26 for 9 yards (K.Hamilton).
+     +94s id=4017728041296 Q2 7:41 [Rush] pos=NE 2&1@26 score NE 7-7 BAL | D.Maye left guard to BLT 25 for 1 yard (R.Smith; J.Tupou).
+
+### S079 | ARI @ SF | home-win-prob moved -0.100 (toward AWAY ARI) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.80 -36:0.79 -32:0.81 -28:0.79 -24:0.81 -20:0.81 -16:0.81 -12:0.81 -8:0.80 -4:0.81 +0:0.81 +4:0.81 +8:0.81 +12:0.79 +16:0.77 +20:0.73 +24:0.73 +28:0.71 +32:0.71 +36:0.73 +40:0.73 +44:0.73 +48:0.73 +52:0.73 +56:0.73 +60:0.73 +64:0.74 +68:0.76
+     -38s id=4017728433236 Q4 10:50 [Kickoff] pos=- - score ARI 6-13 SF | E.Pineiro kicks 65 yards from SF 35 to end zone, Touchback to the ARZ 35.
+      +6s id=4017728433260 Q4 10:50 [Pass Reception] pos=ARI 1&10@65 score ARI 6-13 SF | (Shotgun) K.Murray pass deep left to M.Harrison to SF 33 for 32 yards (U.Stout).
+     +50s id=4017728433285 Q4 10:06 [Rush] pos=ARI 1&10@33 score ARI 6-13 SF | T.Benson right end pushed ob at SF 34 for -1 yards (D.Lenoir).
+     +89s id=4017728433312 Q4 9:29 [Penalty] pos=ARI 2&11@34 score ARI 6-13 SF | (Shotgun) K.Murray pass incomplete deep left to M.Harrison.PENALTY on SF-R.Green, Defensive Pass Interference, 33 yards, enforced at SF 34 - No Play.
+
+### S080 | HOU @ NE | home-win-prob moved +0.080 (toward HOME NE) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.63 -36:0.63 -32:0.63 -28:0.61 -24:0.61 -20:0.61 -16:0.61 -12:0.61 -8:0.61 -4:0.61 +0:0.60 +4:0.69 +8:0.61 +12:0.68 +16:0.71 +20:0.66 +24:0.68 +28:0.69 +32:0.69 +36:0.70 +40:0.71 +44:0.71 +48:0.70 +52:0.70 +56:0.70 +60:0.69 +64:0.70 +68:0.70
+     -87s id=401772983987 Q1 3:00 [Pass Reception] pos=HOU 3&10@47 score HOU 3-7 NE | (Shotgun) C.Stroud pass short left to J.Higgins pushed ob at NE 38 for 9 yards (C.Davis) [C.Woodson].
+     -42s id=4017729831017 Q1 2:24 [Rush] pos=HOU 4&1@38 score HOU 3-7 NE | B.Fisher reported in as eligible.  N.Chubb right guard to NE 36 for 2 yards (K.Tonga).
+      -3s id=4017729831041 Q1 1:44 [Pass Interception Return] pos=HOU 1&10@36 score HOU 3-7 NE | (Shotgun) C.Stroud pass deep left intended for C.Kirk INTERCEPTED by C.Davis [K.Chaisson] at NE 18. C.Davis to NE 18 for no gain (C.Kirk).
+     +60s id=4017729831057 Q1 1:37 [Official Timeout] pos=NE 1&10@0 score HOU 3-7 NE | Official Timeout at 01:37.
+
+### S081 | CAR @ CLE | home-win-prob moved -0.110 (toward AWAY CAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.40 -36:0.40 -32:0.39 -28:0.40 -24:0.40 -20:0.40 -16:0.40 -12:0.40 -8:0.39 -4:0.40 +0:0.42 +4:0.31 +8:0.30 +12:0.30 +16:0.31 +20:0.30 +24:0.30 +28:0.31 +32:0.31 +36:0.30 +40:0.31 +44:0.29 +48:0.58 +52:0.63 +56:0.65 +60:0.66 +64:0.68 +68:0.68
+      -4s id=4018729494229 Q4 2:00 [Pass Incompletion] pos=CLE 2&10@14 score CAR 18-13 CLE | (Shotgun) D.Watson pass incomplete short right to D.Boston. ** Injury Update: CLV-D.Watson has returned to the game.
+     +38s id=4018729494259 Q4 1:48 [Passing Touchdown] pos=CLE 3&10@14 score CAR 18-21 CLE | (Shotgun) D.Watson pass short left to H.Fannin for 14 yards, TOUCHDOWN. CAR-Ja.Horn was injured during the play. TWO-POINT CONVERSION ATTEMPT. D.Watson pass to D.Boston is complete. ATTEMPT SUCCEEDS.
+
+### S082 | CIN @ DEN | home-win-prob moved -0.090 (toward AWAY CIN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.93 -36:0.93 -32:0.93 -28:0.92 -24:0.94 -20:0.94 -16:0.92 -12:0.94 -8:0.93 -4:0.93 +0:0.93 +4:0.93 +8:0.93 +12:0.92 +16:0.91 +20:0.85 +24:0.85 +28:0.85 +32:0.84 +36:0.85 +40:0.85 +44:0.89 +48:0.89 +52:0.90 +56:0.90 +60:0.90 +64:0.90 +68:0.90
+     -90s id=4017727162015 Q2 2:39 [Rush] pos=DEN 3&1@2 score CIN 3-14 DEN | A.Palczewski reported in as eligible. Direct snap to R.Harvey.  R.Harvey left end to CIN 2 for no gain (D.Hill).
+     -40s id=4017727162028 Q2 2:04 [Timeout] pos=DEN 4&1@0 score CIN 3-14 DEN | Timeout #1 by CIN at 02:04.
+     +10s id=4017727162041 Q2 2:04 [Pass Interception Return] pos=DEN 4&1@2 score CIN 3-14 DEN | B.Nix pass short right intended for T.Franklin INTERCEPTED by D.Knight at CIN -5. Touchback.The Replay Official reviewed the interception ruling, and the play was Upheld. The ruling on the field stands.
+     +47s id=4017727162064 Q2 1:58 [Two-minute warning] pos=CIN 1&10@0 score CIN 3-14 DEN | Two-Minute Warning
+
+### S083 | ARI @ SF | home-win-prob moved -0.140 (toward AWAY ARI) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.50 -36:0.50 -32:0.50 -28:0.50 -24:0.50 -20:0.50 -16:0.50 -12:0.50 -8:0.50 -4:0.50 +0:0.50 +4:0.50 +8:0.50 +12:0.50 +16:0.50 +20:0.39 +24:0.39 +28:0.38 +32:0.36 +36:0.37 +40:0.34 +44:0.26 +48:0.22 +52:0.21 +56:0.21 +60:0.17 +64:0.20 +68:0.19
+    -113s id=4017728433628 Q4 3:39 [Pass Incompletion] pos=ARI 3&5@56 score ARI 13-13 SF | (Shotgun) K.Murray pass incomplete deep right to T.McBride (F.Warner).
+     -77s id=4017728433651 Q4 3:35 [Punt] pos=ARI 4&5@56 score ARI 13-13 SF |  B.Gillikin punts 50 yards to SF 6, Center-A.Brewer, fair catch by S.Moore.
+     -25s id=4017728433671 Q4 3:29 [Pass Incompletion] pos=SF 1&10@94 score ARI 13-13 SF | M.Jones pass incomplete short right to K.Bourne (Ma.Wilson).
+      +8s id=4017728433694 Q4 3:15 [Penalty] pos=SF 2&10@94 score ARI 15-13 SF | (Shotgun) M.Jones sacked at SF 6 for 0 yards (Ma.Wilson).PENALTY on SF-D.Puni, Offensive Holding, 6 yards, enforced in End Zone, SAFETY - No Play.
+
+### S084 | SF @ PHI | home-win-prob moved -0.060 (toward AWAY SF) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.60 -36:0.61 -32:0.62 -28:0.62 -24:0.62 -20:0.62 -16:0.62 -12:0.62 -8:0.62 -4:0.62 +0:0.66 +4:0.64 +8:0.63 +12:0.60 +16:0.59 +20:0.60 +24:0.59 +28:0.59 +32:0.59 +36:0.60 +40:0.60 +44:0.60 +48:0.60 +52:0.60 +56:0.60 +60:0.60 +64:0.59 +68:0.58
+     -58s id=4017729803049 Q4 14:52 [Kickoff] pos=- - score SF 17-16 PHI | E.Pineiro kicks 65 yards from SF 35 to end zone, Touchback to the PHI 35.
+     -10s id=4017729803074 Q4 14:52 [Penalty] pos=PHI 1&10@65 score SF 17-16 PHI | (Shotgun) J.Hurts pass short right to S.Barkley to PHI 46 for 11 yards (E.Kendricks).PENALTY on PHI-D.Cooper, Offensive Holding, 10 yards, enforced at PHI 35 - No Play.
+     +62s id=4017729803110 Q4 14:19 [Pass Incompletion] pos=PHI 1&20@75 score SF 17-16 PHI | (Shotgun) J.Hurts pass incomplete short left to D.Goedert (G.Wallow).
+    +102s id=4017729803133 Q4 14:15 [Rush] pos=PHI 2&20@75 score SF 17-16 PHI | (Shotgun) S.Barkley right end to PHI 32 for 7 yards (R.Green).
+
+### S085 | NYG @ WSH | home-win-prob moved +0.050 (toward HOME WSH) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.82 -36:0.82 -32:0.82 -28:0.82 -24:0.82 -20:0.83 -16:0.83 -12:0.83 -8:0.80 -4:0.79 +0:0.77 +4:0.81 +8:0.82 +12:0.82 +16:0.82 +20:0.82 +24:0.82 +28:0.82 +32:0.77 +36:0.77 +40:0.79 +44:0.78 +48:0.78 +52:0.78 +56:0.78 +60:0.78 +64:0.78 +68:0.79
+    -111s id=401772827687 Q1 6:07 [Pass Reception] pos=NYG 3&4@72 score NYG 0-7 WSH | (Shotgun) R.Wilson pass short right to W.Robinson pushed ob at NYG 33 for 5 yards (T.Amos).
+     -72s id=401772827712 Q1 5:30 [Rush] pos=NYG 1&10@67 score NYG 0-7 WSH | T.Tracy right tackle to NYG 39 for 6 yards (Q.Martin; B.Wagner).
+     -32s id=401772827734 Q1 4:50 [Pass Reception] pos=NYG 2&4@61 score NYG 0-7 WSH | (Shotgun) R.Wilson pass short left to W.Robinson to NYG 46 for 7 yards (W.Harris).
+     +14s id=401772827763 Q1 4:04 [Pass Reception] pos=NYG 1&10@54 score NYG 0-7 WSH | R.Wilson pass short right to M.Nabers to WAS 29 for 25 yards (Q.Martin).
+     +61s id=401772827797 Q1 3:20 [Pass Reception] pos=NYG 1&10@29 score NYG 0-7 WSH | (Shotgun) R.Wilson pass short right to C.Skattebo to WAS 23 for 6 yards (W.Harris).
+    +103s id=401772827822 Q1 2:38 [Rush] pos=NYG 2&4@23 score NYG 0-7 WSH | C.Skattebo up the middle to WAS 25 for -2 yards (E.Goldman).
+
+### S086 | LAR @ SEA | home-win-prob moved +0.070 (toward HOME SEA) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.50 -36:0.50 -32:0.52 -28:0.52 -24:0.54 -20:0.55 -16:0.56 -12:0.56 -8:0.56 -4:0.59 +0:0.59 +4:0.61 +8:0.60 +12:0.63 +16:0.64 +20:0.64 +24:0.66 +28:0.64 +32:0.66 +36:0.68 +40:0.67 +44:0.68 +48:0.68 +52:0.68 +56:0.67 +60:0.68 +64:0.68 +68:0.65
+     -94s id=4017729493717 Q4 6:18 [Rush] pos=LAR 1&10@74 score LAR 30-30 SEA | B.Corum up the middle to LA 28 for 2 yards (D.Lawrence; J.Reed).
+     -54s id=4017729493739 Q4 5:39 [Pass Incompletion] pos=LAR 2&8@72 score LAR 30-30 SEA | M.Stafford pass incomplete short right to C.Parkinson [U.Nwosu].
+     -10s id=4017729493762 Q4 5:34 [Pass Reception] pos=LAR 3&8@72 score LAR 30-30 SEA | (Shotgun) M.Stafford pass short right to P.Nacua to LA 33 for 5 yards (B.Murphy; E.Jones).
+     +30s id=4017729493787 Q4 4:54 [Punt] pos=LAR 4&3@67 score LAR 30-30 SEA | E.Evans punts 44 yards to SEA 23, Center-J.McQuaide, fair catch by R.Shaheed.
+     +60s id=4017729493807 Q4 4:47 [Official Timeout] pos=SEA 1&10@0 score LAR 30-30 SEA | Official Timeout at 04:47.
+
+### S087 | NYJ @ MIA | home-win-prob moved +0.080 (toward HOME MIA) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.71 -36:0.76 -32:0.76 -28:0.76 -24:0.76 -20:0.76 -16:0.76 -12:0.76 -8:0.76 -4:0.76 +0:0.74 +4:0.76 +8:0.76 +12:0.78 +16:0.80 +20:0.82 +24:0.82 +28:0.84 +32:0.84 +36:0.84 +40:0.84 +44:0.83 +48:0.84 +52:0.82 +56:0.84 +60:0.84 +64:0.82 +68:0.82
+    -115s id=4017728131433 Q2 5:17 [Pass Reception] pos=NYJ 2&13@44 score NYJ 0-10 MIA | (Shotgun) J.Fields pass short right to G.Wilson to MIA 36 for 8 yards (J.Brooks).
+     -67s id=4017728131458 Q2 4:30 [Pass Incompletion] pos=NYJ 3&5@36 score NYJ 0-10 MIA | (Shotgun) J.Fields pass incomplete short left to B.Hall.Penalty on NYJ-G.Wilson, Illegal Motion, declined.
+      +4s id=4017728131492 Q2 4:23 [Sack Opp Fumble Recovery] pos=NYJ 4&5@36 score NYJ 0-10 MIA | (Shotgun) J.Fields sacked at MIA 47 for -11 yards (T.Dodson). FUMBLES (T.Dodson) [T.Dodson], RECOVERED by MIA-Ja.Phillips at NYJ 47. Ja.Phillips to NYJ 43 for 4 yards (A.Membou).
+     +66s id=4017728131507 Q2 4:16 [Official Timeout] pos=MIA 1&10@0 score NYJ 0-10 MIA | Official Timeout at 04:16.
+
+### S088 | LAR @ ATL | home-win-prob moved +0.100 (toward HOME ATL) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.56 -36:0.55 -32:0.55 -28:0.55 -24:0.55 -20:0.55 -16:0.55 -12:0.56 -8:0.56 -4:0.56 +0:0.55 +4:0.58 +8:0.57 +12:0.56 +16:0.55 +20:0.61 +24:0.64 +28:0.65 +32:0.65 +36:0.64 +40:0.62 +44:0.67 +48:0.65 +52:0.65 +56:0.65 +60:0.65 +64:0.64 +68:0.65
+     -52s id=4017728251624 Q2 2:00 [Punt] pos=ATL 4&7@4 score LAR 0-14 ATL | B.Pinion punts 61 yards to LA 35, Center-L.McCullough. X.Smith to LA 47 for 12 yards (M.Ford).
+      -4s id=4017728251657 Q2 1:48 [Pass Interception Return] pos=LAR 1&10@53 score LAR 0-14 ATL | M.Stafford pass deep left intended for X.Smith INTERCEPTED by X.Watts at ATL 7. X.Watts to ATL 7 for no gain (X.Smith).Penalty on LA-X.Smith, Offensive Pass Interference, declined.
+     +78s id=4017728251695 Q2 1:28 [Rushing Touchdown] pos=ATL 1&10@93 score LAR 0-21 ATL | (Shotgun) B.Robinson right tackle for 93 yards, TOUCHDOWN. Z.Gonzalez extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.
+
+### S089 | KC @ LV | home-win-prob moved -0.120 (toward AWAY KC) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.33 -36:0.34 -32:0.34 -28:0.35 -24:0.35 -20:0.35 -16:0.35 -12:0.35 -8:0.37 -4:0.37 +0:0.37 +4:0.37 +8:0.35 +12:0.35 +16:0.37 +20:0.28 +24:0.28 +28:0.28 +32:0.25 +36:0.27 +40:0.24 +44:0.23 +48:0.26 +52:0.23 +56:0.25 +60:0.25 +64:0.25 +68:0.24
+     -85s id=4017729573915 Q4 1:50 [Sack] pos=KC 3&3@16 score KC 9-11 LV | S.Buechele sacked at LV 23 for -7 yards (D.White).
+     -35s id=4017729573929 Q4 1:05 [Timeout] pos=KC 4&10@0 score KC 9-11 LV | Timeout #2 by KC at 01:05.
+     +12s id=4017729573942 Q4 1:01 [Field Goal Good] pos=KC 4&10@23 score KC 12-11 LV | H.Butker 41 yard field goal is GOOD, Center-J.Winchester, Holder-M.Araiza.
+     +82s id=4017729573969 Q4 1:01 [Kickoff] pos=- - score KC 12-11 LV | H.Butker kicks 63 yards from KC 35 to LV 2. Z.White to LV 32 for 30 yards (J.Cochrane; E.Downs).
+
+### S090 | MIN @ CLE | home-win-prob moved -0.090 (toward AWAY MIN) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.62 -36:0.65 -32:0.65 -28:0.64 -24:0.64 -20:0.66 -16:0.66 -12:0.66 -8:0.66 -4:0.66 +0:0.57 +4:0.55 +8:0.51 +12:0.49 +16:0.49 +20:0.48 +24:0.49 +28:0.48 +32:0.48 +36:0.49 +40:0.46 +44:0.46 +48:0.45 +52:0.45 +56:0.46 +60:0.45 +64:0.47 +68:0.47
+     -86s id=4017726333481 Q4 12:24 [Rush] pos=MIN 1&10@75 score MIN 14-17 CLE | J.Mason left end to MIN 25 for no gain (R.Hickman). ** Injury Update: MIN-J.Mason has returned to the game.
+     -54s id=4017726333510 Q4 11:52 [Pass Incompletion] pos=MIN 2&10@75 score MIN 14-17 CLE | (No Huddle) C.Wentz pass incomplete deep right to J.Addison (G.Delpit).
+     -10s id=4017726333536 Q4 11:47 [Pass Reception] pos=MIN 3&10@75 score MIN 14-17 CLE | (Shotgun) C.Wentz pass deep middle to J.Jefferson to CLV 37 for 38 yards (R.Hickman).
+     +30s id=4017726333561 Q4 11:08 [Pass Reception] pos=MIN 1&10@37 score MIN 14-17 CLE | (Shotgun) C.Wentz pass short left to J.Jefferson to CLV 32 for 5 yards (D.Bush).
+     +66s id=4017726333586 Q4 10:30 [Pass Incompletion] pos=MIN 2&5@32 score MIN 14-17 CLE | C.Wentz pass incomplete short left to J.Oliver.
+    +109s id=4017726333609 Q4 10:25 [Sack] pos=MIN 3&5@32 score MIN 14-17 CLE | (Shotgun) C.Wentz sacked at CLV 33 for -1 yards (M.Collins).
+
+### S091 | PIT @ DET | home-win-prob moved +0.040 (toward HOME DET) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.30 -36:0.30 -32:0.29 -28:0.29 -24:0.29 -20:0.29 -16:0.29 -12:0.30 -8:0.30 -4:0.32 +0:0.29 +4:0.32 +8:0.31 +12:0.35 +16:0.35 +20:0.33 +24:0.33 +28:0.34 +32:0.35 +36:0.36 +40:0.36 +44:0.37 +48:0.36 +52:0.36 +56:0.36 +60:0.36 +64:0.36 +68:0.35
+    -108s id=4017728063770 Q4 8:39 [Kickoff] pos=- - score PIT 22-17 DET | J.Bates kicks 65 yards from DET 35 to end zone, Touchback to the PIT 35.
+     -59s id=4017728063814 Q4 8:39 [Rush] pos=PIT 1&10@65 score PIT 22-17 DET | K.Gainwell right end to PIT 45 for 10 yards (A.Maddox; R.Ya-Sin).
+     -18s id=4017728063836 Q4 7:59 [Penalty] pos=PIT 1&10@55 score PIT 22-17 DET | (Shotgun) A.Rodgers pass short left to K.Gainwell to 50 for 5 yards (J.Campbell; A.Anzalone).PENALTY on PIT-J.Smith, Illegal Block Above the Waist, 10 yards, enforced at PIT 45 - No Play.
+     +62s id=4017728063872 Q4 7:28 [Pass Reception] pos=PIT 1&20@65 score PIT 22-17 DET | (Shotgun) A.Rodgers pass deep left to D.Metcalf pushed ob at DET 45 for 20 yards (R.Ya-Sin).
+    +104s id=4017728063902 Q4 6:41 [Rushing Touchdown] pos=PIT 1&10@45 score PIT 29-17 DET | J.Warren left tackle for 45 yards, TOUCHDOWN. C.Boswell extra point is GOOD, Center-C.Kuntz, Holder-C.Waitman. ** Injury Update: DET-M.Davenport has returned to the game.
+
+### S092 | ARI @ IND | home-win-prob moved +0.040 (toward HOME IND) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.73 -36:0.74 -32:0.74 -28:0.75 -24:0.74 -20:0.75 -16:0.75 -12:0.73 -8:0.75 -4:0.75 +0:0.74 +4:0.77 +8:0.78 +12:0.77 +16:0.79 +20:0.79 +24:0.79 +28:0.78 +32:0.79 +36:0.79 +40:0.79 +44:0.78 +48:0.79 +52:0.79 +56:0.79 +60:0.79 +64:0.79 +68:0.79
+     -45s id=4017728563892 Q4 5:18 [Rush] pos=IND 1&3@3 score ARI 27-24 IND | (Shotgun) J.Taylor up the middle to ARZ 1 for 2 yards (D.Stills; J.Burch).
+      -2s id=4017728563921 Q4 4:32 [Rushing Touchdown] pos=IND 2&1@1 score ARI 27-31 IND | J.Taylor left end for 1 yard, TOUCHDOWN. M.Badgley extra point is GOOD, Center-L.Rhodes, Holder-R.Sanchez. ** Injury Update: ARZ-D.Taylor-Demerson has returned to the game.
+     +56s id=4017728563952 Q4 4:32 [Official Timeout] pos=- - score ARI 27-31 IND | Official Timeout at 04:32.
+
+### S093 | SF @ LAR | home-win-prob moved -0.180 (toward AWAY SF) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.61 -36:0.59 -32:0.61 -28:0.59 -24:0.62 -20:0.65 -16:0.68 -12:0.69 -8:0.69 -4:0.67 +0:0.68 +4:0.67 +8:0.68 +12:0.68 +16:0.68 +20:0.58 +24:0.50 +28:0.51 +32:0.50 +36:0.53 +40:0.53 +44:0.52 +48:0.51 +52:0.51 +56:0.53 +60:0.54 +64:0.53 +68:0.54
+    -111s id=4017729393916 Q4 3:44 [Pass Incompletion] pos=SF 1&15@45 score SF 20-20 LAR | (Shotgun) M.Jones pass incomplete short left to D.Robinson [B.Fiske].
+     -67s id=4017729393939 Q4 3:39 [Pass Reception] pos=SF 2&15@45 score SF 20-20 LAR | (Shotgun) M.Jones pass short left to J.Tonges to LA 41 for 4 yards (J.McCollough).
+     -28s id=4017729393964 Q4 3:01 [Pass Incompletion] pos=SF 3&11@41 score SF 20-20 LAR | (Shotgun) M.Jones pass incomplete short middle to J.Tonges (J.Stewart).
+     +14s id=4017729393987 Q4 2:52 [Field Goal Good] pos=SF 4&11@41 score SF 23-20 LAR | E.Pineiro 59 yard field goal is GOOD, Center-J.Weeks, Holder-T.Morstead.
+     +34s id=4017729393997 Q4 2:52 [Official Timeout] pos=- - score SF 23-20 LAR | Official Timeout at 02:52.
+
+### S094 | DEN @ NYJ | home-win-prob moved +0.060 (toward HOME NYJ) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.28 -36:0.28 -32:0.28 -28:0.28 -24:0.28 -20:0.28 -16:0.27 -12:0.26 -8:0.24 -4:0.28 +0:0.23 +4:0.23 +8:0.28 +12:0.29 +16:0.29 +20:0.28 +24:0.28 +28:0.29 +32:0.27 +36:0.32 +40:0.33 +44:0.33 +48:0.37 +52:0.39 +56:0.36 +60:0.38 +64:0.36 +68:0.38
+     -26s id=4017726342624 Q3 4:56 [Penalty] pos=DEN 1&10@97 score DEN 10-11 NYJ | (Shotgun) A.Palczewski reported in as eligible.  B.Nix pass incomplete deep right to T.Franklin.PENALTY on DEN-Q.Meinerz, Offensive Holding, 3 yards, enforced in End Zone, SAFETY - No Play.Penalty on DEN-T.Franklin, Offensive Pass
+
+### S095 | LAR @ CAR | home-win-prob moved +0.100 (toward HOME CAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.33 -36:0.32 -32:0.32 -28:0.34 -24:0.37 -20:0.37 -16:0.36 -12:0.36 -8:0.37 -4:0.37 +0:0.36 +4:0.36 +8:0.38 +12:0.38 +16:0.39 +20:0.44 +24:0.45 +28:0.44 +32:0.42 +36:0.44 +40:0.44 +44:0.44 +48:0.44 +52:0.42 +56:0.45 +60:0.44 +64:0.44 +68:0.65
+     -78s id=4017728943374 Q4 4:02 [Rush] pos=LAR 1&10@22 score LAR 28-31 CAR | K.Williams up the middle to CAR 18 for 4 yards (L.Ransom; K.Barnes).
+     -36s id=4017728943396 Q4 3:20 [Rush] pos=LAR 2&6@18 score LAR 28-31 CAR | K.Williams left end to CAR 17 for 1 yard (N.Scott).
+      +8s id=4017728943418 Q4 2:34 [Penalty] pos=LAR 3&5@17 score LAR 28-31 CAR |  (Shotgun) PENALTY on LA, Delay of Game, 5 yards, enforced at CAR 17 - No Play.
+     +58s id=4017728943442 Q4 2:34 [Sack Opp Fumble Recovery] pos=LAR 3&10@22 score LAR 28-31 CAR | (Shotgun) M.Stafford sacked at CAR 31 for -9 yards (D.Brown). FUMBLES (D.Brown) [D.Brown], RECOVERED by CAR-D.Wonnum at CAR 30. D.Wonnum to CAR 49 for 19 yards (K.Mumpfield).PENALTY on CAR, Unsportsmanlike Conduct, 15 yards, enfor
+
+### S096 | NO @ SEA | home-win-prob moved +0.050 (toward HOME SEA) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.91 -36:0.91 -32:0.90 -28:0.88 -24:0.88 -20:0.88 -16:0.89 -12:0.89 -8:0.89 -4:0.89 +0:0.87 +4:0.92 +8:0.92 +12:0.93 +16:0.92 +20:0.93 +24:0.94 +28:0.93 +32:0.94 +36:0.93 +40:0.94 +44:0.93 +48:0.94 +52:0.94 +56:0.93 +60:0.93 +64:0.94 +68:0.93
+     -83s id=401772736481 Q1 8:03 [Penalty] pos=NO 4&1@62 score NO 0-7 SEA | (Run formation) PENALTY on NO-T.Simpkins, False Start, 4 yards, enforced at NO 38 - No Play.
+     -20s id=401772736536 Q1 7:31 [Punt Return Touchdown] pos=NO 4&5@66 score NO 0-14 SEA | K.Kroeger punts 61 yards to SEA 5, Center-Z.Wood. T.Horton for 95 yards, TOUCHDOWN. J.Myers extra point is GOOD, Center-C.Stoll, Holder-M.Dickson.
+     +96s id=401772736571 Q1 7:31 [Official Timeout] pos=- - score NO 0-14 SEA | Official Timeout at 07:31.
+
+### S097 | LV @ NE | home-win-prob moved +0.130 (toward HOME NE) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.63 -36:0.63 -32:0.63 -28:0.63 -24:0.63 -20:0.58 -16:0.59 -12:0.63 -8:0.63 -4:0.56 +0:0.56 +4:0.56 +8:0.65 +12:0.65 +16:0.66 +20:0.68 +24:0.68 +28:0.69 +32:0.69 +36:0.68 +40:0.68 +44:0.69 +48:0.69 +52:0.69 +56:0.66 +60:0.67 +64:0.67 +68:0.67
+     -90s id=4017727201723 Q2 4:05 [Timeout] pos=NE 4&1@0 score LV 7-7 NE | Timeout #1 by NE at 04:05.
+     -33s id=4017727201734 Q2 4:05 [Penalty] pos=NE 4&1@47 score LV 7-7 NE | (Shotgun) D.Maye pass incomplete deep left to M.Hollins.PENALTY on LV-K.Kelly, Defensive Pass Interference, 22 yards, enforced at LV 47 - No Play.
+     +30s id=4017727201775 Q2 4:00 [Pass Reception] pos=NE 1&10@25 score LV 7-7 NE | (Shotgun) D.Maye pass short right to D.Douglas to LV 29 for -4 yards (E.Stokes).
+     +77s id=4017727201800 Q2 3:14 [Rush] pos=NE 2&14@29 score LV 7-7 NE | (Shotgun) T.Henderson left end to LV 24 for 5 yards (I.Pola-Mao; M.Koonce).
+    +116s id=4017727201822 Q2 2:35 [Pass Reception] pos=NE 3&9@24 score LV 7-7 NE | (Shotgun) D.Maye pass short right to S.Diggs to LV 17 for 7 yards (D.White).
+
+### S098 | MIA @ CAR | home-win-prob moved +0.110 (toward HOME CAR) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.34 -36:0.34 -32:0.34 -28:0.33 -24:0.33 -20:0.33 -16:0.34 -12:0.34 -8:0.34 -4:0.34 +0:0.32 +4:0.32 +8:0.37 +12:0.40 +16:0.44 +20:0.43 +24:0.41 +28:0.40 +32:0.40 +36:0.46 +40:0.48 +44:0.49 +48:0.48 +52:0.49 +56:0.49 +60:0.50 +64:0.49 +68:0.47
+     -98s id=4017728523325 Q4 10:12 [Rush] pos=CAR 1&10@85 score MIA 17-13 CAR | R.Dowdle left tackle to CAR 16 for 1 yard (J.Brooks).PENALTY on MIA-M.Butler, Illegal Use of Hands, 5 yards, enforced at CAR 16.
+     -37s id=4017728523368 Q4 9:47 [Pass Reception] pos=CAR 1&10@79 score MIA 17-13 CAR | (Shotgun) B.Young pass short left to R.Dowdle to CAR 25 for 4 yards (J.Brooks; I.Melifonwu).
+      +0s id=4017728523393 Q4 9:09 [Rush] pos=CAR 2&6@75 score MIA 17-13 CAR | R.Dowdle right guard to MIA 32 for 43 yards (M.Fitzpatrick).
+     +44s id=4017728523415 Q4 8:26 [Rush] pos=CAR 1&10@32 score MIA 17-13 CAR | (Shotgun) R.Dowdle up the middle to MIA 27 for 5 yards (K.Britt; J.Brooks).
+     +76s id=4017728523437 Q4 7:53 [Pass Incompletion] pos=CAR 2&5@27 score MIA 17-13 CAR | B.Young pass incomplete short right [C.Robinson].PENALTY on MIA-C.Robinson, Hip Drop Tackle, 14 yards, enforced at MIA 27 - No Play.
+
+### S099 | NYJ @ CIN | home-win-prob moved -0.110 (toward AWAY NYJ) | time 0 = jump start
+price (s rel. jump start : p_home): -40:0.56 -36:0.56 -32:0.56 -28:0.55 -24:0.56 -20:0.55 -16:0.57 -12:0.57 -8:0.57 -4:0.55 +0:0.57 +4:0.55 +8:0.54 +12:0.56 +16:0.51 +20:0.51 +24:0.46 +28:0.46 +32:0.46 +36:0.50 +40:0.49 +44:0.49 +48:0.49 +52:0.49 +56:0.49 +60:0.49 +64:0.50 +68:0.50
+      +8s id=4017727584100 Q4 1:54 [Passing Touchdown] pos=NYJ 1&4@4 score NYJ 39-38 CIN | B.Hall pass short right to M.Taylor for 4 yards, TOUCHDOWN. N.Folk extra point is GOOD, Center-T.Hennessy, Holder-A.McNamara.

@@ -1,0 +1,45 @@
+ALL                      noise OLD 0.153 (23/150)  NEW 0.033 (5/150)  7cls NEW 0.033 (5/150)
+LIVE >=0.08              noise OLD 0.143 (12/84)  NEW 0.024 (2/84)  7cls NEW 0.024 (2/84)
+high-confidence manual   noise OLD 0.144 (15/104)  NEW 0.010 (1/104)  7cls NEW 0.010 (1/104)
+
+by auto-OLD class: noise OLD vs NEW (NEW scored on same rows)
+  BIG_PLAY  n= 20 OLD 0.100 (2/20)  NEW 0.000 (0/20)
+  FG        n= 16 OLD 0.312 (5/16)  NEW 0.062 (1/16)
+  OTHER     n= 62 OLD 0.194 (12/62)  NEW 0.000 (0/62)
+  SAFETY    n=  7 OLD 0.143 (1/7)  NEW 0.000 (0/7)
+  TD        n= 25 OLD 0.000 (0/25)  NEW 0.120 (3/25)
+  TURNOVER  n= 20 OLD 0.150 (3/20)  NEW 0.050 (1/20)
+
+by manual class (recall of auto):
+  BIG_PLAY  n= 23 OLD-correct 0.78  NEW-correct 1.00
+  FG        n= 11 OLD-correct 1.00  NEW-correct 1.00
+  OTHER     n= 59 OLD-correct 0.85  NEW-correct 0.98
+  SAFETY    n=  6 OLD-correct 1.00  NEW-correct 1.00
+  TD        n= 26 OLD-correct 0.96  NEW-correct 0.88
+  TURNOVER  n= 25 OLD-correct 0.68  NEW-correct 0.96
+
+OLD confusion (rows auto, cols manual)
+manual_category  BIG_PLAY  FG  OTHER  SAFETY  TD  TURNOVER
+auto_old                                                  
+BIG_PLAY               18   0      1       0   1         0
+FG                      0  11      5       0   0         0
+OTHER                   4   0     50       0   0         8
+SAFETY                  0   0      1       6   0         0
+TD                      0   0      0       0  25         0
+TURNOVER                1   0      2       0   0        17
+
+NEW confusion
+manual_category  BIG_PLAY  FG  OTHER  SAFETY  TD  TURNOVER
+category_new                                              
+BIG_PLAY               23   0      0       0   0         0
+FG                      0  11      1       0   0         0
+OTHER                   0   0     58       0   3         1
+SAFETY                  0   0      0       6   0         0
+TD                      0   0      0       0  23         0
+TURNOVER                0   0      0       0   0        24
+
+subtags among OLD errors:
+{'none': 9, '4th_down_stop': 6, 'noise': 5, '3rd_down_stop': 3, 'sack': 2, 'end_of_half_or_game': 2, 'carry_in': 1}
+subtags overall: {'none': 85, 'sack': 13, '3rd_down_stop': 13, 'noise': 11, 'penalty': 11, 'penalty_noplay': 10, '4th_down_stop': 9, 'end_of_half_or_game': 7, 'carry_in': 5, 'kick_return': 3, 'missed_fg': 2, 'unknown': 2, 'replay_reversal': 1, 'injury_timeout': 1}
+anchor play == manual causal play: 0.76 ; NEW play == manual causal: 0.87
+manual7 counts {'OTHER': 57, 'TD': 26, 'BIG_PLAY': 23, 'TURNOVER': 19, 'FG': 11, 'STOP': 8, 'SAFETY': 6}

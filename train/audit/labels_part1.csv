@@ -1,0 +1,51 @@
+sid,causal_play_id,manual_category,subtags,confidence,note
+S000,,OTHER,noise|end_of_half_or_game,low,spike before walk-off FG; FG moved price the other way
+S001,4017728312773,OTHER,missed_fg,high,SF FG blocked and recovered by SEA
+S002,4017729354085,OTHER,none,med,3rd-down scramble converts late in 4th
+S003,4017728483105,OTHER,penalty_noplay|carry_in,low,SF INT wiped by DPI; volatile market
+S004,4017727501934,BIG_PLAY,none,high,45-yd pass on 3rd and 10
+S005,4018729283279,TURNOVER,none,high,MIA interception
+S006,4018729624196,BIG_PLAY,none,med,21-yd pass on late drive
+S007,4017726944442,OTHER,penalty_noplay|penalty,high,DPI on KC 13 yds late 4th
+S008,401772948681,BIG_PLAY,none,high,23-yd pass on 3rd and 15
+S009,4017728712783,TD,none,high,McCarthy rushing TD
+S010,4017729142222,BIG_PLAY,none,med,20-yd pass; dip and recover inflates move
+S011,4017729603956,OTHER,none,med,8-yd pass toward FG range final minute
+S012,4017727153927,BIG_PLAY,none,high,22-yd pass to HST 23 final minute
+S013,4017729142830,OTHER,noise,low,3-yd loss run; small move likely noise
+S014,4018729511972,FG,none,high,58-yd FG good
+S015,4018729372846,OTHER,sack|3rd_down_stop,high,3rd-down sack forces punt
+S016,4017728943113,TD,none,high,43-yd TD on 4th and 2
+S017,401772749500,OTHER,sack|3rd_down_stop,high,3rd-down sack pushes SF to long FG
+S018,401872926924,TURNOVER,none,high,Hampton fumble recovered by ARI
+S019,4017728844018,OTHER,none,med,18-yd Nacua run late 4th
+S020,4018729251213,TURNOVER,none,high,Mayfield fumble recovered by CIN touchback
+S021,4017727762943,TURNOVER,none,high,Bishop interception
+S022,4017729193062,FG,none,high,54-yd FG good
+S023,4017729481184,TD,none,high,Pitts TD catch
+S024,4017729494193,OTHER,3rd_down_stop,high,3rd and 17 incomplete forces punt tied late
+S025,401772789231,TURNOVER,none,high,Echols interception
+S026,4017728632072,FG,end_of_half_or_game,high,61-yd FG at end of half
+S027,4018729501963,TD,none,high,Higgins 28-yd TD
+S028,4017729171313,OTHER,none,high,19-yd catch on 3rd and 10
+S029,4017728971879,TD,none,high,Melton 45-yd TD
+S030,4018729644435,OTHER,none,med,17-yd pass tied final 2 min
+S031,4018729651473,TURNOVER,4th_down_stop,high,4th and 1 stuffed turnover on downs
+S032,4017727751242,OTHER,sack|3rd_down_stop|carry_in,med,14-yd 3rd-down sack before FG
+S033,4017729823822,OTHER,noise,low,1st-down incompletion at 2-min warning
+S034,4018729235491,OTHER,end_of_half_or_game,med,game ends after failed 2-pt; market settles
+S035,4017728143742,OTHER,penalty|kick_return,med,kickoff out of bounds gives JAX the 40
+S036,4017729271957,TD,none,high,McConkey TD before half
+S037,4017727821996,OTHER,penalty_noplay|penalty|carry_in,low,34-yd DPI on NYJ
+S038,4017729812769,TURNOVER,4th_down_stop,high,INT on 4th and 1 at goal line
+S039,4017727242948,TD,replay_reversal,med,pass to 1 reversed to TD on challenge
+S040,4017729123625,FG,none,high,48-yd go-ahead FG late
+S041,401772635486,TD,none,high,Mumpfield TD catch
+S042,401872960511,TURNOVER,4th_down_stop,high,4th and 1 stuffed turnover on downs
+S043,4017727304209,OTHER,noise,low,incompletions during final 2-min drive; drifting
+S044,4017729643980,FG,end_of_half_or_game,high,walk-off 49-yd FG
+S045,4017729393737,OTHER,none,med,18-yd catch on 3rd and 1
+S046,4017727832578,OTHER,kick_return,high,43-yd punt return to ARZ 27
+S047,401772721722,TD,none,high,Wilson 33-yd TD
+S048,4017727923769,FG,none,high,37-yd FG cuts deficit to 4
+S049,4017729052485,TD,none,high,Tracy 18-yd TD
