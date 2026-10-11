@@ -23,14 +23,18 @@ function linePath(pts) {
 export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
   const { w, h } = size(el, 220);
   const big = w > 900;
-  const padL = big ? 56 : 40, padR = big ? 150 : 92, padT = big ? 46 : 38, padB = big ? 34 : 28;
+  const padL = big ? 56 : 34, padR = big ? 150 : 84, padT = big ? 46 : 38, padB = big ? 34 : 28;
   const hist = (game.history || []).filter((d) => d && d[0] <= now + 5000);
   const t1 = now;
   const win = (document.documentElement.classList.contains('present') ? 8 : 12) * 60e3;
   const t0 = Math.max(t1 - win, Math.min(t1 - 3 * 60e3, hist[0]?.[0] ?? t1 - win));
   const X = (t) => padL + ((t - t0) / (t1 - t0)) * (w - padL - padR);
   const Y = (p) => padT + (1 - p) * (h - padT - padB);
-  const pts = hist.map(([t, p]) => [X(t), Y(p)]);
+  // clip to the window: keep the last point before t0, pinned to the left edge
+  let firstIn = hist.findIndex((d) => d[0] >= t0);
+  if (firstIn < 0) firstIn = hist.length;
+  const vis = hist.slice(Math.max(0, firstIn - 1)).map(([t, p]) => [Math.max(t, t0), p]);
+  const pts = vis.map(([t, p]) => [X(t), Y(p)]);
   const pNow = game.p_home ?? hist.at(-1)?.[1] ?? 0.5;
   if (pts.length) pts.push([X(t1), Y(pNow)]);
   const streamT = t1 - delay * 1000;
@@ -51,7 +55,7 @@ export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
   if (xs < w - padR - 2) {
     g += `<rect x="${f1(xs)}" y="${padT}" width="${f1(w - padR - xs)}" height="${h - padT - padB}" fill="url(#hatch)"/>`;
     g += `<line x1="${f1(xs)}" x2="${f1(xs)}" y1="${padT - 22}" y2="${h - padB}" class="stream-line"/>`;
-    g += `<text x="${f1(xs - 6)}" y="${padT - 26}" class="lbl-cold" text-anchor="end">YOUR STREAM IS HERE</text>`;
+    g += `<text x="${f1(xs - 6)}" y="${padT - 26}" class="lbl-cold" text-anchor="end">${w < 640 ? 'YOUR STREAM' : 'YOUR STREAM IS HERE'}</text>`;
     g += `<text x="${f1((xs + w - padR) / 2)}" y="${padT - 26}" class="lbl-sig" text-anchor="middle">${delay}s AHEAD</text>`;
   }
   // area + line
@@ -68,8 +72,12 @@ export function liveChart(el, game, { now, delay = 48, alerts = [] } = {}) {
     const top = a.inferred?.[0];
     const lab = `${PLAY_SHORT[top?.type] || 'JUMP'} ${a.team || ''}`;
     g += `<line x1="${f1(x)}" x2="${f1(x)}" y1="${padT - 4}" y2="${h - padB}" class="al-line"/>`;
-    g += `<rect x="${f1(x - 1)}" y="${padT - 4}" width="${lab.length * 7.4 + 12}" height="17" class="al-chip"/>`;
-    g += `<text x="${f1(x + 5)}" y="${padT + 8}" class="al-txt">${esc(lab)}</text>`;
+    const present = document.documentElement.classList.contains('present');
+    const cw = lab.length * (present ? 9.4 : 7.4) + 12, chH = present ? 21 : 17;
+    const flip = x + cw > w - padR + 40;
+    const cx = flip ? x - cw + 1 : x - 1;
+    g += `<rect x="${f1(cx)}" y="${padT - 4}" width="${f1(cw)}" height="${chH}" class="al-chip"/>`;
+    g += `<text x="${f1(cx + 6)}" y="${padT + (present ? 11 : 8)}" class="al-txt">${esc(lab)}</text>`;
   }
   // now dot + direct labels
   const yN = Y(pNow);
@@ -150,8 +158,8 @@ export function lagChart(el, res) {
   rows.forEach((r, i) => {
     const y = top + i * rowH, bh = big ? 20 : 14, yc = y + rowH / 2;
     g += `<text x="0" y="${f1(yc + 5)}" class="row-k">${r.k}</text>`;
-    if (r.v > 0) g += `<rect class="bar bar-${r.cls}" x="${padL}" y="${f1(yc - bh / 2)}" width="${f1(X(r.v) - padL)}" height="${bh}" style="--d:${i * 120}ms"/>`;
-    else g += `<rect class="bar bar-bone" x="${padL - 1}" y="${f1(yc - bh)}" width="3" height="${bh * 2}"/>`;
+    if (r.v > 0) g += `<rect class="hbar bar-${r.cls}" x="${padL}" y="${f1(yc - bh / 2)}" width="${f1(X(r.v) - padL)}" height="${bh}" style="--d:${i * 120}ms"/>`;
+    else g += `<rect class="hbar bar-bone" x="${padL - 1}" y="${f1(yc - bh)}" width="3" height="${bh * 2}"/>`;
     if (r.lo != null && r.hi != null) g += `<line x1="${f1(X(r.lo))}" x2="${f1(X(r.hi))}" y1="${f1(yc + bh)}" y2="${f1(yc + bh)}" class="iqr"/>`;
     g += `<text x="${f1(Math.max(X(r.v), padL) + 10)}" y="${f1(yc + 6)}" class="row-v row-v-${r.cls}">${r.v === 0 ? '0 s' : `${r.v} s`}</text>`;
   });
@@ -189,9 +197,9 @@ export function payoffChart(el, o) {
     const padL = 150, padR = 110, X = (v) => padL + (v / max) * (w - padL - padR);
     const h = 104;
     el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Cost versus guaranteed payout">
-      <text x="0" y="30" class="row-k">YOU PAY</text><rect class="bar bar-cold" x="${padL}" y="16" width="${f1(X(cost) - padL)}" height="20"/>
+      <text x="0" y="30" class="row-k">YOU PAY</text><rect class="hbar bar-cold" x="${padL}" y="16" width="${f1(X(cost) - padL)}" height="20"/>
       <text x="${f1(X(cost) + 8)}" y="31" class="row-v row-v-cold">${usd(cost, { compact: true })}</text>
-      <text x="0" y="78" class="row-k">WORST CASE BACK</text><rect class="bar bar-sig" x="${padL}" y="64" width="${f1(X(o.worst_case_payout) - padL)}" height="20"/>
+      <text x="0" y="78" class="row-k">WORST CASE BACK</text><rect class="hbar bar-sig" x="${padL}" y="64" width="${f1(X(o.worst_case_payout) - padL)}" height="20"/>
       <text x="${f1(X(o.worst_case_payout) + 8)}" y="79" class="row-v row-v-sig">${usd(o.worst_case_payout, { compact: true })}</text>
     </svg>`;
     return;
@@ -206,7 +214,7 @@ export function payoffChart(el, o) {
   outs.forEach((x, i) => {
     const bx = padL + i * bw + bw * 0.16, ww = bw * 0.68;
     const win = x.payout - cost;
-    g += `<rect x="${f1(bx)}" y="${f1(Y(x.payout))}" width="${f1(ww)}" height="${f1(Y(0) - Y(x.payout))}" class="${win > 0 ? 'bar-sig' : 'bar-cold'} bar"/>`;
+    g += `<rect x="${f1(bx)}" y="${f1(Y(x.payout))}" width="${f1(ww)}" height="${f1(Y(0) - Y(x.payout))}" class="${win > 0 ? 'bar-sig' : 'bar-cold'} hbar"/>`;
     g += `<text x="${f1(bx + ww / 2)}" y="${f1(Y(x.payout) - 6)}" class="row-v row-v-${win > 0 ? 'sig' : 'cold'}" text-anchor="middle">${usd(win, { sign: true, compact: true })}</text>`;
     const lab = String(x.label).slice(0, Math.max(6, Math.floor(bw / 6.6)));
     g += `<text x="${f1(bx + ww / 2)}" y="${h - padB + 18}" class="ax" text-anchor="middle">${esc(lab)}</text>`;

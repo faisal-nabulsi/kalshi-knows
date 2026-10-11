@@ -356,23 +356,34 @@ function renderDutch(data, { mock = false, live = false } = {}) {
   $('#dutch-meta').innerHTML = `${live ? 'LIVE FROM THE ENGINE' : 'SNAPSHOT'} · UPDATED ${esc(ago(data.updated_ms))}${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
   const amt = $('#db-amount');
   const fmt = (v) => `$${int(v)}`;
-  if (amt.dataset.seen) countUp(amt, data.total_mispricing_usd || 0, fmt, 900);
-  else onVisible(amt, () => { amt.dataset.seen = 1; countUp(amt, data.total_mispricing_usd || 0, fmt, 2200); }, { threshold: 0.4 });
-  $('#db-sub').textContent = `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets scanned · ${int((data.opportunities || []).length)} contradictions found`;
   const opps = (data.opportunities || []).slice().sort((a, b) => (b.profit_after_fees || 0) - (a.profit_after_fees || 0)).slice(0, 30);
-  S.dbOpps = opps;
-  $('#db-list').innerHTML = opps.map((o, i) => {
-    const t = tierOf(o, tierDutch);
-    return `<li><button class="db-item ${i === (dbSel ?? 0) ? 'on' : ''}" data-i="${i}">
-      <span class="db-kind mono">${esc((o.kind || '').replace('_', ' '))}</span>
+  const nearAll = (data.near_misses || []).slice().sort((a, b) => (b.profit_before_fees || 0) - (a.profit_before_fees || 0));
+  const showNear = !opps.length && nearAll.length > 0;
+  const rows = showNear ? nearAll.slice(0, 30).map((o) => ({ ...o, _near: true })) : opps;
+  const total = showNear && !(data.total_mispricing_usd > 0) ? nearAll.reduce((s, o) => s + Math.max(0, o.profit_before_fees || 0), 0) : (data.total_mispricing_usd || 0);
+  $('.db-label').innerHTML = showNear && !(data.total_mispricing_usd > 0)
+    ? 'that only <span class="sig">looks</span> free on Kalshi right now'
+    : 'of contradictory pricing on Kalshi <span class="sig">right now</span>';
+  if (amt.dataset.seen) countUp(amt, total, fmt, 900);
+  else onVisible(amt, () => { amt.dataset.seen = 1; countUp(amt, total, fmt, 2200); }, { threshold: 0.4 });
+  $('#db-sub').textContent = showNear
+    ? `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets scanned · 0 true free lunches · ${int(nearAll.length)} traps that look like one`
+    : `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets scanned · ${int((data.opportunities || []).length)} contradictions found`;
+  S.dbOpps = rows; S.dbNear = showNear;
+  $('.db-list-head').innerHTML = showNear ? '<span>LOOKS FREE · ISN&rsquo;T</span><span>ON PAPER</span>' : '<span>OPPORTUNITY</span><span>PROFIT AFTER FEES</span>';
+  $('#db-list').innerHTML = rows.map((o, i) => {
+    const t = o._near ? tierOf({ tier: 1 }, () => 1) : tierOf(o, tierDutch);
+    return `<li><button class="db-item ${i === (dbSel ?? 0) ? 'on' : ''} ${o._near ? 'db-trap' : ''}" data-i="${i}">
+      <span class="db-kind mono">${o._near ? 'TRAP · ' : ''}${esc((o.kind || '').replace('_', ' '))}</span>
       <span class="db-title">${esc(o.title)}</span>
       <span class="db-cat mono">${esc(o.category || '')} · ${(o.legs || []).length} legs</span>
       ${tierBadge(t)}
-      <span class="db-profit mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</span></button></li>`;
-  }).join('') || `<li class="db-none">No contradictions open right now. Kalshi is behaving.</li>`;
-  $$('.db-item').forEach((b) => b.addEventListener('click', () => { dbSel = +b.dataset.i; $$('.db-item').forEach((x) => x.classList.toggle('on', x === b)); renderDbDetail(opps[dbSel]); if (innerWidth < 900) $('#db-detail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
-  renderDbDetail(opps[dbSel ?? 0]);
-  const nm = (data.near_misses || []).slice(0, 4);
+      <span class="db-profit mono">${usd(o._near ? o.profit_before_fees : o.profit_after_fees, { compact: true, sign: true })}</span></button></li>`;
+  }).join('') || `<li class="db-none">Nothing open right now. Kalshi is behaving.</li>`;
+  $$('.db-item').forEach((b) => b.addEventListener('click', () => { dbSel = +b.dataset.i; $$('.db-item').forEach((x) => x.classList.toggle('on', x === b)); renderDbDetail(rows[dbSel]); if (innerWidth < 900) $('#db-detail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
+  if (dbSel != null && dbSel >= rows.length) dbSel = 0;
+  renderDbDetail(rows[dbSel ?? 0]);
+  const nm = showNear ? [] : nearAll.slice(0, 4);
   const cats = Object.entries(data.by_category || {}).sort((a, b) => b[1].violations - a[1].violations).slice(0, 6);
   const maxV = Math.max(1, ...cats.map(([, v]) => v.violations));
   $('#db-near').innerHTML = `
@@ -382,15 +393,16 @@ function renderDutch(data, { mock = false, live = false } = {}) {
 function renderDbDetail(o) {
   const el = $('#db-detail');
   if (!o) { el.innerHTML = ''; return; }
-  const t = tierOf(o, tierDutch);
+  const near = !!o._near;
+  const t = near ? tierOf({ tier: 1 }, () => 1) : tierOf(o, tierDutch);
   const legs = o.legs || [];
   const shown = legs.slice(0, 10);
   const pa = o.profit_after_fees || 0;
   el.innerHTML = `
-    <p class="dd-k mono">PAPER TRADE · ${esc((o.kind || '').replace('_', ' ').toUpperCase())} · ${esc((o.category || '').toUpperCase())}</p>
+    <p class="dd-k mono">${near ? '<span class="sig">NOT ACTUALLY FREE</span>' : 'PAPER TRADE'} · ${esc((o.kind || '').replace('_', ' ').toUpperCase())} · ${esc((o.category || '').toUpperCase())}</p>
     <h3 class="dd-title">${esc(o.title)}</h3>
     <div class="dd-tier">${tierBadge(t, { blurb: true, size: 'tier-lg' })}</div>
-    <p class="dd-plain">Spend <b>${usd(o.cost, { compact: true })}</b>. Whatever happens, get back at least <b>${usd(o.worst_case_payout, { compact: true })}</b>. That's <b class="sig">${usd(o.profit_before_fees, { compact: true })}</b> before fees and <b class="${pa > 0 ? 'sig' : 'cold'}">${usd(pa, { compact: true })}</b> after Kalshi's fee${pa > 0 ? '.' : ': the fee eats it.'}</p>
+    ${near ? `<p class="dd-plain">On paper: spend <b>${usd(o.cost, { compact: true })}</b>, collect <b>${usd(o.worst_case_payout, { compact: true })}</b>. <b class="sig">The catch:</b> ${esc(o.explanation || 'it fails in at least one outcome once you count fees.')}</p>` : `<p class="dd-plain">Spend <b>${usd(o.cost, { compact: true })}</b>. Whatever happens, get back at least <b>${usd(o.worst_case_payout, { compact: true })}</b>. That's <b class="sig">${usd(o.profit_before_fees, { compact: true })}</b> before fees and <b class="${pa > 0 ? 'sig' : 'cold'}">${usd(pa, { compact: true })}</b> after Kalshi's fee${pa > 0 ? '.' : ': the fee eats it.'}</p>`}
     <table class="legs"><thead><tr><th>Buy</th><th>Contract</th><th class="num">Price</th><th class="num">Qty</th><th class="num">Cost</th></tr></thead>
       <tbody>${shown.map((l) => `<tr><td><span class="side side-${esc(l.side)} mono">${esc((l.side || '').toUpperCase())}</span></td><td>${esc(l.label)}</td><td class="num mono">${cents(l.price)}</td><td class="num mono">${int(l.qty)}</td><td class="num mono">${usd((l.price || 0) * (l.qty || 1), { compact: true })}</td></tr>`).join('')}
       ${legs.length > shown.length ? `<tr class="legs-more"><td colspan="5" class="mono">+ ${legs.length - shown.length} more legs</td></tr>` : ''}</tbody></table>
@@ -402,8 +414,8 @@ function renderDbDetail(o) {
       <div><dt>Kalshi fees</dt><dd>−${usd(o.fees)}</dd></div>
       <div class="ledger-total"><dt>Profit after fees</dt><dd class="${pa > 0 ? 'sig' : ''}">${usd(pa, { sign: true })}</dd></div>
     </dl>
-    <p class="dd-expl">${esc(o.explanation || '')}</p>`;
-  payoffChart($('#dd-chart'), o);
+    ${near ? '' : `<p class="dd-expl">${esc(o.explanation || '')}</p>`}`;
+  if (!near) payoffChart($('#dd-chart'), o);
 }
 
 // ------------------------------------------------------------ ticker
@@ -414,7 +426,7 @@ function renderTicker() {
   const last = S.lastAlert;
   if (last) items.push(`<span class="tk tk-sig"><b>LAST SPOILER</b> ${esc(last.headline || '')}</span>`);
   if (S.db) {
-    items.push(`<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
+    items.push(S.dbNear ? `<span class="tk"><b>DUTCH BOOK</b> 0 free lunches, ${int((S.db.near_misses || []).length)} traps</span>` : `<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
     (S.dbOpps || []).slice(0, 3).forEach((o) => items.push(`<span class="tk">${esc(o.title)} <em class="mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</em></span>`));
   }
   (S.knew?.cases || []).slice(0, 3).forEach((c) => items.push(`<span class="tk"><b>SOMEONE KNEW</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} early</em></span>`));
@@ -493,7 +505,7 @@ async function boot() {
 
   // resize charts
   let rT;
-  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { renderLive(); drawCases(); if (S.results && $('#lag-chart').innerHTML) lagChart($('#lag-chart'), S.results); if (S.dbOpps) renderDbDetail(S.dbOpps[dbSel ?? 0]); }, 150); });
+  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { renderLive(); drawCases(); if (S.results && $('#lag-chart').innerHTML) lagChart($('#lag-chart'), S.results); if (S.dbOpps?.length) renderDbDetail(S.dbOpps[dbSel ?? 0]); }, 150); });
 }
 
 // keyboard: presenter controls

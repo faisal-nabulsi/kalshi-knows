@@ -160,6 +160,7 @@ svg .now-halo { fill: var(--sig); opacity: .25; transform-box: fill-box; transfo
 svg .dl-big { fill: var(--ink); font: 800 30px var(--display); letter-spacing: .02em; }
 svg .dl-small { fill: var(--cold); font: 500 13px var(--mono); }
 .present svg .ax, .present svg .lbl-cold, .present svg .lbl-sig, .present svg .al-txt { font-size: 14px; }
+@media (max-width: 640px) { svg .dl-big { font-size: 22px; } svg .dl-small { font-size: 11px; } svg .ax-title { display: none; } }
 .present svg .dl-big { font-size: 42px; } .present svg .dl-small { font-size: 17px; }
 .live-ctrl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 22px; border-top: 1px solid var(--line); }
 .seg { display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
@@ -378,6 +379,8 @@ svg .bracket { fill: none; stroke: var(--sig); stroke-width: 1.5; }
 .db-item .tier { grid-area: tier; justify-self: start; margin-top: 4px; }
 .db-profit { grid-area: profit; align-self: center; font-size: 1.05rem; font-weight: 600; color: var(--sig); }
 .db-none { padding: 18px; color: var(--ink3); }
+.db-trap .db-profit { color: var(--cold); text-decoration: line-through; text-decoration-thickness: 2px; }
+.db-trap .db-kind { color: var(--sig); }
 .db-near { padding: 18px; border-top: 1px solid var(--line); }
 .db-near-k { margin: 6px 0 10px; font-size: .68rem; letter-spacing: .12em; color: var(--ink3); }
 .db-nm { list-style: none; margin: 0 0 22px; padding: 0; }
@@ -411,7 +414,7 @@ svg .bracket { fill: none; stroke: var(--sig); stroke-width: 1.5; }
 .ledger-total { font-weight: 600; font-size: 1rem; }
 .ledger-total dd.sig { color: var(--sig); }
 .dd-expl { color: var(--ink2); margin: 0; font-size: .92rem; }
-svg .bar { transition: width .8s; }
+svg .hbar { transition: width .8s; }
 svg .bar-sig { fill: var(--sig); }
 svg .bar-cold { fill: var(--cold2); }
 svg .bar-bone { fill: var(--ink); }
@@ -432,7 +435,7 @@ svg .row-v-sig { fill: var(--sig); } svg .row-v-cold { fill: var(--cold); } svg 
 
 /* ------------------------------------------------ PROOF */
 .lag { margin-bottom: 64px; }
-.lag svg .bar { transform-box: fill-box; transform-origin: left; animation: grow 1.2s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--d, 0ms); }
+.lag svg .hbar { transform-box: fill-box; transform-origin: left; animation: grow 1.2s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--d, 0ms); }
 @keyframes grow { from { transform: scaleX(0); } }
 .lag svg .row-k { font-size: 12.5px; }
 .lag svg .row-v { font-size: 26px; }
