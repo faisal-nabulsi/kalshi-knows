@@ -2,6 +2,8 @@
 Trains ~TRAIN_MIN minutes (wall clock), then evaluates base vs GRPO on the 2026 test prompts. W&B offline."""
 import subprocess, sys, os, time, glob, json
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-U", "trl>=0.12", "peft", "accelerate", "datasets"], check=False)
+# Kaggle image ships torchao 0.10, which peft/transformers reject on import (needs >0.16): remove it
+subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"], check=False)
 os.environ["WANDB_MODE"] = "offline"; os.environ["WANDB_PROJECT"] = "kalshi-knows"; os.environ["WANDB_RUN_GROUP"] = "grpo"
 os.environ["WANDB_DIR"] = "/kaggle/working"
 T0 = time.time()
@@ -63,9 +65,14 @@ def evaluate(model, tok, tag):
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainerCallback
 tok = AutoTokenizer.from_pretrained(NAME)
 RES = {}
-base = AutoModelForCausalLM.from_pretrained(NAME, torch_dtype=torch.float16).cuda()
-RES["base"] = evaluate(base, tok, "base"); print("BASE", json.dumps(RES["base"]), flush=True)
-del base; torch.cuda.empty_cache()
+BASE_V1 = '{"full_2026": {"n": 2634, "bets": 2634, "invalid": 0, "pnl_total": -65.59, "pnl_per_bet": -0.0249, "win_rate": 0.4886, "mix": {"BUY_AWAY": 2058, "BUY_HOME": 576}, "pnl_per_bet_ci95": [-0.1127, 0.0639]}, "betbench150": {"n": 150, "bets": 150, "invalid": 0, "pnl_total": 9.29, "pnl_per_bet": 0.0619, "win_rate": 0.56, "mix": {"BUY_AWAY": 113, "BUY_HOME": 37}, "pnl_per_bet_ci95": [-0.0348, 0.1587]}}' 
+if os.path.exists("/kaggle/input") and not os.environ.get("RUN_BASE"):
+    # base eval already completed in kernel version 1 (same code, greedy decoding is deterministic); reuse it
+    RES["base"] = json.loads(BASE_V1)
+else:
+    base = AutoModelForCausalLM.from_pretrained(NAME, torch_dtype=torch.float16).cuda()
+    RES["base"] = evaluate(base, tok, "base"); del base; torch.cuda.empty_cache()
+print("BASE", json.dumps(RES["base"]), flush=True)
 
 from datasets import Dataset
 from trl import GRPOConfig, GRPOTrainer

@@ -24,16 +24,20 @@ P&L is dollars per $1 contract. CI = 95% bootstrap interval that resamples whole
 | Always buy the favorite | 2,634 | 70.5% | -$0.031 | -$80.36 | [-$0.092, +$0.031] |
 | Follow the last price jump | 2,324 | 54.5% | -$0.033 | -$77.58 | [-$0.048, -$0.018] |
 | Supervised view (market calibrated, so PASS) | 0 | n/a | $0.000 | $0.00 | n/a |
-| Qwen base / Qwen+GRPO | not finished on the Mac (see below) | | | | |
+| Qwen2.5-0.5B-Instruct, base (no RL; Kaggle T4, greedy) | 2,634 | 48.9% | -$0.025 | -$65.59 | [-$0.113, +$0.064] |
+| Qwen + GRPO (Kaggle T4, 10 min) | running: kernel v2 | | | | |
 
 On the 150-prompt blind subset: buy-the-favorite = 150 bets, 72.0% win rate, -$0.023/bet (CI -$0.102 to +$0.054); follow-the-jump = 128 bets, 54.7%, -$0.048/bet (CI -$0.119 to +$0.020).
+
+Base Qwen on the 150 blind prompts: 150 bets, 56.0% win rate, +$0.062/bet, +$9.29 total (CI -$0.035 to +$0.159). The same model loses money on the full set, so this is luck from a small sample. It never passes and buys the away team 78% of the time.
 
 Blind Claude baseline on the same 150 prompts (answered without the key, file `claude_betbench.json`): 12 bets, 7 wins (58%), +$0.92 total (+$0.077 per bet).
 That is only 12 bets, so it is not evidence of a real edge; one or two different outcomes would flip the sign.
 
 **Mac run status.** The Mac has 8 GB of memory, so GRPO ran at about 10 seconds per step and only reached 23 steps (1 prompt x 8 answers per step) before it was stopped to free the Mac for the live demo.
-No checkpoint was saved, so the base-vs-GRPO test-set comparison was not run on the Mac.
-The full run (more steps on a T4 GPU, plus base-vs-GRPO evaluation) is moving to Kaggle as kernel `faisalnabulsi/kk-grpo`.
+No checkpoint was saved, so the GRPO model was not evaluated on the Mac.
+The full run (64 answers per step for 10 minutes on a Tesla T4, then the GRPO evaluation) is running on Kaggle: https://www.kaggle.com/code/faisalnabulsi/kk-grpo (code in `kaggle/kk_grpo.py`).
+Version 1 ran the base-model evaluation above and then crashed on import, because Kaggle ships torchao 0.10. Version 2 uninstalls torchao and trains.
 
 ## Reward curve
 
