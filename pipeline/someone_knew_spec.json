@@ -31,5 +31,13 @@
   "match": "foxnews",
   "title": "Will a cotton candy lobster be caught in U.S. waters before 2027?",
   "verdict": "This one went the other way: the headline about the lobster came {lead} before the market caught up."
+ },
+ "KXGPT-OPEN-26SEP16": {
+  "news_ms": 1788468120000,
+  "news_title": "OpenAI Rolls Out GPT-6 Astra Model With Cyber Guardrails",
+  "news_url": "https://news.bgov.com/artificial-intelligence/openai-rolls-out-gpt-6-astra-model-with-cyber-guardrails-1",
+  "news_src": "Bloomberg Law (earliest article found; OpenAI's own post may be earlier)",
+  "title": "Will OpenAI release GPT-6 before Sep 16, 2026?",
+  "verdict": "Kalshi had GPT-6 at 97% about {lead} before the first article we found saying it was out (the company's own post may be a few hours earlier)."
  }
 }
