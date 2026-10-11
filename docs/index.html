@@ -46,6 +46,7 @@
     <a href="#/proof" data-route="proof"><i>04</i>Proof</a>
     <a href="#/scale" data-route="scale"><i>05</i>Predator Scale</a>
     <a href="#/auto" data-route="auto"><i>06</i>Auto</a>
+    <a href="#/picks" data-route="picks"><i>08</i>Picks</a>
     <a href="#/alerts" data-route="alerts" class="nav-get"><i>07</i>Get alerts</a>
   </nav>
   <div class="bug">
@@ -249,6 +250,14 @@
   </section>
 
   <!-- 07 GET ALERTS -->
+  <section class="sec sec-picks" id="picks" data-page="picks" hidden>
+    <header class="sec-head">
+      <p class="sec-num mono">08</p>
+      <h2 class="sec-title">Bets our model would make right now</h2>
+      <p class="sec-deck">Open Kalshi markets closing in the next 1 to 30 hours, scored by the cross-market model. A pick needs an 8¢ gap between our probability and the price.</p>
+    </header>
+    <div id="picks-root"><p class="pk-meta mono">Loading picks…</p></div>
+  </section>
   <section class="sec sec-get" id="get" data-page="alerts" hidden>
     <header class="sec-head">
       <p class="sec-num mono">07</p>
@@ -287,13 +296,14 @@
   </footer>
 </main>
 
-<nav class="tabs" aria-label="Pages">
+<nav class="tabs" aria-label="Pages" style="grid-template-columns:repeat(8,minmax(0,1fr))">
   <a href="#/live" data-route="live"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Live</a>
   <a href="#/headlines" data-route="headlines"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h7" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Headlines</a>
   <a href="#/dutch" data-route="dutch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M16.5 7.5C16 6 14.4 5 12 5S7.5 6.2 7.5 8s1.8 2.6 4.5 3.2 4.5 1.5 4.5 3.6S14.5 19 12 19s-4.2-1-4.8-2.6" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Dutch</a>
   <a href="#/proof" data-route="proof"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Proof</a>
   <a href="#/scale" data-route="scale"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h4v-5H3zM10 20h4V9h-4zM17 20h4V4h-4z" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Scale</a>
   <a href="#/auto" data-route="auto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>Auto</a>
+  <a href="#/picks" data-route="picks"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>Picks</a>
   <a href="#/alerts" data-route="alerts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Alerts</a>
 </nav>
 

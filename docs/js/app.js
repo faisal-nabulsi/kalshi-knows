@@ -684,9 +684,9 @@ function renderTicker() {
 }
 
 // ------------------------------------------------------------ pages (hash routes: GitHub Pages has no rewrites)
-const ROUTES = ['live', 'headlines', 'dutch', 'proof', 'scale', 'auto', 'alerts'];
+const ROUTES = ['live', 'headlines', 'dutch', 'proof', 'scale', 'auto', 'alerts', 'picks'];
 const LEGACY = { top: 'live', live: 'live', receipts: 'live', knew: 'headlines', dutch: 'dutch', proof: 'proof', scale: 'scale', get: 'alerts' };
-const TITLES = { live: 'Live', headlines: 'The market beat the headlines', dutch: 'Dutch Book', proof: 'Proof', scale: 'Predator Scale', auto: 'Auto', alerts: 'Get alerts' };
+const TITLES = { live: 'Live', headlines: 'The market beat the headlines', dutch: 'Dutch Book', proof: 'Proof', scale: 'Predator Scale', auto: 'Auto', alerts: 'Get alerts', picks: 'Picks' };
 // Auto page: js/auto.js is loaded and mounted only while #/auto is open (it polls the engine every 3 s)
 let autoUnmount = null, autoApi = null;
 async function syncAuto(page) {
@@ -732,6 +732,7 @@ function go() {
   }
   else if (changed) scrollTo(0, 0);
   if (changed) { requestAnimationFrame(() => redraw(page)); syncAuto(page); }
+  if (changed && page === 'picks') import('./picks.js').then((m) => route === 'picks' && m.mountPicks($('#picks-root'))).catch((e) => { $('#picks-root').textContent = `Couldn't load picks: ${e.message}`; });
 }
 addEventListener('hashchange', go);
 go();
