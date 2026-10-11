@@ -1,0 +1,18 @@
+{
+ "CV by game|CURRENT (exact only)": {
+  "exact": "acc 0.738 | named@75  466 right 0.805 | tier5+6  317 right 0.817",
+  "late": "acc 0.656 | named@75  479 right 0.741 | tier5+6  323 right 0.768"
+ },
+ "CV by game|NEW (exact + one-play-late)": {
+  "exact": "acc 0.731 | named@75  355 right 0.789 | tier5+6  219 right 0.795",
+  "late": "acc 0.682 | named@75  373 right 0.777 | tier5+6  240 right 0.787"
+ },
+ "2025 -> 2026|CURRENT (exact only)": {
+  "exact": "acc 0.750 | named@75   94 right 0.766 | tier5+6   63 right 0.810",
+  "late": "acc 0.652 | named@75   94 right 0.755 | tier5+6   64 right 0.734"
+ },
+ "2025 -> 2026|NEW (exact + one-play-late)": {
+  "exact": "acc 0.732 | named@75   70 right 0.771 | tier5+6   41 right 0.805",
+  "late": "acc 0.687 | named@75   79 right 0.797 | tier5+6   43 right 0.791"
+ }
+}

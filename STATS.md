@@ -30,6 +30,19 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 
 **Auto-bettor on Kalshi's demo exchange (play money):** real signed order placed and filled at 2:05pm — buy 1 YES "49ers win" at $0.39, fee $0.0167, order 01a12cc9-43b0-7d31-af6a-b259485bac52; mode = demo; rules: SF/SEA named call ≥80% → buy 5 YES on that team to win ($25/day cap, kill switch).
 
+**Confidence tiers (Predator Scale) — how often the model names the play right when it's sure** (live-size jumps, games it never trained on; train/out/lagged_metrics.json + session log 3:20pm):
+
+| Model / test condition | Tier 5+6 (≥80% sure): calls → right | Tier 6 (≥90%) | Tier 5 (80–90%) | Tier 4 (65–80%) |
+|---|---|---|---|---|
+| Audited model, exact game state, CV by game | 317 → **81.7%** | 24 → 83.3% | 293 → 81.6% | 445 → 72.6% |
+| Audited model, exact state, trained 2025 → tested 2026 | 63 → **81.0%** | 5 → 5 of 5 | 58 → 79.3% | 80 → 72.5% |
+| **Production (lag-robust) model, ONE-PLAY-LATE state (what live sees), CV by game** | 240 → **78.7%** | | | |
+| **Production (lag-robust), one-play-late, trained 2025 → tested 2026** | 43 → **79.1%** | | | |
+
+Slide line: **"When it's at least 80% sure, it names the play right about 4 times in 5 (79–82% across four tests on unseen games)."** This is calling what happened, not a betting win rate (post-jump prices are already fair; train/patterns/REPORT.md).
+
+**Train/serve fix (3:20pm):** live ESPN state arrives ~one play late. Retrained on exact + one-play-late state (train/train_lagged.py). Under one-play-late conditions: accuracy 65.6% → **68.2%**, named-call precision 74.1% → **77.7%** (CV); temporal 65.2% → **68.7%**, 75.5% → **79.7%**. Stale-state naming gate relaxed 60 s → 180 s accordingly. Real-time Kalshi stream connected (production key, read-only guard) + detector config B: first buzz ~5 s after Kalshi moves (results/latency_study.md).
+
 **Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
 
 ## 1. Speed: the market vs the play, the stream, and ESPN
