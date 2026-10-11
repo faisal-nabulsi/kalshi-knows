@@ -18,7 +18,7 @@ P = [
  ("hook", "[race]Your stream is a minute behind. [mk]The betting market isn't, it reacts to every play in seconds."),
  ("what", "[what]Kalshi Knows is a free alert that tells you the play before your stream does."),
  ("story", f"[time]At {D['jump_clock']} today, [jump]Kalshi's price jumped. [buzz]Our app read the jump and [alert]buzzed this phone: {D['alert_text']}. [later]About thirty seconds before [tv]the stream showed it."),
- ("proof", "[seasons]We trained it on twenty-five seasons of NFL plays and [moves]thousands of real price jumps. [five]When it calls a play, it's right about four times out of five."),
+ ("proof", "[seasons]We trained it on twenty-five seasons of NFL plays and [moves]thousands of real price jumps. [five]When it calls a play, it's right about four times out of five. [roi]And our picks model made twelve percent after fees on markets it had never seen, more than double what elite bettors make."),
  ("more", "[hide]Hide spoilers, [sync]sync to your stream, [agent]or trade on Kalshi's demo exchange."),
  ("close", "[logo]Kalshi Knows. [tag]Know before your stream."),
 ]
