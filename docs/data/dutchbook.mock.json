@@ -1,0 +1,302 @@
+{
+ "updated_ms": 1791740000000,
+ "scanned_events": 3412,
+ "scanned_markets": 41877,
+ "total_mispricing_usd": 1196.8,
+ "opportunities": [
+  {
+   "id": "m1",
+   "event_ticker": "KXHIGHMIA-26OCT12",
+   "title": "Highest temperature in Miami on Oct 12?",
+   "category": "Climate and Weather",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXHIGHMIA-26OCT12-B84",
+     "label": "84\u00b0 or below",
+     "side": "yes",
+     "price": 0.06,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHMIA-26OCT12-B86",
+     "label": "85\u00b0 to 86\u00b0",
+     "side": "yes",
+     "price": 0.21,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHMIA-26OCT12-B88",
+     "label": "87\u00b0 to 88\u00b0",
+     "side": "yes",
+     "price": 0.38,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHMIA-26OCT12-B90",
+     "label": "89\u00b0 to 90\u00b0",
+     "side": "yes",
+     "price": 0.19,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHMIA-26OCT12-T90",
+     "label": "91\u00b0 or above",
+     "side": "yes",
+     "price": 0.04,
+     "qty": 100
+    }
+   ],
+   "cost": 88.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 12.0,
+   "fees": 4.57,
+   "profit_after_fees": 7.43,
+   "explanation": "The five temperature brackets cover every possibility but their YES prices add up to $0.88. Buy one of each and exactly one pays $1.00.",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "tier_blurb": "Returned the fund. Twice."
+  },
+  {
+   "id": "m2",
+   "event_ticker": "KXBTCD-26OCT11",
+   "title": "Bitcoin price at 5pm ET Oct 11?",
+   "category": "Crypto",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXBTCD-26OCT11-T118000",
+     "label": "Above $118,000",
+     "side": "yes",
+     "price": 0.41,
+     "qty": 100
+    },
+    {
+     "ticker": "KXBTCD-26OCT11-T120000",
+     "label": "Above $120,000",
+     "side": "no",
+     "price": 0.55,
+     "qty": 100
+    }
+   ],
+   "cost": 96.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 4.0,
+   "fees": 3.44,
+   "profit_after_fees": 0.56,
+   "explanation": "Kalshi prices 'above $120k' higher than 'above $118k', which can never be right. YES on $118k plus NO on $120k costs $0.96 and pays at least $1.00.",
+   "tier": 3,
+   "tier_name": "Gazelle",
+   "tier_blurb": "Fast, pretty, and somebody's lunch. Series A tourist."
+  },
+  {
+   "id": "m3",
+   "event_ticker": "KXTOPSONG-26OCT17",
+   "title": "Top song on the Billboard Hot 100 next week?",
+   "category": "Entertainment",
+   "kind": "exhaustive_set",
+   "legs": [
+    {
+     "ticker": "KXTOPSONG-26OCT17-A",
+     "label": "Current #1 holds",
+     "side": "yes",
+     "price": 0.52,
+     "qty": 100
+    },
+    {
+     "ticker": "KXTOPSONG-26OCT17-B",
+     "label": "New entry debuts at #1",
+     "side": "yes",
+     "price": 0.24,
+     "qty": 100
+    },
+    {
+     "ticker": "KXTOPSONG-26OCT17-C",
+     "label": "Any other song",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 100
+    }
+   ],
+   "cost": 93.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 7.0,
+   "fees": 4.02,
+   "profit_after_fees": 2.98,
+   "explanation": "Three answers, one of them must happen, total price $0.93. Buy all three and you collect $1.00 whatever charts.",
+   "tier": 5,
+   "tier_name": "Lion",
+   "tier_blurb": "Tier-1 partner. Eats the gazelle, takes the board seat."
+  },
+  {
+   "id": "m4",
+   "event_ticker": "KXFED-26OCT",
+   "title": "Fed funds target upper bound after Oct 28?",
+   "category": "Financials",
+   "kind": "complement",
+   "legs": [
+    {
+     "ticker": "KXFED-26OCT-T4.00",
+     "label": "Above 4.00%",
+     "side": "yes",
+     "price": 0.58,
+     "qty": 100
+    },
+    {
+     "ticker": "KXFED-26OCT-T4.00b",
+     "label": "4.00% or below",
+     "side": "yes",
+     "price": 0.37,
+     "qty": 100
+    }
+   ],
+   "cost": 95.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 5.0,
+   "fees": 3.35,
+   "profit_after_fees": 1.65,
+   "explanation": "'Above 4.00%' and '4.00% or below' are opposites, yet together they cost $0.95. One of them pays $1.00.",
+   "tier": 4,
+   "tier_name": "Everyone Else",
+   "tier_blurb": "A 40-slide consulting deck with no recommendation."
+  },
+  {
+   "id": "m5",
+   "event_ticker": "KXNFLTOTAL-26OCT11DENLAC",
+   "title": "DEN Broncos vs LA Chargers: total points",
+   "category": "Sports",
+   "kind": "ladder",
+   "legs": [
+    {
+     "ticker": "KXNFLTOTAL-26OCT11DENLAC-T41",
+     "label": "Over 41.5 points",
+     "side": "yes",
+     "price": 0.57,
+     "qty": 100
+    },
+    {
+     "ticker": "KXNFLTOTAL-26OCT11DENLAC-T44",
+     "label": "Over 44.5 points",
+     "side": "no",
+     "price": 0.39,
+     "qty": 100
+    }
+   ],
+   "cost": 96.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 4.0,
+   "fees": 3.39,
+   "profit_after_fees": 0.61,
+   "explanation": "Over 44.5 trades above what 'over 41.5' implies. YES 41.5 + NO 44.5 costs $0.96; you get at least $1.00, and $2.00 if the total lands between.",
+   "tier": 3,
+   "tier_name": "Gazelle",
+   "tier_blurb": "Fast, pretty, and somebody's lunch. Series A tourist."
+  }
+ ],
+ "near_misses": [
+  {
+   "id": "m6",
+   "event_ticker": "KXHIGHCHI-26OCT12",
+   "title": "Highest temperature in Chicago on Oct 12?",
+   "category": "Climate and Weather",
+   "kind": "bracket_sum",
+   "legs": [
+    {
+     "ticker": "KXHIGHCHI-26OCT12-B58",
+     "label": "58\u00b0 or below",
+     "side": "yes",
+     "price": 0.12,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT12-B61",
+     "label": "59\u00b0 to 61\u00b0",
+     "side": "yes",
+     "price": 0.33,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT12-B64",
+     "label": "62\u00b0 to 64\u00b0",
+     "side": "yes",
+     "price": 0.36,
+     "qty": 100
+    },
+    {
+     "ticker": "KXHIGHCHI-26OCT12-T64",
+     "label": "65\u00b0 or above",
+     "side": "yes",
+     "price": 0.17,
+     "qty": 100
+    }
+   ],
+   "cost": 98.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 2.0,
+   "fees": 4.9,
+   "profit_after_fees": -2.9,
+   "explanation": "The brackets add up to $0.98: two cents of free money, until Kalshi's fee takes three.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  },
+  {
+   "id": "m7",
+   "event_ticker": "KXETHD-26OCT11",
+   "title": "Ethereum above $4,500 at 5pm ET Oct 11?",
+   "category": "Crypto",
+   "kind": "complement",
+   "legs": [
+    {
+     "ticker": "KXETHD-26OCT11-T4500",
+     "label": "Above $4,500",
+     "side": "yes",
+     "price": 0.47,
+     "qty": 100
+    },
+    {
+     "ticker": "KXETHD-26OCT11-T4500n",
+     "label": "$4,500 or below",
+     "side": "yes",
+     "price": 0.52,
+     "qty": 100
+    }
+   ],
+   "cost": 99.0,
+   "worst_case_payout": 100.0,
+   "profit_before_fees": 1.0,
+   "fees": 3.5,
+   "profit_after_fees": -2.5,
+   "explanation": "The two sides cost $0.99 together. Profitable on paper, eaten by fees.",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "tier_blurb": "Still on the waitlist for his own pre-seed round."
+  }
+ ],
+ "by_category": {
+  "Sports": {
+   "events": 1890,
+   "violations": 41
+  },
+  "Climate and Weather": {
+   "events": 258,
+   "violations": 9
+  },
+  "Crypto": {
+   "events": 96,
+   "violations": 7
+  },
+  "Financials": {
+   "events": 603,
+   "violations": 3
+  },
+  "Entertainment": {
+   "events": 211,
+   "violations": 2
+  },
+  "Science and Technology": {
+   "events": 172,
+   "violations": 1
+  }
+ }
+}

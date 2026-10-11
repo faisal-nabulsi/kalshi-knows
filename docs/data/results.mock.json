@@ -1,0 +1,90 @@
+{
+ "market_lag": {
+  "median_s": 2.6,
+  "p25_s": 1.4,
+  "p75_s": 5.1,
+  "n_plays": 143,
+  "by_type": {
+   "TD": {
+    "median_s": 2.1,
+    "n": 61
+   },
+   "FG": {
+    "median_s": 3.4,
+    "n": 38
+   },
+   "TURNOVER": {
+    "median_s": 4.2,
+    "n": 44
+   }
+  }
+ },
+ "stream_delay_reference_s": {
+  "broadcast": 19,
+  "best_stream": 48,
+  "worst_stream": 62
+ },
+ "detector": {
+  "precision": 0.86,
+  "recall": 0.74,
+  "n_alerts": 97
+ },
+ "model": {
+  "name": "XGBoost play inverter",
+  "accuracy": 0.71,
+  "top2": 0.89,
+  "baseline_accuracy": 0.38,
+  "n_test": 143
+ },
+ "games_analyzed": 22,
+ "model_leaderboard": [
+  {
+   "model": "XGBoost (GPU, 400-trial sweep)",
+   "tier": 6,
+   "tier_name": "Kevin & Faisal",
+   "accuracy": 0.71,
+   "top2": 0.89,
+   "log_loss": 0.82
+  },
+  {
+   "model": "LightGBM",
+   "tier": 5,
+   "tier_name": "Lion",
+   "accuracy": 0.69,
+   "top2": 0.88,
+   "log_loss": 0.86
+  },
+  {
+   "model": "MLP, 3 layers",
+   "tier": 4,
+   "tier_name": "Everyone Else",
+   "accuracy": 0.66,
+   "top2": 0.86,
+   "log_loss": 0.93
+  },
+  {
+   "model": "Logistic regression",
+   "tier": 3,
+   "tier_name": "Gazelle",
+   "accuracy": 0.58,
+   "top2": 0.8,
+   "log_loss": 1.07
+  },
+  {
+   "model": "Biggest-jump rule of thumb",
+   "tier": 2,
+   "tier_name": "House Cat",
+   "accuracy": 0.49,
+   "top2": 0.71,
+   "log_loss": 1.31
+  },
+  {
+   "model": "Always guess touchdown",
+   "tier": 1,
+   "tier_name": "Dugar",
+   "accuracy": 0.38,
+   "top2": 0.62,
+   "log_loss": 1.52
+  }
+ ]
+}
