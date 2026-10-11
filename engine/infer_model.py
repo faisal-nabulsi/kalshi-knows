@@ -140,7 +140,7 @@ def predict_proba(state, p_before, p_after, team):
     path, call_ts = state.get("path"), state.get("call_ts")
     if _S2 is not None and path and call_ts and len(path) >= 3:
         row = {**{f"sim_{c}": v for c, v in zip(CLASSES, z)}, **s, **micro(path, call_ts)}
-        F = np.array([[row[c] for c in _S2_META["features"]]], dtype=np.float32)
+        F = np.array([[row.get(c, np.nan) for c in _S2_META["features"]]], dtype=np.float32)  # mm_* absent live -> NaN
         p = _S2.predict(xgb.DMatrix(F))[0]
         source = "stage2"
         if _TAB["model"] is not None:

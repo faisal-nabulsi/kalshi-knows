@@ -150,7 +150,7 @@ def main():
     elif (dst / "calib.json").exists():
         (dst / "calib.json").unlink()
     print("deployed to engine/model; calibration", "ON" if use_calib else "OFF")
-    if "--wandb" in sys.argv:
+    if "--no-wandb" not in sys.argv:
         log_wandb(real, leaderboard, y, P_cal, a)
 
 

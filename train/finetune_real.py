@@ -16,7 +16,7 @@ Candidates (all evaluated with GroupKFold(5) by game, so a game is never in trai
   stack_xgb+cl stack_xgb plus contrastive-encoder embeddings (train/contrastive.py), if present
 Best by CV log loss is exported to engine/model/stage2*.json.  Logs everything to W&B with --wandb.
 """
-import json, sys
+import json, os, sys
 from pathlib import Path
 
 import numpy as np
@@ -40,6 +40,36 @@ CROP = 32             # bins (64 s) of price path ending at call time, for the c
 MICRO = ["micro_d4", "micro_d10", "micro_d20", "micro_d40", "micro_vol_pre", "micro_max_step",
          "micro_burst", "micro_edge"]
 STATE = ["qtr", "game_seconds_remaining", "score_diff_home", "posteam_is_home", "down", "ydstogo", "yardline_100"]
+
+
+def load_windows():
+    """All real windows we have: 2026 (weeks 1-5) + 2025 season, preferring the multi-market (_mm) versions."""
+    base = Path(os.environ.get("KK_DATA", ROOT / "pipeline/out"))
+    frames = []
+    for stem, season in [("real_windows", 2026), ("real_windows_2025", 2025)]:
+        for f in (base / f"{stem}_mm.parquet", base / f"{stem}.parquet"):
+            if f.exists():
+                d = pd.read_parquet(f); d["season"] = d.get("season", season); d["src"] = f.name
+                frames.append(d); break
+    df = pd.concat(frames, ignore_index=True)
+    df["game_id"] = df["game_id"].astype(str)
+    print("loaded", {f: int(n) for f, n in df["src"].value_counts().items()})
+    return df
+
+
+MM = ["mm_dpts", "mm_dtd"]
+
+
+def mm_features(r, i_start, i_f):
+    """Market-implied points / touchdowns added between the start of the jump window and call time (NaN if absent)."""
+    out = {}
+    for col, name in [("pts_local_path", "mm_dpts"), ("td_local_path", "mm_dtd")]:
+        v = getattr(r, col, None)
+        if v is None or (isinstance(v, float) and np.isnan(v)):
+            out[name] = np.nan; continue
+        a = pd.Series(np.asarray(v, float)).ffill().to_numpy()
+        out[name] = float(a[i_f] - a[max(i_start, 0)]) if len(a) > i_f and not np.isnan(a[i_f]) and not np.isnan(a[max(i_start, 0)]) else np.nan
+    return out
 
 
 def micro_features(t, p, n, i_fire):
@@ -89,6 +119,8 @@ def build_rows(df, thresh):
                "down": r.down if pd.notna(r.down) else 0, "ydstogo": r.ydstogo if pd.notna(r.ydstogo) else 10,
                "yardline_100": r.yardline_100 if pd.notna(r.yardline_100) else 75}
         row.update(micro_features(t, p, n, i_f))
+        row.update(mm_features(r, i_f - CALL_DELAY_BINS - HOLD_BINS - int(WINDOW_S / STEP), i_f))
+        row["season"] = getattr(r, "season", 2026)
         lo = i_f - CROP + 1
         seg_p = p[max(lo, 0):i_f + 1]; seg_n = np.nan_to_num(n[max(lo, 0):i_f + 1])
         if lo < 0:
@@ -131,9 +163,8 @@ def cv(y, groups, fit_predict):
 
 
 def main():
-    use_wandb = "--wandb" in sys.argv
-    src = ROOT / "pipeline/out/real_windows.parquet"
-    df = pd.read_parquet(src)
+    use_wandb = "--no-wandb" not in sys.argv
+    df = load_windows()
     rows = build_rows(df, FIRE_TRAIN)
     rows = rows[rows["category"].isin(CLASSES)].reset_index(drop=True)
     y = rows["category"].map({c: i for i, c in enumerate(CLASSES)}).to_numpy()
@@ -145,7 +176,11 @@ def main():
 
     Xsim, Z, bst = sim_logprobs(rows)
     simcols = [f"sim_{c}" for c in CLASSES]
-    F = pd.concat([pd.DataFrame(Z, columns=simcols), rows[STATE + MICRO].reset_index(drop=True)], axis=1).astype(float)
+    use_mm = [c for c in MM if c in rows and rows[c].notna().mean() > 0.3]
+    print("multi-market features:", use_mm or "none", {c: round(float(rows[c].notna().mean()), 2) for c in MM if c in rows})
+    F = pd.concat([pd.DataFrame(Z, columns=simcols), rows[STATE + MICRO + use_mm].reset_index(drop=True)], axis=1).astype(float)
+    np.savez(OUT / "stage2_matrix.npz", X=F.to_numpy(), y=y, g=groups, live=live_mask, cols=np.array(list(F.columns)),
+             season=rows["season"].to_numpy())
     emb_path = OUT / "contrastive_emb.parquet"
     E = None
     if emb_path.exists():
@@ -179,6 +214,18 @@ def main():
     if E is not None:
         res["stack_xgb+contrastive"] = cv(y, groups, make_stack(np.hstack([F.to_numpy(), E])))
 
+    # Temporal check (how the product is actually used): train on the 2025 season, test on 2026 games
+    seasons = rows["season"].to_numpy()
+    temporal = None
+    if (seasons == 2025).sum() > 200 and (seasons == 2026).sum() > 200:
+        tr, te = np.where(seasons == 2025)[0], np.where(seasons == 2026)[0]
+        b = xgb.train(xparams, xgb.DMatrix(F.to_numpy()[tr], y[tr]), 300)
+        Pt = b.predict(xgb.DMatrix(F.to_numpy()[te]))
+        temporal = {**metrics(y[te], Pt, "stack_xgb_train2025_test2026"),
+                    "live_subset": metrics(y[te], Pt, "", live_mask[te])}
+        print("TEMPORAL train 2025 -> test 2026:", {k: temporal[k] for k in ("accuracy", "log_loss", "n")},
+              "live acc", round(temporal["live_subset"]["accuracy"], 3))
+
     table = []
     for name, P in res.items():
         table.append({**metrics(y, P, name), "live_subset": metrics(y, P, name, live_mask)})
@@ -193,7 +240,8 @@ def main():
     dst = ROOT / "engine/model"
     meta = {"best": best, "classes": CLASSES, "state": STATE, "micro": MICRO, "simcols": simcols,
             "fire_train": FIRE_TRAIN, "table": table, "labels": rows["category"].value_counts().to_dict(),
-            "n_windows": int(len(df)), "n_fires": int(len(rows))}
+            "n_windows": int(len(df)), "n_fires": int(len(rows)), "temporal": temporal, "mm_features": use_mm,
+            "seasons": {int(k): int(v) for k, v in rows["season"].value_counts().items()}}
     if best == "stack_xgb":
         b = xgb.train(xparams, xgb.DMatrix(F.to_numpy(), y), 300)
         b.save_model(str(dst / "stage2_xgb.json"))

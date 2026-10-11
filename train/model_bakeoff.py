@@ -53,5 +53,16 @@ for name, P in P_all.items():
                  "live_conf75_acc": float(ok[m].mean()), "live_conf75_n": int(m.sum())}
     r = res[name]
     print(f"{name:9s} acc={r['acc']:.3f} ll={r['ll']:.3f} | live acc={r['live_acc']:.3f} ll={r['live_ll']:.3f} | live conf>=.75: {r['live_conf75_acc']:.3f} (n={r['live_conf75_n']})")
+try:  # every training/eval run goes to W&B (offline if no key; sync with `wandb sync`)
+    import wandb, os
+    run = wandb.init(project="kalshi-knows", group="bakeoff", job_type="eval", name="bakeoff-" + "-".join(which),
+                     mode=os.environ.get("WANDB_MODE", "online"),
+                     config={"rows": int(len(y)), "cv": "GroupKFold(5) by game", "models": which})
+    t = wandb.Table(columns=["model", "acc", "log_loss", "live_acc", "live_log_loss", "live_conf75_acc", "live_conf75_n"],
+                    data=[[k, v["acc"], v["ll"], v["live_acc"], v["live_ll"], v["live_conf75_acc"], v["live_conf75_n"]] for k, v in res.items()])
+    run.log({"bakeoff": t, "bakeoff_live_acc": wandb.plot.bar(t, "model", "live_acc", title="Live-regime accuracy by model")})
+    run.finish()
+except Exception as e:  # noqa: BLE001
+    print("wandb logging skipped:", e)
 np.savez(sys.argv[1].replace(".npz", f"_preds_{'_'.join(which)}.npz") if len(sys.argv) > 1 else "train/out/bakeoff_preds.npz", **P_all)
 json.dump(res, open((sys.argv[1] if len(sys.argv) > 1 else "train/out/stage2_matrix.npz").replace(".npz", f"_bakeoff_{'_'.join(which)}.json"), "w"), indent=1)
