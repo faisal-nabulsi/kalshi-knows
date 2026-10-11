@@ -1,0 +1,12 @@
+232
+/Users/faisalnabulsi/Desktop/hackathon/degen-oracle/pipeline/someone_knew_scan.py:44: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  if r: out.append(r); print(n,m["ticker"],r["pre"],r["post"],dt.datetime.utcfromtimestamp(r["cross_ts"]),flush=True)
+54 KXAAPLPRICEFOLD-27-2000 0.17500000000000004 0.81 2026-09-09 05:00:00
+64 KXGPT-ASTRA-26AUG21 0.13 0.92 2026-08-07 17:00:00
+82 KXBIGBROTHERRANK-26DEC31R3-DRE 0.21 0.99 2026-10-02 01:00:00
+164 KXDWTSELIMINATION-26OCT07-TAT 0.010000000000000009 0.89 2026-09-30 18:00:00
+170 KXDWTSELIMINATION-26OCT07-CMIL 0.15 0.99 2026-10-07 02:00:00
+172 KXNETFLIXRANKSHOWRUNNERUP-26OCT05-EAS 0.13 0.61 2026-10-04 06:00:00
+175 KXNETFLIXRANKSHOW-26OCT05-ADI 0.24 0.61 2026-10-02 05:00:00
+178 KXNETFLIXRANKMOVIERUNNERUP-26OCT05-WID 0.13 0.88 2026-10-05 09:00:00
+221 KXALBUMDEBUT-26OCT03-BAS 0.315 0.78 2026-09-24 16:00:00

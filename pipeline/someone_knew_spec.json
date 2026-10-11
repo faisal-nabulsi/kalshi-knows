@@ -1,0 +1,35 @@
+{
+ "KXMOVIECAST-XMAN29-ADA": {
+  "match": "q961",
+  "src": "q961.com (first article in GDELT; D23 official reveal)",
+  "title": "Will Adam Driver be in the MCU X-Men cast?",
+  "verdict": "Kalshi traders priced in Adam Driver as an X-Man {lead} before the first article confirming it. (Earlier rumors existed; the first report of the official cast reveal came later.)"
+ },
+ "KXCOLLEGEDROP-27-PRI": {
+  "match": "Princeton 15",
+  "src": "MarketWatch via Morningstar",
+  "title": "Will Princeton's U.S. News ranking drop this year?",
+  "verdict": "The market bet Princeton would lose its No. 1 spot {lead} before the first headline said so."
+ },
+ "KXALBUMRELEASEDATE-NEWPIT-26DEC01": {
+  "news_ms": 1786563420000,
+  "news_title": "Pitbull Announces Highly Anticipated Album \"Pitcoin\" (press release, 3:37 pm, time zone assumed ET)",
+  "news_url": "https://www.nevarezpr.com/?p=11955",
+  "news_src": "nevarezpr.com (press release)",
+  "title": "Will Pitbull release a new album before Dec 1, 2026?",
+  "verdict": "Kalshi jumped to 97% on a Pitbull album about {lead} before his press release went up."
+ },
+ "KXALBUMRELEASEDATETRIPPIE--26SEP01": {
+  "title": "Will Trippie Redd release a new album before Sep 1, 2026?",
+  "verdict": "Traders had Trippie Redd's album timing {lead} before the first article about it.",
+  "news_ms": 1785372300000,
+  "news_title": "Trippie Redd Sets August 14 Return With Highly Anticipated Album NDA",
+  "news_url": "https://thesource.com/2026/07/29/trippie-redd-sets-august-14-return-with-highly-anticipated-album-nda/",
+  "news_src": "thesource.com"
+ },
+ "KXCOTTONCANDYLOBSTER-27-JAN01": {
+  "match": "foxnews",
+  "title": "Will a cotton candy lobster be caught in U.S. waters before 2027?",
+  "verdict": "This one went the other way: the headline about the lobster came {lead} before the market caught up."
+ }
+}
