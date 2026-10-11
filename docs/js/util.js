@@ -1,4 +1,5 @@
 // Shared helpers: DOM, formatting, teams, tiers, data loading.
+import { emblem } from './emblems.js';
 export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -102,14 +103,24 @@ export function tierOf(obj, fn) {
 export function tierBadge(t, { blurb = false, size = '' } = {}) {
   const rungs = [1, 2, 3, 4, 5, 6].map((i) => `<i class="${i <= t.tier ? 'on' : ''}"></i>`).join('');
   return `<span class="tier tier-${t.tier} ${size}" title="Predator Scale ${t.tier}/6: ${esc(t.name)}. ${esc(t.blurb)}">
-    <span class="tier-rungs" aria-hidden="true">${rungs}</span>
+    ${emblem(t.tier)}<span class="tier-rungs" aria-hidden="true">${rungs}</span>
     <span class="tier-n mono">T${t.tier}</span><span class="tier-name">${esc(t.name)}</span>
     ${blurb ? `<span class="tier-blurb">${esc(t.blurb)}</span>` : ''}</span>`;
 }
 // full ladder, highlighted at t
+export { emblem };
+export const TIER_CRIT = {
+  6: ['≥ 90% sure', '≥ 5% back', '≥ 6 hr early'], 5: ['80–90% sure', '2–5% back', '2–6 hr early'], 4: ['65–80% sure', '1–2% back', '1–2 hr early'],
+  3: ['50–65% sure', '0.5–1% back', '30–60 min early'], 2: ['35–50% sure', 'under 0.5% back', 'under 30 min early'], 1: ['under 35% sure', 'fees eat it', 'the news came first'],
+};
+export const TIER_FX = { 5: 'roar', 3: 'leap', 6: 'stamp' };
+export function playFx(svg) {
+  if (!svg) return; const t = +(svg.className.baseVal.match(/em-(\d)/) || [])[1]; const fx = TIER_FX[t]; if (!fx) return;
+  svg.classList.remove(fx); void svg.getBoundingClientRect(); svg.classList.add(fx);
+}
 export function tierLadder(t) {
   return `<ol class="ladder" aria-label="Predator Scale: tier ${t.tier} of 6">${[6, 5, 4, 3, 2, 1].map((i) =>
-    `<li class="${i === t.tier ? 'on' : ''} l-${i}"><span class="mono">${i}</span>${esc(TIERS[i].name)}</li>`).join('')}</ol>`;
+    `<li class="${i === t.tier ? 'on' : ''} l-${i}">${emblem(i)}<span class="mono">${i}</span>${esc(TIERS[i].name)}</li>`).join('')}</ol>`;
 }
 
 // ---------- data ----------

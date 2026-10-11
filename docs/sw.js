@@ -1,7 +1,7 @@
 // Kalshi Knows service worker: app shell, network-first data, web push.
-const VERSION = 'kk-v3';
+const VERSION = 'kk-v4';
 const SHELL = ['./', './index.html', './styles.css', './js/app.js', './js/util.js', './js/data.js', './js/charts.js',
-  './js/hero3d.js', './js/push.js', './js/qr.js', './manifest.webmanifest', './icons/icon-192.png', './icons/badge-96.png',
+  './js/hero3d.js', './js/push.js', './js/qr.js', './js/emblems.js', './manifest.webmanifest', './icons/icon-192.png', './icons/badge-96.png',
   './icons/apple-touch-icon.png', './icons/favicon-64.png'];
 const CDN = /^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 

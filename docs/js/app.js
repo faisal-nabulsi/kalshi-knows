@@ -1,7 +1,7 @@
 // Kalshi Knows: page orchestration.
 import {
   $, $$, h, esc, clamp, int, pct, cents, usd, clock, dateShort, dur, ago, nick, PLAY, PLAY_SHORT, PRESENT, SITE_URL, params,
-  loadData, fetchJSON, store, EXTRA_TEAMS, onVisible, countUp, tierOf, tierAlert, tierDutch, tierKnew, tierBadge, tierLadder, TIERS,
+  loadData, fetchJSON, store, EXTRA_TEAMS, emblem, TIER_CRIT, playFx, onVisible, countUp, tierOf, tierAlert, tierDutch, tierKnew, tierBadge, tierLadder, TIERS,
 } from './util.js';
 import { resolveApi, LiveSource, ReplaySource } from './data.js';
 import { liveChart, sparkline, caseChart, lagChart, payoffChart } from './charts.js';
@@ -259,6 +259,7 @@ const TO = {
     el.classList.add('revealed'); $('#to-pre').textContent = 'SPOILER · WHAT THE MARKET SAYS HAPPENED';
     $('#to-play').textContent = $('#to-play').dataset.post;
     fitText($('#to-play')); fitText($('#to-team'));
+    playFx($('#to-tier .ladder li.on .em'));
   },
   update(a) {
     this.alert = a;
@@ -427,6 +428,23 @@ function renderDbDetail(o) {
   if (!near) payoffChart($('#dd-chart'), o);
 }
 
+// ------------------------------------------------------------ PREDATOR SCALE
+function renderScale() {
+  const el = $('#scale-list');
+  el.innerHTML = [6, 5, 4, 3, 2, 1].map((i) => `<li class="sc sc-${i}">
+    <span class="sc-n">${i}</span>
+    <span class="sc-em">${emblem(i)}</span>
+    <div class="sc-txt"><h3 class="sc-name">${esc(TIERS[i].name)}</h3><p class="sc-blurb">${esc(TIERS[i].blurb)}</p></div>
+    <dl class="sc-crit mono">${['Spoiler', 'Dutch Book', 'Someone Knew'].map((k, j) => `<div><dt>${k}</dt><dd>${esc(TIER_CRIT[i][j])}</dd></div>`).join('')}</dl>
+  </li>`).join('');
+  $$('.sc', el).forEach((li) => li.addEventListener('pointerenter', () => playFx($('.em', li))));
+  onVisible(el, () => {
+    el.classList.add('in');
+    $$('.sc .em', el).forEach((svg, k) => setTimeout(() => playFx(svg), 500 + k * 160));
+  }, { threshold: 0.25 });
+}
+renderScale();
+
 // ------------------------------------------------------------ ticker
 let tickerSig = '';
 function renderTicker() {
@@ -527,7 +545,7 @@ addEventListener('keydown', (e) => {
   else if (k === 't' && S.lastAlert) TO.open(S.lastAlert, { demo: true });
   else if (k === 'n' && S.source?.skip) S.source.skip();
   else if (k === 'r') TO.reveal();
-  else if ('12345'.includes(k) && k) $(['#live', '#knew', '#dutch', '#proof', '#get'][+k - 1])?.scrollIntoView({ behavior: 'smooth' });
+  else if ('123456'.includes(k) && k) $(['#live', '#knew', '#dutch', '#proof', '#scale', '#get'][+k - 1])?.scrollIntoView({ behavior: 'smooth' });
 });
 
 boot().catch((e) => console.error(e));

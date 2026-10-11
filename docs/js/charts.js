@@ -127,8 +127,10 @@ export function caseChart(el, c) {
     g += `<path d="M${f1(xm)},${by + 6}V${by}H${f1(xn)}V${by + 6}" class="bracket"/>`;
     g += `<text x="${f1((xm + xn) / 2)}" y="${by - 4}" class="lbl-sig" text-anchor="middle">${dur(c.lead_minutes)} EARLY</text>`;
   }
-  g += `<text x="${f1(xm - 5)}" y="${h - padB - 8}" class="lbl-sig" text-anchor="end">PRICE MOVES</text>`;
-  g += `<text x="${f1(xn + 5)}" y="${h - padB - 8}" class="lbl-cold">FIRST ARTICLE</text>`;
+  const mLeft = xm - 92 > padL;
+  g += `<text x="${f1(mLeft ? xm - 5 : xm + 5)}" y="${h - padB - 8}" class="lbl-sig" text-anchor="${mLeft ? 'end' : 'start'}">PRICE MOVES</text>`;
+  const nRight = xn + 100 < w - padR;
+  g += `<text x="${f1(nRight ? xn + 5 : xn - 5)}" y="${nRight ? h - padB - 8 : padT + 14}" class="lbl-cold" text-anchor="${nRight ? 'start' : 'end'}">FIRST ARTICLE</text>`;
   g += `<text x="${padL}" y="${h - 6}" class="ax">${clock(t0, { sec: false })}</text>`;
   g += `<text x="${w - padR}" y="${h - 6}" class="ax" text-anchor="end">${clock(t1, { sec: false })}</text>`;
   el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Price moved ${dur(c.lead_minutes)} before the first article">${g}</svg>`;
