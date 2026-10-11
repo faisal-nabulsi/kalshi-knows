@@ -11,6 +11,8 @@ const $ = (tag, props = {}, ...kids) => {
 };
 const pct = (x) => (x == null ? '–' : (x * 100).toFixed(0) + '¢');
 const usd = (x) => (x == null ? '–' : (x < 0 ? '-$' : '$') + Math.abs(x).toFixed(2));
+const clean = (t) => String(t || '').replace(/\*\*/g, '');
+const isPolitics = (m) => /politic|election/i.test(m.category || '');
 const ago = (ms) => { const s = Math.max(0, (Date.now() - ms) / 1000 | 0); return s < 90 ? s + 's' : s < 5400 ? (s / 60 | 0) + 'm' : (s / 3600 | 0) + 'h'; };
 
 export function mountAuto(root, api) {
@@ -21,12 +23,15 @@ export function mountAuto(root, api) {
   root.classList.add('auto'); root.textContent = '';
   const top = $('div', { class: 'auto-top' }), stats = $('div', { class: 'auto-stats' }), kill = $('button', { class: 'auto-kill', 'aria-pressed': 'false' });
   const note = $('div', { class: 'auto-note' });
+  const modeEl = $('div', { class: 'auto-mode is-dry' });
+  const mvMeta = $('p', { class: 'auto-mvmeta' });
   const rulesEl = $('div', { class: 'rules' }), builderEl = $('div', { class: 'builder' }), blot = $('div', { class: 'tbl-wrap' }), chips = $('div', { class: 'chips' }), mv = $('div', { class: 'tbl-wrap' });
   top.append(stats, kill);
   root.append($('h2', { text: 'Auto' }),
     $('p', { class: 'sub', text: 'Rules that turn our signals into orders. Play money only: orders go to Kalshi\'s official demo exchange, or are simulated against the live public order book. Not financial advice.' }),
-    top, note, $('h3', { text: 'Rules' }), rulesEl, $('h3', { text: 'New rule' }), builderEl,
-    $('h3', { text: 'Order blotter' }), blot, $('h3', { text: 'Movers across Kalshi (no politics)' }), chips, mv);
+    modeEl, top, note, $('h3', { text: 'Rules' }), rulesEl, $('h3', { text: 'New rule' }), builderEl,
+    $('h3', { text: 'Order blotter' }), blot,
+    $('h3', { text: 'Movers across Kalshi · every category except politics' }), mvMeta, chips, mv);
 
   const badge = (o) => o.kind === 'alert_only' ? $('span', { class: 'badge alert', text: 'ALERT ONLY' })
     : o.mode === 'demo' ? $('span', { class: 'badge demo', text: 'KALSHI DEMO' }) : $('span', { class: 'badge dry', text: 'DRY RUN' });
@@ -89,8 +94,17 @@ export function mountAuto(root, api) {
   function renderStatus(s) {
     stats.textContent = '';
     const stat = (k, v, cls) => $('div', { class: 'auto-stat' }, $('small', { text: k }), $('b', { class: cls || '', text: v }));
+    const demo = s.mode === 'demo';
+    modeEl.className = 'auto-mode ' + (demo ? 'is-demo' : 'is-dry');
+    modeEl.textContent = '';
+    const seg = $('div', { class: 'am-seg', role: 'radiogroup', 'aria-label': 'Order mode' });
+    for (const [m, lab] of [['dry_run', 'Dry run'], ['demo', 'Kalshi demo']]) {
+      seg.append($('button', { role: 'radio', 'aria-checked': String(s.mode === m), disabled: m === 'demo' && !s.key_present,
+        title: m === 'demo' && !s.key_present ? 'Needs a Kalshi demo API key on the engine' : '',
+        text: lab, onclick: async () => { try { await send('/mode', 'POST', { mode: m }); } catch (e) { note.textContent = 'Mode not changed: ' + (e.message || e); } tick(); } }));
+    }
+    modeEl.append($('div', { class: 'am-txt' }, $('b', { text: demo ? 'KALSHI DEMO EXCHANGE' : 'DRY RUN' }), $('span', { text: demo ? ' — play money' : ' — simulated against the live Kalshi order book' })), seg);
     stats.append(
-      $('div', { class: 'auto-stat' }, $('small', { text: 'Mode' }), s.mode === 'demo' ? $('span', { class: 'badge demo', text: 'KALSHI DEMO' }) : $('span', { class: 'badge dry', text: 'DRY RUN' })),
       stat('P&L today', usd(s.pnl.today), s.pnl.today < 0 ? 'neg' : 'pos'), stat('P&L total', usd(s.pnl.total), s.pnl.total < 0 ? 'neg' : 'pos'),
       stat('Exposure', usd(s.pnl.exposure)), stat('Orders', String(s.orders)));
     kill.setAttribute('aria-pressed', String(s.kill));
@@ -109,8 +123,8 @@ export function mountAuto(root, api) {
       const req = o.request ? $('details', {}, $('summary', { text: 'signed request' }), $('pre', { text: JSON.stringify(o.request, null, 1) })) : null;
       const demo = o.demo ? $('details', {}, $('summary', { text: 'demo ' + (o.demo.order_id || '').slice(0, 8) + ' · ' + (o.demo.status || '') }), $('pre', { text: JSON.stringify(o.demo.fills) })) : null;
       tb.append($('tr', {}, $('td', { text: ago(o.ts_ms) }), $('td', {}, badge(o)),
-        $('td', {}, $('span', { class: 'tk', text: o.ticker || trg.ticker || '–' }), $('span', { class: 'why', text: o.rule_name }),
-          trg.headline || trg.title ? $('span', { class: 'why', text: trg.headline || trg.title }) : null),
+        $('td', {}, $('span', { class: 'atk', text: o.ticker || trg.ticker || '–' }), $('span', { class: 'why', text: o.rule_name }),
+          trg.headline || trg.title ? $('span', { class: 'why', text: clean(trg.headline || trg.title) }) : null),
         $('td', { text: o.kind === 'alert_only' ? `${trg.move > 0 ? '+' : ''}${(trg.move * 100).toFixed(0)} pts` : o.side ? `BUY ${o.side.toUpperCase()}` : '' }),
         $('td', { class: 'n', text: o.count ? `${o.filled || 0}/${o.count}` : '' }),
         $('td', { class: 'n', text: o.limit_price ? `${pct(o.limit_price)} lim · ${pct(o.avg_price)} avg` : '' }),
@@ -120,6 +134,8 @@ export function mountAuto(root, api) {
   }
 
   function renderMovers(d) {
+    d = { ...d, movers: (d.movers || []).filter((m) => !isPolitics(m)) };
+    mvMeta.textContent = `Proof the engine isn't just NFL: it scans ${d.scanner.tracked || 0} active markets every 30 s and lists every 5+ point move in a minute.${d.movers.length ? ` ${new Set(d.movers.map((m) => m.category)).size} categories moving right now.` : ''}`;
     const cats = ['All', ...new Set(d.movers.map((m) => m.category))];
     chips.textContent = '';
     for (const c of cats) chips.append($('button', { class: 'chip', text: c, 'aria-pressed': String(c === cat), onclick: () => { cat = c; tick(); } }));
@@ -128,7 +144,7 @@ export function mountAuto(root, api) {
     if (!items.length) return mv.append($('div', { class: 'auto-empty', text: `Scanning ${d.scanner.tracked || 0} active markets every 30 s. Moves of 5+ points show up here.` }));
     const tb = $('tbody');
     for (const m of items.slice(0, 40)) tb.append($('tr', {}, $('td', { text: ago(m.ts_ms) }), $('td', { text: m.category }),
-      $('td', {}, $('span', { class: 'tk', text: m.title || m.ticker }), $('span', { class: 'why', text: m.ticker })),
+      $('td', {}, $('span', { class: 'atk', text: clean(m.title) || m.ticker }), $('span', { class: 'why', text: m.ticker })),
       $('td', { class: 'n ' + (m.move > 0 ? 'mv-up' : 'mv-dn'), text: `${m.move > 0 ? '+' : ''}${(m.move * 100).toFixed(0)} pts / ${m.window_s}s` }),
       $('td', { class: 'n', text: `${pct(m.p_then)} → ${pct(m.p_now)}` })));
     mv.append($('table', { class: 'tbl' }, $('thead', {}, $('tr', {}, ...['age', 'category', 'market', 'move', 'price'].map((h) => $('th', { text: h })))), tb));

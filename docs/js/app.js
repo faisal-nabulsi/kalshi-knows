@@ -105,12 +105,27 @@ function renderProof(res, mock) {
       <div><div class="pg-mid">${pct(d.recall)}</div><p>of those plays set off an alert <span class="mono">(recall)</span>. If the market barely moves, we can't see the play.</p></div></div>
       ${Object.keys(bt).length ? `<p class="pg-k mono pg-k2">KALSHI LAG BY PLAY TYPE</p><ul class="pg-types">${Object.entries(bt).map(([k, v]) => `<li><span class="mono">${esc(PLAY_SHORT[k] || k)}</span><b class="mono">${(v.median_s ?? 0).toFixed(1)} s</b><em class="mono">n=${int(v.n)}</em></li>`).join('')}</ul>` : ''}
     </div>
+    <div class="pg-bench">
+      <p class="pg-k mono">HEAD-TO-HEAD VS CLAUDE OPUS 5.5 · 150 UNSEEN 2026 JUMPS · SAME INPUTS</p>
+      <h3 class="pb-title">Ties the best frontier model on accuracy, beats it on calibration, in 7 ms.</h3>
+      <table class="board pb-table"><thead><tr><th>Model</th><th class="num">Accuracy</th><th class="num">Log loss</th><th class="num">Brier</th></tr></thead><tbody>
+        ${BENCH.map((b) => `<tr class="${b.ours ? 'pb-ours' : ''}"><td>${esc(b.name)}</td><td class="num mono"><span class="pb-bar" style="--w:${(b.acc * 100).toFixed(1)}%"></span>${(b.acc * 100).toFixed(1)}%</td><td class="num mono">${b.ll.toFixed(3)}</td><td class="num mono">${b.brier.toFixed(3)}</td></tr>`).join('')}
+      </tbody></table>
+      <p class="pb-note mono">Lower log loss and Brier score mean better-calibrated confidence. The 1.3-point accuracy gap is within noise (95% interval: -7 to +11 points). Kalshi Knows was trained on 2025 games only; Claude was zero-shot with the same game state and price move.</p>
+    </div>
     ${lb.length ? `<div class="pg-board">
       <p class="pg-k mono">MODEL LEADERBOARD · THE PREDATOR SCALE · RANKED BY LOG LOSS ON REAL KALSHI JUMPS</p>
       <table class="board"><thead><tr><th>#</th><th>Model</th><th>Tier</th><th class="num">Accuracy</th><th class="num">Top 2</th><th class="num">Log loss</th></tr></thead>
       <tbody>${lb.map((x, i) => { const t = tierOf(x, () => 6 - i); return `<tr class="row-t${t.tier}"><td class="mono">${i + 1}</td><td>${esc(String(x.model).replace(/_/g, " "))}</td><td>${tierBadge(t)}<span class="board-blurb">${esc(t.blurb)}</span></td><td class="num mono">${pct(x.accuracy)}</td><td class="num mono">${pct(x.top2)}</td><td class="num mono">${(x.log_loss ?? 0).toFixed(2)}</td></tr>`; }).join('')}</tbody></table>
     </div>` : ''}`;
 }
+
+// train/out/claude_bench.json (n = 150): numbers copied here because train/ isn't published
+const BENCH = [
+  { name: 'Kalshi Knows (trained on 2025 only)', acc: 0.773, ll: 0.513, brier: 0.301, ours: true },
+  { name: 'Claude Opus 5.5 (zero-shot, same inputs)', acc: 0.760, ll: 0.615, brier: 0.354 },
+  { name: 'Always guess "nothing big"', acc: 0.647, ll: 4.881, brier: 0.707 },
+];
 
 // ------------------------------------------------------------ LIVE
 const featured = () => {
@@ -584,9 +599,22 @@ function renderTicker() {
 }
 
 // ------------------------------------------------------------ pages (hash routes: GitHub Pages has no rewrites)
-const ROUTES = ['live', 'headlines', 'dutch', 'proof', 'scale', 'alerts'];
+const ROUTES = ['live', 'headlines', 'dutch', 'proof', 'scale', 'auto', 'alerts'];
 const LEGACY = { top: 'live', live: 'live', receipts: 'live', knew: 'headlines', dutch: 'dutch', proof: 'proof', scale: 'scale', get: 'alerts' };
-const TITLES = { live: 'Live', headlines: 'The market beat the headlines', dutch: 'Dutch Book', proof: 'Proof', scale: 'Predator Scale', alerts: 'Get alerts' };
+const TITLES = { live: 'Live', headlines: 'The market beat the headlines', dutch: 'Dutch Book', proof: 'Proof', scale: 'Predator Scale', auto: 'Auto', alerts: 'Get alerts' };
+// Auto page: js/auto.js is loaded and mounted only while #/auto is open (it polls the engine every 3 s)
+let autoUnmount = null, autoApi = null;
+async function syncAuto(page) {
+  if (page !== 'auto' || (autoUnmount && autoApi !== S.api)) { try { autoUnmount?.(); } catch {} autoUnmount = null; }
+  if (page !== 'auto' || autoUnmount) return;
+  const root = $('#auto-root');
+  if (!S.api) { root.innerHTML = '<p class="auto-empty">The live engine is offline right now, so there is nothing to automate. This page connects by itself when it is back.</p>'; return; }
+  try {
+    const { mountAuto } = await import('./auto.js');
+    if (route !== 'auto' || autoUnmount) return;
+    autoApi = S.api; autoUnmount = mountAuto(root, S.api);
+  } catch (e) { root.innerHTML = `<p class="auto-empty">Couldn't load the Auto page: ${esc(e.message || String(e))}</p>`; }
+}
 let route = null;
 function parseRoute() {
   const raw = location.hash, k = decodeURIComponent(raw.replace(/^#\/?/, '')).toLowerCase();
@@ -618,7 +646,7 @@ function go() {
     if (changed) setTimeout(jump, 900); // first load: the 3D story and feed change height while booting
   }
   else if (changed) scrollTo(0, 0);
-  if (changed) requestAnimationFrame(() => redraw(page));
+  if (changed) { requestAnimationFrame(() => redraw(page)); syncAuto(page); }
 }
 addEventListener('hashchange', go);
 go();
@@ -654,6 +682,7 @@ async function boot() {
     $('#skip-btn').hidden = true;
     S.source.addEventListener('status', (e) => { if (e.detail.ok || Date.now() - S.source.lastGamesAt < 12000) okMode(); else setMode('warn', 'RECONNECTING'); });
     S.source.addEventListener('games', okMode);
+    syncAuto(route);
   };
   const live = await resolveApi();
   if (live) startLive(live);
@@ -746,7 +775,7 @@ addEventListener('keydown', (e) => {
   else if (k === 'n' && S.source?.skip) S.source.skip();
   else if (k === 'r') TO.reveal();
   else if (k === 'q' && PRESENT) { const pq = $('#pqr'); pq.dataset.pin = pq.dataset.pin ? '' : '1'; pqrUpdate(); }
-  else if ('123456'.includes(k) && k) {
+  else if ('1234567'.includes(k) && k) {
     if (k === '1' && route === 'live') $('#live').scrollIntoView({ behavior: 'smooth' });
     else location.hash = `#/${ROUTES[+k - 1]}`;
   }
