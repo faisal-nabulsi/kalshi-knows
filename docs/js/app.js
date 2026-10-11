@@ -89,16 +89,16 @@ async function initStage() {
 // ------------------------------------------------------------ results / proof
 function renderProof(res, mock) {
   const r = res || {};
-  $('#proof-meta').innerHTML = `${int(r.games_analyzed || 0)} GAMES · ${int(r.market_lag?.n_plays || 0)} SCORING PLAYS${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
+  $('#proof-meta').innerHTML = `${r.games_analyzed ? `${int(r.games_analyzed)} GAMES · ` : ''}${int(r.market_lag?.n_plays || 0)} PLAYS LINED UP${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
   lagChart($('#lag-chart'), r);
   const m = r.model || {}, d = r.detector || {};
   const lb = (r.model_leaderboard || []).slice().sort((a, b) => (b.tier || 0) - (a.tier || 0) || (a.log_loss ?? 9) - (b.log_loss ?? 9));
   const bt = r.market_lag?.by_type || {};
   $('#proof-grid').innerHTML = `
     <div class="pg-model">
-      <p class="pg-k mono">PLAY CLASSIFIER · ${esc(m.name || 'model')}</p>
+      <p class="pg-k mono">PLAY CLASSIFIER · ${esc(String(m.name || 'model').replace(/_/g, ' '))}</p>
       <div class="pg-big">${pct(m.accuracy)}</div>
-      <p class="pg-cap">of real Kalshi jumps get the right play type on the first guess, against <b>${pct(m.baseline_accuracy)}</b> for always guessing the most common play. Right answer in the top two: <b>${pct(m.top2)}</b>. Tested on ${int(m.n_test)} jumps from real games.</p>
+      <p class="pg-cap">of real Kalshi jumps get the right play type on the first guess, against <b>${pct(m.baseline_accuracy)}</b> for always guessing the most common play. Right answer in the top two: <b>${pct(m.top2)}</b>. Tested on ${int(m.n_test ?? m.n ?? lb[0]?.n ?? 0)} jumps from real games.</p>
       <div class="vs"><span style="--w:${(m.accuracy || 0) * 100}%" class="vs-sig"><i>OURS</i></span><span style="--w:${(m.baseline_accuracy || 0) * 100}%" class="vs-cold"><i>BASELINE</i></span></div>
     </div>
     <div class="pg-det">
@@ -110,7 +110,7 @@ function renderProof(res, mock) {
     ${lb.length ? `<div class="pg-board">
       <p class="pg-k mono">MODEL LEADERBOARD · THE PREDATOR SCALE · RANKED BY LOG LOSS ON REAL KALSHI JUMPS</p>
       <table class="board"><thead><tr><th>#</th><th>Model</th><th>Tier</th><th class="num">Accuracy</th><th class="num">Top 2</th><th class="num">Log loss</th></tr></thead>
-      <tbody>${lb.map((x, i) => { const t = tierOf(x, () => 6 - i); return `<tr class="row-t${t.tier}"><td class="mono">${i + 1}</td><td>${esc(x.model)}</td><td>${tierBadge(t)}<span class="board-blurb">${esc(t.blurb)}</span></td><td class="num mono">${pct(x.accuracy)}</td><td class="num mono">${pct(x.top2)}</td><td class="num mono">${(x.log_loss ?? 0).toFixed(2)}</td></tr>`; }).join('')}</tbody></table>
+      <tbody>${lb.map((x, i) => { const t = tierOf(x, () => 6 - i); return `<tr class="row-t${t.tier}"><td class="mono">${i + 1}</td><td>${esc(String(x.model).replace(/_/g, " "))}</td><td>${tierBadge(t)}<span class="board-blurb">${esc(t.blurb)}</span></td><td class="num mono">${pct(x.accuracy)}</td><td class="num mono">${pct(x.top2)}</td><td class="num mono">${(x.log_loss ?? 0).toFixed(2)}</td></tr>`; }).join('')}</tbody></table>
     </div>` : ''}`;
 }
 

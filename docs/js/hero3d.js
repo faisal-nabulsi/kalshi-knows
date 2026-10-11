@@ -111,8 +111,8 @@ export function createStage(canvas, labelsEl, opts = {}) {
   key.shadow.mapSize.set(lowPower ? 1024 : 2048, lowPower ? 1024 : 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02; key.shadow.radius = 6;
   scene.add(key, key.target);
   const fill = new THREE.DirectionalLight(COLD, 0.55); fill.position.set(-5, 1.5, 2.5); scene.add(fill);
-  const rim = new THREE.DirectionalLight(SIG, 2.4); rim.position.set(-1.8, 0.7, -4.5); scene.add(rim);
-  const rim2 = new THREE.DirectionalLight(0xffd2b8, 0.7); rim2.position.set(4, 1.2, -3); scene.add(rim2);
+  const rim = new THREE.DirectionalLight(SIG, 2.4); rim.position.set(-1.8, -0.35, -4.5); scene.add(rim);
+  const rim2 = new THREE.DirectionalLight(0xffd2b8, 0.7); rim2.position.set(4, 0.15, -3); scene.add(rim2);
   scene.add(new THREE.HemisphereLight(0x30343a, 0x0a0a0b, 0.6));
 
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color: 0x0f0f11, roughness: 0.95 }));
