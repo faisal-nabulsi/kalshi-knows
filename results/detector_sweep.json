@@ -1,0 +1,117 @@
+{
+ "recommended_threshold": 0.08,
+ "criterion": "lowest threshold with precision_incl_high_leverage>=0.85 (keeps recall highest while alerts stay mostly meaningful)",
+ "match_window": "alert within [-20s,+90s] of ESPN play wallclock; recall over TD/FG/TURNOVER",
+ "precision_note": "precision = alerts near a TD/FG/TURNOVER/SAFETY/BIG_PLAY (strict); precision_incl_high_leverage also counts plays where ESPN win prob moved >=5 pts (e.g. missed FG, 4th-down stops, key conversions)",
+ "detector": "|p(t)-p(t-20s)|>=thr for >=3 consecutive seconds, 60s cooldown, last-trade price on 1s grid",
+ "sweep": [
+  {
+   "threshold": 0.04,
+   "n_alerts": 305,
+   "precision": 0.305,
+   "precision_incl_high_leverage": 0.718,
+   "recall": 0.554,
+   "median_detection_delay_s": 10.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.05,
+   "n_alerts": 244,
+   "precision": 0.316,
+   "precision_incl_high_leverage": 0.758,
+   "recall": 0.47,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.06,
+   "n_alerts": 189,
+   "precision": 0.339,
+   "precision_incl_high_leverage": 0.81,
+   "recall": 0.434,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.07,
+   "n_alerts": 162,
+   "precision": 0.352,
+   "precision_incl_high_leverage": 0.833,
+   "recall": 0.398,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.08,
+   "n_alerts": 131,
+   "precision": 0.382,
+   "precision_incl_high_leverage": 0.855,
+   "recall": 0.373,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.09,
+   "n_alerts": 103,
+   "precision": 0.408,
+   "precision_incl_high_leverage": 0.883,
+   "recall": 0.325,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.1,
+   "n_alerts": 78,
+   "precision": 0.436,
+   "precision_incl_high_leverage": 0.897,
+   "recall": 0.277,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.11,
+   "n_alerts": 61,
+   "precision": 0.492,
+   "precision_incl_high_leverage": 0.902,
+   "recall": 0.241,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.12,
+   "n_alerts": 48,
+   "precision": 0.542,
+   "precision_incl_high_leverage": 0.917,
+   "recall": 0.193,
+   "median_detection_delay_s": 10.5,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.13,
+   "n_alerts": 44,
+   "precision": 0.568,
+   "precision_incl_high_leverage": 0.909,
+   "recall": 0.193,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.14,
+   "n_alerts": 36,
+   "precision": 0.556,
+   "precision_incl_high_leverage": 0.944,
+   "recall": 0.193,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  },
+  {
+   "threshold": 0.15,
+   "n_alerts": 29,
+   "precision": 0.621,
+   "precision_incl_high_leverage": 1.0,
+   "recall": 0.181,
+   "median_detection_delay_s": 11.0,
+   "n_games": 7
+  }
+ ]
+}

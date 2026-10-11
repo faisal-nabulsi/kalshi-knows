@@ -1,0 +1,77 @@
+{
+ "games": 7,
+ "n_candidate_plays": 128,
+ "min_abs_delta": 0.05,
+ "overall": {
+  "median_s": 6.99,
+  "p25_s": 5.9,
+  "p75_s": 9.18,
+  "n": 76
+ },
+ "by_category": {
+  "BIG_PLAY": {
+   "median_s": 7.78,
+   "p25_s": 6.08,
+   "p75_s": 9.73,
+   "n": 32
+  },
+  "FG": {
+   "median_s": 6.43,
+   "p25_s": 5.33,
+   "p75_s": 7.46,
+   "n": 7
+  },
+  "TD": {
+   "median_s": 6.78,
+   "p25_s": 4.45,
+   "p75_s": 8.05,
+   "n": 27
+  },
+  "TURNOVER": {
+   "median_s": 8.19,
+   "p25_s": 6.5,
+   "p75_s": 8.83,
+   "n": 10
+  }
+ },
+ "clean_only_overall": {
+  "median_s": 6.97,
+  "p25_s": 6.03,
+  "p75_s": 8.92,
+  "n": 58
+ },
+ "clean_only_by_category": {
+  "BIG_PLAY": {
+   "median_s": 6.92,
+   "p25_s": 6.08,
+   "p75_s": 10.09,
+   "n": 20
+  },
+  "FG": {
+   "median_s": 6.67,
+   "p25_s": 6.02,
+   "p75_s": 7.74,
+   "n": 6
+  },
+  "TD": {
+   "median_s": 6.78,
+   "p25_s": 4.45,
+   "p75_s": 8.05,
+   "n": 23
+  },
+  "TURNOVER": {
+   "median_s": 8.16,
+   "p25_s": 6.28,
+   "p75_s": 8.61,
+   "n": 9
+  }
+ },
+ "share_moved_before_wallclock": 0.0,
+ "share_direction_matches_team": 1.0,
+ "stream_delay_reference_s": {
+  "broadcast": 19,
+  "best_stream": 48,
+  "worst_stream": 62
+ },
+ "notes": "lag_s = first trade after wallclock-10s crossing halfway between pre (last trade in [-60,-5]s) and post (VWAP [+30,+90]s) price. ESPN wallclock semantics: see docs; negative lag = price moved before ESPN timestamp."
+}
