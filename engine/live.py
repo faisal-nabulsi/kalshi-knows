@@ -65,6 +65,9 @@ THRESH, THRESH_SRC = _threshold()
 WINDOW_MS = int(float(os.environ.get("JUMP_WINDOW_S", 20)) * 1000)
 COOLDOWN_MS = int(float(os.environ.get("JUMP_COOLDOWN_S", 60)) * 1000)
 HOLD_MS = int(float(os.environ.get("JUMP_HOLD_S", 3)) * 1000)
+# Call the play this long after the jump is confirmed: the extra seconds of price path add ~+2.7 pts
+# of live accuracy (TRAINING.md) and cost 8 s of a 30-55 s lead over streams.
+CALL_DELAY_MS = int(float(os.environ.get("CALL_DELAY_S", 8)) * 1000)
 HISTORY_MS = 20 * 60 * 1000
 POLL_S = float(os.environ.get("KALSHI_POLL_S", 1.75))
 CONFIRM_MS = 150_000
@@ -200,6 +203,11 @@ class Engine:
 
     def _detect(self, gid: str, ts: int, p: float):
         d = self.det.setdefault(gid, {"pending": None, "last_fire": -10**15})
+        call = d.get("call")
+        if call and ts >= call["at"]:
+            d["call"] = None
+            self._fire(gid, ts, call["pend"], p)
+            return
         if ts - d["last_fire"] < COOLDOWN_MS:
             d["pending"] = None
             return
@@ -211,7 +219,10 @@ class Engine:
             elif ts - pend["t0"] >= HOLD_MS and move >= THRESH * 0.9:
                 d["pending"] = None
                 d["last_fire"] = ts
-                self._fire(gid, ts, pend, p)
+                if CALL_DELAY_MS > 0:
+                    d["call"] = {"pend": dict(pend, confirmed_ms=ts), "at": ts + CALL_DELAY_MS}
+                else:
+                    self._fire(gid, ts, pend, p)
                 return
             else:
                 return
@@ -233,8 +244,9 @@ class Engine:
         pb_h = pend["p_before"]
         pb, pa = (pb_h, p_after_home) if home_up else (1 - pb_h, 1 - p_after_home)
         state = self.state_before(gid, pend["t_before"] - 1000)
+        model_state = dict(state, path=[[t, p] for t, p in self.hist.get(gid, []) if t >= ts - 120_000], call_ts=ts)
         try:
-            inferred = infer.infer_play(state, pb, pa, team)
+            inferred = infer.infer_play(model_state, pb, pa, team)
         except Exception as e:
             log.exception("infer failed: %s", e)
             inferred = [{"type": "OTHER", "team": team, "prob": 1.0}]
@@ -389,7 +401,7 @@ def _should_track(g: dict) -> bool:
 # ---------------------------------------------------------------- announcer (stretch, AWS Polly)
 
 def _announce(alert: dict):
-    if os.environ.get("ANNOUNCER", "1") != "1":
+    if os.environ.get("ANNOUNCER", "0") != "1":
         return
     try:
         import boto3

@@ -38,7 +38,11 @@ def _load_model():
 
 def source() -> str:
     _load_model()
-    return _model_source
+    try:
+        from engine import infer_model as _im
+        return f"{_model_source}:{_im.LAST['source']}" + (":tabpfn-ready" if _im._TAB["model"] is not None else "")
+    except Exception:  # noqa: BLE001
+        return _model_source
 
 
 def _num(x, default):
@@ -117,7 +121,14 @@ PHRASE = {"TD": "touchdown", "FG": "field goal", "TURNOVER": "takeaway", "BIG_PL
           "SAFETY": "safety", "OTHER": "big moment"}
 
 
+GATE = 0.75   # name the play only when the model is this sure (83-87% accurate there; TRAINING.md)
+
+
 def headline(inferred: list[dict], team: str) -> str:
     top = inferred[0] if inferred else {"type": "OTHER", "prob": 0.5}
     nick = NICK.get(team, team)
+    if top["type"] == "OTHER" or top["prob"] < GATE:
+        guess = next((r for r in inferred if r["type"] != "OTHER"), None)
+        hint = f" ({PHRASE[guess['type']]}? {round(100 * guess['prob'])}%)" if guess and guess["prob"] >= 0.2 else ""
+        return f"Big swing to the {nick}{hint}"
     return f"{nick} {PHRASE.get(top['type'], 'big moment')} ({round(100 * top['prob'])}% sure)"
