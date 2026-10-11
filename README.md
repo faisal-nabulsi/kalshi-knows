@@ -20,7 +20,7 @@ Prediction markets know things before you do. Kalshi's price moves **~7 seconds*
 | **Slide-ready charts (1600×900, dark)** | [results/charts/](results/charts/) |
 
 ## Headline results (all on games the model never trained on)
-- **Speed:** Kalshi moves a median **7.0 s** after the real play (417 big plays, 66 games). Our live alerts land ~30 s after the play, i.e. **15–40 s before a streaming viewer sees it** (and 18–65 s before the same play appears in ESPN's public play-by-play feed). This is a spoiler / second-screen speed, not a trading edge: Kalshi itself has already moved.
+- **Speed:** Kalshi moves a median **7.0 s** after the real play (417 big plays, 66 games). Our first buzz lands ~15–25 s after the play (two-stage alerts; the named call follows a few seconds later), i.e. **25–45 s before a streaming viewer sees it** (and 18–65 s before the same play appears in ESPN's public play-by-play feed). This is a spoiler / second-screen speed, not a trading edge: Kalshi itself has already moved.
 - **Model:** pretrained on **28 seasons of NFL plays** (GPU), fine-tuned on **~8,800 real Kalshi price jumps** (2025 + 2026) with **audited labels** (we hand-checked 150, found 15% wrong, fixed the two bugs).
   - Live-size jumps, trained on 2025 → tested on 2026: **75.0% accuracy**; **~80% right when it names a play at ≥75% confidence** (audited labels; on the old labels the same model was 73.7% vs a 60.0% always-"nothing big" baseline — the audit mainly made the labels truthful, not the accuracy higher).
   - A smart sports fan (same inputs): **63%**, and 38% right when naming a play. Pretraining on 28 seasons is worth **+11 pts**.

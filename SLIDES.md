@@ -22,7 +22,7 @@ Speaker: Faisal (talk + demo), Kevin (business slide), Dugar (clicker + backup v
 - Backup: `video/kalshi-knows-demo.mp4` (2:26) if Wi-Fi dies.
 
 ## Q&A (crisp answers; details in research/REVIEW.md §3)
-1. **"What's the real head start?"** Market ~7 s after the play; our push ~30 s after (we wait 8 s to read the move); streams 48–62 s → 15–40 s ahead on streams. An antenna (19 s) still beats us.
+1. **"What's the real head start?"** Market ~7 s after the play; our first buzz ~15–25 s after (named call ~8 s later); streams 48–62 s → 25–45 s ahead of streams. An antenna (19 s) still beats us.
 2. **"Beats ESPN how?"** Our alerts arrived 18–65 s before the same play showed up in ESPN's public play-by-play feed (conservative; we poll it every 4 s).
 3. **"Which accuracy is real?"** Trained on 2025, tested on unseen 2026 games: 75% vs 47% always-"nothing" (audited labels, 511 jumps); named calls ~80% right. Pre-registered test on today's games: +19 pts over the baseline at live thresholds, named calls 8 of 9 (small sample, wide interval).
 4. **"Half your buzzes aren't big plays?"** We only see what the market reacts to: stops and penalties swing it too. When unsure we say "big swing", and phones only buzz on confident calls.
