@@ -804,3 +804,8 @@ b.g-ok, b.g-bad, b.g-miss { font-weight: 600; }
 @media (max-width: 900px) { .tabs { grid-template-columns: repeat(7, 1fr); } .tabs a { font-size: .56rem; letter-spacing: 0; } }
 .pb-table td:nth-child(1) { font: 700 1.2rem/1.05 var(--display); text-transform: uppercase; }
 .pb-table td:nth-child(2) { font: 500 1rem var(--mono); text-transform: none; }
+
+/* mode strip (Live + Alerts) */
+.modebar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: -20px 0 28px; padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.modebar .modes { display: inline-flex; }
+.modebar-hint { color: var(--ink3); font-size: .68rem; flex: 1 1 18rem; }

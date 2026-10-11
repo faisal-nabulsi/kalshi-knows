@@ -70,10 +70,12 @@ function paintShield() {
   document.documentElement.classList.toggle('shield', on);
   $$('[data-shield]').forEach((b) => { b.setAttribute('aria-checked', String(on)); const t = b.querySelector('b'); if (t) t.textContent = on ? 'ON' : 'OFF'; });
   const cb = $('#app-sheet-shield'); if (cb) cb.checked = on;
+  $$('[data-mode]').forEach((b) => b.setAttribute('aria-checked', String((b.dataset.mode === 'protect') === on)));
 }
 export function initShield() {
   paintShield();
   $$('[data-shield]').forEach((b) => b.addEventListener('click', () => setShield(!shieldOn())));
+  $$('[data-mode]').forEach((b) => b.addEventListener('click', () => setShield(b.dataset.mode === 'protect')));
   $('#app-sheet-shield')?.addEventListener('change', (e) => setShield(e.target.checked));
 }
 
@@ -105,7 +107,7 @@ export function initPush(getApi) {
         <div class="get-btns"><button class="btn-sig" id="push-test">Send me a test</button>
         <button class="btn-ghost mono" id="push-redo">Re-subscribe</button></div>`;
     } else {
-      html = `<p class="get-lede">${standalone ? 'Installed. One more tap:' : 'Works right here in Chrome, Edge and Firefox. No install needed.'}</p>
+      html = `<p class="get-lede">${standalone ? 'Installed. One more tap:' : 'Works right here in desktop and Android Chrome, Edge and Firefox. On iPhone: Share → Add to Home Screen → open it → Enable alerts.'}</p>
         <div class="get-btns"><button class="btn-sig" id="push-enable">Enable alerts</button></div>`;
     }
     html += `<p class="get-note mono" id="push-note">${api ? 'Live server connected.' : 'Live server offline right now: alerts switch on when the engine is running.'}</p>`;

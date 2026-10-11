@@ -54,3 +54,6 @@
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .chip { background: none; border: 1px solid var(--line2, #34343a); color: var(--ink2, #a9a49b); font: 600 .7rem var(--mono, monospace); letter-spacing: .06em; padding: 5px 9px; text-transform: uppercase; }
 .chip[aria-pressed="true"] { background: var(--ink, #ede8df); color: var(--bg, #0a0a0b); }
+.auto-pin { border: 1px solid var(--sig, #ff4d1a); background: rgba(255,77,26,.08); padding: 10px 12px; margin-bottom: 10px; font: 600 .78rem/1.4 var(--mono, monospace); }
+.armed { display: inline-block; margin-left: 8px; font: 700 .62rem var(--mono, monospace); letter-spacing: .08em; text-transform: uppercase; color: var(--cold, #7f93a6); border: 1px solid var(--cold2, #3f4b57); padding: 3px 6px; vertical-align: middle; }
+.tbl .chip.cat { padding: 3px 7px; font-size: .62rem; pointer-events: none; }

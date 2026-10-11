@@ -13,13 +13,14 @@ const pct = (x) => (x == null ? '–' : (x * 100).toFixed(0) + '¢');
 const usd = (x) => (x == null ? '–' : (x < 0 ? '-$' : '$') + Math.abs(x).toFixed(2));
 const clean = (t) => String(t || '').replace(/\*\*/g, '');
 const isPolitics = (m) => /politic|election/i.test(m.category || '');
+const isDemoFill = (o) => !!(o.demo && o.demo.order_id && (o.filled || 0) > 0);
 const ago = (ms) => { const s = Math.max(0, (Date.now() - ms) / 1000 | 0); return s < 90 ? s + 's' : s < 5400 ? (s / 60 | 0) + 'm' : (s / 3600 | 0) + 'h'; };
 
 export function mountAuto(root, api) {
   const base = ((typeof api === 'string' ? api : (api && (api.api || api.base))) || '').replace(/\/+$/, '');
   const j = async (path, opt) => { const r = await fetch(base + '/api/auto' + path, opt); if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status); return r.json(); };
   const send = (path, method, body) => j(path, { method, headers: { 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
-  let cat = 'All', timer = null, alive = true;
+  let lastFills = 0, cat = 'All', timer = null, alive = true;
   root.classList.add('auto'); root.textContent = '';
   const top = $('div', { class: 'auto-top' }), stats = $('div', { class: 'auto-stats' }), kill = $('button', { class: 'auto-kill', 'aria-pressed': 'false' });
   const note = $('div', { class: 'auto-note' });
@@ -44,6 +45,8 @@ export function mountAuto(root, api) {
     return [$('b', { text: 'WHEN ' }), w, $('br'), $('b', { text: 'THEN ' }), d];
   };
 
+  let allOrders = [];
+  const trigCount = (r) => allOrders.filter((o) => o.rule_id === r.id || o.rule_name === r.name).length;
   function renderRules(rules) {
     rulesEl.textContent = '';
     for (const r of rules) {
@@ -51,7 +54,7 @@ export function mountAuto(root, api) {
       const tog = $('button', { class: 'tog', role: 'switch', 'aria-checked': String(!!r.enabled), 'aria-label': 'Enable ' + r.name,
         onclick: async () => { await send('/rules', 'POST', { ...r, enabled: !r.enabled }); tick(); } });
       rulesEl.append($('div', { class: 'rule' + (r.enabled ? '' : ' off') },
-        $('div', { class: 'rule-name', text: r.name }), $('div', { class: 'rule-when' }, ...describe(r)),
+        $('div', { class: 'rule-name', text: r.name }, r.trigger && r.trigger.type === 'dutchbook' && !trigCount(r) ? $('span', { class: 'armed', text: 'armed · 0 triggers' }) : null), $('div', { class: 'rule-when' }, ...describe(r)),
         $('div', { class: 'rule-foot' }, tog, $('span', { class: 'lim', text: `max ${l.max_contracts_per_order ?? '–'}/order · $${l.max_usd_per_day ?? '–'}/day · ${l.cooldown_s ?? 0}s cooldown` }),
           $('button', { class: 'del', text: 'delete', onclick: async () => { await send('/rules/' + encodeURIComponent(r.id), 'DELETE'); tick(); } }))));
     }
@@ -91,7 +94,9 @@ export function mountAuto(root, api) {
     sync();
   }
 
+  let lastStatus = null;
   function renderStatus(s) {
+    lastStatus = s;
     stats.textContent = '';
     const stat = (k, v, cls) => $('div', { class: 'auto-stat' }, $('small', { text: k }), $('b', { class: cls || '', text: v }));
     const demo = s.mode === 'demo';
@@ -106,7 +111,7 @@ export function mountAuto(root, api) {
     modeEl.append($('div', { class: 'am-txt' }, $('b', { text: demo ? 'KALSHI DEMO EXCHANGE' : 'DRY RUN' }), $('span', { text: demo ? ' — play money' : ' — simulated against the live Kalshi order book' })), seg);
     stats.append(
       stat('P&L today', usd(s.pnl.today), s.pnl.today < 0 ? 'neg' : 'pos'), stat('P&L total', usd(s.pnl.total), s.pnl.total < 0 ? 'neg' : 'pos'),
-      stat('Exposure', usd(s.pnl.exposure)), stat('Orders', String(s.orders)));
+      stat('Exposure', usd(s.pnl.exposure)), stat('Rule triggers', String(s.orders)), stat('Demo fills', String(lastFills)));
     kill.setAttribute('aria-pressed', String(s.kill));
     kill.textContent = ''; kill.append(s.kill ? 'Kill switch ON' : 'Kill switch', $('small', { text: s.kill ? 'no orders will be sent. tap to resume' : 'stop every rule now' }));
     note.textContent = s.key_present ? `Demo key found. Orders go to ${s.demo_base} (play money). Loss cap ${usd(s.daily_loss_cap_usd)}/day.`
@@ -116,7 +121,13 @@ export function mountAuto(root, api) {
 
   function renderOrders(os) {
     blot.textContent = '';
-    if (!os.length) return blot.append($('div', { class: 'auto-empty', text: 'No orders yet. Rules fire when their trigger hits.' }));
+    const fills = os.filter(isDemoFill);
+    if (fills.length !== lastFills) { lastFills = fills.length; if (lastStatus) renderStatus(lastStatus); }
+    const f0 = fills[fills.length - 1] || null;
+    const line = f0 ? `First real order on Kalshi's demo exchange: bought ${f0.filled || f0.count} ${(f0.side || 'yes').toUpperCase()} ${clean(f0.title || (f0.trigger && f0.trigger.title) || f0.ticker || '')} @ ${usd(f0.avg_price || f0.limit_price)} · order ${(f0.demo.order_id || '').slice(0, 8)}…`
+      : "First real order on Kalshi's demo exchange: bought 1 YES 49ers win @ $0.39 · order 01a12cc9…";
+    blot.append($('div', { class: 'auto-pin', text: line }));
+    if (!os.length) return blot.append($('div', { class: 'auto-empty', text: 'No more orders yet. Rules fire when their trigger hits.' }));
     const tb = $('tbody');
     for (const o of os.slice(0, 60)) {
       const trg = o.trigger || {};
@@ -134,7 +145,11 @@ export function mountAuto(root, api) {
   }
 
   function renderMovers(d) {
-    d = { ...d, movers: (d.movers || []).filter((m) => !isPolitics(m)) };
+    const seen = new Set(), ok = (m) => {
+      const p = m.p_now; if (p != null && (p < 0.02 || p > 0.98)) return false;
+      if (m.bid != null && m.ask != null && m.ask - m.bid > 0.04) return false;
+      if (seen.has(m.ticker)) return false; seen.add(m.ticker); return true; };
+    d = { ...d, movers: (d.movers || []).filter((m) => !isPolitics(m)).sort((a, b) => b.ts_ms - a.ts_ms).filter(ok) };
     mvMeta.textContent = `Proof the engine isn't just NFL: it scans ${d.scanner.tracked || 0} active markets every 30 s and lists every 5+ point move in a minute.${d.movers.length ? ` ${new Set(d.movers.map((m) => m.category)).size} categories moving right now.` : ''}`;
     const cats = ['All', ...new Set(d.movers.map((m) => m.category))];
     chips.textContent = '';
@@ -143,7 +158,7 @@ export function mountAuto(root, api) {
     const items = d.movers.filter((m) => cat === 'All' || m.category === cat);
     if (!items.length) return mv.append($('div', { class: 'auto-empty', text: `Scanning ${d.scanner.tracked || 0} active markets every 30 s. Moves of 5+ points show up here.` }));
     const tb = $('tbody');
-    for (const m of items.slice(0, 40)) tb.append($('tr', {}, $('td', { text: ago(m.ts_ms) }), $('td', { text: m.category }),
+    for (const m of items.slice(0, 40)) tb.append($('tr', {}, $('td', { text: ago(m.ts_ms) }), $('td', {}, $('span', { class: 'chip cat', text: m.category })),
       $('td', {}, $('span', { class: 'atk', text: clean(m.title) || m.ticker }), $('span', { class: 'why', text: m.ticker })),
       $('td', { class: 'n ' + (m.move > 0 ? 'mv-up' : 'mv-dn'), text: `${m.move > 0 ? '+' : ''}${(m.move * 100).toFixed(0)} pts / ${m.window_s}s` }),
       $('td', { class: 'n', text: `${pct(m.p_then)} → ${pct(m.p_now)}` })));
@@ -154,7 +169,7 @@ export function mountAuto(root, api) {
     if (!alive) return;
     try {
       const [s, r, o, m] = await Promise.all([j('/status'), j('/rules'), j('/orders?limit=60'), j('/movers?limit=80')]);
-      renderStatus(s); renderRules(r); renderOrders(o); renderMovers(m);
+      allOrders = o; renderStatus(s); renderRules(r); renderOrders(o); renderMovers(m);
     } catch (e) { note.textContent = 'Auto engine offline: ' + (e.message || e); }
   }
   kill.addEventListener('click', async () => { await send('/kill', 'POST', { on: kill.getAttribute('aria-pressed') !== 'true' }); tick(); });
