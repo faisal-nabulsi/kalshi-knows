@@ -3,7 +3,7 @@
 Rules = {id, name, enabled, trigger, action, limits}.  Triggers: alert | mover | dutchbook.
 Actions: buy yes/no on a target ticker (limit = ask + max_slippage), or alert_only.
 Modes: dry_run (default; builds the signed request it WOULD send, simulates the fill on the live
-public order book + Kalshi taker fee) and demo (sends to demo-api.kalshi.co, then polls status/fills).
+public order book + Kalshi taker fee) and demo (sends to external-api.demo.kalshi.co, then polls status/fills).
 Hooks into engine/live.py: autotrader.on_alert(alert, game), autotrader.router, autotrader.start(get_engine).
 """
 from __future__ import annotations

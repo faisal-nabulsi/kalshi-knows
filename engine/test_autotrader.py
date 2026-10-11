@@ -25,7 +25,7 @@ def test_signing_roundtrip_and_message_format():
 
 
 def test_demo_only_guard():
-    assert ka.DEMO_BASE == "https://demo-api.kalshi.co/trade-api/v2"
+    assert ka.DEMO_BASE == "https://external-api.demo.kalshi.co/trade-api/v2"
     ka.guard_demo_only({"PATH": "/bin", "KALSHI_DEMO_KEY_ID": "abc"})
     for bad in ({"KALSHI_API_BASE": "https://api.elections.kalshi.com/trade-api/v2"},
                 {"KALSHI_BASE_URL": "https://trading-api.kalshi.com"},

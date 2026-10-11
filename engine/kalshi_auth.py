@@ -18,9 +18,10 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import padding, rsa
+from cryptography.hazmat.primitives.asymmetric import ed25519, padding, rsa
 
-DEMO_HOST = "demo-api.kalshi.co"
+DEMO_HOST = "external-api.demo.kalshi.co"          # current official demo host (docs.kalshi.com, Oct 2026)
+DEMO_HOSTS = {DEMO_HOST, "demo-api.kalshi.co"}     # legacy demo host also accepted; production never
 DEMO_BASE = f"https://{DEMO_HOST}/trade-api/v2"
 KEY_PATH = Path(os.path.expanduser("~/.kalshi/demo_private_key.pem"))
 _PROD_RE = re.compile(r"(api\.elections\.kalshi\.com|trading-api\.kalshi\.com|(?<!demo-)api\.kalshi\.com|//kalshi\.com)", re.I)
@@ -37,18 +38,23 @@ def guard_demo_only(environ=None) -> None:
         if k.startswith("KALSHI") and isinstance(v, str) and _PROD_RE.search(v):
             raise NotDemoError(f"refusing to start: env var {k} points at production Kalshi")
         if k.upper() in ("KALSHI_API_BASE", "KALSHI_BASE_URL", "KALSHI_BASE", "KALSHI_API_URL", "KALSHI_ENV") \
-                and v and DEMO_HOST not in v and v.lower() != "demo":
+                and v and not any(h in v for h in DEMO_HOSTS) and v.lower() != "demo":
             raise NotDemoError(f"refusing to start: {k} is set to something other than the demo exchange")
 
 
 def assert_demo_url(url: str) -> None:
     p = urlsplit(url)
-    if p.scheme != "https" or p.hostname != DEMO_HOST or not p.path.startswith("/trade-api/v2"):
+    if p.scheme != "https" or p.hostname not in DEMO_HOSTS or not p.path.startswith("/trade-api/v2"):
         raise NotDemoError("signed requests may only target the Kalshi DEMO exchange")
+
+
+KEY_ID_PATH = Path(os.path.expanduser("~/.kalshi/demo_key_id"))
 
 
 def key_id() -> str | None:
     v = (os.environ.get("KALSHI_DEMO_KEY_ID") or "").strip()
+    if not v and KEY_ID_PATH.is_file():
+        v = KEY_ID_PATH.read_text().strip()
     return v or None
 
 
@@ -73,15 +79,22 @@ def ephemeral_key():
 def signature(private_key, timestamp_ms: int | str, method: str, path: str) -> str:
     path = path.split("?")[0]
     msg = f"{timestamp_ms}{method.upper()}{path}".encode()
-    sig = private_key.sign(msg, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH),
-                           hashes.SHA256())
+    if isinstance(private_key, ed25519.Ed25519PrivateKey):      # Ed25519 (Kalshi's recommended key type): sign directly
+        sig = private_key.sign(msg)
+    else:                                                       # RSA-PSS, SHA-256, salt = digest length
+        sig = private_key.sign(msg, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH),
+                               hashes.SHA256())
     return base64.b64encode(sig).decode()
 
 
 def verify(public_key, sig_b64: str, timestamp_ms, method: str, path: str) -> bool:
     from cryptography.exceptions import InvalidSignature
+    msg = f"{timestamp_ms}{method.upper()}{path.split('?')[0]}".encode()
     try:
-        public_key.verify(base64.b64decode(sig_b64), f"{timestamp_ms}{method.upper()}{path.split('?')[0]}".encode(),
+        if isinstance(public_key, ed25519.Ed25519PublicKey):
+            public_key.verify(base64.b64decode(sig_b64), msg)
+            return True
+        public_key.verify(base64.b64decode(sig_b64), msg,
                           padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH),
                           hashes.SHA256())
         return True
