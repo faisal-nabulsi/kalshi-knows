@@ -11,8 +11,8 @@ print(sum(1 for e in d['events'] if e['date']<='2026-10-11T17:30Z' and e['status
   sleep 120
 done
 sleep 240
-pipeline/nfl_refresh.sh && $PY pipeline/nfl_windows.py --today && \
-git add pipeline/nfl_*.py pipeline/nfl_*.sh results/market_lag.json results/market_lag.png results/detector_sweep.json docs/data/replay.json pipeline/out/nfl_plays.parquet pipeline/out/aligned_jumps.parquet pipeline/out/game_map.json pipeline/out/real_windows_today.parquet && \
+pipeline/nfl_refresh.sh && $PY pipeline/nfl_windows.py --today && $PY pipeline/nfl_mm_pull.py --today && $PY pipeline/nfl_mm_features.py --today && \
+git add pipeline/nfl_*.py pipeline/nfl_*.sh results/market_lag.json results/market_lag.png results/detector_sweep.json docs/data/replay.json pipeline/out/nfl_plays.parquet pipeline/out/aligned_jumps.parquet pipeline/out/game_map.json pipeline/out/real_windows_today.parquet pipeline/out/real_windows_today_mm.parquet && \
 git commit -qm "nfl-data: refresh with today's early games + real_windows_today
 
 Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>" && git push -q origin main
