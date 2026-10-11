@@ -1,0 +1,105 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Big+Shoulders+Display:wght@800;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{--bg:#0a0a0b;--ink:#ede8df;--ink2:#a9a49b;--ink3:#6f6b64;--sig:#ff4d1a;--cold:#7f93a6;--disp:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;--mono:'IBM Plex Mono',Menlo,monospace}
+*{box-sizing:border-box}html,body{margin:0;background:#000}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Archivo,Arial,sans-serif}
+.abs{position:absolute}.disp{font-family:var(--disp);font-weight:900;text-transform:uppercase;line-height:.84}.mono{font-family:var(--mono);font-weight:600}
+.sig{color:var(--sig)}.cold{color:var(--cold)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:50}
+#grain{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px);z-index:40;pointer-events:none}
+</style></head><body><div id="stage"><div id="s"></div><div id="flash"></div><div id="grain"></div></div>
+<script>
+const D=window.DATA, B=D.beat, h=D.hero, $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), lerp=(a,b,t)=>a+(b-a)*t, eo=t=>1-Math.pow(1-cl(t),3), back=t=>{t=cl(t);const c=2;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+let fl=0; const hit=(b,x,s=.5)=>{if(b>=x&&b<x+.35)fl=Math.max(fl,s*(1-(b-x)/.35))};
+// slam: element pops in at beat x
+const slam=(b,x)=>{const p=(b-x); if(p<0)return null; const k=back(p/.35); return {s:lerp(1.35,1,cl(p/.3)),o:cl(p/.12)}};
+const word=(b,x,txt,size,col,left,top,extra='')=>{const m=slam(b,x); if(!m)return ''; return `<div class="abs disp" style="left:${left}px;top:${top}px;font-size:${size}px;color:${col};opacity:${m.o};transform-origin:0 60%;transform:scale(${m.s});white-space:nowrap;${extra}">${txt}</div>`};
+const TEAM=D.team_name.toUpperCase();
+// -------- HOOK (12 beats)
+function hook(b){
+  let o='';
+  if(b<10){
+    o+=word(b,0,'YOUR STREAM',250,'var(--ink)',90,120)+word(b,3,`IS ${D.stream_s}`,250,'var(--sig)',90,360)+word(b,5,'SECONDS BEHIND',250,'var(--ink)',90,600)+word(b,7,'REAL LIFE.',250,'var(--cold)',90,820);
+    [0,3,5,7].forEach(x=>hit(b,x,.28));
+  } else { o+=`<div class="abs disp" style="left:0;right:0;top:200px;text-align:center;font-size:330px;line-height:.9;transform:scale(${lerp(1.25,1,cl((b-10)/.3))})"><span class="cold">YOUR</span> PHONE<br><span class="sig">ISN'T.</span></div>`; hit(b,10,.8); }
+  return o;
+}
+// -------- MONEY (24 beats)
+function phone(b,t0){
+  const t=(b-t0)*B, nin=t<0?0:back(t/.45), sh=(t>0&&t<.9)?Math.sin(t*75)*16*(1-t/.9):0;
+  let o=`<div class="abs disp" style="left:90px;top:300px;font-size:260px;line-height:.86">YOUR<br>PHONE<br><span class="sig">BUZZES.</span></div>`;
+  const px=1210+sh, py=70;
+  o+=`<div class="abs" style="left:${px}px;top:${py}px;width:520px;height:1000px;border-radius:84px;background:#0c0c0e;border:13px solid #2a2a30;box-shadow:0 0 ${t>0&&t<2?90:20}px rgba(255,77,26,.5);overflow:hidden">
+  <div class="abs" style="inset:0;background:radial-gradient(120% 55% at 30% 0,#34201a,#0c0c0e 60%)"></div>
+  <div class="abs" style="left:50%;top:16px;margin-left:-70px;width:140px;height:38px;border-radius:22px;background:#000"></div>
+  <div class="abs" style="left:0;right:0;top:100px;text-align:center;font:600 30px Archivo;color:#ede8df;opacity:.85">${h.date}</div>
+  <div class="abs" style="left:0;right:0;top:136px;text-align:center;font:600 170px/1 Archivo;color:#ede8df;letter-spacing:-.03em">${h.time}</div>
+  <div class="abs" style="left:20px;right:20px;top:${420+lerp(-230,0,cl(nin,0,1.15))}px;opacity:${cl(nin*3)};border-radius:34px;background:rgba(44,44,50,.96);padding:26px;border:1px solid rgba(255,255,255,.12)">
+   <div style="display:flex;align-items:center;gap:14px"><img src="../docs/icons/icon-192.png" style="width:52px;height:52px;border-radius:13px"><div style="font:600 25px Archivo;color:#ede8df;flex:1">SPOILER · ${h.short}</div><div style="font:500 21px Archivo;color:#a9a49b">now</div></div>
+   <div style="font:700 38px/1.15 Archivo;color:#ede8df;margin-top:16px">${h.headline}</div></div></div>`;
+  for(let i=0;i<3;i++){const q=cl((t-i*.16)/.7); if(t>0&&q>0&&q<1) o+=`<div class="abs" style="left:${px-24-q*60}px;top:${py+400-q*60}px;width:${520+48+q*120}px;height:${300+q*120}px;border:4px solid rgba(255,77,26,${.7*(1-q)});border-radius:100px"></div>`;}
+  return o;
+}
+function money(b){
+  let o='';
+  if(b<6){ o=phone(b,1); hit(b,1,.5); }
+  else if(b<8){ o=`<div class="abs mono" style="left:0;right:0;top:420px;text-align:center;font-size:84px;letter-spacing:.08em">MEANWHILE, YOUR TV…</div>`; hit(b,6,.4); }
+  else if(b<18){
+    const p=(b-8)/10, c=Math.min(D.stream_s, p*D.stream_s), tickB=Math.floor(b*2);
+    const pb=c>=h.alert_lag_s;
+    o+=`<div class="abs mono" style="left:0;right:0;top:110px;text-align:center;font-size:38px;letter-spacing:.2em;color:var(--ink2)">SECONDS AFTER THE PLAY</div>
+        <div class="abs disp" style="left:0;right:0;top:170px;text-align:center;font-size:640px;line-height:.9;color:${c>=D.stream_s?'var(--sig)':'var(--ink)'}">${Math.floor(c)}</div>`;
+    const bx=190,bw=1540,by=900;
+    o+=`<div class="abs" style="left:${bx}px;top:${by}px;width:${bw}px;height:26px;background:#232327"></div><div class="abs" style="left:${bx}px;top:${by}px;width:${bw*c/D.stream_s}px;height:26px;background:var(--sig)"></div>
+        <div class="abs mono" style="left:${bx+bw-260}px;top:${by+44}px;width:300px;text-align:right;font-size:32px;color:var(--ink2)">YOUR TV: ${D.stream_s} s</div>`;
+    if(pb){const x=bx+bw*h.alert_lag_s/D.stream_s, e=cl((c-h.alert_lag_s)/3); o+=`<div class="abs" style="left:${x-3}px;top:${by-60}px;width:6px;height:120px;background:#fff"></div><div class="abs mono" style="left:${x-170}px;top:${by-120}px;width:340px;text-align:center;font-size:36px;color:#fff;transform:scale(${1+.3*(1-e)})">📱 PHONE BUZZED</div>`; hit(b,8+10*h.alert_lag_s/D.stream_s,.35);}
+  }
+  else if(b<20.5){
+    o+=`<div class="abs" style="inset:0;background:#1a0f0b"></div><div class="abs mono" style="left:0;right:0;top:230px;text-align:center;font-size:44px;letter-spacing:.2em;color:var(--sig)">YOUR TV FINALLY SHOWS IT</div>
+        <div class="abs disp" style="left:0;right:0;top:330px;text-align:center;font-size:${lerp(380,330,cl((b-18)/.4))}px;line-height:.86">${/TOUCHDOWN/.test(h.play_text)?'TOUCHDOWN,':'BIG PLAY,'}<br><span class="sig">${TEAM}!</span></div>`; hit(b,18,.95);
+  } else {
+    const q=lerp(1.25,1,cl((b-20.5)/.3));
+    o+=`<div class="abs disp" style="left:0;right:0;top:110px;text-align:center;font-size:380px;line-height:.86;transform:scale(${q})">WE TOLD<br><span class="sig">YOU FIRST.</span></div>
+        <div class="abs mono" style="left:0;right:0;top:880px;text-align:center;font-size:40px;letter-spacing:.08em;color:var(--ink2);opacity:${cl((b-21.5)/.5)}">ABOUT ${Math.round(D.stream_s-h.alert_lag_s)} SECONDS BEFORE YOUR STREAM</div>
+        <div class="abs mono" style="left:50px;top:1030px;font-size:20px;color:var(--ink3);letter-spacing:.06em">Recreation of a real alert from today · real timestamps</div>`; hit(b,20.5,.7);
+  }
+  if(b<6||b>=18) {} return o+(b>=8&&b<20.5||b<6?`<div class="abs mono" style="left:50px;top:1030px;font-size:20px;color:var(--ink3);letter-spacing:.06em">Recreation of a real alert from today · real timestamps</div>`:'');
+}
+// -------- PROOF (42 beats: 8,8,8,8,10)
+function card(b){
+  const bounds=[0,8,16,24,32,42]; let i=bounds.findIndex((x,k)=>b>=x&&b<bounds[k+1]); const lb=b-bounds[i]; hit(b,bounds[i],.45);
+  const cnt=(v,d=1.6)=>Math.round(v*eo(lb*B/d));
+  const lab=(t,c='var(--ink)')=>`<div class="abs disp" style="left:110px;top:640px;font-size:150px;line-height:.9;color:${c};opacity:${cl(lb/1.2)}">${t}</div>`;
+  if(i==0) return `<div class="abs disp sig" style="left:100px;top:70px;font-size:820px;line-height:.8">${cnt(28,1.2)}</div>`+lab('SEASONS OF NFL PLAYS').replace('top:640px','top:760px').replace('150px','190px');
+  if(i==1) return `<div class="abs disp sig" style="left:100px;top:90px;font-size:640px;line-height:.85">${cnt(D.real_moves,1.6).toLocaleString()}</div>`+`<div class="abs disp" style="left:110px;top:700px;font-size:200px;line-height:.9">REAL MARKET MOVES</div><div class="abs mono" style="left:116px;top:930px;font-size:36px;color:var(--ink2);letter-spacing:.1em">TAUGHT WHAT FOOTBALL LOOKS LIKE IN THE PRICE</div>`;
+  if(i==2){const e=eo(lb*B/1.4); return `<div class="abs disp" style="left:100px;top:60px;font-size:150px">SMARTER THAN A <span class="sig">SPORTS FAN</span></div>
+     <div class="abs disp sig" style="left:100px;top:260px;font-size:520px;line-height:.85">${Math.round(D.model_acc*e)}%</div><div class="abs disp" style="left:1000px;top:330px;font-size:420px;line-height:.85;color:#5a5f66">${Math.round(D.fan_acc*e)}%</div>
+     <div class="abs mono" style="left:110px;top:790px;font-size:40px;letter-spacing:.1em">KALSHI KNOWS</div><div class="abs mono" style="left:1010px;top:790px;font-size:40px;letter-spacing:.1em;color:var(--ink2)">SMART SPORTS FAN</div>
+     <div class="abs" style="left:110px;top:870px;height:34px;width:${700*D.model_acc/100*e}px;background:var(--sig)"></div><div class="abs" style="left:1010px;top:870px;height:34px;width:${700*D.fan_acc/100*e}px;background:#5a5f66"></div>
+     <div class="abs mono" style="left:110px;top:940px;font-size:24px;color:var(--ink3)">SAME PLAYS, GAMES IT NEVER SAW · % OF PLAYS CALLED RIGHT</div>`;}
+  if(i==3) return `<div class="abs disp" style="left:100px;top:90px;font-size:300px;line-height:.86">AS ACCURATE<br>AS <span class="sig">CLAUDE.</span></div>
+     <div class="abs disp" style="left:100px;top:${lerp(760,700,cl(lb/1))}px;font-size:200px;line-height:.9;opacity:${cl((lb-2.5)/1)}"><span class="sig">${D.ms} MS</span> TO ANSWER</div>
+     <div class="abs mono" style="left:110px;top:1000px;font-size:26px;color:var(--ink3)">${D.kk_acc}% vs ${D.claude_acc}% on the same ${150} unseen plays</div>`;
+  const dots=[...Array(D.named_n)].map((_,k)=>{const on=k<D.named_right, e=cl((lb*B-0.3-k*0.12)/.25); return `<div class="abs" style="left:${130+k*185}px;top:620px;width:130px;height:130px;border-radius:50%;background:${on?'var(--sig)':'#3a3a40'};transform:scale(${back(e)});opacity:${cl(e*3)}"></div>`}).join('');
+  return `<div class="abs mono" style="left:110px;top:70px;font-size:48px;letter-spacing:.18em;color:var(--sig)">TODAY, LIVE</div><div class="abs disp" style="left:100px;top:130px;font-size:480px;line-height:.85">${D.named_right} OF ${D.named_n}</div>`+dots+
+     `<div class="abs disp" style="left:110px;top:800px;font-size:190px;line-height:.9">CALLS RIGHT</div><div class="abs mono" style="left:116px;top:1000px;font-size:26px;color:var(--ink3)">NAMED PLAYS ON TODAY'S GAMES THE MODEL HAD NEVER SEEN · PRE-REGISTERED TEST</div>`;
+}
+// -------- CLOSE (30 beats)
+function close_(b){
+  hit(b,0,.6);
+  const w=(x,t,sz,col,top)=>word(b,x,t,sz,col,0,top,'left:0;right:0;text-align:center;width:1920px');
+  let o='';
+  if(b<8) o+=`<div class="abs disp" style="left:0;right:0;top:170px;text-align:center;font-size:300px;line-height:.88;transform:scale(${lerp(1.2,1,cl(b/.3))})">NOT COMPETING<br>WITH <span class="sig">KALSHI.</span></div>
+     <div class="abs disp" style="left:0;right:0;top:830px;text-align:center;font-size:130px;opacity:${cl((b-3)/.4)};color:var(--ink2)">THE SMART LAYER ON TOP.</div>`;
+  else { const q=cl((b-8)/.3);
+    o+=`<div class="abs disp" style="left:90px;top:80px;font-size:340px;line-height:.84;transform-origin:0 0;transform:scale(${lerp(1.2,1,q)})">KALSHI<br><span class="sig">KNOWS.</span></div>
+        <div class="abs disp" style="left:96px;top:760px;font-size:130px;opacity:${cl((b-9.5)/.4)}">KNOW FIRST.</div>
+        <div class="abs" style="left:1330px;top:${60+(1-eo((b-10)/.5))*40}px;opacity:${eo((b-10)/.5)};text-align:center"><img src="assets/qr.png" style="width:480px;height:480px;display:block;box-shadow:0 0 90px rgba(255,77,26,.35)"><div class="mono" style="font-size:34px;margin-top:20px;letter-spacing:.04em">kalshi-knows.pages.dev</div></div>
+        <div class="abs" style="left:1300px;top:700px;width:560px;text-align:center;opacity:${cl((b-13)/.5)}"><div class="disp" style="font-size:66px;line-height:1">FAISAL NABULSI<br>KEVIN HUANG · DUGAR</div><div class="mono" style="font-size:24px;margin-top:20px;color:var(--sig);letter-spacing:.1em">FREE · PUBLIC DATA ONLY · NO REAL MONEY</div></div>
+        <div class="abs mono" style="left:90px;top:1030px;font-size:22px;color:var(--ink2);opacity:${cl((b-14)/.5)}">Narration: AI voice (original character)</div>`; hit(b,8,.7);}
+  return o;
+}
+window.render=(scene,t)=>{fl=0;const b=t/B; $('s').innerHTML=({hook,money,proof:card,close:close_})[scene](b); $('flash').style.opacity=fl; return true};
+</script></body></html>

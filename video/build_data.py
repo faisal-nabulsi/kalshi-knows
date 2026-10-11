@@ -65,5 +65,5 @@ if not honest:
         t = fm["temporal"]["live_subset"]; honest = dict(src="finetune", acc=t["accuracy"], base=None, n=t["n"], label="2026 games it never saw")
 D["honest"] = honest; D["prereg"] = prereg
 os.makedirs(os.path.join(os.path.dirname(__file__), "build"), exist_ok=True)
-json.dump(D, open(os.path.join(os.path.dirname(__file__), "build/data.json"), "w"), indent=1)
+json.dump(D, open(os.environ.get("DATA_OUT", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build/data.json")), "w"), indent=1)
 print(json.dumps({k: D[k] for k in ("hero", "today", "honest", "market_median", "n_real")}, indent=1))
