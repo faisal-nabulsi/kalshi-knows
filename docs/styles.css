@@ -755,7 +755,7 @@ b.g-ok, b.g-bad, b.g-miss { font-weight: 600; }
 #db-claim { color: var(--ink); font-weight: 600; }
 
 /* ------------------------------------------------ headlines stats: 2 tiles */
-.knew-stats { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+@media (min-width: 901px) { .knew-stats { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
 .ks-wide p { max-width: 34rem; }
 
 /* ------------------------------------------------ onboarding sheets */

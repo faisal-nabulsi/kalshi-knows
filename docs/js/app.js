@@ -101,8 +101,8 @@ function renderProof(res, mock) {
     </div>
     <div class="pg-det">
       <p class="pg-k mono">JUMP DETECTOR · ${int(d.n_alerts)} ALERTS</p>
-      <div class="pg-pair"><div><div class="pg-mid">${pct(d.precision)}</div><p>of alerts were a real scoring play or turnover <span class="mono">(precision)</span></p></div>
-      <div><div class="pg-mid">${pct(d.recall)}</div><p>of those plays set off an alert <span class="mono">(recall)</span></p></div></div>
+      <div class="pg-pair"><div><div class="pg-mid">${pct(d.precision)}</div><p>of alerts were a TD, field goal, turnover or 20+ yard play <span class="mono">(precision)</span></p></div>
+      <div><div class="pg-mid">${pct(d.recall)}</div><p>of those plays set off an alert <span class="mono">(recall)</span>. If the market barely moves, we can't see the play.</p></div></div>
       ${Object.keys(bt).length ? `<p class="pg-k mono pg-k2">KALSHI LAG BY PLAY TYPE</p><ul class="pg-types">${Object.entries(bt).map(([k, v]) => `<li><span class="mono">${esc(PLAY_SHORT[k] || k)}</span><b class="mono">${(v.median_s ?? 0).toFixed(1)} s</b><em class="mono">n=${int(v.n)}</em></li>`).join('')}</ul>` : ''}
     </div>
     ${lb.length ? `<div class="pg-board">
@@ -262,7 +262,7 @@ function renderReceipts() {
   $('#rc-tally').innerHTML = `${S.source?.kind === 'live' ? 'Today' : 'This replay'}: ${parts.join(' · ')}`;
   const graded = t.n - (t.pending || 0), hits = t.correct + t.wrong;
   $('#rc-acc').innerHTML = graded > 0
-    ? `Running accuracy: <b>${pct(t.correct / graded)}</b> of graded alerts named a real play correctly (${t.correct} of ${graded}).${hits ? ` When a real play did happen, we named it right ${t.correct} of ${hits} times.` : ''}`
+    ? `Running accuracy: <b>${pct(t.correct / graded)}</b> of graded alerts named a real play correctly (${t.correct} of ${graded}).${hits ? ` When we named a play and ESPN shows a real one, we were right ${t.correct} of ${hits} times.` : ''}`
     : 'No graded alerts yet. Each one is graded about 90 seconds after it fires.';
   $('#rc-empty').hidden = list.length > 0;
   body.innerHTML = list.map((a) => {
