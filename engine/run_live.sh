@@ -53,3 +53,5 @@ if [ "${NO_PUSH_GIT:-0}" != "1" ]; then
 fi
 echo "health via tunnel: $(curl -s "$URL/api/health" | head -c 200)"
 echo "LIVE API URL: $URL"
+# Also publish the site (incl. the new config.json) to Cloudflare Pages: https://kalshi-knows.pages.dev
+command -v wrangler >/dev/null && wrangler pages deploy docs --project-name kalshi-knows --branch main --commit-dirty=true >/dev/null 2>&1 && echo "deployed to https://kalshi-knows.pages.dev"
