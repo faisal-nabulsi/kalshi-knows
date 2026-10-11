@@ -121,13 +121,22 @@ PHRASE = {"TD": "touchdown", "FG": "field goal", "TURNOVER": "takeaway", "BIG_PL
           "SAFETY": "safety", "OTHER": "big moment"}
 
 
-GATE = 0.75   # name the play only when the model is this sure (83-87% accurate there; TRAINING.md)
+GATE = 0.75   # legacy single threshold (kept for reference)
+# Per-play precision gate (train/precision_gate.py): thresholds chosen on 2025 so named calls are right >=80%,
+# verified once on unseen 2026 games under live (one-play-late) conditions: 26 of 30 right (86.7%);
+# turnovers 7/7, touchdowns 83%. Field goals and big plays never clear the bar, so they read "big swing".
+GATES = {"TD": 0.74, "TURNOVER": 0.86}
+
+
+def is_named(top: dict) -> bool:
+    t = (top or {}).get("type")
+    return t in GATES and float((top or {}).get("prob", 0)) >= GATES[t]
 
 
 def headline(inferred: list[dict], team: str) -> str:
     top = inferred[0] if inferred else {"type": "OTHER", "prob": 0.5}
     nick = NICK.get(team, team)
-    if top["type"] == "OTHER" or top["prob"] < GATE:
+    if not is_named(top):
         guess = next((r for r in inferred if r["type"] != "OTHER"), None)
         hint = f" ({PHRASE[guess['type']]}? {round(100 * guess['prob'])}%)" if guess and guess["prob"] >= 0.2 else ""
         return f"Big swing to the {nick}{hint}"

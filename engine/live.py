@@ -331,7 +331,7 @@ class Engine:
                  "p_before": round(pb, 4), "p_after": round(pa, 4), "delta": round(pa - pb, 4),
                  "inferred": inferred,
                  "headline": infer.headline(inferred, team) if not bad else infer.headline([{"type": "OTHER", "prob": 1.0}], team),
-                 "named": bool(not bad and inferred and inferred[0]["type"] != "OTHER" and inferred[0]["prob"] >= infer.GATE),
+                 "named": bool(not bad and inferred and infer.is_named(inferred[0])),
                  "gate_reason": bad or None,
                  "confirmed": None, **tiers.alert_tier(top),
                  "short_name": g.get("short_name"), "home": g.get("home"), "away": g.get("away"),
