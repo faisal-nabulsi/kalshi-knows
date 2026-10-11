@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 
-from engine import espn, infer, kalshi, push, tiers
+from engine import autotrader, espn, infer, kalshi, push, tiers
 
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE_DIR = ROOT / "engine"
@@ -285,6 +285,12 @@ class Engine:
             except Exception as e:
                 log.warning("push failed: %s", e)
         threading.Thread(target=_announce, args=(alert,), daemon=True).start()
+        # --- autotrader hook (demo/dry-run only; see engine/autotrader.py)
+        try:
+            autotrader.on_alert(alert, g)
+        except Exception as e:
+            log.warning("autotrader hook failed: %s", e)
+        # --- end autotrader hook
         # a play ESPN already posted may confirm immediately
         self.try_confirm(gid, ts)
 
@@ -771,6 +777,7 @@ def replay_loop():
 
 app = FastAPI(title="Kalshi Knows live engine")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.include_router(autotrader.router)   # /api/auto/* (engine/autotrader.py)
 app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
 _started = False
 
@@ -790,6 +797,10 @@ def _startup():
         for fn in (espn_loop, summary_loop, kalshi_loop):
             threading.Thread(target=fn, daemon=True, name=fn.__name__).start()
     threading.Thread(target=dutchbook_loop, daemon=True, name="dutchbook").start()
+    try:  # --- autotrader (demo/dry-run only)
+        autotrader.start(lambda: ENGINE)
+    except Exception as e:
+        log.warning("autotrader not started: %s", e)
     log.info("engine up: mode=%s threshold=%.3f (%s) window=%ds hold=%ds cooldown=%ds",
              CFG["mode"], THRESH, THRESH_SRC, WINDOW_MS // 1000, HOLD_MS // 1000, COOLDOWN_MS // 1000)
 
