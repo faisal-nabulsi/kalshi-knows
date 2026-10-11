@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pem
+.env
+engine/.env
+engine/.vapid*
+engine/subscriptions.json
+engine/logs/
+pipeline/out/raw/
+train/out/raw/
+.DS_Store
+infra/instance_*.txt
