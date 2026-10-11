@@ -45,6 +45,8 @@ Slide line: **"When it's at least 80% sure, it names the play right about 4 time
 
 **Precision gate (3:30pm, live):** the app names a play only when it clears a per-type threshold chosen on 2025 for ≥80% precision (TD ≥74% confidence, turnover ≥86%; field goals / big plays never clear it → "big swing"). Verified once on unseen 2026 games under live (one-play-late) conditions: **26 of 30 named calls right (86.7%, game-clustered 95% CI 68–100%)**; turnovers **7 of 7**, touchdowns 83%; it names ~6% of live-size jumps. A 90% target is reachable only on ~1% of jumps (3 of 3 TDs), too rare to use. (train/precision_gate.py, engine/model/precision_gate.json)
 
+**Betting context for the 58% (say this with it):** at standard sportsbook odds (−110) a bettor needs **52.4%** wins just to break even; professional bettors who sustain **~55%** are considered elite (research/touts.md: 37 NFL handicappers combined went 52.14% ATS, below break-even). Our cross-market picks model: **58.2% of 1,603 paper bets won, +12.0% ROI after Kalshi fees** (one unseen test month, last-trade fills, not yet adversarially reviewed).
+
 **Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
 
 ## 1. Speed: the market vs the play, the stream, and ESPN
