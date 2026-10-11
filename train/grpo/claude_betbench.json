@@ -1,0 +1,17 @@
+{
+ "claude": {
+  "bets": 12,
+  "wins": 7,
+  "pnl": 0.92
+ },
+ "always_favorite": {
+  "bets": 150,
+  "wins": 108,
+  "pnl": -3.5
+ },
+ "always_pass": {
+  "bets": 0,
+  "wins": 0,
+  "pnl": 0
+ }
+}

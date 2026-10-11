@@ -1,0 +1,116 @@
+{
+ "full_2026": {
+  "always_pass": {
+   "n": 2634,
+   "bets": 0,
+   "invalid": 0,
+   "pnl_total": 0.0,
+   "pnl_per_bet": 0.0,
+   "win_rate": null,
+   "mix": {
+    "PASS": 2634
+   }
+  },
+  "always_favorite": {
+   "n": 2634,
+   "bets": 2634,
+   "invalid": 0,
+   "pnl_total": -80.36,
+   "pnl_per_bet": -0.0305,
+   "win_rate": 0.705,
+   "mix": {
+    "BUY_HOME": 1558,
+    "BUY_AWAY": 1076
+   },
+   "pnl_per_bet_ci95": [
+    -0.0917,
+    0.0308
+   ]
+  },
+  "follow_last_jump": {
+   "n": 2634,
+   "bets": 2324,
+   "invalid": 0,
+   "pnl_total": -77.58,
+   "pnl_per_bet": -0.0334,
+   "win_rate": 0.5452,
+   "mix": {
+    "BUY_HOME": 1191,
+    "BUY_AWAY": 1133,
+    "PASS": 310
+   },
+   "pnl_per_bet_ci95": [
+    -0.0475,
+    -0.0182
+   ]
+  },
+  "supervised_calibrated_market(PASS)": {
+   "n": 2634,
+   "bets": 0,
+   "invalid": 0,
+   "pnl_total": 0.0,
+   "pnl_per_bet": 0.0,
+   "win_rate": null,
+   "mix": {
+    "PASS": 2634
+   }
+  }
+ },
+ "betbench150": {
+  "always_pass": {
+   "n": 150,
+   "bets": 0,
+   "invalid": 0,
+   "pnl_total": 0.0,
+   "pnl_per_bet": 0.0,
+   "win_rate": null,
+   "mix": {
+    "PASS": 150
+   }
+  },
+  "always_favorite": {
+   "n": 150,
+   "bets": 150,
+   "invalid": 0,
+   "pnl_total": -3.5,
+   "pnl_per_bet": -0.0233,
+   "win_rate": 0.72,
+   "mix": {
+    "BUY_HOME": 95,
+    "BUY_AWAY": 55
+   },
+   "pnl_per_bet_ci95": [
+    -0.1021,
+    0.054
+   ]
+  },
+  "follow_last_jump": {
+   "n": 150,
+   "bets": 128,
+   "invalid": 0,
+   "pnl_total": -6.18,
+   "pnl_per_bet": -0.0483,
+   "win_rate": 0.5469,
+   "mix": {
+    "BUY_HOME": 66,
+    "BUY_AWAY": 62,
+    "PASS": 22
+   },
+   "pnl_per_bet_ci95": [
+    -0.1189,
+    0.0195
+   ]
+  },
+  "supervised_calibrated_market(PASS)": {
+   "n": 150,
+   "bets": 0,
+   "invalid": 0,
+   "pnl_total": 0.0,
+   "pnl_per_bet": 0.0,
+   "win_rate": null,
+   "mix": {
+    "PASS": 150
+   }
+  }
+ }
+}
