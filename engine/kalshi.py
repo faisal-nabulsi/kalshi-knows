@@ -17,7 +17,10 @@ import httpx
 BASE = "https://api.elections.kalshi.com/trade-api/v2"
 log = logging.getLogger("kalshi")
 
-MAX_RPS = 3.5  # stay safely under the 4 req/s hard rule
+# Two limiters, total 3.5 req/s (< the 4 req/s hard rule): live polling gets 2.6, background jobs
+# (the Dutch Book scan) get 0.9 so they can never starve the live order-book polling.
+MAX_RPS = 2.6
+BG_RPS = 0.9
 
 
 class RateLimiter:
@@ -39,6 +42,7 @@ class RateLimiter:
 
 
 LIMITER = RateLimiter(MAX_RPS)
+BG_LIMITER = RateLimiter(BG_RPS)
 _client_lock = threading.Lock()
 _client: httpx.Client | None = None
 
@@ -115,6 +119,23 @@ def quotes(tickers: list[str]) -> dict[str, dict]:
 
 def orderbook(ticker: str, depth: int = 5) -> dict:
     return get(f"/markets/{ticker}/orderbook", {"depth": depth})
+
+
+def book_quote(ticker: str) -> dict:
+    """Real-time top of book for one market (the /markets list endpoints are cached ~5-15 s; the
+    order book is not). Returns {"bid","ask"} for YES: ask = 1 - best NO bid."""
+    d = get(f"/markets/{ticker}/orderbook", {"depth": 1})
+    ob = d.get("orderbook_fp")
+    if ob is not None:
+        yes = [(_f(p), _f(q)) for p, q in (ob.get("yes_dollars") or [])]
+        no = [(_f(p), _f(q)) for p, q in (ob.get("no_dollars") or [])]
+    else:  # legacy cents format
+        ob = d.get("orderbook") or {}
+        yes = [(_f(p) / 100, q) for p, q in (ob.get("yes") or [])]
+        no = [(_f(p) / 100, q) for p, q in (ob.get("no") or [])]
+    bid = max((p for p, _ in yes if p), default=None)
+    nb = max((p for p, _ in no if p), default=None)
+    return {"bid": bid, "ask": (1 - nb) if nb is not None else None}
 
 
 def trades(ticker: str, min_ts: int | None = None, max_ts: int | None = None, limit: int = 1000) -> list[dict]:

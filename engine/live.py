@@ -450,12 +450,36 @@ def summary_loop():
         _stop.wait(1.0)
 
 
+FOCUS = {t.strip().upper() for t in os.environ.get("FOCUS_TEAMS", "SF,SEA").split(",") if t.strip()}
+
+
+def _match_markets(events: dict):
+    unmatched = []
+    with ENGINE.lock:
+        for g in ENGINE.games.values():
+            if g.get("kalshi_home"):
+                continue
+            h, a = kalshi.match_game(g, events)
+            if h:
+                g["kalshi_home"], g["kalshi_away"] = h, a
+                JLOG.write("games", {"ts_ms": now_ms(), **{k: g.get(k) for k in (
+                    "game_id", "short_name", "home", "away", "home_name", "away_name", "date_ms",
+                    "kalshi_home", "kalshi_away", "home_id", "away_id")}})
+            elif g.get("status") != "post":
+                unmatched.append(g["short_name"])
+    ENGINE.unmatched = unmatched
+    if unmatched:
+        log.warning("unmatched ESPN games (no open Kalshi market): %s", unmatched)
+
+
 def kalshi_loop():
+    """Live games: real-time order books, round-robin (oldest first; focus/pending games weighted 2x).
+    Everything tracked: one batched /markets call every ~5 s (that endpoint is cached ~15 s, so it is only
+    the fallback and the source for pre/post-game prices)."""
     events: dict = {}
-    last_refresh = 0.0
-    last_match = 0.0
+    last_refresh = last_match = last_batch = 0.0
+    last_book: dict[str, float] = {}
     while not _stop.is_set():
-        t0 = time.time()
         try:
             with ENGINE.lock:
                 need = [g for g in ENGINE.games.values() if not g.get("kalshi_home") and g.get("status") != "post"]
@@ -465,38 +489,47 @@ def kalshi_loop():
                 last_match = 0.0
             if need and events and time.time() - last_match > 10:
                 last_match = time.time()
-                unmatched = []
-                with ENGINE.lock:
-                    for g in ENGINE.games.values():
-                        if g.get("kalshi_home"):
-                            continue
-                        h, a = kalshi.match_game(g, events)
-                        if h:
-                            g["kalshi_home"], g["kalshi_away"] = h, a
-                            JLOG.write("games", {"ts_ms": now_ms(), **{k: g.get(k) for k in (
-                                "game_id", "short_name", "home", "away", "home_name", "away_name", "date_ms",
-                                "kalshi_home", "kalshi_away", "home_id", "away_id")}})
-                        elif g.get("status") != "post":
-                            unmatched.append(g["short_name"])
-                ENGINE.unmatched = unmatched
-                if unmatched:
-                    log.warning("unmatched ESPN games (no open Kalshi market): %s", unmatched)
+                _match_markets(events)
             ids = ENGINE.tracked_ids()
-            if ids:
+            if ids and time.time() - last_batch > 5:
+                last_batch = time.time()
                 with ENGINE.lock:
                     tick = {gid: (ENGINE.games[gid]["kalshi_home"], ENGINE.games[gid]["kalshi_away"]) for gid in ids}
                 q = kalshi.quotes([t for pair in tick.values() for t in pair])
                 ts = now_ms()
                 for gid, (ht, at) in tick.items():
+                    live_fresh = time.time() - last_book.get(gid, 0) < 8
+                    if live_fresh:
+                        continue          # the order book is fresher; don't mix in the cached quote
                     p, detail = kalshi.home_prob(q.get(ht), q.get(at))
                     if p is not None:
+                        detail["src"] = "batch_" + (detail.get("src") or "")
                         ENGINE.on_quote(gid, ts, p, detail)
                 ENGINE.kalshi_ok_ms = ts
-                ENGINE.kalshi_err = None
+            with ENGINE.lock:
+                live = [(gid, ENGINE.games[gid]) for gid in ids if ENGINE.games[gid].get("status") == "in"]
+            if not live:
+                _stop.wait(1.0)
+                continue
+
+            def prio(item):
+                gid, g = item
+                w = 2.0 if (g.get("home") in FOCUS or g.get("away") in FOCUS
+                            or (ENGINE.det.get(gid) or {}).get("pending")) else 1.0
+                return (time.time() - last_book.get(gid, 0)) * w
+            gid, g = max(live, key=prio)
+            px = kalshi.book_quote(g["kalshi_home"])   # rate-limited inside (2.6 req/s)
+            last_book[gid] = time.time()
+            b, a = px["bid"], px["ask"]
+            if b is not None and a is not None and 0 < b <= a <= 1 and a - b <= 0.12:
+                ts = now_ms()
+                ENGINE.on_quote(gid, ts, (a + b) / 2, {"hb": b, "ha": round(a, 4), "src": "book"})
+                ENGINE.kalshi_ok_ms = ts
+            ENGINE.kalshi_err = None
         except Exception as e:
             ENGINE.kalshi_err = str(e)[:200]
             log.warning("kalshi loop error: %s", e)
-        _stop.wait(max(0.2, POLL_S - (time.time() - t0)))
+            _stop.wait(1.0)
 
 
 def dutchbook_loop():
@@ -513,8 +546,8 @@ def dutchbook_loop():
             if hasattr(dutchbook, "_get") and not getattr(dutchbook._get, "_limited", False):
                 _orig = dutchbook._get
 
-                def _limited_get(*a, **k):   # share the process-wide Kalshi rate limiter (<= 4 req/s total)
-                    kalshi.LIMITER.wait()
+                def _limited_get(*a, **k):   # background share of the process-wide Kalshi budget (<= 4 req/s total)
+                    kalshi.BG_LIMITER.wait()
                     return _orig(*a, **k)
                 _limited_get._limited = True
                 dutchbook._get = _limited_get
