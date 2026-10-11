@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import logging
 import math
 import re
@@ -736,8 +737,20 @@ def get_rules():
     return RULES
 
 
+def _require_admin(request):
+    """Control endpoints need the admin token (engine/.admin_token, or ADMIN_TOKEN env): the API URL is public."""
+    from pathlib import Path as _P
+    want = os.environ.get("ADMIN_TOKEN") or ((_P(__file__).parent / ".admin_token").read_text().strip()
+                                              if (_P(__file__).parent / ".admin_token").exists() else "")
+    got = request.headers.get("x-admin") or request.query_params.get("admin") or ""
+    if not want or got != want:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=403, detail="admin token required")
+
+
 @router.post("/rules")
 async def post_rule(request: Request):
+    _require_admin(request)
     try:
         rule = validate_rule(await request.json())
     except (ValueError, TypeError) as e:
@@ -754,7 +767,8 @@ async def post_rule(request: Request):
 
 
 @router.delete("/rules/{rule_id}")
-def del_rule(rule_id: str):
+def del_rule(rule_id: str, request: Request):
+    _require_admin(request)
     with LOCK:
         RULES[:] = [r for r in RULES if r["id"] != rule_id]
         persist()
@@ -781,6 +795,7 @@ def get_status():
 
 @router.post("/kill")
 async def kill(request: Request):
+    _require_admin(request)
     try:
         body = await request.json()
     except ValueError:
@@ -792,6 +807,7 @@ async def kill(request: Request):
 
 @router.post("/mode")
 async def set_mode(request: Request):
+    _require_admin(request)
     body = await request.json()
     m = body.get("mode")
     if m not in ("dry_run", "demo"):
@@ -811,6 +827,7 @@ def get_movers(limit: int = 60, category: str | None = None):
 
 @router.post("/replay_alert")
 async def replay_alert(request: Request):
+    _require_admin(request)
     """Run the alert rules against an existing alert (testing / demo). Bypasses cooldown, keeps idempotency."""
     body = await request.json()
     eng = GET_ENGINE()

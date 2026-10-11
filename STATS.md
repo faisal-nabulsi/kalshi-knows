@@ -14,7 +14,7 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 | **Audited-label model, CV** (deduped jumps, n=2,641, 296 games) | **73.8%** | **49.8%** | **+24.0 (21.6–26.7)** (most of the lift change vs the old row comes from the baseline moving 60.0→49.8% once labels were fixed; lead with accuracy + named-call precision) | **80.5% (466)** |
 | **Audited-label model, temporal 2025→2026** (n=511, 58 games) | **75.0%** | **47.0%** | **+28.0 (21.7–35.1)** | **76.6% (94)** |
 
-**Head-to-head vs Claude Opus 5.5** (150 unseen 2026 live-size jumps, identical inputs, Claude zero-shot): Kalshi Knows 77.3% acc / log loss 0.513 / Brier 0.301 vs Claude 76.0% / 0.615 / 0.354 vs always-other 64.7%. Accuracy gap +1.3 pts (95% CI −7 to +11 → a tie); calibration clearly better; 7 ms per call. Source: train/out/claude_bench.json.
+**Head-to-head vs Claude Opus 5.5** (150 unseen 2026 live-size jumps, identical inputs, Claude zero-shot): Kalshi Knows 77.3% acc / log loss 0.513 / Brier 0.301 vs Claude 76.0% / 0.615 / 0.354 vs always-other 64.7%. Accuracy gap +1.3 pts (95% CI −7 to +11 → a tie); calibration directionally better (not significant at n=150); 7 ms per call. Source: train/out/claude_bench.json.
 
 **Data audit** (150 jumps hand-labeled): 15.3% of automatic labels were wrong → 3.3% after fixes (turnovers on downs restored; each jump re-anchored to the play that caused it; penalty-nullified plays dropped). Source: train/audit/.
 
@@ -22,7 +22,7 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 
 **Market efficiency (the "find a flaw" hunt):** 1,255 pre-registered trading rules tested (in-game, pre-game, lead-lag across Kalshi markets, Kalshi vs Polymarket, context): 17 passed discovery, 11 passed the out-of-sample test + false-discovery control, **0 survived adversarial review** (each died on look-ahead timing or stale-price fills). Post-jump prices are calibrated (slope 0.97). Kalshi moves before Polymarket by ~0–4 s after big plays. **Conclusion: the market digests plays in seconds; the edge is speed.** Source: train/patterns/REPORT.md.
 
-**Live today (engine/logs/20261011, /api/health tally at 1:25pm):** 30 alerts; named plays 4 of 4 correct (0 wrong); 10 "big swing" alerts on a real play; 15 with no matching TD/FG/turnover/20+ yd play (stops, penalties, kickoffs); 1 pending. Best: "Steelers touchdown (80%)", 32 s before ESPN's feed; takeaways 38.6–64.8 s before.
+**Live today (engine/logs/20261011, /api/health tally at 1:25pm):** 30 alerts; named plays 4 of 4 correct at 1:25pm — LATER: 4 of 7 by 2:59pm under swing-play grading (3 morning-model misses); 10 "big swing" alerts on a real play; 15 with no matching TD/FG/turnover/20+ yd play (stops, penalties, kickoffs); 1 pending. Best: "Steelers touchdown (80%)", 32 s before ESPN's feed; takeaways 38.6–64.8 s before.
 
 **Pre-registered untouched test on today's early games (run once at 1:36pm; research/PREREG.md, results/today_test.json):** frozen model, 7 unseen games. PRIMARY live-size jumps: 65.6% vs 46.9% always-other (+18.8 pts, 95% CI −13 to +33; n=32, 6 games), named calls 2/2 correct. All jumps: 72.6% vs 61.1% (+11.5, CI −1 to +19; n=113), named calls 8/9 (89%). Same direction as offline; one morning is too small for a tight interval (primary CI includes zero). NOTE: this tested the frozen pre-audit model; production switched to the audited-label model afterwards.
 

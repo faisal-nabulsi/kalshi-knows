@@ -3,6 +3,8 @@
 # Args go to engine.live. TabPFN is off in the live path: which model answered must not depend on timing.
 cd "$(dirname "$0")/.."
 export TABPFN="${TABPFN:-0}"
+# Detector tuned for the real-time Kalshi stream (results/latency_study.md config B)
+[ -f engine/live_config_B.sh ] && . engine/live_config_B.sh
 PORT="${PORT:-8000}"
 while true; do
   .venv/bin/python -m engine.live "$@" &

@@ -21,3 +21,4 @@ video/build/
 video/models/
 video/voice_cache/
 video/voice_override/*.wav
+engine/.admin_token

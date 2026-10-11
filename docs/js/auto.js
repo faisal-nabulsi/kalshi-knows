@@ -19,7 +19,10 @@ const ago = (ms) => { const s = Math.max(0, (Date.now() - ms) / 1000 | 0); retur
 export function mountAuto(root, api) {
   const base = ((typeof api === 'string' ? api : (api && (api.api || api.base))) || '').replace(/\/+$/, '');
   const j = async (path, opt) => { const r = await fetch(base + '/api/auto' + path, opt); if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status); return r.json(); };
-  const send = (path, method, body) => j(path, { method, headers: { 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  // Controls need the admin token (presenter opens the site once with ?admin=TOKEN; it's kept in localStorage)
+  const qAdmin = new URLSearchParams(location.search).get('admin'); if (qAdmin) { try { localStorage.setItem('kk_admin', qAdmin); } catch {} }
+  const admin = () => { try { return localStorage.getItem('kk_admin') || ''; } catch { return ''; } };
+  const send = (path, method, body) => j(path, { method, headers: { 'content-type': 'application/json', 'x-admin': admin() }, body: body ? JSON.stringify(body) : undefined });
   let lastFills = 0, cat = 'All', timer = null, alive = true;
   root.classList.add('auto'); root.textContent = '';
   const top = $('div', { class: 'auto-top' }), stats = $('div', { class: 'auto-stats' }), kill = $('button', { class: 'auto-kill', 'aria-pressed': 'false' });
