@@ -276,7 +276,9 @@ class Engine:
         self.alert_by_id[aid] = alert
         log.info("ALERT %s %s %s Δ%.3f %s", aid, g.get("short_name"), alert["headline"], alert["delta"], alert["tier_name"])
         self._emit(alert)
-        if CFG["push"]:
+        # Buzz phones only when it's worth it: a confident named call, or a very large swing (site shows every alert)
+        worth_push = alert.get("named") or abs(alert.get("delta") or 0) >= float(os.environ.get("PUSH_MIN_SWING", "0.12"))
+        if CFG["push"] and worth_push:
             body_alert = dict(alert)
             payload = push.alert_payload(body_alert, g)
             payload["body"] = f"{alert['headline']} · Tier: {alert['tier_name']}. Your stream shows it in ~30s."
