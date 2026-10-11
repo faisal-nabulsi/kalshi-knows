@@ -64,6 +64,10 @@ def predict_proba(state: dict, p_before: float, p_after: float) -> np.ndarray:
 
 
 def infer_play(state: dict, p_before: float, p_after: float, team: str):
+    """live.py passes p_before/p_after as the win prob of `team` (the side the move favours);
+    the model works in home-team terms, so flip when `team` is the away side."""
+    if state.get("home") and team != state.get("home"):
+        p_before, p_after = 1 - p_before, 1 - p_after
     p = predict_proba(state, p_before, p_after)
     out = [{"type": c, "team": team, "prob": round(float(pr), 3)} for c, pr in zip(CLASSES, p)]
     return sorted(out, key=lambda r: -r["prob"])
