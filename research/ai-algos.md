@@ -128,7 +128,7 @@ Takeaways: this is "copy the market" arbitrage between books, not forecasting. S
 | 6 | ForecastBench parity July 2026 | Confirmed as FRI claim; statistically weak and disputed; text amended | [FRI](https://forecastingresearch.substack.com/p/ai-models-have-likely-reached-parity), [Good Judgment](https://goodjudgment.com/tag/ai/) |
 | 7 | PolySwarm 50 personas plus latency arbitrage | Confirmed; no live returns reported | [arXiv 2604.03888](https://arxiv.org/abs/2604.03888) |
 | 8 | Genius term 2027-28 or 2030 | Corrected: 2025 extension runs to Super Bowl 2030; 2027-28 was the 2023 deal. The 98% claim not re-verified (LSR returned 403) (unverified) | [Covers](https://www.covers.com/industry/nfl-genius-sports-announce-extension-with-multi-year-deal-june-12-2025), [SBC Americas](https://sbcamericas.com/2025/06/11/genius-sports-extends-data-deal-nfl/) |
-| 9 | Prediction-market 0.64 per 1 per minute | Confirmed; platform not named (Kalshi unverified) | [arXiv 2606.07811](https://arxiv.org/abs/2606.07811) |
+| 9 | Prediction-market 0.64 per 1 per minute | Confirmed; platform is Kalshi (NBA winner contracts, one-minute data; round 3, full text) | [arXiv 2606.07811](https://arxiv.org/abs/2606.07811) |
 | 10 | 538 shut March 5 2025 | Confirmed (WSJ Mar 4, Wikipedia Mar 5) | [Nieman Lab](https://www.niemanlab.org/2025/03/fivethirtyeight-is-shutting-down-as-part-of-broader-cuts-at-abc-and-disney/), [Wikipedia](https://en.wikipedia.org/wiki/FiveThirtyEight) |
 | 11 | Kalshi 6-8% worse Week 17 2025 | Citation wrong (Casino.org does not say it); claim true per Citizens; fixed | [CDC Gaming](https://cdcgaming.com/brief/kalshi-pricing-remains-worse-than-sportsbooks-says-citizens/) |
 | 12 | PFF 93-81-10 ATS | Corrected: 2019, all bet types | [PFF](https://www.pff.com/news/pro-bet-pff-greenline-an-introduction-for-2019) |
@@ -138,3 +138,9 @@ Takeaways: this is "copy the market" arbitrage between books, not forecasting. S
 | 16 | PredictionMarketBench | Confirmed (4 Kalshi episodes; naive agents lose to fees) | [arXiv 2602.00133](https://arxiv.org/abs/2602.00133) |
 
 Still unverified: Croxson-Reade data source; Genius "98%" claim; WSJ text; BetQL, Dimers, Leans.ai prices; Unabated price; the 2605.16066 "470 goals" statement. A second round of searching again found no product or paper measuring Kalshi in-game price timing against broadcast.
+
+## Round 3 gap fill (Oct 11 2026)
+- **arXiv 2606.07811 platform:** Kalshi. The full text says it studies NBA winner contracts traded on Kalshi and merges one-minute Kalshi data ([arXiv PDF](https://arxiv.org/pdf/2606.07811); authors Angelini and De Angelis, "When Do Markets Fully Process Public Information?"). Resolved; the Verification-log row 9 caveat no longer applies.
+- **Croxson and Reade (2014) data source:** (unverified) No abstract or record names Betfair; they use high-frequency betting-price data around goals near half-time ([Reading CentAUR](https://centaur.reading.ac.uk/34884)). Check the full text (DOI 10.1111/ecoj.12033) before saying "Betfair" on a slide.
+- **arXiv 2605.16066 "~99% of Betfair reactions within 2 minutes":** Not supported. The abstract ([arXiv](https://arxiv.org/abs/2605.16066)) reports 70.2% accuracy vs 70.6% for Betfair and a 4.5% ROI over 17,458 bets, and does not mention Croxson and Reade or a 2-minute share. Do not cite the 99% figure.
+- **Genius "98%":** A company claim from the July 2023 NFL-Genius press release, repeated by outlets; no independent verification ([BusinessWire](https://www.businesswire.com/news/home/20230706824603/en/National-Football-League-Extends-Strategic-Partnership-with-Genius-Sports-as-Exclusive-Official-NFL-Data-and-Watch-Bet-Distribution-Partner)). Say "Genius says".

@@ -144,3 +144,20 @@ Lead with the B2B models; use the consumer app as the hook. **Because:** busines
 11. **Independent audits.** We found none of any AI pick site (Dimers 52.7%) or tout, and no published share of touts who beat the closing line.
 12. **Someone Knew sample size.** It rests on 5 cases from 763 scanned, so a larger screen is needed before anyone quotes a rate.
 13. **Unverified folklore that must stay off slides:** "only 3-5% of bettors profit long-run" (no primary study), and Mazi VS's sentence (the Gambling911 report contradicts itself, and there is no court record).
+
+## Round 3 gap fill (Oct 11 2026)
+
+| # | Question | Answer | Source |
+|---|---|---|---|
+| 1* | Kalshi Sept and YTD volume | Unresolved officially. Monthly Jan-Jul sum $133.97B (DeFi Rate), Aug about $37.2B, so about $171B through Aug (our sum); Sept partial: $23.45B by Sept 13, weeks of $15.27B / $15.66B / $18.37B. Basis (notional vs contracts) not stated; sources differ on July. | [DeFi Rate](https://defirate.com/news/sept-28-oct-4-2026-volume-report/) |
+| 2* | Stream latency table | Super Bowl LX (Feb 2026): antenna about 19 s, cable 38, Peacock 48, YouTube TV 53, Hulu Live 53, DirecTV 60, NFL+ 62. The SVG "LIX" is a typo. | [SVG](https://www.sportsvideo.org/2026/02/11/stats-perform-2026-super-bowl-latency-report/) |
+| 3 | Croxson-Reade data; 2605.16066 "99% in 2 min" | Data source unverified (Betfair not named in abstracts). 2605.16066 does NOT report the 99% / 2-minute figure; drop it. | [Reading](https://centaur.reading.ac.uk/34884), [arXiv](https://arxiv.org/abs/2605.16066) |
+| 4 | "3-5% profitable" primary study | None for sports bettors. Nearest: Rady/UCSD, about 4% of 700k online gamblers ahead over 5 years (all online gambling). | [Gambling Harm](https://gamblingharm.org/casino/most-online-gamblers-lose-study) |
+| 5 | Action Network PRO | Already verified: $24.99/mo, $119.99/yr; trackers show $19.99-$29.99 monthly. | [App Pricing Lab](https://apppricinglab.com/iap/apple/1083677479) |
+| 6 | BetQL, Dimers, Leans.ai, Rithmm, Unabated | Dimers Pro weekly $9.99 (about $43/mo); Rithmm $19.99-$29.99 core (conflicting); BetQL, Leans.ai, Unabated $3,000/mo unresolved. | [Skillnation](https://skillnation.in/posts/dimers-college-football/), [AI Chief](https://aichief.com/alternatives/rithmm/) |
+| 7 | Independent audit of Dimers/BetQL | None found; Dimers' 69% / +30.54% ROI is self-reported, one season. | [Skillnation](https://skillnation.in/posts/dimers-college-football/) |
+| 8 | Kalshi live-game push alert | None found; settings have a Sports category with only "Major events"; default pushes are price and resolution. | [Kalshi help](https://help.kalshi.com/en/articles/17297679-manage-your-kalshi-email-notifications) |
+| 9 | $40B round closed? | No; as of Sept 30 "finalizing / advanced talks" (about $1B, Sequoia/Wellington). Say "in talks". | [Cointelegraph](https://cointelegraph.com/news/kalshi-in-advanced-talks-to-raise-new-funding-at-40b-valuation-reuters) |
+| 10 | NY AG suit after Jul 31 | Aug 11 CFTC emergency order to keep Kalshi operating; Aug 31 NY contests it before Judge Schofield; no ruling on TRO or injunction found. | [The Block](https://theblock.co/news/regulation/2026-08-11-cftc-flexes-emergency-authority-kalshi-operating-amid-new-york-lawsuit-411507), [DeFi Rate](https://defirate.com/news/new-york-attorney-general-asks-court-disregard-cftc-order/) |
+| 11 | Genius "98%" | Company/NFL press-release claim (July 2023), not independently verified; say "Genius says". | [BusinessWire](https://www.businesswire.com/news/home/20230706824603/en/National-Football-League-Extends-Strategic-Partnership-with-Genius-Sports-as-Exclusive-Official-NFL-Data-and-Watch-Bet-Distribution-Partner) |
+| 12 | arXiv 2606.07811 platform | Kalshi (NBA winner contracts, one-minute data). | [arXiv PDF](https://arxiv.org/pdf/2606.07811) |

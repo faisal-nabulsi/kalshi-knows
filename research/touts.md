@@ -168,3 +168,9 @@ Answer to "what fraction beat closing line or break even long-run": the best dir
 | 11 | Levitt: little evidence bettors beat the book | Confirmed; season "2001-02" not supported by the NBER page | [NBER](https://www.nber.org/papers/w9422) |
 | 12 | NerdWallet 40% net gains; 3-5% profitable | 40% confirmed (Dec 2024 survey, self-reported); 3-5% has no primary study (unverified) | [NerdWallet](https://www.nerdwallet.com/article/investing/2025-sports-betting-and-gambling-survey) |
 | - | Pickswise +82.1 units, Covers/VSiN prices, Hive Index claims, Vegas Dave, Pikkit profitable share | Not rechecked (unverified); prior open gaps stand | n/a |
+
+## Round 3 gap fill (Oct 11 2026)
+- **"3-5% of bettors profitable":** Still no primary study for sports bettors. Nearest primary: Rady/UCSD study of 700,000+ online gamblers, about 4% ahead over five years (all online gambling, not sports only) ([Gambling Harm](https://gamblingharm.org/casino/most-online-gamblers-lose-study)). If used, cite that and label it online gambling.
+- **Action Network PRO price:** Official $24.99/mo, $119.99/yr (see market.md); app-store trackers show $19.99 to $29.99 monthly ([App Pricing Lab](https://apppricinglab.com/iap/apple/1083677479)).
+- **BetQL, Leans.ai, Unabated:** (unverified) one search found no prices. Dimers Pro weekly $9.99 (about $43/mo equivalent) per a third-party blog ([Skillnation](https://skillnation.in/posts/dimers-college-football/)). Rithmm: sources conflict ($19.99 to $29.99 core; range up to $99.99) ([AI Chief](https://aichief.com/alternatives/rithmm/)). Unabated about $3,000/mo remains unverified.
+- **Independent audit of Dimers/BetQL:** None found. Dimers' 69% / +30.54% ROI is one season of self-reported data and it does not publish systematic Pro accuracy ([Skillnation](https://skillnation.in/posts/dimers-college-football/)). Say "no independent audit found".
