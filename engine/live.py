@@ -17,7 +17,7 @@ from collections import deque
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -198,9 +198,9 @@ class Engine:
         pend = d["pending"]
         if pend:
             move = (p - pend["p_before"]) * pend["sign"]
-            if move < THRESH * 0.75:
-                d["pending"] = None          # reverted: a one-trade spike
-            elif ts - pend["t0"] >= HOLD_MS:
+            if move < THRESH * 0.75 or ts - pend["t0"] > HOLD_MS + 10_000:
+                d["pending"] = None          # reverted (a one-trade spike) or never settled
+            elif ts - pend["t0"] >= HOLD_MS and move >= THRESH * 0.9:
                 d["pending"] = None
                 d["last_fire"] = ts
                 self._fire(gid, ts, pend, p)
@@ -288,6 +288,19 @@ class Engine:
                 if a["game_id"] != gid or a["confirmed"] is not None:
                     continue
                 if ref - a["ts_ms"] > CONFIRM_MS + 30_000:
+                    if "espn_nearest" not in a and ref - a["ts_ms"] > 1_800_000:
+                        a["espn_nearest"] = None     # stale (e.g. restored after a restart): don't re-emit
+                    if "espn_nearest" not in a:
+                        # unconfirmed: show what ESPN says happened around the jump
+                        near = [p for p in plays if p.get("wallclock_ms")
+                                and a["ts_ms"] - 90_000 <= p["wallclock_ms"] <= a["ts_ms"] + 5_000]
+                        near.sort(key=lambda p: -p["wallclock_ms"])
+                        a["espn_nearest"] = ({"play_text": near[0].get("text"), "play_type": near[0].get("type"),
+                                              "team": near[0].get("team"),
+                                              "espn_wallclock_ms": near[0]["wallclock_ms"],
+                                              "espn_seen_ms": near[0].get("seen_ms")} if near else None)
+                        a["updated_ms"] = ref
+                        self._emit(a)
                     continue
                 best = None
                 for p in plays:
@@ -297,7 +310,7 @@ class Engine:
                     wc = p.get("wallclock_ms") or seen
                     if wc is None:
                         continue
-                    if not (a["ts_ms"] - 150_000 <= wc <= a["ts_ms"] + 30_000):
+                    if not (a["ts_ms"] - 150_000 <= wc <= a["ts_ms"] + 20_000):
                         continue
                     if seen is not None and seen > a["ts_ms"] + CONFIRM_MS:
                         continue
@@ -717,7 +730,34 @@ async def stream(request: Request, full: int = 0):
                 yield {"event": "games", "data": json.dumps(ENGINE.games_list(step=step))}
             await asyncio.sleep(0.25)
 
-    return EventSourceResponse(gen(), ping=15, headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+    return EventSourceResponse(gen(), ping=int(os.environ.get("SSE_PING_S", 1)), headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no",
+                                                     "Content-Type": "text/event-stream"})
+
+
+@app.websocket("/api/ws")
+async def ws(websocket: WebSocket):
+    """Same feed as /api/stream but over WebSocket (Cloudflare quick tunnels buffer SSE; WS passes).
+    Messages: {"event":"games","data":[...]} every ~2s and {"event":"alert","data":{...}}."""
+    await websocket.accept()
+    full = websocket.query_params.get("full") == "1"
+    step = 1 if full else 4
+    last_seq = ENGINE.seq
+    last_games = 0.0
+    try:
+        while True:
+            with ENGINE.lock:
+                new = [(s, a) for s, a in ENGINE.events if s > last_seq]
+            for s, a in new:
+                last_seq = s
+                await websocket.send_text(json.dumps({"event": "alert", "data": a}))
+            if time.time() - last_games >= 2:
+                last_games = time.time()
+                await websocket.send_text(json.dumps({"event": "games", "data": ENGINE.games_list(step=step)}))
+            await asyncio.sleep(0.25)
+    except (WebSocketDisconnect, RuntimeError):
+        pass
+    except Exception as e:
+        log.info("ws closed: %s", e)
 
 
 @app.get("/api/push/vapid")
