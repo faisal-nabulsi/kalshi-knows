@@ -393,7 +393,10 @@ def _announce(alert: dict):
         return
     try:
         import boto3
-        text = f"Spoiler alert! {alert['short_name']}. {alert['headline'].split(' (')[0]}. Market says {round(100 * alert['inferred'][0]['prob'])} percent."
+        nick = infer.NICK
+        matchup = f"{nick.get(alert.get('away'), alert.get('away'))} at {nick.get(alert.get('home'), alert.get('home'))}"
+        text = (f"Spoiler alert! {matchup}. {alert['headline'].split(' (')[0]}. "
+                f"The market is {round(100 * alert['inferred'][0]['prob'])} percent sure.")
         polly = boto3.client("polly", region_name="us-east-1")
         r = polly.synthesize_speech(Text=text, OutputFormat="mp3", VoiceId=os.environ.get("POLLY_VOICE", "Matthew"),
                                     Engine="neural")
