@@ -1,0 +1,33 @@
+{
+ "n": 150,
+ "results": [
+  {
+   "model": "always_other",
+   "accuracy": 0.647,
+   "log_loss": 4.881,
+   "brier": 0.707,
+   "named_calls": 0,
+   "named_precision": null
+  },
+  {
+   "model": "Claude Opus 5.5 (zero-shot, same inputs)",
+   "accuracy": 0.76,
+   "log_loss": 0.615,
+   "brier": 0.354,
+   "named_calls": 6,
+   "named_precision": 0.667
+  },
+  {
+   "model": "Kalshi Knows (trained on 2025 only)",
+   "accuracy": 0.773,
+   "log_loss": 0.513,
+   "brier": 0.301,
+   "named_calls": 5,
+   "named_precision": 0.6
+  }
+ ],
+ "gap_ci": [
+  -0.07333333333333336,
+  0.10666666666666658
+ ]
+}
