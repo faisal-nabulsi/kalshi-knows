@@ -50,12 +50,12 @@ cb = J("train/out/claude_bench.json")
 D["claude"] = dict(n=cb["n"], gap_ci=cb["gap_ci"], rows=cb["results"])
 # --- honest line: today_test > relabeled temporal_live > finetune temporal
 honest = None
+prereg = None
 p = os.path.join(R, "results/today_test.json")
 if os.path.exists(p):
     try:
-        t = json.load(open(p)); acc = t.get("accuracy"); ao = t.get("always_other", t.get("baseline"))
-        if acc is not None and ao is not None:
-            honest = dict(src="today", acc=acc, base=ao, n=t.get("n") or t.get("n_fires"), label="today's untouched games")
+        t = json.load(open(p))["all_fires"]; nc = t["named_calls"]
+        prereg = dict(named=nc, right=round(t["named_precision"] * nc), n_fires=t["n_fires"])
     except Exception as e: print("today_test unreadable", e)
 if not honest:
     try:
@@ -63,7 +63,7 @@ if not honest:
         honest = dict(src="relabeled", acc=t["accuracy"], base=t["always_other"], n=t["n"], label="2026 games it never saw", games=t.get("games"))
     except Exception:
         t = fm["temporal"]["live_subset"]; honest = dict(src="finetune", acc=t["accuracy"], base=None, n=t["n"], label="2026 games it never saw")
-D["honest"] = honest
+D["honest"] = honest; D["prereg"] = prereg
 os.makedirs(os.path.join(os.path.dirname(__file__), "build"), exist_ok=True)
 json.dump(D, open(os.path.join(os.path.dirname(__file__), "build/data.json"), "w"), indent=1)
 print(json.dumps({k: D[k] for k in ("hero", "today", "honest", "market_median", "n_real")}, indent=1))

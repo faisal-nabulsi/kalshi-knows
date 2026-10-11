@@ -130,7 +130,7 @@ function how(t){
     [6.2,'02',`~${(Math.round(D.n_real/100)*100).toLocaleString()} REAL KALSHI JUMPS`,'Fine-tuned on real order-book moves from 2025-26, labels audited play by play'],
     [12.0,'03','LIVE ENGINE + PUSH','Watches the public order book, reads the jump, pushes the play to your phone']];
   cards.forEach(([t0,n,tt,sub],i)=>{const a=eo((t-t0)/0.5); if(a<=0)return; const x=90+i*610;
-    h+=`<div class="abs" style="left:${x}px;top:${220+(1-a)*60}px;width:540px;height:440px;background:var(--bg3);border:2px solid ${t>t0+0.5&&t<t0+5.8?'var(--sig)':'var(--line)'};padding:34px;opacity:${a}">
+    h+=`<div class="abs" style="left:${x}px;top:${220+(1-a)*60}px;width:540px;height:390px;background:var(--bg3);border:2px solid ${t>t0+0.5&&t<t0+5.8?'var(--sig)':'var(--line)'};padding:34px;opacity:${a}">
       <div class="mono sig" style="font-size:26px;letter-spacing:.2em">${n}</div>
       <div class="disp" style="font-size:80px;line-height:.9;margin-top:22px">${tt}</div>
       <div style="font:400 29px/1.35 var(--body);color:var(--ink2);margin-top:26px">${sub}</div></div>`;
@@ -138,14 +138,14 @@ function how(t){
   const a=eo((t-18)/0.6);
   if(a>0){const Hn=D.honest, acc=Hn.acc*100, base=Hn.base!=null?Hn.base*100:null, cb=D.claude, kk=cb.rows.find(r=>r.model.startsWith('Kalshi')), cc=cb.rows.find(r=>r.model.startsWith('Claude'));
     const g=cl((t-18.4)/1.4); const bw=700;
-    h+=`<div class="abs" style="left:90px;top:${700+(1-a)*40}px;width:1740px;height:250px;background:#111113;border:2px solid var(--line);opacity:${a}">
+    h+=`<div class="abs" style="left:90px;top:${640+(1-a)*40}px;width:1740px;height:300px;background:#111113;border:2px solid var(--line);opacity:${a}">
      <div class="abs mono" style="left:30px;top:20px;font-size:21px;letter-spacing:.16em;color:var(--sig)">THE HONEST NUMBER · NAMES THE PLAY RIGHT · ${Hn.label.toUpperCase()}${Hn.n?` · n=${Hn.n}`:''}</div>
      <div class="abs disp" style="left:30px;top:56px;font-size:150px;line-height:1;color:var(--sig)">${Math.round(acc*g)}%</div>
      <div class="abs" style="left:300px;top:70px;width:${bw}px"><div style="height:44px;width:${bw*acc/100*g}px;background:var(--sig)"></div><div class="mono" style="font-size:20px;margin:4px 0 12px;color:var(--ink2)">KALSHI KNOWS</div>
        ${base!=null?`<div style="height:44px;width:${bw*base/100*g}px;background:#4a5663"></div><div class="mono" style="font-size:20px;margin-top:4px;color:var(--ink2)">ALWAYS GUESS "NOTHING BIG" · ${Math.round(base)}%</div>`:''}</div>
      <div class="abs" style="left:1100px;top:64px;width:600px;border-left:2px solid var(--line);padding-left:30px"><div class="mono" style="font-size:20px;letter-spacing:.14em;color:var(--ink2)">HEAD-TO-HEAD VS CLAUDE OPUS 5.5 · n=${cb.n}</div>
        <div class="disp" style="font-size:78px;line-height:1.05;margin-top:14px">${(kk.accuracy*100).toFixed(1)}% <span class="cold">vs</span> ${(cc.accuracy*100).toFixed(1)}%</div>
-       <div class="mono" style="font-size:20px;color:var(--ink2)">A TIE ON ACCURACY, BETTER CALIBRATED</div></div></div>`;}
+       <div class="mono" style="font-size:20px;color:var(--ink2)">A TIE ON ACCURACY, BETTER CALIBRATED</div></div></div>${D.prereg?`<div class="abs mono" style="left:120px;top:${888+(1-a)*40}px;font-size:21px;letter-spacing:.12em;color:var(--ink);opacity:${a}">PRE-REGISTERED TEST ON TODAY'S GAMES · NAMED CALLS <span class="sig">${D.prereg.right} OF ${D.prereg.named} RIGHT</span></div>`:''}`;}
   $('how').innerHTML=h;
 }
 // ---------------- CLOSE (20 s)

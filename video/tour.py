@@ -27,8 +27,8 @@ async def main():
 
         async def scroll_to_text(txt, d):
             y = await pg.evaluate(FIND, txt); await pg.evaluate(SCROLL, [y, d])
-        await at(1.0); await pg.evaluate(SCROLL, [await pg.evaluate(TOP, "#live"), 1.6])
-        await at(5.0); await pg.evaluate(SCROLL, [await pg.evaluate(TOP, "#receipts"), 1.8])
+        await at(0.8); await pg.evaluate("document.documentElement.style.scrollBehavior='auto'"); await pg.evaluate("y=>scrollTo(0,y)", await pg.evaluate(TOP, "#live")); await pg.wait_for_timeout(1200)
+        await at(4.6); await pg.evaluate(SCROLL, [await pg.evaluate(TOP, "#receipts"), 1.8])
         await at(9.3); await pg.keyboard.press("t")
         await at(14.2)
         try: await pg.click("#to-reveal", timeout=1500)

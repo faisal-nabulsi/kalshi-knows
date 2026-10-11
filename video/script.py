@@ -9,7 +9,7 @@ hn = D["honest"]; pc = lambda x: f"{round(x*100)}"
 ORD = {1: "first", 2: "second", 3: "third", 4: "fourth"}
 if hn["src"] == "today": hon = f"Tested on today's untouched games, it names the play right {pc(hn['acc'])} percent. Just guessing nothing happened scores {pc(hn['base'])}."
 else: hon = f"Tested on 2026 games it never saw, it names the play right {pc(hn['acc'])} percent. Just guessing nothing happened scores {pc(hn['base'])}." if hn.get("base") else f"Tested on 2026 games it never saw, it names the play right {pc(hn['acc'])} percent."
-SCENES = [("cold", 17.5), ("money", 38), ("tour", 40), ("how", 28), ("close", 20)]
+SCENES = [("cold", 17.5), ("money", 38), ("tour", 40), ("how", 31), ("close", 20)]
 LINES = [
  ("cold", 0.3, "Folks, your stream is LYING to you!"),
  ("cold", 3.2, f"At the Super Bowl, antenna, {L['ANTENNA']} seconds behind. Cable, {L['CABLE']}. Peacock, {L['PEACOCK']}. YouTube TV, {L['YOUTUBE TV']}. And NFL+, {L['NFL+']}!"),
@@ -29,6 +29,7 @@ LINES = [
  ("how", 6.2, f"Then we fine-tune it on about {round(D['n_real'],-2):,} real Kalshi price jumps, labels audited."),
  ("how", 12.0, "Then the live engine watches the public order book, and pushes the play to your phone!"),
  ("how", 18.0, "And the honest part! " + hon),
+ ("how", 26.0, f"And on today's games, pre-registered: named calls, {D['prereg']['right']} of {D['prereg']['named']} right.") if D.get("prereg") else ("how", 26.0, "Pre-registered test on today's games is next."),
  ("close", 0.3, "We're not competing with Kalshi. We're the intelligence layer on top of prediction markets!"),
  ("close", 7.4, "Kalshi Knows, by Faisal Nabulsi, Kevin, and Dugar."),
  ("close", 12.4, "Scan the code. Public data only. No real money. I'm Big Spoiler Steve, and I'm outta here!"),
