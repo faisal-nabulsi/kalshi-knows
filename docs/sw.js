@@ -1,6 +1,6 @@
 // Kalshi Knows service worker: app shell, network-first data, web push.
 // Bump VERSION on every deploy that changes the shell; activate() deletes older caches.
-const VERSION = 'kk-v6';
+const VERSION = 'kk-v7';
 const SHELL = ['./', './index.html', './styles.css', './js/app.js', './js/util.js', './js/data.js', './js/charts.js',
   './js/hero3d.js', './js/push.js', './js/qr.js', './js/emblems.js', './manifest.webmanifest', './icons/icon-192.png', './icons/badge-96.png',
   './icons/apple-touch-icon.png', './icons/favicon-64.png'];
@@ -53,19 +53,57 @@ self.addEventListener('fetch', (e) => {
   } // everything else (the live API, SSE) goes straight to the network
 });
 
+// Spoiler Shield: the page stores the preference in IndexedDB (and posts it here); read it before every notification.
+function idb(mode, fn) {
+  return new Promise((res) => {
+    try {
+      const r = indexedDB.open('kk', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('prefs');
+      r.onsuccess = () => { try { const tx = r.result.transaction('prefs', mode); const q = fn(tx.objectStore('prefs')); tx.oncomplete = () => res(q && q.result); tx.onerror = () => res(undefined); } catch { res(undefined); } };
+      r.onerror = () => res(undefined);
+    } catch { res(undefined); }
+  });
+}
+let shieldMem = null; // last value posted by a page, in case IndexedDB is unavailable
+self.addEventListener('message', (e) => {
+  const m = e.data || {};
+  if (m.type === 'shield') { shieldMem = !!m.on; e.waitUntil(idb('readwrite', (s) => s.put(!!m.on, 'shield'))); }
+});
+async function shieldOn() {
+  const v = await idb('readonly', (s) => s.get('shield'));
+  return v == null ? !!shieldMem : !!v;
+}
+// "SPOILER · SF @ SEA" / "✓ CONFIRMED · SF @ SEA" -> "SF @ SEA"
+function gameOf(d) {
+  if (d.short_name || d.game) return d.short_name || d.game;
+  const m = /([A-Z]{2,4} @ [A-Z]{2,4})/.exec(`${d.title || ''} ${d.body || ''}`);
+  return m ? m[1] : '';
+}
+
 self.addEventListener('push', (e) => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch { d = { body: e.data ? e.data.text() : '' }; }
-  const title = d.title || 'Kalshi Knows';
-  e.waitUntil(self.registration.showNotification(title, {
-    body: d.body || 'The market just moved.',
-    tag: d.tag || 'kk',
-    renotify: true,
-    data: { url: d.url || './#live' },
-    icon: 'icons/icon-192.png',
-    badge: 'icons/badge-96.png',
-    vibrate: [90, 50, 90],
-  }));
+  e.waitUntil((async () => {
+    let title = d.title || 'Kalshi Knows';
+    let body = d.body || 'The market just moved.';
+    if (await shieldOn()) {
+      const game = gameOf(d);
+      const isTest = /test/i.test(d.title || '') && !game;
+      title = 'Kalshi Knows · Spoiler Shield';
+      body = isTest
+        ? 'Push works. Spoiler Shield is on, so real alerts will only say that something big happened, never the play or the score.'
+        : `Something big just happened in ${game || 'your game'}. Tap when you're ready to see it.`;
+    }
+    await self.registration.showNotification(title, {
+      body,
+      tag: d.tag || 'kk',
+      renotify: true,
+      data: { url: d.url || './#/live' },
+      icon: 'icons/icon-192.png',
+      badge: 'icons/badge-96.png',
+      vibrate: [90, 50, 90],
+    });
+  })());
 });
 
 self.addEventListener('notificationclick', (e) => {

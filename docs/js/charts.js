@@ -159,9 +159,11 @@ export function lagChart(el, res) {
   const rows = [
     { k: 'THE PLAY', v: 0, cls: 'bone', note: 'real time' },
     { k: 'KALSHI MOVES', v: ml.median_s ?? 2.6, lo: ml.p25_s, hi: ml.p75_s, cls: 'sig', note: `median of ${ml.n_plays ?? '–'} plays` },
-    { k: 'CABLE TV', v: sd.broadcast ?? 19, cls: 'cold', note: 'broadcast' },
-    { k: 'BEST STREAM', v: sd.best_stream ?? 48, cls: 'cold', note: 'streaming app' },
-    { k: 'WORST STREAM', v: sd.worst_stream ?? 62, cls: 'cold', note: 'streaming app' },
+    { k: 'ANTENNA TV', v: 19, cls: 'cold', note: 'over the air' },
+    { k: 'OUR ALERT', v: 30, cls: 'sig', note: 'about 30 s after the play (28-33 s today)' },
+    { k: 'CABLE TV', v: 38, cls: 'cold', note: 'cable box' },
+    { k: 'PEACOCK', v: sd.best_stream ?? 48, cls: 'cold', note: 'fastest stream' },
+    { k: 'NFL+', v: sd.worst_stream ?? 62, cls: 'cold', note: 'slowest stream' },
   ];
   const max = Math.max(65, ...rows.map((r) => r.v + 3));
   const big = w > 900;

@@ -5,17 +5,18 @@ import {
 } from './util.js';
 import { resolveApi, LiveSource, ReplaySource } from './data.js';
 import { liveChart, sparkline, caseChart, lagChart, payoffChart } from './charts.js';
-import { registerSW, initPush } from './push.js';
+import { registerSW, initPush, initShield, onShield, shieldOn } from './push.js';
 import { qrSVG } from './qr.js';
 
 if (PRESENT) document.documentElement.classList.add('present');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  results: null, lag: 2.6, delay: store.get('delay', null), delays: [],
+  results: null, lag: 2.6, delay: null, delayK: store.get('delayK', 'Peacock'), delays: [],
   games: [], featured: params.get('game') || store.get('featured', null),
   alerts: new Map(), source: null, api: null, stage: null, push: null,
   db: null, knew: null, shownTakeover: new Set(), lastAlert: null,
+  day: new Map(), tally: null, unveiled: new Set(),
 };
 const nickname = store.get('nick', null) || (() => { const n = `Couch Coach ${100 + Math.floor(Math.random() * 900)}`; store.set('nick', n); return n; })();
 
@@ -31,13 +32,6 @@ function setMode(mode, text, detail = '') {
   $('#mode-text').innerHTML = `${esc(text)}${detail ? `<span class="mode-detail"> · ${esc(detail)}</span>` : ''}`;
 }
 
-// nav highlight
-const navLinks = $$('.nav a');
-const secObs = new IntersectionObserver((es) => es.forEach((e) => {
-  if (!e.isIntersecting) return;
-  navLinks.forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === `#${e.target.id}`));
-}), { rootMargin: '-45% 0px -50% 0px' });
-$$('main > section[id]').forEach((s) => secObs.observe(s));
 
 // ------------------------------------------------------------ numbers + bindings
 function bind() {
@@ -57,8 +51,8 @@ function renderDelaySeg() {
   const seg = $('#delay-seg');
   $$('button', seg).forEach((b) => b.remove());
   S.delays.forEach((d) => {
-    const b = h(`<button role="radio" class="seg-btn mono" aria-checked="${d.v === S.delay}">${esc(d.k)} <b>${d.v}s</b></button>`);
-    b.addEventListener('click', () => { S.delay = d.v; store.set('delay', d.v); renderDelaySeg(); bind(); renderLive(); });
+    const b = h(`<button role="radio" class="seg-btn mono" aria-checked="${d.k === S.delayK}">${esc(d.k)} <b>${d.v}s</b></button>`);
+    b.addEventListener('click', () => { S.delay = d.v; S.delayK = d.k; store.set('delayK', d.k); renderDelaySeg(); bind(); renderLive(); renderReceipts(); });
     seg.appendChild(b);
   });
 }
@@ -75,6 +69,7 @@ async function initStage() {
     document.body.classList.add('gl-ready');
     const story = $('#top');
     const onScroll = () => {
+      if (story.hidden) return;
       const r = story.getBoundingClientRect();
       const total = story.offsetHeight - innerHeight;
       S.stage.setProgress(clamp(-r.top / total, 0, 1));
@@ -93,14 +88,16 @@ function renderProof(res, mock) {
   $('#proof-meta').innerHTML = `${r.games_analyzed ? `${int(r.games_analyzed)} GAMES · ` : ''}${int(r.market_lag?.n_plays || 0)} PLAYS LINED UP${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
   lagChart($('#lag-chart'), r);
   const m = r.model || {}, d = r.detector || {};
+  // honest headline (lead review, 12:15): forward-in-time test, baseline on the same rows. results.json can override.
+  const fw = { accuracy: 0.724, baseline: 0.571, n: 569, games: 58, ...(m.forward_test || r.forward_test || {}) };
   const lb = (r.model_leaderboard || []).slice().sort((a, b) => (b.tier || 0) - (a.tier || 0) || (a.log_loss ?? 9) - (b.log_loss ?? 9));
   const bt = r.market_lag?.by_type || {};
   $('#proof-grid').innerHTML = `
     <div class="pg-model">
-      <p class="pg-k mono">PLAY CLASSIFIER · ${esc(String(m.name || 'model').replace(/_/g, ' '))}</p>
-      <div class="pg-big">${pct(m.accuracy)}</div>
-      <p class="pg-cap">of real Kalshi jumps get the right play type on the first guess, against <b>${pct(m.baseline_accuracy)}</b> for always guessing the most common play. Right answer in the top two: <b>${pct(m.top2)}</b>. Tested on ${int(m.n_test ?? m.n ?? lb[0]?.n ?? 0)} jumps from real games.</p>
-      <div class="vs"><span style="--w:${(m.accuracy || 0) * 100}%" class="vs-sig"><i>OURS</i></span><span style="--w:${(m.baseline_accuracy || 0) * 100}%" class="vs-cold"><i>BASELINE</i></span></div>
+      <p class="pg-k mono">PLAY CLASSIFIER · TRAINED ON 2025 GAMES, TESTED ON 2026 GAMES IT NEVER SAW</p>
+      <div class="pg-big">${pct(fw.accuracy)}</div>
+      <p class="pg-cap">of price jumps get the right play named, vs <b>${pct(fw.baseline)}</b> for always guessing "nothing big" (same ${int(fw.n)} jumps, ${int(fw.games)} games).${m.accuracy ? ` If you already know a big play happened, the upper bound is ${pct(m.accuracy)} (${int(m.n_test ?? 0)} plays).` : ''}</p>
+      <div class="vs"><span style="--w:${fw.accuracy * 100}%" class="vs-sig"><i>OURS</i></span><span style="--w:${fw.baseline * 100}%" class="vs-cold"><i>ALWAYS "NOTHING BIG"</i></span></div>
     </div>
     <div class="pg-det">
       <p class="pg-k mono">JUMP DETECTOR · ${int(d.n_alerts)} ALERTS</p>
@@ -164,32 +161,42 @@ function renderGames() {
 }
 
 function renderLive() {
+  if (route !== 'live') return;
   const g = featured();
   renderGameBug(g);
   if (g) liveChart($('#live-chart'), g, { now: S.source.now(), delay: S.delay, alerts: [...S.alerts.values()] });
   renderGames();
 }
 
-function beforeStream(a) {
-  const c = a.confirmed;
-  if (c?.espn_wallclock_ms) return S.delay - (a.ts_ms - c.espn_wallclock_ms) / 1000;
-  return S.delay - S.lag;
+// when the play happened: ESPN's own timestamp if we have it, else the price jump start minus the median market lag
+function playMs(a) {
+  const w = a.confirmed?.espn_wallclock_ms;
+  if (w) return w;
+  if (a.jump_started_ms) return a.jump_started_ms - S.lag * 1000;
+  return a.ts_ms - S.lag * 1000;
 }
+// seconds between our alert and the moment the chosen stream shows the play
+function beforeStream(a) { return S.delay - (a.ts_ms - playMs(a)) / 1000; }
 
+const callOf = (a) => {
+  const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
+  const team = nick(a.team) || a.team || '';
+  return a.named === false || top.type === 'OTHER' ? { team, play: `Big swing`, prob: null } : { team, play: PLAY[top.type] || top.type, prob: top.prob };
+};
 function feedItem(a) {
   const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
-  const t = tierOf(a, tierAlert);
+  const call = callOf(a);
   const c = a.confirmed;
   const tp = teamProbs(a);
   const lead = Math.max(0, beforeStream(a));
   const game = S.games.find((g) => g.game_id === a.game_id);
-  return `<li class="fi ${c ? 'fi-conf' : 'fi-pend'}" data-id="${esc(a.id)}">
-    <div class="fi-top mono"><span>${clock(a.ts_ms)}</span><span>${esc(game?.short_name || '')}</span></div>
-    <div class="fi-play"><b>${esc(nick(a.team) || a.team)}</b> ${esc(PLAY[top.type] || top.type)} <span class="fi-move mono">${pct(tp.before)}→${pct(tp.after)}</span></div>
-    ${tierBadge(t)}
+  return `<li class="fi ${c ? 'fi-conf' : 'fi-pend'} ${S.unveiled.has(a.id) ? 'unveil' : ''}" data-id="${esc(a.id)}">
+    <div class="fi-top mono"><span>${clock(a.ts_ms)}</span><span>${esc(game?.short_name || a.short_name || '')}</span></div>
+    <div class="shroud"><div class="fi-play"><b>${esc(call.team)}</b> ${esc(call.play)} <span class="fi-move mono">${pct(tp.before)}→${pct(tp.after)}</span></div>
     ${c ? `<p class="fi-text">${esc(c.play_text || '')}</p>
-      <p class="fi-lead">${lead >= 1 ? `<span class="sig">Kalshi knew ${lead.toFixed(0)}s before your stream.</span>` : `<span>On ${esc((S.delays.find((d) => d.v === S.delay)?.k || 'your stream').toLowerCase())}, you saw this one first.</span>`}${c.lead_s > 0 ? ` <span class="mono">Beat ESPN's own play-by-play by ${(+c.lead_s).toFixed(0)}s.</span>` : ''}</p>`
-      : `<p class="fi-text mono fi-wait">${pct(top.prob)} sure · waiting for the play-by-play to confirm</p>`}
+      <p class="fi-lead">${lead >= 1 ? `<span class="sig">${lead.toFixed(0)}s before ${esc(S.delayK)} showed it.</span>` : `<span>On ${esc(S.delayK)}, you saw this one first.</span>`}${c.lead_s > 0 ? ` <span class="mono">Arrived ${(+c.lead_s).toFixed(0)}s before the same play showed up in ESPN's public play-by-play feed.</span>` : ''}</p>`
+      : `<p class="fi-text mono fi-wait">${call.prob != null ? `${pct(top.prob)} sure · ` : ''}${gradeOf(a) === 'no_match' ? 'ESPN shows no matching play' : 'waiting for the play-by-play to confirm'}</p>`}</div>
+    <span class="shroud-tap mono">Spoiler Shield · tap to reveal</span>
   </li>`;
 }
 
@@ -204,18 +211,19 @@ function renderFeed() {
   if (sum) {
     sum.hidden = !leads.length;
     const med = leads.length ? leads[Math.floor((leads.length - 1) / 2)] : 0;
-    sum.innerHTML = leads.length <= 4
-      ? `Beat ESPN's own play-by-play by <b>${leads.map((v) => `${v.toFixed(1)}s`).join(' · ')}</b>`
-      : `Beat ESPN's own play-by-play by a median <b>${med.toFixed(1)}s</b> across ${leads.length} confirmed plays`;
+    const rng = leads.length > 1 ? `${leads[0].toFixed(0)}-${leads[leads.length - 1].toFixed(0)} s` : `${leads[0]?.toFixed(0)} s`;
+    sum.innerHTML = `Our alerts arrived <b>${rng}</b> before the same play showed up in ESPN's public play-by-play feed, which we check every few seconds (${leads.length} matched play${leads.length === 1 ? '' : 's'}${leads.length > 4 ? `, median ${med.toFixed(0)} s` : ''}).`;
   }
 }
 
 function onAlert(a) {
   if (!a?.id) return;
   const prev = S.alerts.get(a.id);
-  if (prev && !!prev.confirmed === !!a.confirmed && !a._initial) return; // nothing new
+  if (prev && !!prev.confirmed === !!a.confirmed && (prev.grade ?? null) === (a.grade ?? null) && !a._initial) return; // nothing new
   const merged = { ...prev, ...a, confirmed: a.confirmed || prev?.confirmed || null };
   S.alerts.set(a.id, merged);
+  S.day.set(a.id, { ...S.day.get(a.id), ...merged });
+  renderReceipts();
   if (!a._initial) S.lastAlert = merged;
   else if (!S.lastAlert || merged.ts_ms > S.lastAlert.ts_ms) S.lastAlert = merged;
   renderFeed();
@@ -225,6 +233,78 @@ function onAlert(a) {
   if (!params.has('quiet') && !S.shownTakeover.has(a.id) && age < 30 && !a.confirmed) { S.shownTakeover.add(a.id); TO.open(merged); }
   renderLive();
 }
+
+// ------------------------------------------------------------ RECEIPTS (every alert today, graded)
+function gradeOf(a) {
+  if ('grade' in a) return a.grade || 'pending';
+  if (a.confirmed) return a.confirmed.inferred_correct ? 'correct' : 'wrong';
+  if ('espn_nearest' in a) return 'no_match';
+  return 'pending';
+}
+const GRADE = { correct: ['RIGHT', 'g-ok'], wrong: ['WRONG', 'g-bad'], no_match: ['NO MATCHING PLAY', 'g-miss'], swing_hit: ['REAL PLAY, NOT NAMED', 'g-swing'], pending: ['GRADING', 'g-pend'] };
+const dayStart = () => { const d = new Date(S.source?.now?.() ?? Date.now()); d.setHours(0, 0, 0, 0); return d.getTime(); };
+function dayAlerts() {
+  const all = [...S.day.values()];
+  if (S.source?.kind !== 'live') return all; // a replay: show the whole recording
+  const t0 = dayStart();
+  const real = all.filter((a) => a.ts_ms >= t0 && !String(a.id).startsWith('r_'));
+  return real.length || S.source.serverMode !== 'replay' ? real : all.filter((a) => a.ts_ms >= t0);
+}
+function renderReceipts() {
+  const body = $('#rc-body'); if (!body) return;
+  const list = dayAlerts().sort((a, b) => b.ts_ms - a.ts_ms);
+  const c = { n: list.length, correct: 0, wrong: 0, no_match: 0, swing_hit: 0, pending: 0 };
+  list.forEach((a) => { c[gradeOf(a)] = (c[gradeOf(a)] || 0) + 1; });
+  const t = S.tally && S.source?.kind === 'live' && S.tally.n >= c.n ? { ...c, ...S.tally } : c;
+  const parts = [`${t.n} alert${t.n === 1 ? '' : 's'}`, `<b class="g-ok">${t.correct} right</b>`, `<b class="g-bad">${t.wrong} wrong</b>`, `<b class="g-miss">${t.no_match} no matching play</b>`];
+  if (t.swing_hit) parts.push(`${t.swing_hit} real play, not named`);
+  if (t.pending) parts.push(`${t.pending} grading`);
+  $('#rc-tally').innerHTML = `${S.source?.kind === 'live' ? 'Today' : 'This replay'}: ${parts.join(' · ')}`;
+  const graded = t.n - (t.pending || 0), hits = t.correct + t.wrong;
+  $('#rc-acc').innerHTML = graded > 0
+    ? `Running accuracy: <b>${pct(t.correct / graded)}</b> of graded alerts named a real play correctly (${t.correct} of ${graded}).${hits ? ` When a real play did happen, we named it right ${t.correct} of ${hits} times.` : ''}`
+    : 'No graded alerts yet. Each one is graded about 90 seconds after it fires.';
+  $('#rc-empty').hidden = list.length > 0;
+  body.innerHTML = list.map((a) => {
+    const g = gradeOf(a);
+    const [gl, gc] = GRADE[g] || GRADE.pending;
+    const call = callOf(a);
+    const matched = g === 'correct' || g === 'wrong' || g === 'swing_hit';
+    const lead = beforeStream(a), espn = +a.confirmed?.lead_s;
+    const hs = matched
+      ? `${lead >= 1 ? `<b class="sig">${lead.toFixed(0)} s</b> before ${esc(S.delayK)}` : `none on ${esc(S.delayK)}`}${espn > 0 ? `<em>${espn.toFixed(0)} s before ESPN's public feed</em>` : ''}`
+      : g === 'pending' ? `<span class="rc-dim">grading</span>` : `<span class="rc-dim">no play to beat</span>`;
+    const detail = a.confirmed?.play_text ? `ESPN: ${a.confirmed.play_text}` : g === 'no_match' && a.espn_nearest?.play_text ? `Nearest ESPN play: ${a.espn_nearest.play_text}` : '';
+    const game = S.games.find((x) => x.game_id === a.game_id);
+    return `<tr class="rc-row ${gc} ${S.unveiled.has(a.id) ? 'unveil' : ''}" data-id="${esc(a.id)}">
+      <td class="mono rc-time">${clock(a.ts_ms, { sec: false })}</td>
+      <td class="rc-game mono">${esc(game?.short_name || a.short_name || '')}</td>
+      <td class="rc-call"><span class="shroud"><b>${esc(call.team)}</b> ${esc(call.play)}${detail ? `<small>${esc(detail.length > 140 ? `${detail.slice(0, 138)}…` : detail)}</small>` : ''}</span><span class="shroud-tap mono">Spoiler Shield · tap to reveal</span></td>
+      <td class="num mono rc-sure">${call.prob != null ? pct(call.prob) : '–'}</td>
+      <td class="rc-g"><span class="rc-grade mono">${gl}</span></td>
+      <td class="rc-lead mono">${hs}</td></tr>`;
+  }).join('');
+}
+async function pollDay() {
+  if (!S.api || S.source?.kind !== 'live') return;
+  try {
+    const [al, hl] = await Promise.all([
+      fetchJSON(`${S.api}/api/alerts?since_ms=${dayStart()}`, { timeout: 8000 }).catch(() => null),
+      fetchJSON(`${S.api}/api/health`, { timeout: 6000 }).catch(() => null)]);
+    (al || []).forEach((a) => S.day.set(a.id, { ...S.day.get(a.id), ...a }));
+    if (hl?.tally) S.tally = hl.tally;
+    renderReceipts();
+  } catch {}
+}
+// Spoiler Shield: tap a blurred card or row to reveal just that one
+function unveilOn(sel) {
+  $(sel)?.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-id]');
+    if (!row || !shieldOn() || row.classList.contains('unveil')) return;
+    S.unveiled.add(row.dataset.id); row.classList.add('unveil');
+  });
+}
+unveilOn('#feed'); unveilOn('#rc-body');
 
 // ------------------------------------------------------------ SPOILER takeover
 function fitText(el) {
@@ -242,24 +322,20 @@ const TO = {
     this.votes = { TD: 0, FG: 0, TURNOVER: 0, BIG_PLAY: 0, n: 0 };
     const el = $('#takeover');
     el.classList.remove('revealed', 'done', 'shown'); el.hidden = false;
-    const t = tierOf(a, tierAlert);
-    el.dataset.tier = t.tier;
+    el.classList.remove('unveil');
+    el.dataset.tier = tierOf(a, tierAlert).tier;
     const g = S.games.find((x) => x.game_id === a.game_id);
     $('#to-game').textContent = g?.short_name || a.game_id || '';
     $('#to-when').textContent = `MARKET MOVED ${clock(this.t0, { tenth: true })}`;
     const top = a.inferred?.[0] || { type: 'OTHER', prob: 0 };
     $('#to-team').textContent = nick(a.team) || a.team || '';
     $('#to-play').dataset.pre = `UP ${Math.round(Math.abs(teamProbs(a).after - teamProbs(a).before) * 100)}¢`;
-    $('#to-play').dataset.post = PLAY[top.type] || top.type;
+    $('#to-play').dataset.post = callOf(a).play;
     $('#to-play').textContent = $('#to-play').dataset.pre;
     const tp = teamProbs(a);
     $('#to-sure').innerHTML = `<b>${pct(top.prob)} SURE</b> · ${esc(a.team)} ${pct(tp.before)} → ${pct(tp.after)}`;
     $('#to-alt').textContent = (a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ') ? `or: ${(a.inferred || []).slice(1, 3).map((x) => `${(PLAY[x.type] || x.type).toLowerCase()} ${pct(x.prob)}`).join(' · ')}` : '';
-    let tierEl = $('#to-tier');
-    if (!tierEl) { tierEl = h('<div class="to-tier" id="to-tier"></div>'); $('.to-count').appendChild(tierEl); }
-    tierEl.innerHTML = `<p class="mono to-tier-k">PREDATOR SCALE</p>${tierLadder(t)}<p class="to-tier-blurb">${esc(t.blurb)}</p>`;
-    const delayName = S.delays.find((d) => d.v === S.delay)?.k || 'your stream';
-    $('#to-lower').innerHTML = `<span class="to-lower-tag">KALSHI KNOWS</span><span>The price moved at ${clock(this.t0, { tenth: true })}. You're on <b>${esc(delayName.toLowerCase())}</b>, about ${S.delay}s behind real life.${S.source.kind === 'replay' ? ' <em>REPLAY</em>' : ''}</span>`;
+    $('#to-lower').innerHTML = `<span class="to-lower-tag">KALSHI KNOWS</span><span>The price moved at ${clock(this.t0, { tenth: true })}. You're on <b>${esc(S.delayK)}</b>, about ${S.delay}s behind real life.${S.source.kind === 'replay' ? ' <em>REPLAY</em>' : ''}</span>`;
     this.renderVotes();
     requestAnimationFrame(() => { el.classList.add('shown'); fitText($('#to-play')); fitText($('#to-team')); });
     this.revealT = setTimeout(() => this.reveal(), reduceMotion ? 0 : 4200);
@@ -273,7 +349,6 @@ const TO = {
     el.classList.add('revealed'); $('#to-pre').textContent = 'SPOILER · WHAT THE MARKET SAYS HAPPENED';
     $('#to-play').textContent = $('#to-play').dataset.post;
     fitText($('#to-play')); fitText($('#to-team'));
-    playFx($('#to-tier .ladder li.on .em'));
   },
   update(a) {
     this.alert = a;
@@ -282,7 +357,7 @@ const TO = {
   tick() {
     const el = $('#takeover'); if (el.hidden) return;
     const elapsed = (S.source.now() - this.t0) / 1000;
-    const total = Math.max(1, S.delay - S.lag);
+    const total = Math.max(1, beforeStream(this.alert));
     const rem = total - elapsed;
     $('#to-count').textContent = rem > 0 ? Math.ceil(rem) : '0';
     $('#to-bar').style.transform = `scaleX(${clamp(rem / total, 0, 1)})`;
@@ -334,19 +409,21 @@ const TO = {
   },
 };
 $('#to-close').addEventListener('click', () => TO.close());
-$('#to-reveal').addEventListener('click', () => TO.reveal());
+$('#to-reveal').addEventListener('click', () => { $('#takeover').classList.add('unveil'); TO.reveal(); });
+$('.to-main').addEventListener('click', () => $('#takeover').classList.add('unveil'));
 
 // ------------------------------------------------------------ SOMEONE KNEW
 function renderKnew(data, mock) {
   if (!data) return;
   S.knew = data;
   const st = data.stats || {};
-  $('#knew-meta').innerHTML = `${int(data.markets_scanned)} SETTLED MARKETS SCANNED${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
+  const nCases = st.n ?? (data.cases || []).length;
+  const nFirst = st.share_market_first != null ? Math.round(st.share_market_first * nCases) : (data.cases || []).filter((c) => (c.lead_minutes || 0) >= 15).length;
+  $('#knew-meta').innerHTML = `${int(data.markets_scanned)} SETTLED MARKETS WITH BIG MOVES${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
   $('#knew-stats').innerHTML = `
-    <div class="ks"><div class="ks-big">${dur(st.median_lead_minutes)}</div><p>median head start the price had on the first article</p></div>
-    <div class="ks"><div class="ks-big">${pct(st.share_market_first)}</div><p>of big moves happened before any news we could find</p></div>
-    <div class="ks"><div class="ks-big">${int(st.n ?? (data.cases || []).length)}</div><p>case files below, each with the article that came second</p></div>`;
-  const cases = (data.cases || []).slice().sort((a, b) => (b.lead_minutes || 0) - (a.lead_minutes || 0));
+    <div class="ks ks-wide"><div class="ks-big">${nFirst} of ${nCases}</div><p>cases we checked by hand moved at least 15 minutes before the earliest primary source (official post or press release). Picked from ${int(data.markets_scanned)} markets with big moves.</p></div>
+    <div class="ks"><div class="ks-big">${dur(st.median_lead_minutes)}</div><p>median head start the price had on that source, across all ${nCases} cases</p></div>`;
+  const cases = caseOrder(data.cases);
   $('#cases').innerHTML = cases.map((c, i) => {
     const t = tierOf(c, tierKnew);
     return `<article class="case ${i === 0 ? 'case-lead' : ''} case-t${t.tier}">
@@ -360,86 +437,107 @@ function renderKnew(data, mock) {
         </div>
       </div>
       <blockquote class="case-news"><p>&ldquo;${esc(c.first_news_title)}&rdquo;</p>
-        <cite class="mono">${c.first_news_url ? `<a href="${esc(c.first_news_url)}" target="_blank" rel="noopener">${esc(c.first_news_source || 'source')}</a>` : esc(c.first_news_source || '')} · first article ${clock(c.first_news_ms, { sec: false })}, ${dateShort(c.first_news_ms)}</cite></blockquote>
+        <cite class="mono">${c.first_news_url ? `<a href="${esc(c.first_news_url)}" target="_blank" rel="noopener">${esc(c.first_news_source || 'source')}</a>` : esc(c.first_news_source || '')} · earliest source ${clock(c.first_news_ms, { sec: false })}, ${dateShort(c.first_news_ms)}</cite></blockquote>
       <p class="case-verdict">${esc(c.verdict || '')}</p>
     </article>`;
   }).join('');
   drawCases();
 }
+// Princeton leads (no public leak found), then GPT-6 (public clues existed), then the rest by head start
+function caseOrder(list) {
+  const pri = (c) => (c.feature_rank ?? (/princeton/i.test(c.title || '') ? 0 : /gpt-6/i.test(c.title || '') ? 1 : 2));
+  return (list || []).slice().sort((a, b) => pri(a) - pri(b) || (b.lead_minutes || 0) - (a.lead_minutes || 0));
+}
 function drawCases() {
-  if (!S.knew) return;
-  const cases = (S.knew.cases || []).slice().sort((a, b) => (b.lead_minutes || 0) - (a.lead_minutes || 0));
+  if (!S.knew || route !== 'headlines') return;
+  const cases = caseOrder(S.knew.cases);
   $$('.case-chart').forEach((el) => caseChart(el, cases[+el.dataset.case]));
 }
 
 // ------------------------------------------------------------ DUTCH BOOK
 let dbSel = null;
+// "Exhaustive" sets whose list of outcomes isn't actually complete: an unlisted outcome can win and every ticket loses
+const isTrap = (o) => /:fake_exh$/.test(o.id || '') || /not exhaustive|isn.t exhaustive|not complete/i.test(o.explanation || '');
+const realArb = (o) => !isTrap(o) && (o.profit_before_fees || 0) > 0;
+const afterFees = (o) => !isTrap(o) && (o.profit_after_fees || 0) >= 0.01;
 function renderDutch(data, { mock = false, live = false } = {}) {
   if (!data) return;
   S.db = data;
   $('#dutch-meta').innerHTML = `${live ? 'LIVE FROM THE ENGINE' : 'SNAPSHOT'} · UPDATED ${esc(ago(data.updated_ms))}${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
-  const amt = $('#db-amount');
-  const fmt = (v) => `$${int(v)}`;
-  const opps = (data.opportunities || []).slice().sort((a, b) => (b.profit_after_fees || 0) - (a.profit_after_fees || 0)).slice(0, 30);
+  const all = [...(data.opportunities || []), ...(data.near_misses || [])];
+  const nBefore = all.filter(realArb).length, nAfter = all.filter(afterFees).length, nTrap = all.filter(isTrap).length;
+  $('#db-claim').textContent = `We scanned ${int(data.scanned_markets)} markets: ${nBefore} arbitrage${nBefore === 1 ? '' : 's'} before fees, ${nAfter} after. ${nAfter ? 'Most get eaten by fees.' : "Fees are Kalshi's moat."}`;
+  const opps = (data.opportunities || []).filter((o) => !isTrap(o)).sort((a, b) => (b.profit_after_fees || 0) - (a.profit_after_fees || 0)).slice(0, 30);
   const nearAll = (data.near_misses || []).slice().sort((a, b) => (b.profit_before_fees || 0) - (a.profit_before_fees || 0));
   const showNear = !opps.length && nearAll.length > 0;
-  const rows = showNear ? nearAll.slice(0, 30).map((o) => ({ ...o, _near: true })) : opps;
-  const total = showNear && !(data.total_mispricing_usd > 0) ? nearAll.reduce((s, o) => s + Math.max(0, o.profit_before_fees || 0), 0) : (data.total_mispricing_usd || 0);
-  $('.db-label').innerHTML = showNear && !(data.total_mispricing_usd > 0)
-    ? 'that only <span class="sig">looks</span> free on Kalshi right now'
-    : 'of contradictory pricing on Kalshi <span class="sig">right now</span>';
+  const rows = showNear ? nearAll.slice(0, 30).map((o) => ({ ...o, _near: true, _trap: isTrap(o) })) : opps;
+  const total = opps.reduce((s, o) => s + Math.max(0, o.profit_after_fees || 0), 0);
+  const amt = $('#db-amount');
+  const fmt = (v) => `$${int(v)}`;
+  $('.db-label').innerHTML = opps.length ? 'of free money on Kalshi after fees <span class="sig">right now</span>' : 'of free money left on Kalshi <span class="sig">after fees</span>';
   if (amt.dataset.seen) countUp(amt, total, fmt, 900);
   else onVisible(amt, () => { amt.dataset.seen = 1; countUp(amt, total, fmt, 2200); }, { threshold: 0.4 });
-  $('#db-sub').textContent = showNear
-    ? `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets scanned · 0 true free lunches · ${int(nearAll.length)} traps that look like one`
-    : `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets scanned · ${int((data.opportunities || []).length)} contradictions found`;
+  $('#db-sub').textContent = `${int(data.scanned_events)} events · ${int(data.scanned_markets)} markets · ${nBefore} arbitrages before fees · ${nAfter} after · ${nTrap} traps where the list isn't complete`;
   S.dbOpps = rows; S.dbNear = showNear;
-  $('.db-list-head').innerHTML = showNear ? '<span>LOOKS FREE · ISN&rsquo;T</span><span>ON PAPER</span>' : '<span>OPPORTUNITY</span><span>PROFIT AFTER FEES</span>';
+  $('.db-list-head').innerHTML = showNear ? `<span>LOOKS FREE · ISN&rsquo;T ${tierBadge(tierOf({ tier: 1 }, () => 1))}</span><span>WORST CASE</span>` : '<span>OPPORTUNITY</span><span>PROFIT AFTER FEES</span>';
   $('#db-list').innerHTML = rows.map((o, i) => {
-    const t = o._near ? tierOf({ tier: 1 }, () => 1) : tierOf(o, tierDutch);
+    const label = o._near ? (o._trap ? 'TRAP: list not complete' : 'EATEN BY FEES') : esc((o.kind || '').replace('_', ' '));
+    const right = !o._near ? `<span class="db-profit mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</span>`
+      : o._trap ? `<span class="db-profit mono db-loss">${usd(-(o.cost || 0), { compact: true })}<em>paper ${usd(o.profit_before_fees, { compact: true, sign: true })}</em></span>`
+      : `<span class="db-profit mono db-loss">${usd(o.profit_after_fees, { compact: true, sign: true })}<em>before fees ${usd(o.profit_before_fees, { compact: true, sign: true })}</em></span>`;
     return `<li><button class="db-item ${i === (dbSel ?? 0) ? 'on' : ''} ${o._near ? 'db-trap' : ''}" data-i="${i}">
-      <span class="db-kind mono">${o._near ? 'TRAP · ' : ''}${esc((o.kind || '').replace('_', ' '))}</span>
+      <span class="db-kind mono ${o._near ? 'db-kind-bad' : ''}">${label}</span>
       <span class="db-title">${esc(o.title)}</span>
       <span class="db-cat mono">${esc(o.category || '')} · ${(o.legs || []).length} legs</span>
-      ${tierBadge(t)}
-      <span class="db-profit mono">${usd(o._near ? o.profit_before_fees : o.profit_after_fees, { compact: true, sign: true })}</span></button></li>`;
+      ${o._near ? '' : tierBadge(tierOf(o, tierDutch))}
+      ${right}</button></li>`;
   }).join('') || `<li class="db-none">Nothing open right now. Kalshi is behaving.</li>`;
   $$('.db-item').forEach((b) => b.addEventListener('click', () => { dbSel = +b.dataset.i; $$('.db-item').forEach((x) => x.classList.toggle('on', x === b)); renderDbDetail(rows[dbSel]); if (innerWidth < 900) $('#db-detail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
   if (dbSel != null && dbSel >= rows.length) dbSel = 0;
   renderDbDetail(rows[dbSel ?? 0]);
-  const nm = showNear ? [] : nearAll.slice(0, 4);
+  const nm = showNear ? [] : nearAll.filter((o) => !isTrap(o)).slice(0, 4);
   const cats = Object.entries(data.by_category || {}).sort((a, b) => b[1].violations - a[1].violations).slice(0, 6);
   const maxV = Math.max(1, ...cats.map(([, v]) => v.violations));
   $('#db-near').innerHTML = `
-    ${nm.length ? `<p class="db-near-k mono">NEAR MISSES · PROFITABLE UNTIL THE FEE</p><ul class="db-nm">${nm.map((o) => `<li><b>${esc(o.title)}</b><span class="mono">${usd(o.profit_before_fees, { compact: true, sign: true })} → <em>${usd(o.profit_after_fees, { compact: true, sign: true })}</em> after fees</span></li>`).join('')}</ul>` : ''}
+    ${nm.length ? `<p class="db-near-k mono">EATEN BY FEES · PROFITABLE UNTIL THE FEE</p><ul class="db-nm">${nm.map((o) => `<li><b>${esc(o.title)}</b><span class="mono">${usd(o.profit_before_fees, { compact: true, sign: true })} → <em>${usd(o.profit_after_fees, { compact: true, sign: true })}</em> after fees</span></li>`).join('')}</ul>` : ''}
     ${cats.length ? `<p class="db-near-k mono">WHERE THE CONTRADICTIONS LIVE</p><ul class="db-cats">${cats.map(([k, v]) => `<li><span>${esc(k)}</span><i style="--w:${(100 * v.violations / maxV).toFixed(1)}%"></i><b class="mono">${int(v.violations)}<em> / ${int(v.events)}</em></b></li>`).join('')}</ul>` : ''}`;
 }
 function renderDbDetail(o) {
   const el = $('#db-detail');
   if (!o) { el.innerHTML = ''; return; }
-  const near = !!o._near;
-  const t = near ? tierOf({ tier: 1 }, () => 1) : tierOf(o, tierDutch);
+  const near = !!o._near, trap = near && isTrap(o);
   const legs = o.legs || [];
   const shown = legs.slice(0, 10);
   const pa = o.profit_after_fees || 0;
+  const kicker = trap ? '<span class="sig">TRAP: LIST NOT COMPLETE</span>' : near ? '<span class="sig">EATEN BY FEES</span>' : 'PAPER TRADE';
+  const plain = trap
+    ? `<p class="dd-plain">Spend <b>${usd(o.cost)}</b> on every listed outcome. If something <b>not on the list</b> wins, every ticket loses. <b class="sig">Worst-case payout $0.00. Worst-case loss ${usd(-(o.cost || 0))}.</b> <span class="dd-paper">The ${usd(o.profit_before_fees, { sign: true })} profit is on paper only: it holds only if the list were complete.</span></p>`
+    : near
+      ? `<p class="dd-plain">Spend <b>${usd(o.cost, { compact: true })}</b>, collect at least <b>${usd(o.worst_case_payout, { compact: true })}</b> whatever happens: <b>${usd(o.profit_before_fees, { sign: true })}</b> before fees. Kalshi's fee is <b>${usd(o.fees)}</b>, so you end at <b class="sig">${usd(pa, { sign: true })}</b>. ${esc(o.explanation || '')}</p>`
+      : `<p class="dd-plain">Spend <b>${usd(o.cost, { compact: true })}</b>. Whatever happens, get back at least <b>${usd(o.worst_case_payout, { compact: true })}</b>. That's <b class="sig">${usd(o.profit_before_fees, { compact: true })}</b> before fees and <b class="${pa > 0 ? 'sig' : 'cold'}">${usd(pa, { compact: true })}</b> after Kalshi's fee${pa > 0 ? '.' : ': the fee eats it.'}</p>`;
+  const ledger = trap
+    ? `<div><dt>Cost</dt><dd>${usd(o.cost)}</dd></div>
+      <div class="ledger-bad"><dt>Worst-case payout</dt><dd>$0.00</dd></div>
+      <div class="ledger-total ledger-bad"><dt>Worst-case loss</dt><dd class="sig">${usd(-(o.cost || 0))}</dd></div>
+      <div class="ledger-paper"><dt>Paper profit <em>only if the list were complete</em></dt><dd>${usd(o.profit_before_fees, { sign: true })}</dd></div>`
+    : `<div><dt>Cost</dt><dd>${usd(o.cost)}</dd></div>
+      <div><dt>Worst-case payout</dt><dd>${usd(o.worst_case_payout)}</dd></div>
+      <div><dt>Profit before fees</dt><dd>${usd(o.profit_before_fees, { sign: true })}</dd></div>
+      <div><dt>Kalshi fees</dt><dd>−${usd(o.fees)}</dd></div>
+      <div class="ledger-total"><dt>Profit after fees</dt><dd class="${pa > 0 ? 'sig' : ''}">${usd(pa, { sign: true })}</dd></div>`;
   el.innerHTML = `
-    <p class="dd-k mono">${near ? '<span class="sig">NOT ACTUALLY FREE</span>' : 'PAPER TRADE'} · ${esc((o.kind || '').replace('_', ' ').toUpperCase())} · ${esc((o.category || '').toUpperCase())}</p>
+    <p class="dd-k mono">${kicker} · ${esc((o.kind || '').replace('_', ' ').toUpperCase())} · ${esc((o.category || '').toUpperCase())}</p>
     <h3 class="dd-title">${esc(o.title)}</h3>
-    <div class="dd-tier">${tierBadge(t, { blurb: true, size: 'tier-lg' })}</div>
-    ${near ? `<p class="dd-plain">On paper: spend <b>${usd(o.cost, { compact: true })}</b>, collect <b>${usd(o.worst_case_payout, { compact: true })}</b>. <b class="sig">The catch:</b> ${esc(o.explanation || 'it fails in at least one outcome once you count fees.')}</p>` : `<p class="dd-plain">Spend <b>${usd(o.cost, { compact: true })}</b>. Whatever happens, get back at least <b>${usd(o.worst_case_payout, { compact: true })}</b>. That's <b class="sig">${usd(o.profit_before_fees, { compact: true })}</b> before fees and <b class="${pa > 0 ? 'sig' : 'cold'}">${usd(pa, { compact: true })}</b> after Kalshi's fee${pa > 0 ? '.' : ': the fee eats it.'}</p>`}
+    ${near ? '' : `<div class="dd-tier">${tierBadge(tierOf(o, tierDutch), { blurb: true, size: 'tier-lg' })}</div>`}
+    ${plain}
+    ${trap ? `<p class="dd-expl">${esc(o.explanation || '')}</p>` : ''}
     <table class="legs"><thead><tr><th>Buy</th><th>Contract</th><th class="num">Price</th><th class="num">Qty</th><th class="num">Cost</th></tr></thead>
       <tbody>${shown.map((l) => `<tr><td><span class="side side-${esc(l.side)} mono">${esc((l.side || '').toUpperCase())}</span></td><td>${esc(l.label)}</td><td class="num mono">${cents(l.price)}</td><td class="num mono">${int(l.qty)}</td><td class="num mono">${usd((l.price || 0) * (l.qty || 1), { compact: true })}</td></tr>`).join('')}
       ${legs.length > shown.length ? `<tr class="legs-more"><td colspan="5" class="mono">+ ${legs.length - shown.length} more legs</td></tr>` : ''}</tbody></table>
     <div class="dd-chart" id="dd-chart"></div>
-    <dl class="ledger mono">
-      <div><dt>Cost</dt><dd>${usd(o.cost)}</dd></div>
-      <div><dt>Worst-case payout</dt><dd>${usd(o.worst_case_payout)}</dd></div>
-      <div><dt>Profit before fees</dt><dd>${usd(o.profit_before_fees, { sign: true })}</dd></div>
-      <div><dt>Kalshi fees</dt><dd>−${usd(o.fees)}</dd></div>
-      <div class="ledger-total"><dt>Profit after fees</dt><dd class="${pa > 0 ? 'sig' : ''}">${usd(pa, { sign: true })}</dd></div>
-    </dl>
+    <dl class="ledger mono">${ledger}</dl>
     ${near ? '' : `<p class="dd-expl">${esc(o.explanation || '')}</p>`}`;
-  if (!near) payoffChart($('#dd-chart'), o);
+  if (!near && route === 'dutch') payoffChart($('#dd-chart'), o);
 }
 
 // ------------------------------------------------------------ PREDATOR SCALE
@@ -449,7 +547,7 @@ function renderScale() {
     <span class="sc-n">${i}</span>
     <span class="sc-em">${emblem(i)}</span>
     <div class="sc-txt"><h3 class="sc-name">${esc(TIERS[i].name)}</h3><p class="sc-blurb">${esc(TIERS[i].blurb)}</p></div>
-    <dl class="sc-crit mono">${['Spoiler', 'Dutch Book', 'Someone Knew'].map((k, j) => `<div><dt>${k}</dt><dd>${esc(TIER_CRIT[i][j])}</dd></div>`).join('')}</dl>
+    <dl class="sc-crit mono">${['Spoiler', 'Dutch Book', 'Beat the headlines'].map((k, j) => `<div><dt>${k}</dt><dd>${esc(TIER_CRIT[i][j])}</dd></div>`).join('')}</dl>
   </li>`).join('');
   $$('.sc', el).forEach((li) => li.addEventListener('pointerenter', () => playFx($('.em', li))));
   onVisible(el, () => {
@@ -470,12 +568,12 @@ function renderTicker() {
     items.push(`<span class="tk">${name} ${esc(g.home)} <em class="mono">${cents(g.p_home)}</em> · ${esc(g.away)} <em class="mono">${cents(1 - g.p_home)}</em></span>`);
   });
   const last = S.lastAlert;
-  if (last) items.push(`<span class="tk tk-sig"><b>LAST SPOILER</b> ${esc(last.headline || '')}</span>`);
+  if (last && !shieldOn()) items.push(`<span class="tk tk-sig"><b>LAST ALERT</b> ${esc(last.headline || '')}</span>`);
   if (S.db) {
-    items.push(S.dbNear ? `<span class="tk"><b>DUTCH BOOK</b> 0 free lunches, ${int((S.db.near_misses || []).length)} traps</span>` : `<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
+    items.push(S.dbNear ? `<span class="tk"><b>DUTCH BOOK</b> ${int(S.db.scanned_markets)} markets scanned · 0 arbitrages left after fees</span>` : `<span class="tk"><b>DUTCH BOOK</b> <em class="mono">$${int(S.db.total_mispricing_usd)}</em> of contradictory pricing open</span>`);
     (S.dbOpps || []).slice(0, 3).forEach((o) => items.push(o._near ? `<span class="tk">${esc(o.title)} <em class="mono">looks free, isn't</em></span>` : `<span class="tk">${esc(o.title)} <em class="mono">${usd(o.profit_after_fees, { compact: true, sign: true })}</em></span>`));
   }
-  (S.knew?.cases || []).slice().sort((a, b) => (b.lead_minutes || 0) - (a.lead_minutes || 0)).slice(0, 3).forEach((c) => items.push(`<span class="tk"><b>SOMEONE KNEW</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} ${c.lead_minutes < 0 ? 'after the news' : 'early'}</em></span>`));
+  caseOrder(S.knew?.cases).slice(0, 2).forEach((c) => items.push(`<span class="tk"><b>BEAT THE HEADLINES</b> ${esc(c.title)} <em class="mono">${esc(dur(c.lead_minutes))} ${c.lead_minutes < 0 ? 'after the news' : 'early'}</em></span>`));
   const sig = items.join('');
   if (sig === tickerSig || !items.length) return;
   tickerSig = sig;
@@ -484,6 +582,46 @@ function renderTicker() {
   const w = track.firstElementChild.scrollWidth;
   track.style.setProperty('--dur', `${Math.max(30, w / 70)}s`);
 }
+
+// ------------------------------------------------------------ pages (hash routes: GitHub Pages has no rewrites)
+const ROUTES = ['live', 'headlines', 'dutch', 'proof', 'scale', 'alerts'];
+const LEGACY = { top: 'live', live: 'live', receipts: 'live', knew: 'headlines', dutch: 'dutch', proof: 'proof', scale: 'scale', get: 'alerts' };
+const TITLES = { live: 'Live', headlines: 'The market beat the headlines', dutch: 'Dutch Book', proof: 'Proof', scale: 'Predator Scale', alerts: 'Get alerts' };
+let route = null;
+function parseRoute() {
+  const raw = location.hash, k = decodeURIComponent(raw.replace(/^#\/?/, '')).toLowerCase();
+  if (raw.startsWith('#/') && ROUTES.includes(k)) return { page: k };
+  if (LEGACY[k]) return { page: LEGACY[k], anchor: k };
+  return { page: 'live' };
+}
+let stageStarted = false;
+function startStage() { if (stageStarted || !S.results) return; stageStarted = true; initStage(); }
+function redraw(page = route) {
+  if (page === 'live') { startStage(); if (S.games.length && S.source) renderLive(); }
+  else if (page === 'headlines') drawCases();
+  else if (page === 'proof') { if (S.results && $('#lag-chart').innerHTML) lagChart($('#lag-chart'), S.results); }
+  else if (page === 'dutch') { if (S.dbOpps?.length) renderDbDetail(S.dbOpps[dbSel ?? 0]); }
+}
+function go() {
+  const { page, anchor } = parseRoute();
+  if (location.hash !== `#/${page}`) history.replaceState(null, '', `${location.pathname}${location.search}#/${page}`);
+  const changed = page !== route;
+  route = page;
+  document.documentElement.dataset.route = page;
+  $$('[data-page]').forEach((el) => { el.hidden = el.dataset.page !== page; });
+  $$('a[data-route]').forEach((a) => { if (a.dataset.route === page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  document.title = `${TITLES[page]} · Kalshi Knows`;
+  const el = anchor && anchor !== 'top' && anchor !== page ? $(`#${anchor}`) : anchor === 'live' ? $('#live') : null;
+  if (el && !el.hidden) {
+    const jump = () => el.scrollIntoView({ behavior: changed ? 'instant' : 'smooth', block: 'start' });
+    requestAnimationFrame(jump);
+    if (changed) setTimeout(jump, 900); // first load: the 3D story and feed change height while booting
+  }
+  else if (changed) scrollTo(0, 0);
+  if (changed) requestAnimationFrame(() => redraw(page));
+}
+addEventListener('hashchange', go);
+go();
 
 // ------------------------------------------------------------ boot
 async function boot() {
@@ -495,10 +633,12 @@ async function boot() {
   S.results = res || {};
   const sd = S.results.stream_delay_reference_s || { broadcast: 19, best_stream: 48, worst_stream: 62 };
   S.lag = S.results.market_lag?.median_s ?? 2.6;
-  S.delays = [{ k: 'Cable', v: sd.broadcast }, { k: 'Streaming', v: sd.best_stream }, { k: 'Sketchy stream', v: sd.worst_stream }];
-  if (!S.delays.some((d) => d.v === S.delay)) S.delay = sd.best_stream;
+  // Stats Perform, Super Bowl LX latency report (published reference values, not our measurement)
+  S.delays = [{ k: 'Antenna', v: 19 }, { k: 'Cable', v: 38 }, { k: 'Peacock', v: 48 }, { k: 'YouTube TV', v: 53 }, { k: 'Hulu Live', v: 53 }, { k: 'DirecTV', v: 60 }, { k: 'NFL+', v: 62 }];
+  const dk = S.delays.find((d) => d.k === S.delayK) || S.delays[2];
+  S.delayK = dk.k; S.delay = dk.v;
   bind(); renderDelaySeg();
-  initStage();
+  if (route === 'live') startStage();
   onVisible($('#proof'), () => renderProof(S.results, resMock), { threshold: 0.05 });
 
   // live or replay
@@ -525,7 +665,7 @@ async function boot() {
       $('#live-meta').innerHTML = `REPLAY OF ${esc(rep.game?.short_name || '')}, RECORDED ${esc(dateShort(S.source.recorded).toUpperCase())} · REAL SPEED${mock ? ' · <span class="sample">SAMPLE DATA</span>' : ''}`;
       $('#skip-btn').hidden = false;
       $('#skip-btn').addEventListener('click', () => S.source.skip?.());
-      S.source.addEventListener('reset', () => { S.alerts.clear(); S.shownTakeover.clear(); renderFeed(); });
+      S.source.addEventListener('reset', () => { S.alerts.clear(); S.day.clear(); S.shownTakeover.clear(); renderFeed(); renderReceipts(); });
     } else {
       setMode('off', 'OFF AIR');
       S.source = { kind: 'none', now: () => Date.now(), addEventListener() {}, start() {} };
@@ -539,9 +679,10 @@ async function boot() {
         if (!back || !$('#takeover').hidden) return;
         clearInterval(retry);
         S.source.stop?.();
-        S.alerts.clear(); S.shownTakeover.clear(); S.games = []; S.lastAlert = null;
+        S.alerts.clear(); S.day.clear(); S.shownTakeover.clear(); S.games = []; S.lastAlert = null;
         renderFeed();
         startLive(back);
+        pollDay();
         S.source.addEventListener('games', onGames);
         S.source.addEventListener('alert', onAlertEv);
         S.source.start();
@@ -554,10 +695,13 @@ async function boot() {
   S.source.addEventListener('alert', onAlertEv);
   S.source.start();
   setInterval(() => { if (S.games.length) renderLive(); }, 1000);
+  pollDay(); setInterval(pollDay, 30000);
 
   $('#demo-btn').addEventListener('click', () => { if (S.lastAlert) TO.open(S.lastAlert, { demo: true }); });
 
   S.push = initPush(() => S.api);
+  initShield();
+  onShield(() => { renderFeed(); renderReceipts(); renderTicker(); });
 
   // other sections
   knewP.then(({ data, mock }) => { renderKnew(data, mock); renderTicker(); });
@@ -579,7 +723,7 @@ async function boot() {
 
   // resize charts
   let rT;
-  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { renderLive(); drawCases(); if (S.results && $('#lag-chart').innerHTML) lagChart($('#lag-chart'), S.results); if (S.dbOpps?.length) renderDbDetail(S.dbOpps[dbSel ?? 0]); }, 150); });
+  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => redraw(route), 150); });
 }
 
 // presenter QR: shows over the hero and the install section only (it would cover the live feed). Q pins it on.
@@ -602,7 +746,10 @@ addEventListener('keydown', (e) => {
   else if (k === 'n' && S.source?.skip) S.source.skip();
   else if (k === 'r') TO.reveal();
   else if (k === 'q' && PRESENT) { const pq = $('#pqr'); pq.dataset.pin = pq.dataset.pin ? '' : '1'; pqrUpdate(); }
-  else if ('123456'.includes(k) && k) $(['#live', '#knew', '#dutch', '#proof', '#scale', '#get'][+k - 1])?.scrollIntoView({ behavior: 'smooth' });
+  else if ('123456'.includes(k) && k) {
+    if (k === '1' && route === 'live') $('#live').scrollIntoView({ behavior: 'smooth' });
+    else location.hash = `#/${ROUTES[+k - 1]}`;
+  }
 });
 
 boot().catch((e) => console.error(e));

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kalshi Knows · your stream is lying to you</title>
-<meta name="description" content="Your stream is 20 to 60 seconds behind. Kalshi isn't. We read the market and tell you the play before your TV does.">
+<meta name="description" content="Your stream is 20 to 60 seconds behind. Kalshi isn't. Kalshi's traders react to a big play in about 7 seconds. We read the market and tell you the play before your stream does.">
 <meta name="theme-color" content="#0A0A0B">
 <meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,17 +34,17 @@
 <a class="skip" href="#live">Skip to the live game</a>
 
 <header class="bar" id="bar">
-  <a class="brand" href="#top" aria-label="Kalshi Knows home">
+  <a class="brand" href="#/live" aria-label="Kalshi Knows home">
     <img src="icons/favicon-64.png" alt="" width="28" height="28">
     <span class="brand-word">Kalshi<b>Knows</b></span>
   </a>
-  <nav class="nav" aria-label="Sections">
-    <a href="#live"><i>01</i>Live</a>
-    <a href="#knew"><i>02</i>Someone Knew</a>
-    <a href="#dutch"><i>03</i>Dutch Book</a>
-    <a href="#proof"><i>04</i>Proof</a>
-    <a href="#scale"><i>05</i>Scale</a>
-    <a href="#get" class="nav-get"><i>06</i>Get alerts</a>
+  <nav class="nav" aria-label="Pages">
+    <a href="#/live" data-route="live"><i>01</i>Live</a>
+    <a href="#/headlines" data-route="headlines"><i>02</i>Beat the headlines</a>
+    <a href="#/dutch" data-route="dutch"><i>03</i>Dutch Book</a>
+    <a href="#/proof" data-route="proof"><i>04</i>Proof</a>
+    <a href="#/scale" data-route="scale"><i>05</i>Predator Scale</a>
+    <a href="#/alerts" data-route="alerts" class="nav-get"><i>06</i>Get alerts</a>
   </nav>
   <div class="bug">
     <span class="bug-mode" id="mode-badge" data-mode="boot"><span class="dot"></span><span id="mode-text">TUNING IN</span></span>
@@ -54,7 +54,7 @@
 
 <main>
   <!-- STORY: sticky 3D stage with scrolling captions -->
-  <div class="story" id="top">
+  <div class="story" id="top" data-page="live">
     <div class="stage" id="stage" aria-hidden="true">
       <canvas id="gl"></canvas>
       <div class="gl-labels" id="gl-labels"></div>
@@ -68,7 +68,7 @@
         <span class="ht-2">is lying</span>
         <span class="ht-3">to you.</span>
       </h1>
-      <p class="hero-sub">About <b class="sig" data-bind="gapRound">40 seconds</b> of lying. Kalshi's traders react to a big play in about <b data-bind="lag">7.0</b>&nbsp;seconds. Your stream shows it <b data-bind="delayRange">19 to 62</b>&nbsp;seconds later. We read the market and buzz your phone with the play before your TV gets there.</p>
+      <p class="hero-sub">About <b class="sig" data-bind="gapRound">40 seconds</b> of lying. Kalshi's traders react to a big play in about <b>7&nbsp;seconds</b>. Our alert lands about <b>30&nbsp;seconds</b> after the play. Streams show it <b>48 to 62&nbsp;seconds</b> after. That's a <b class="sig">15 to 40 second head start</b> on streaming. (An antenna, at 19&nbsp;seconds, still beats us.)</p>
       <a class="hero-bug" href="#live" id="hero-bug">
         <span class="hb-tag mono">NOW</span>
         <span class="hb-game" id="hb-game">Loading the game…</span>
@@ -76,7 +76,7 @@
       </a>
       <div class="chyron" aria-hidden="true">
         <span class="chyron-tag">KALSHI KNOWS</span>
-        <span class="chyron-text mono">PUBLIC KALSHI ORDER BOOK &middot; ESPN PLAY CLOCK &middot; PAPER TRADING ONLY</span>
+        <span class="chyron-text mono">PUBLIC KALSHI ORDER BOOK &middot; ESPN PLAY CLOCK &middot; WE NEVER TRADE OR TAKE BETS</span>
       </div>
     </section>
 
@@ -84,7 +84,7 @@
       <div class="cap">
         <p class="cap-num mono">01 &mdash; The play</p>
         <h2 class="cap-title">A touchdown happens. Real time: <span class="mono">0.0 s</span></h2>
-        <p>Thousands of people at the stadium and on fast feeds see it at once. Some of them trade on it.</p>
+        <p>Thousands of people at the stadium and on fast feeds see it at once. Their trades move the price before your stream shows the play.</p>
       </div>
     </section>
     <section class="step step-cap" data-step="2">
@@ -98,7 +98,7 @@
       <div class="cap cap-cold">
         <p class="cap-num mono">03 &mdash; Your stream</p>
         <h2 class="cap-title">Your stream shows it <span class="mono" data-bind="delay">48</span>&nbsp;s after it happened.</h2>
-        <p>Cable runs about <span data-bind="broadcast">19</span>&nbsp;s behind. Streaming apps run <span data-bind="best">48</span>&ndash;<span data-bind="worst">62</span>&nbsp;s behind. You're watching the past.</p>
+        <p>An antenna runs about 19&nbsp;s behind and cable about 38&nbsp;s. Streaming apps run <span data-bind="best">48</span>&ndash;<span data-bind="worst">62</span>&nbsp;s behind (Super Bowl LX, measured by Stats Perform). You're watching the past.</p>
       </div>
     </section>
     <section class="step step-cap" data-step="4">
@@ -112,7 +112,7 @@
   </div>
 
   <!-- 01 LIVE -->
-  <section class="sec sec-live" id="live">
+  <section class="sec sec-live" id="live" data-page="live">
     <header class="sec-head">
       <p class="sec-num mono">01</p>
       <h2 class="sec-title">Kalshi Knows</h2>
@@ -129,6 +129,7 @@
             <span class="seg-label mono">Watching on</span>
           </div>
           <div class="live-actions">
+            <button class="shield-btn mono" data-shield role="switch" aria-checked="false" title="Hide what happened until you tap"><span class="sh-ico" aria-hidden="true"></span>Spoiler Shield <b>OFF</b></button>
             <button class="btn-ghost mono" id="skip-btn" hidden>Next play &rarr;</button>
             <button class="btn-ghost mono" id="demo-btn" title="Fire the latest alert again (key: T)">Replay last alert</button>
           </div>
@@ -142,14 +143,33 @@
         <p class="feed-empty" id="feed-empty">Quiet so far. The moment the market jumps, it lands here, with how far ahead of your stream it was.</p>
       </aside>
     </div>
+
+    <div class="rc" id="receipts">
+      <div class="rc-head">
+        <p class="rc-k mono"><span class="rc-tag">RECEIPTS</span> EVERY ALERT TODAY</p>
+        <h3 class="rc-title">Every call, timestamped, graded against ESPN. Misses included. No tout does this.</h3>
+        <div class="rc-sum">
+          <p class="rc-tally mono" id="rc-tally">Today: 0 alerts</p>
+          <p class="rc-acc" id="rc-acc"></p>
+        </div>
+      </div>
+      <div class="rc-wrap">
+        <table class="rc-table">
+          <thead><tr><th>Time</th><th>Game</th><th>The call</th><th class="num">Sure</th><th>Grade</th><th>Head start</th></tr></thead>
+          <tbody id="rc-body"></tbody>
+        </table>
+        <p class="rc-empty" id="rc-empty">No alerts yet today. The first one lands here the moment it fires, and gets its grade about 90 seconds later.</p>
+      </div>
+      <p class="rc-note mono">Graded about 90 s after each alert against ESPN's play-by-play. RIGHT = we named the play and it happened. WRONG = a real play, but a different one. NO MATCHING PLAY = ESPN shows no score, turnover or 20+ yard gain near the jump. Head start is against the stream you picked above (published Super Bowl LX delays).</p>
+    </div>
   </section>
 
   <!-- 02 SOMEONE KNEW -->
-  <section class="sec sec-knew" id="knew">
+  <section class="sec sec-knew" id="knew" data-page="headlines" hidden>
     <header class="sec-head">
       <p class="sec-num mono">02</p>
-      <h2 class="sec-title">Someone Knew</h2>
-      <p class="sec-deck">Settled markets where the price moved before the first news article. We don't say who. We just show when.</p>
+      <h2 class="sec-title sec-title-long">The market beat the headlines</h2>
+      <p class="sec-deck">Settled markets where the price moved before the first news article we could find. We don't say who traded. We just show when.</p>
       <p class="sec-meta mono" id="knew-meta"></p>
     </header>
     <div class="knew-stats" id="knew-stats"></div>
@@ -157,11 +177,11 @@
   </section>
 
   <!-- 03 DUTCH BOOK -->
-  <section class="sec sec-dutch" id="dutch">
+  <section class="sec sec-dutch" id="dutch" data-page="dutch" hidden>
     <header class="sec-head">
       <p class="sec-num mono">03</p>
       <h2 class="sec-title">Dutch Book</h2>
-      <p class="sec-deck">Some Kalshi prices contradict each other. Buy the right combination and you're paid in every outcome. Paper trades only; we never place an order.</p>
+      <p class="sec-deck"><b id="db-claim">We scanned 103,807 markets: 16 arbitrages before fees, 0 after. Fees are Kalshi's moat.</b> An arbitrage is a set of bets that pays you whatever happens. We only look; we never place an order.</p>
       <p class="sec-meta mono" id="dutch-meta"></p>
     </header>
     <div class="db-counter">
@@ -180,17 +200,17 @@
   </section>
 
   <!-- 04 PROOF -->
-  <section class="sec sec-proof" id="proof">
+  <section class="sec sec-proof" id="proof" data-page="proof" hidden>
     <header class="sec-head">
       <p class="sec-num mono">04</p>
-      <h2 class="sec-title">The receipts</h2>
+      <h2 class="sec-title">The proof</h2>
       <p class="sec-deck">What we measured on real games, and how the pieces fit together.</p>
       <p class="sec-meta mono" id="proof-meta"></p>
     </header>
     <div class="lag" id="lag-chart"></div>
     <div class="proof-grid" id="proof-grid"></div>
     <ol class="chain" id="chain">
-      <li><span class="chain-n mono">DATA</span><b>Every play, every price</b><span>nflverse play-by-play 2016&ndash;2025, ESPN's live play clock, and Kalshi's public trade history, lined up to the second.</span></li>
+      <li><span class="chain-n mono">DATA</span><b>Every play, every price</b><span>nflverse play-by-play: 25 seasons to train (1999-2023), 28 in total, 244k plays. Plus ESPN's live play clock and Kalshi's public trade history, lined up to the second.</span></li>
       <li><span class="chain-n mono">MODEL</span><b>Run the jump backwards</b><span>A win-probability model plus a play classifier trained on AWS GPUs: given the game state and the size of the jump, which play happened?</span></li>
       <li><span class="chain-n mono">ENGINE</span><b>Watch the order book</b><span>Polls every live NFL market about once a second. A big jump inside 20 seconds counts as an event.</span></li>
       <li class="chain-sig"><span class="chain-n mono">PHONE</span><b>Spoil it</b><span>Web push to this app on your home screen, seconds before your stream catches up.</span></li>
@@ -198,25 +218,31 @@
   </section>
 
   <!-- 05 PREDATOR SCALE -->
-  <section class="sec sec-scale" id="scale">
+  <section class="sec sec-scale" id="scale" data-page="scale" hidden>
     <header class="sec-head">
       <p class="sec-num mono">05</p>
       <h2 class="sec-title">Predator Scale</h2>
       <p class="sec-deck">Every pick and every model gets a tier, from "still on the waitlist" to "returned the fund." The three named tiers are on our team. They signed off on this.</p>
-      <p class="sec-meta mono">SPOILER = HOW SURE THE MODEL IS · DUTCH BOOK = RETURN AFTER FEES · SOMEONE KNEW = HOW EARLY THE PRICE MOVED</p>
+      <p class="sec-meta mono">MODELS = LOG LOSS ON REAL JUMPS · DUTCH BOOK = RETURN AFTER FEES · BEAT THE HEADLINES = HOW EARLY THE PRICE MOVED</p>
     </header>
     <ol class="scale" id="scale-list"></ol>
   </section>
 
   <!-- 06 GET ALERTS -->
-  <section class="sec sec-get" id="get">
+  <section class="sec sec-get" id="get" data-page="alerts" hidden>
     <header class="sec-head">
       <p class="sec-num mono">06</p>
       <h2 class="sec-title">Get spoiled</h2>
       <p class="sec-deck">Install the app, turn on alerts, and your phone buzzes before the replay does.</p>
     </header>
     <div class="get-grid">
-      <div class="get-main" id="get-main"></div>
+      <div>
+        <div class="get-main" id="get-main"></div>
+        <div class="get-shield">
+          <button class="shield-btn shield-lg mono" data-shield role="switch" aria-checked="false"><span class="sh-ico" aria-hidden="true"></span>Spoiler Shield <b>OFF</b></button>
+          <p>Watching on delay and don't want the play spoiled? With the shield on, alerts just say <b>"Something big just happened in SF @ SEA"</b>: no team, no play, no score. Cards stay blurred until you tap them.</p>
+        </div>
+      </div>
       <figure class="get-qr">
         <div class="qr" id="get-qr"></div>
         <figcaption class="mono" id="get-url"></figcaption>
@@ -225,10 +251,19 @@
   </section>
 
   <footer class="foot">
-    <p class="foot-big">Paper trading only. Insight, not financial advice.</p>
-    <p class="mono">Public Kalshi and ESPN data. No accounts, no orders, no politics. "Someone Knew" shows timestamps, not accusations. Built in one day at the VSS hackathon by Faisal, Kevin and Dugar.</p>
+    <p class="foot-big">Free. Public Kalshi and ESPN data only. We never trade or take bets. Not affiliated with Kalshi. Not betting advice. 21+ where required.</p>
+    <p class="mono">No accounts, no orders, no politics. "The market beat the headlines" shows timestamps, not accusations. Built in one day at the VSS hackathon by Faisal, Kevin and Dugar.</p>
   </footer>
 </main>
+
+<nav class="tabs" aria-label="Pages">
+  <a href="#/live" data-route="live"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Live</a>
+  <a href="#/headlines" data-route="headlines"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h7" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Headlines</a>
+  <a href="#/dutch" data-route="dutch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M16.5 7.5C16 6 14.4 5 12 5S7.5 6.2 7.5 8s1.8 2.6 4.5 3.2 4.5 1.5 4.5 3.6S14.5 19 12 19s-4.2-1-4.8-2.6" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Dutch</a>
+  <a href="#/proof" data-route="proof"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Proof</a>
+  <a href="#/scale" data-route="scale"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h4v-5H3zM10 20h4V9h-4zM17 20h4V4h-4z" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Scale</a>
+  <a href="#/alerts" data-route="alerts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>Alerts</a>
+</nav>
 
 <div class="ticker" id="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
 
@@ -258,25 +293,39 @@
     </div>
   </div>
   <div class="to-vote">
-    <p class="to-vote-q">Call it before your TV does.</p>
+    <p class="to-vote-q">Call it before your stream does.</p>
     <div class="to-vote-btns" id="to-vote"></div>
     <p class="to-vote-n mono" id="to-vote-n"></p>
   </div>
   <div class="to-lower mono" id="to-lower"></div>
 </div>
 
-<!-- iOS install sheet -->
+<!-- iOS install sheet (Safari, not installed) -->
 <div class="sheet" id="ios-sheet" hidden role="dialog" aria-labelledby="sheet-title">
   <div class="sheet-card">
     <button class="sheet-x mono" id="sheet-x" aria-label="Not now">Not now</button>
-    <p class="mono sheet-kicker">iPhone &middot; 3 taps</p>
-    <h3 id="sheet-title">Put Kalshi Knows on your home screen to get spoiler alerts.</h3>
+    <p class="mono sheet-kicker">iPhone &middot; 3 taps &middot; free</p>
+    <h3 id="sheet-title">Get spoiler alerts</h3>
+    <p class="sheet-lede">iPhone only sends alerts to apps on your home screen. Add Kalshi Knows there first.</p>
     <ol class="sheet-steps">
-      <li><span class="sheet-n">1</span><span>Tap <b>Share</b> <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 11v9h14v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg> in Safari's toolbar.</span></li>
-      <li><span class="sheet-n">2</span><span>Scroll down, tap <b>Add to Home Screen</b> <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8"/></svg></span></li>
-      <li><span class="sheet-n">3</span><span>Open <b>Kalshi Knows</b> from your home screen and tap <b>Enable spoiler alerts</b>.</span></li>
+      <li><span class="sheet-n">1</span><span>Tap <b>Share</b> <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 11v9h14v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg> in Safari's toolbar below. (On iOS 26, tap <b>&middot;&middot;&middot;</b> first.)</span></li>
+      <li><span class="sheet-n">2</span><span>Scroll down and tap <b>Add to Home Screen</b> <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8"/></svg></span></li>
+      <li><span class="sheet-n">3</span><span>Open <b>Kalshi Knows</b> from your home screen and tap <b>Enable alerts</b>.</span></li>
     </ol>
-    <div class="sheet-arrow" aria-hidden="true"></div>
+    <div class="sheet-point mono" aria-hidden="true"><span>Share is down here</span><svg viewBox="0 0 24 40"><path d="M12 2v34M4 28l8 9 8-9" fill="none" stroke="currentColor" stroke-width="3"/></svg></div>
+  </div>
+</div>
+
+<!-- installed (standalone) onboarding: enable, then test -->
+<div class="sheet" id="app-sheet" hidden role="dialog" aria-labelledby="app-sheet-title">
+  <div class="sheet-card">
+    <button class="sheet-x mono" id="app-sheet-x" aria-label="Not now">Not now</button>
+    <p class="mono sheet-kicker" id="app-sheet-kicker">Installed &middot; step 1 of 2</p>
+    <h3 id="app-sheet-title">Turn on alerts</h3>
+    <p class="sheet-lede" id="app-sheet-lede">Your phone buzzes when Kalshi's price jumps, before your stream shows the play.</p>
+    <button class="btn-sig sheet-go" id="app-sheet-go">Enable alerts</button>
+    <label class="sheet-shield"><input type="checkbox" id="app-sheet-shield"> <span><b>Spoiler Shield</b>: alerts say "something big happened" without the play or score</span></label>
+    <p class="mono sheet-note" id="app-sheet-note"></p>
   </div>
 </div>
 

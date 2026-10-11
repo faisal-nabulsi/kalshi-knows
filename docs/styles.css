@@ -386,7 +386,7 @@ svg .bracket-cold { stroke: var(--cold); }
 .db-item .tier { grid-area: tier; justify-self: start; margin-top: 4px; }
 .db-profit { grid-area: profit; align-self: center; font-size: 1.05rem; font-weight: 600; color: var(--sig); }
 .db-none { padding: 18px; color: var(--ink3); }
-.db-trap .db-profit { color: var(--cold); text-decoration: line-through; text-decoration-thickness: 2px; }
+.db-trap .db-profit { color: var(--sig); }
 .db-trap .db-kind { color: var(--sig); }
 .db-near { padding: 18px; border-top: 1px solid var(--line); }
 .db-near-k { margin: 6px 0 10px; font-size: .68rem; letter-spacing: .12em; color: var(--ink3); }
@@ -667,3 +667,113 @@ svg .iqr { stroke: var(--sig); stroke-width: 2; }
   .to-vote-n { display: none; }
   .to-lower { display: none; }
 }
+
+/* ------------------------------------------------ pages (hash routes) */
+[hidden] { display: none !important; } /* .to, .sheet etc. set display, which would otherwise beat the hidden attribute and leave an invisible overlay eating every tap */
+.tabs { display: none; }
+@media (max-width: 900px) {
+  :root { --tick: 58px; }
+  .ticker { display: none; }
+  .tabs { display: grid; grid-template-columns: repeat(6, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; height: calc(var(--tick) + var(--safe-b)); padding-bottom: var(--safe-b); background: rgba(10,10,11,.96); border-top: 1px solid var(--line2); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .tabs a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: var(--ink3); font: 600 .62rem/1 var(--mono); letter-spacing: .04em; text-transform: uppercase; border-top: 2px solid transparent; margin-top: -1px; }
+  .tabs svg { width: 20px; height: 20px; }
+  .tabs a[aria-current] { color: var(--ink); border-top-color: var(--sig); }
+  .tabs a[aria-current] svg { color: var(--sig); }
+}
+.sec-title-long { font-size: clamp(2.8rem, 6vw, 7rem); line-height: .86; }
+
+/* ------------------------------------------------ receipts scorecard */
+.rc { margin-top: 40px; border: 1px solid var(--line); }
+.rc-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 8px 32px; align-items: end; }
+.rc-k { grid-column: 1 / -1; margin: 0; font-size: .72rem; letter-spacing: .12em; color: var(--ink2); display: flex; gap: 10px; align-items: center; }
+.rc-tag { background: var(--ink); color: var(--bg); padding: 3px 7px; font-weight: 600; }
+.rc-title { margin: 0; font: 800 clamp(1.6rem, 2.4vw, 2.5rem)/1 var(--display); text-transform: uppercase; }
+.rc-sum p { margin: 0; }
+.rc-tally { font-size: .85rem; letter-spacing: .02em; color: var(--ink2); }
+.rc-tally b { font-weight: 600; }
+.rc-acc { margin-top: 6px !important; color: var(--ink2); font-size: .95rem; }
+.rc-acc b { color: var(--ink); font-size: 1.15em; }
+.g-ok { color: #6fdc8c; } .g-bad { color: var(--sig); } .g-miss { color: var(--ink3); }
+b.g-ok, b.g-bad, b.g-miss { font-weight: 600; }
+.rc-wrap { overflow-x: auto; }
+.rc-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.rc-table th { text-align: left; font: 600 .68rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.rc-table td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.rc-table .num { text-align: right; }
+.rc-time, .rc-game { white-space: nowrap; color: var(--ink2); font-size: .82rem; }
+.rc-call b { font-weight: 700; }
+.rc-call small { display: block; color: var(--ink3); font-size: .78rem; margin-top: 3px; max-width: 46ch; }
+.rc-grade { display: inline-block; font-size: .7rem; font-weight: 600; letter-spacing: .08em; padding: 4px 7px; border: 1px solid currentColor; white-space: nowrap; }
+.rc-row.g-ok .rc-grade { color: #6fdc8c; } .rc-row.g-bad .rc-grade { color: var(--sig); }
+.rc-row.g-miss { color: var(--ink3); } .rc-row.g-miss .rc-grade { color: var(--ink3); border-style: dashed; }
+.rc-row.g-miss .rc-call b { color: var(--ink2); }
+.rc-row.g-swing .rc-grade { color: var(--ink2); } .rc-row.g-pend .rc-grade { color: var(--ink3); border-color: var(--line2); }
+.rc-row.g-ok, .rc-row.g-bad, .rc-row.g-swing, .rc-row.g-pend { color: var(--ink); }
+.rc-lead { font-size: .8rem; }
+.rc-lead em { display: block; font-style: normal; color: var(--ink3); font-size: .72rem; margin-top: 2px; }
+.rc-dim { color: var(--ink3); }
+.rc-empty { padding: 18px 24px; margin: 0; color: var(--ink3); }
+.rc-note { margin: 0; padding: 14px 24px; font-size: .7rem; line-height: 1.55; color: var(--ink3); letter-spacing: .02em; }
+@media (max-width: 760px) {
+  .rc-head { grid-template-columns: 1fr; padding: 18px 16px; }
+  .rc-table thead { display: none; }
+  .rc-table, .rc-table tbody { display: block; }
+  .rc-table tr { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .rc-table td { padding: 0; border: 0; }
+  .rc-time { grid-column: 1; } .rc-game { grid-column: 2; } .rc-sure { grid-column: 3; }
+  .rc-call { grid-column: 1 / -1; font-size: 1.05rem; }
+  .rc-g { grid-column: 1 / 3; } .rc-lead { grid-column: 1 / -1; }
+  .rc-note { padding: 14px 16px; }
+}
+
+/* ------------------------------------------------ Spoiler Shield */
+.shield-btn { display: inline-flex; align-items: center; gap: 8px; background: none; border: 1px solid var(--line2); color: var(--ink2); padding: 8px 12px; font-size: .78rem; cursor: pointer; }
+.shield-btn b { color: var(--ink3); font-weight: 600; }
+.sh-ico { width: 12px; height: 14px; background: currentColor; clip-path: polygon(50% 0, 100% 18%, 100% 55%, 50% 100%, 0 55%, 0 18%); }
+.shield-btn[aria-checked="true"] { border-color: #6fdc8c; color: var(--ink); background: rgba(111,220,140,.08); }
+.shield-btn[aria-checked="true"] b, .shield-btn[aria-checked="true"] .sh-ico { color: #6fdc8c; }
+.shield-lg { font-size: .95rem; padding: 12px 16px; }
+.get-shield { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); max-width: 36rem; }
+.get-shield p { color: var(--ink2); margin: 12px 0 0; }
+.shroud-tap { display: none; }
+.shield .fi:not(.unveil) .shroud, .shield .rc-row:not(.unveil) .shroud { filter: blur(9px); user-select: none; pointer-events: none; }
+.shield .fi:not(.unveil), .shield .rc-row:not(.unveil) .rc-call { cursor: pointer; position: relative; }
+.shield .fi:not(.unveil) .shroud-tap, .shield .rc-row:not(.unveil) .shroud-tap { display: block; position: absolute; left: 18px; bottom: 14px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #6fdc8c; }
+.shield .rc-row:not(.unveil) .shroud-tap { position: static; margin-top: -1.2em; }
+.shield .to:not(.unveil) :is(#to-team, #to-play, #to-sure, #to-alt) { filter: blur(22px); }
+.shield .to:not(.unveil) #to-reveal::after { content: ' · Spoiler Shield is on'; }
+.shield .to:not(.unveil) .to-main { cursor: pointer; }
+
+/* ------------------------------------------------ Dutch Book: traps vs fee-eaten */
+.db-kind-bad { color: var(--sig); }
+.db-profit.db-loss { color: var(--sig); display: flex; flex-direction: column; align-items: flex-end; }
+.db-profit.db-loss em { font-style: normal; color: var(--ink3); font-size: .7rem; text-decoration: line-through; margin-top: 2px; }
+.ledger .ledger-paper dt, .ledger .ledger-paper dd { color: var(--ink3); }
+.ledger .ledger-paper dd { text-decoration: line-through; }
+.ledger .ledger-paper em { display: block; font-style: normal; font-size: .7em; }
+.dd-paper { color: var(--ink3); }
+#db-claim { color: var(--ink); font-weight: 600; }
+
+/* ------------------------------------------------ headlines stats: 2 tiles */
+.knew-stats { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.ks-wide p { max-width: 34rem; }
+
+/* ------------------------------------------------ onboarding sheets */
+.sheet-lede { margin: -6px 0 14px; font-size: 1rem; max-width: 34ch; }
+.sheet-point { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 10px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: var(--sig-d); }
+.sheet-point svg { width: 22px; height: 36px; color: var(--sig); animation: nudge 1.1s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateY(7px); } }
+.sheet-go { width: 100%; margin: 4px 0 14px; padding: 20px; font-size: 1.6rem; }
+.sheet-shield { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; }
+.sheet-shield input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--sig); flex: none; }
+.sheet-note { margin: 12px 0 0; font-size: .74rem; min-height: 1em; }
+.sheet-note.bad { color: var(--sig-d); }
+
+/* ------------------------------------------------ W3: phones, keep the 3D ball from fighting the headline */
+@media (max-width: 480px) {
+  .stage canvas { opacity: .32; }
+  .gl-labels { opacity: .5; }
+  .hero-title { font-size: clamp(3.4rem, 17vw, 4.6rem); position: relative; z-index: 2; text-shadow: 0 2px 18px rgba(10,10,11,.9); }
+  .hero-sub { position: relative; z-index: 2; font-size: 1rem; margin: 18px 0; background: rgba(10,10,11,.62); padding: 8px 10px; margin-left: -10px; margin-right: -10px; }
+}
+.shield .to:not(.unveil) .to-main::after { content: 'Spoiler Shield is on · tap to reveal'; display: block; margin-top: 18px; font: 600 .8rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #6fdc8c; }
