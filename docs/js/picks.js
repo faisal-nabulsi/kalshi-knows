@@ -65,6 +65,7 @@ export function renderPicks(root, d) {
     <section class="pk-record">
       <span class="pk-label mono">${esc(b.label || '')}</span>
       <h3>Backtest on ${(h24.bets ?? 1603).toLocaleString()} unseen markets: won ${Math.round((h24.win_rate ?? 0.582) * 100)}%, +${Math.round((h24.roi_after_fees ?? 0.12) * 100)}% after fees</h3>
+      <p class="pk-context">For context: at standard sportsbook odds (−110) you need 52.4% just to break even, and professional bettors who sustain ~55% are considered elite.</p>
       <p class="mono">Trained on ${(b.training_markets ?? 4363922).toLocaleString()} settled Kalshi markets, tested on ${esc(b.test_month || '2026-01')} it never saw. Rule: ${esc(b.rule || '')}. Won ${((h24.win_rate ?? 0) * 100).toFixed(1)}%, +${h24.pnl_cents_per_contract}¢ per contract, ROI +${((h24.roi_after_fees ?? 0) * 100).toFixed(1)}% after fees (95% CI ${((h24.roi_ci95?.[0] ?? 0) * 100).toFixed(1)}–${((h24.roi_ci95?.[1] ?? 0) * 100).toFixed(1)}%). At 6 h before close: ${(h6.bets ?? 0).toLocaleString()} bets, +${((h6.roi_after_fees ?? 0) * 100).toFixed(1)}%.</p>
       ${d.scorer_note ? `<p>Live scorer: ${esc(d.scorer_note)}</p>` : ''}
     </section>
