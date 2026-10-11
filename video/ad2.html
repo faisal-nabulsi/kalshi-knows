@@ -17,17 +17,20 @@ const pop=(t,x,d=.28)=>t<x?null:{s:lerp(1.3,1,cl((t-x)/d)),o:cl((t-x)/.08)};
 const TEAM=D.team_name.toUpperCase(), f1=x=>x.toFixed(1);
 // ---------- HOOK
 function hook(t){
-  const rows=[...D.ladder.map(([n,v])=>[n==='ANTENNA'?'ANTENNA TV':n,v,0]),['KALSHI PRICE',D.market_median,1]];
+  const L=Object.fromEntries(D.ladder); const rows=[['ANTENNA TV',L['ANTENNA'],0],['YOUTUBE TV',L['YOUTUBE TV'],0],['NFL+',L['NFL+'],0],['KALSHI PRICE',D.market_median,1]];
   const p=cl((t-C.race)/(C.mk-C.race-0.3)), c=p*66; let o=`<div class="abs mono" style="left:100px;top:60px;font-size:40px;letter-spacing:.2em;color:var(--ink2);opacity:${cl((t-C.race+.1)/.3)}">SECONDS BEHIND REAL LIFE</div>`;
-  const X0=520,W=1180,top=170,rh=135,mk=t>=C.mk;
+  const X0=520,W=1180,top=210,rh=185,mk=t>=C.mk;
   rows.forEach(([n,v,k],i)=>{ if(k&&!mk) return; const y=top+i*rh, vv=k?v:v, w=k?W*v/66:W*Math.min(c,v)/66, done=k||c>=v;
     const dim=mk&&!k?.35:1, m=k?pop(t,C.mk,.35):null;
-    o+=`<div class="abs mono" style="left:100px;top:${y+34}px;font-size:36px;letter-spacing:.08em;color:${k?'var(--sig)':'var(--ink2)'};opacity:${dim}">${n}</div>
-      <div class="abs" style="left:${X0}px;top:${y+18}px;height:70px;width:${w}px;background:${k?'var(--sig)':'#4a5663'};opacity:${dim};${k?'box-shadow:0 0 60px rgba(255,77,26,.7)':''}"></div>`;
-    if(done) o+=`<div class="abs disp" style="left:${X0+w+22}px;top:${y+2}px;font-size:${k?130:96}px;line-height:1;color:${k?'var(--sig)':'var(--cold)'};opacity:${dim};transform-origin:0 50%;transform:scale(${m?m.s:1})">${k?f1(v):v} s</div>`;});
-  o+=`<div class="abs" style="left:${X0-3}px;top:${top-10}px;width:5px;height:${rh*6}px;background:var(--ink)"></div>`;
+    o+=`<div class="abs mono" style="left:100px;top:${y+30}px;font-size:40px;letter-spacing:.08em;color:${k?'var(--sig)':'var(--ink2)'};opacity:${dim}">${n}</div>
+      <div class="abs" style="left:${X0}px;top:${y+10}px;height:100px;width:${w}px;background:${k?'var(--sig)':'#4a5663'};opacity:${dim};${k?'box-shadow:0 0 60px rgba(255,77,26,.7)':''}"></div>`;
+    if(done) o+=`<div class="abs disp" style="left:${X0+w+22}px;top:${y-4}px;font-size:${k?170:130}px;line-height:1;color:${k?'var(--sig)':'var(--cold)'};opacity:${dim};transform-origin:0 50%;transform:scale(${m?m.s:1})">${k?f1(v):v} s</div>`;});
+  o+=`<div class="abs" style="left:${X0-3}px;top:${top-10}px;width:5px;height:${rh*4}px;background:var(--ink)"></div>`;
   hit(t,C.mk,.8); return o;
 }
+// ---------- WHAT
+function what(t){ hit(t,C.what,.4); const q=lerp(1.2,1,cl((t-C.what)/.3));
+  return `<div class="abs disp" style="left:90px;top:150px;font-size:360px;line-height:.84;transform-origin:0 0;transform:scale(${q})">KALSHI<br><span class="sig">KNOWS</span></div><div class="abs disp" style="left:96px;top:830px;font-size:140px;line-height:.9;opacity:${cl((t-C.what-1.2)/.4)}">A FREE PLAY ALERT</div>`; }
 // ---------- STORY
 function chart(t){
   const ser=D.series, lo=Math.min(...ser.map(a=>a[1]))-.03, hi=Math.max(...ser.map(a=>a[1]))+.03, rmin=-30, rmax=60, W=1640,Hh=620,x0=140,y0=250;
@@ -41,48 +44,49 @@ function chart(t){
 }
 function phone(t){
   const ta=t-C.alert, nin=ta<0?0:back(ta/.45), sh=(ta>0&&ta<.9)?Math.sin(ta*75)*18*(1-ta/.9):0, tb=t-C.buzz, sh0=(tb>0&&tb<.6)?Math.sin(tb*80)*10*(1-tb/.6):0;
-  const px=700+sh+sh0, py=40;
+  const px=700+sh+sh0, py=40, reading=t<C.alert, dots='.'.repeat(1+Math.floor(t*3)%3);
   let o=`<div class="abs" style="left:${px}px;top:${py}px;width:520px;height:1100px;border-radius:84px;background:#0c0c0e;border:13px solid #2a2a30;box-shadow:0 0 ${ta>0&&ta<2?100:20}px rgba(255,77,26,.5);overflow:hidden">
    <div class="abs" style="inset:0;background:radial-gradient(120% 55% at 30% 0,#34201a,#0c0c0e 60%)"></div>
    <div class="abs" style="left:50%;top:16px;margin-left:-70px;width:140px;height:38px;border-radius:22px;background:#000"></div>
    <div class="abs" style="left:0;right:0;top:100px;text-align:center;font:600 30px Archivo;color:#ede8df;opacity:.85">${h.date}</div>
    <div class="abs" style="left:0;right:0;top:136px;text-align:center;font:600 170px/1 Archivo;color:#ede8df;letter-spacing:-.03em">${h.time}</div>
+   ${reading?`<div class="abs" style="left:20px;right:20px;top:470px;border-radius:30px;background:rgba(44,44,50,.7);padding:30px;text-align:center;font:600 34px 'IBM Plex Mono';color:#ff4d1a;letter-spacing:.06em">READING THE PRICE${dots}<div style="margin-top:20px;height:10px;border-radius:6px;background:#2a2a30"><div style="height:10px;border-radius:6px;background:#ff4d1a;width:${cl((t-C.buzz)/(C.alert-C.buzz))*100}%"></div></div></div>`:''}
    <div class="abs" style="left:20px;right:20px;top:${430+lerp(-240,0,cl(nin,0,1.15))}px;opacity:${cl(nin*3)};border-radius:34px;background:rgba(44,44,50,.96);padding:26px;border:1px solid rgba(255,255,255,.12)">
     <div style="display:flex;align-items:center;gap:14px"><img src="../docs/icons/icon-192.png" style="width:52px;height:52px;border-radius:13px"><div style="font:600 25px Archivo;color:#ede8df;flex:1">SPOILER · ${h.short}</div><div style="font:500 21px Archivo;color:#a9a49b">now</div></div>
     <div style="font:700 40px/1.15 Archivo;color:#ede8df;margin-top:16px">${h.headline}</div></div></div>`;
   for(let i=0;i<3;i++){const q=cl((ta-i*.16)/.7); if(ta>0&&q>0&&q<1) o+=`<div class="abs" style="left:${px-24-q*80}px;top:${py+420-q*70}px;width:${568+q*160}px;height:${300+q*140}px;border:4px solid rgba(255,77,26,${.7*(1-q)});border-radius:100px"></div>`;}
-  hit(t,C.alert,.5); return o;
+  hit(t,C.alert,.4); return o;
 }
 function story(t){
+  const cs=Math.min(C.alert+1.1,C.tv-1.8), ramp=Math.max(.8,C.tv-.7-cs);
   if(t<C.jump) return `<div class="abs mono" style="left:0;right:0;top:250px;text-align:center;font-size:48px;letter-spacing:.3em;color:var(--ink2)">TODAY</div><div class="abs disp" style="left:0;right:0;top:330px;text-align:center;font-size:640px;line-height:.9;transform:scale(${pop(t,C.time,.4)?.s||1})">${D.jump_clock}<span class="sig" style="font-size:200px"> PM</span></div>`;
-  if(t<C.buzz) {hit(t,C.jump,.35); return chart(t);}
-  if(t<C.later) return phone(t);
-  if(t<C.tv){ const c=Math.min(D.gap_s,(t-C.later)/(C.tv-C.later)*D.gap_s);
-    return `<div class="abs mono" style="left:0;right:0;top:130px;text-align:center;font-size:52px;letter-spacing:.22em;color:var(--ink2)">SECONDS LATER</div><div class="abs disp" style="left:0;right:0;top:210px;text-align:center;font-size:760px;line-height:.9"><span class="sig">+</span>${Math.floor(c)}</div><div class="abs mono" style="left:0;right:0;top:960px;text-align:center;font-size:44px;letter-spacing:.2em;color:var(--ink2)">YOUR STREAM: STILL NOTHING</div>`; }
-  hit(t,C.tv,.95,.4); const q=lerp(1.2,1,cl((t-C.tv)/.3));
+  if(t<C.buzz) {hit(t,C.jump,.25); return chart(t);}
+  if(t<cs) return phone(t);
+  if(t<C.tv){ const c=Math.min(D.gap5,(t-cs)/ramp*D.gap5);
+    return `<div class="abs mono" style="left:0;right:0;top:130px;text-align:center;font-size:52px;letter-spacing:.22em;color:var(--ink2)">SECONDS AFTER THE BUZZ</div><div class="abs disp" style="left:0;right:0;top:210px;text-align:center;font-size:760px;line-height:.9"><span class="sig">+</span>${Math.floor(c)}</div><div class="abs mono" style="left:0;right:0;top:960px;text-align:center;font-size:44px;letter-spacing:.2em;color:var(--ink2)">YOUR STREAM: STILL NOTHING</div><div class="abs mono" style="left:60px;top:1030px;font-size:20px;color:var(--ink3)">Recreation of a real alert from today · typical stream delay</div>`; }
+  hit(t,C.tv,.22,.5); const q=lerp(1.12,1,cl((t-C.tv)/.4));
   return `<div class="abs" style="inset:0;background:#1a0f0b"></div><div class="abs mono" style="left:0;right:0;top:230px;text-align:center;font-size:48px;letter-spacing:.22em;color:var(--sig)">YOUR STREAM, FINALLY</div>
     <div class="abs disp" style="left:0;right:0;top:350px;text-align:center;font-size:330px;line-height:.86;transform:scale(${q})">${/TOUCHDOWN/.test(h.play_text)?'TOUCHDOWN,':'BIG PLAY,'}<br><span class="sig">${TEAM}!</span></div>
-    <div class="abs mono" style="left:60px;top:1030px;font-size:20px;color:var(--ink3)">Recreation of a real alert from today · real timestamps</div>`;
+    <div class="abs mono" style="left:60px;top:1030px;font-size:20px;color:var(--ink3)">Recreation of a real alert from today · typical stream delay</div>`;
 }
 // ---------- PROOF
 function proof(t){
   if(t<C.moves){ const e=eo((t-C.seasons)/1.0); hit(t,C.seasons,.3);
-    return `<div class="abs disp sig" style="left:100px;top:60px;font-size:900px;line-height:.8">${Math.round(28*e)}</div><div class="abs disp" style="left:110px;top:760px;font-size:200px;opacity:${cl((t-C.seasons)/.4)}">SEASONS OF NFL PLAYS</div>`; }
+    return `<div class="abs disp sig" style="left:100px;top:60px;font-size:900px;line-height:.8">${Math.round(25*e)}</div><div class="abs disp" style="left:110px;top:760px;font-size:200px;opacity:${cl((t-C.seasons)/.4)}">SEASONS OF NFL PLAYS</div>`; }
   if(t<C.five){ const e=eo((t-C.moves)/1.2); hit(t,C.moves,.3); const n=Math.round(D.real_moves*e);
-    return `<div class="abs disp sig" style="left:100px;top:90px;font-size:680px;line-height:.85">${n.toLocaleString()}</div><div class="abs disp" style="left:110px;top:720px;font-size:210px;line-height:.9">REAL MARKET MOVES</div>`; }
+    return `<div class="abs disp sig" style="left:100px;top:90px;font-size:680px;line-height:.85">${n.toLocaleString()}</div><div class="abs disp" style="left:110px;top:720px;font-size:210px;line-height:.9">REAL PRICE JUMPS</div>`; }
   hit(t,C.five,.3); const k=D.five_k;
   const dots=[...Array(5)].map((_,i)=>{const e=cl((t-C.five-.25-i*.14)/.25), on=i<k; return `<div class="abs" style="left:${130+i*190}px;top:640px;width:140px;height:140px;border-radius:50%;background:${on?'var(--sig)':'#3a3a40'};transform:scale(${back(e)});opacity:${cl(e*3)}"></div>`}).join('');
-  return `<div class="abs disp" style="left:100px;top:70px;font-size:560px;line-height:.85">${k} OF 5</div>${dots}<div class="abs disp" style="left:110px;top:830px;font-size:190px;line-height:.9">NAMED PLAYS RIGHT</div>`;
+  return `<div class="abs disp" style="left:100px;top:70px;font-size:520px;line-height:.85"><span style="font-size:150px;color:var(--ink2)">ABOUT </span>${k} OF 5</div>${dots}<div class="abs disp" style="left:110px;top:830px;font-size:170px;line-height:.9">PLAYS IT CALLED RIGHT</div>`;
 }
 // ---------- CLOSE
 function close_(t){
-  if(t<C.logo) return `<div class="abs disp" style="left:0;right:0;top:230px;text-align:center;font-size:300px;line-height:.88">NOT COMPETING<br>WITH <span class="sig">KALSHI.</span></div><div class="abs disp" style="left:0;right:0;top:850px;text-align:center;font-size:130px;color:var(--ink2);opacity:${cl((t-C.nc-1.2)/.4)}">THE SMART LAYER ON TOP.</div>`;
-  const q=cl((t-C.logo)/.3), tg=cl((t-C.tag)/.3); hit(t,C.logo,.7);
+  const q=cl((t-C.logo)/.3), tg=cl((t-C.tag)/.3); hit(t,C.logo,.5);
   return `<div class="abs disp" style="left:90px;top:80px;font-size:340px;line-height:.84;transform-origin:0 0;transform:scale(${lerp(1.2,1,q)})">KALSHI<br><span class="sig">KNOWS.</span></div>
    <div class="abs disp" style="left:96px;top:780px;font-size:120px;line-height:.9;opacity:${tg};transform:translateY(${(1-tg)*30}px)">KNOW BEFORE<br>YOUR STREAM.</div>
    <div class="abs" style="left:1330px;top:${60+(1-eo((t-C.logo-.2)/.5))*40}px;opacity:${eo((t-C.logo-.2)/.5)};text-align:center"><img src="assets/qr.png" style="width:480px;height:480px;display:block;box-shadow:0 0 90px rgba(255,77,26,.35)"><div class="mono" style="font-size:32px;margin-top:20px">kalshi-knows.pages.dev</div></div>
    <div class="abs" style="left:1300px;top:700px;width:560px;text-align:center;opacity:${cl((t-C.tag)/.5)}"><div class="disp" style="font-size:66px;line-height:1">FAISAL NABULSI<br>KEVIN HUANG · DUGAR</div><div class="mono" style="font-size:22px;margin-top:20px;color:var(--sig);letter-spacing:.08em">PUBLIC DATA ONLY · NO REAL MONEY</div></div>
    <div class="abs mono" style="left:90px;top:1030px;font-size:22px;color:var(--ink2);opacity:${cl((t-C.tag)/.5)}">Narration: AI voice (original character)</div>`;
 }
-window.render=(scene,t)=>{fl=0; $('s').innerHTML=({hook,story,proof,close:close_})[scene](t); $('flash').style.opacity=fl; return true};
+window.render=(scene,t)=>{fl=0; $('s').innerHTML=({hook,what,story,proof,close:close_})[scene](t)+(C.what!==undefined&&t>=C.what+0.4&&scene!=='what'&&scene!=='close'?`<div class="abs mono" style="right:50px;top:30px;font-size:26px;letter-spacing:.14em;color:var(--ink2);z-index:30">KALSHI <span class=sig>KNOWS</span></div>`:''); $('flash').style.opacity=fl; return true};
 </script></body></html>

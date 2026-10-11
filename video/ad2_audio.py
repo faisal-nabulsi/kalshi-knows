@@ -7,7 +7,7 @@ H = os.path.dirname(os.path.abspath(__file__)); B = f"{H}/build"; os.makedirs(f"
 SR = 48000; D = json.load(open(f"{B}/ad2.json")); BEAT = 60 / 126
 KEYF = os.path.expanduser("~/.config/elevenlabs/key"); ENGINE = os.environ.get("ENGINE", "auto")
 if ENGINE == "auto": ENGINE = "elevenlabs" if os.path.exists(KEYF) else "edge"
-EDGE_VOICE = os.environ.get("EDGE_VOICE", "en-US-AndrewMultilingualNeural"); ELEVEN_VOICE = os.environ.get("ELEVEN_VOICE", "Brian")
+EDGE_VOICE = os.environ.get("EDGE_VOICE", "en-US-AndrewMultilingualNeural"); ELEVEN_VOICE = os.environ.get("ELEVEN_VOICE", "Liam")
 norm = lambda w: re.sub(r"[^a-z0-9']", "", w.lower())
 def dec(p):
     r = subprocess.run(["ffmpeg", "-v", "error", "-i", p, "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"], capture_output=True, check=True)

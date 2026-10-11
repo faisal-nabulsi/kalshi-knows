@@ -16,7 +16,7 @@ ms = BD["more"][0]; segs = [(0.0, C["sync"] - ms), (C["sync"] - ms, C["agent"] -
 cmd = ["ffmpeg", "-v", "error", "-y"]
 for i in range(3): cmd += ["-i", f"{B}/a2_shot{i}.mp4"]
 for i in range(3): cmd += ["-i", f"{B}/a2_chip{i}.png"]
-tr = [f"[{i}:v]trim=0:{e-s:.3f},setpts=PTS-STARTPTS[t{i}]" for i, (s, e) in enumerate(segs)]
+tr = [f"[{i}:v]trim=0:{e-s:.3f},setpts=PTS-STARTPTS,scale=1920:1080,setsar=1,fps=30,format=yuv420p[t{i}]" for i, (s, e) in enumerate(segs)]
 fc = tr + ["[t0][t1][t2]concat=n=3:v=1:a=0[m]"]; prev = "m"
 pre = C["hide"] - ms                                  # lead-in before the first cue shows shot 0 too
 for i, (s, e) in enumerate(segs):
@@ -24,7 +24,7 @@ for i, (s, e) in enumerate(segs):
 cmd += ["-filter_complex", ";".join(fc), "-map", f"[{prev}]", "-r", "30", "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", f"{B}/a2_more.mp4"]
 subprocess.run(cmd, check=True)
 with open(f"{B}/a2_concat.txt", "w") as f:
-    for n in ("hook", "story", "proof", "more", "close"): f.write(f"file '{B}/a2_{n}.mp4'\n")
+    for n in ("hook", "what", "story", "proof", "more", "close"): f.write(f"file '{B}/a2_{n}.mp4'\n")
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", f"{B}/a2_concat.txt", "-i", f"{B}/ad2_audio.wav", "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-r", "30",
                 "-c:a", "aac", "-b:a", "192k", "-t", f"{CU['total']:.3f}", "-movflags", "+faststart", f"{H}/kalshi-knows-ad.mp4"], check=True)
 print("wrote", f"{H}/kalshi-knows-ad.mp4")

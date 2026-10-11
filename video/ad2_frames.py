@@ -12,7 +12,7 @@ async def worker(p, scene, idxs, outdir, t0):
     await b.close()
 async def main():
     async with async_playwright() as p:
-        for n in sys.argv[1:] or ["hook", "story", "proof", "close"]:
+        for n in sys.argv[1:] or ["hook", "what", "story", "proof", "close"]:
             s, e = BD[n]; nf = int(round((e - s) * FPS)); out = f"{B}/a2fr_{n}"; os.makedirs(out, exist_ok=True)
             await asyncio.gather(*[worker(p, n, list(range(w, nf, WORKERS)), out, s) for w in range(WORKERS)])
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", str(FPS), "-i", f"{out}/%05d.jpg", "-c:v", "libx264", "-crf", "14", "-pix_fmt", "yuv420p", f"{B}/a2_{n}.mp4"], check=True)
