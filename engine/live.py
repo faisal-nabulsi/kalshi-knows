@@ -153,13 +153,12 @@ class Engine:
         st = self.states.get(gid) or deque()
         snap = None
         field = None   # latest snapshot that still knows possession/down/yardline (ESPN blanks them between plays)
+        field_ts = None
         for ts, s in st:
             if ts <= t:
                 snap = s
                 if s.get("possession") and t - ts <= 180_000:
-                    field = s
-                elif s.get("possession"):
-                    field = s if t - ts <= 180_000 else field
+                    field, field_ts = s, ts
             else:
                 break
         if snap is None:
@@ -181,7 +180,8 @@ class Engine:
                 "score_differential": diff, "posteam_is_home": is_home,
                 "down": snap.get("down"), "ydstogo": snap.get("ydstogo"),
                 "yardline_100": snap.get("yardline_100"), "posteam": pos,
-                "home": home, "away": away}
+                "home": home, "away": away,
+                "field_age_s": round((t - field_ts) / 1000, 1) if field_ts is not None else None}
 
     # ---- quotes + detector
     def on_quote(self, gid: str, ts: int, p: float, detail: dict | None = None):
@@ -251,13 +251,20 @@ class Engine:
             log.exception("infer failed: %s", e)
             inferred = [{"type": "OTHER", "team": team, "prob": 1.0}]
         inferred = [dict(r, prob=round(float(r["prob"]), 3)) for r in inferred][:4]
+        # Don't name a play from bad inputs (REVIEW.md E2): missing field position or a stale ESPN snapshot
+        bad = [k for k in ("posteam", "down", "yardline_100") if state.get(k) in (None, "")]
+        if state.get("field_age_s") is None or state["field_age_s"] > 60:
+            bad.append("stale_state")
         self.n_alert += 1
         prefix = "r_" if CFG["mode"] == "replay" else "a_"
         aid = f"{prefix}{self.n_alert}"
         top = inferred[0]["prob"] if inferred else 0
         alert = {"id": aid, "ts_ms": ts, "game_id": gid, "team": team,
                  "p_before": round(pb, 4), "p_after": round(pa, 4), "delta": round(pa - pb, 4),
-                 "inferred": inferred, "headline": infer.headline(inferred, team),
+                 "inferred": inferred,
+                 "headline": infer.headline(inferred, team) if not bad else infer.headline([{"type": "OTHER", "prob": 1.0}], team),
+                 "named": bool(not bad and inferred and inferred[0]["type"] != "OTHER" and inferred[0]["prob"] >= infer.GATE),
+                 "gate_reason": bad or None,
                  "confirmed": None, **tiers.alert_tier(top),
                  "short_name": g.get("short_name"), "home": g.get("home"), "away": g.get("away"),
                  "p_home_before": round(pb_h, 4), "p_home_after": round(p_after_home, 4),
@@ -319,6 +326,7 @@ class Engine:
                                               "team": near[0].get("team"),
                                               "espn_wallclock_ms": near[0]["wallclock_ms"],
                                               "espn_seen_ms": near[0].get("seen_ms")} if near else None)
+                        a["grade"], a["graded_ms"] = "no_match", ref
                         a["updated_ms"] = ref
                         self._emit(a)
                     continue
@@ -355,6 +363,9 @@ class Engine:
                         "market_lag_s": round((a["ts_ms"] - p["wallclock_ms"]) / 1000, 1) if p.get("wallclock_ms") else None,
                         "inferred_correct": bool(a["inferred"]) and a["inferred"][0]["type"] == p.get("type"),
                     }
+                    a["grade"] = ("correct" if a["confirmed"]["inferred_correct"] else "wrong") if a.get("named", True) \
+                        else "swing_hit"           # a real play happened, but we only said "big swing"
+                    a["graded_ms"] = ref
                     a["updated_ms"] = max(ref, a["ts_ms"])
                     log.info("CONFIRMED %s: %s (lead %.1fs)", a["id"], (p.get("text") or "")[:80],
                              a["confirmed"]["lead_s"] or 0)
@@ -368,6 +379,24 @@ class Engine:
                         threading.Thread(target=push.send_all, args=({
                             "title": f"✓ CONFIRMED · {a.get('short_name') or ''}".strip(" ·"), "body": body,
                             "url": "./#live", "tag": a["id"]},), daemon=True).start()
+
+    def tally(self) -> dict:
+        t = {"n": 0, "correct": 0, "wrong": 0, "swing_hit": 0, "no_match": 0, "pending": 0}
+        for a in self.alerts:
+            if a["id"].startswith("r_"):
+                continue
+            t["n"] += 1
+            g = a.get("grade")
+            if g is None:      # alerts restored from before grading existed
+                if a.get("confirmed"):
+                    g = "correct" if a["confirmed"].get("inferred_correct") else "wrong"
+                elif "espn_nearest" in a:
+                    g = "no_match"
+                else:
+                    g = "pending"
+                a["grade"] = None if g == "pending" else g
+            t[g] = t.get(g, 0) + 1
+        return t
 
     # ---- API views
     def games_list(self, step: int = 1) -> list[dict]:
@@ -780,6 +809,7 @@ def health():
     return {"ok": True, "now_ms": now_ms(), "games_tracked": len(ENGINE.tracked_ids()) if CFG["mode"] == "live"
             else len(ENGINE.games), "mode": CFG["mode"],
             "alerts": len(ENGINE.alerts), "confirmed": sum(1 for a in ENGINE.alerts if a.get("confirmed")),
+            "tally": ENGINE.tally(),
             "threshold": THRESH, "threshold_source": THRESH_SRC, "window_s": WINDOW_MS / 1000,
             "kalshi_ok_ms": ENGINE.kalshi_ok_ms, "espn_ok_ms": ENGINE.espn_ok_ms,
             "kalshi_err": ENGINE.kalshi_err, "espn_err": ENGINE.espn_err, "unmatched": ENGINE.unmatched,
@@ -847,7 +877,8 @@ async def ws(websocket: WebSocket):
                 await websocket.send_text(json.dumps({"event": "alert", "data": a}))
             if time.time() - last_games >= 2:
                 last_games = time.time()
-                await websocket.send_text(json.dumps({"event": "games", "data": ENGINE.games_list(step=step)}))
+                games = await asyncio.to_thread(ENGINE.games_list, step)   # never block the event loop
+                await websocket.send_text(json.dumps({"event": "games", "data": games}))
             await asyncio.sleep(0.25)
     except (WebSocketDisconnect, RuntimeError):
         pass

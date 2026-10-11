@@ -121,8 +121,8 @@ def classify(p: dict) -> str:
         if "extra point" in t or "two-point" in t or "2pt" in t:
             return "OTHER"
     if p.get("is_turnover") or "interception" in t or "fumble recovery (opponent)" in t \
-            or "fumble return" in t or "blocked" in t:
-        return "TURNOVER"
+            or "fumble return" in t or "blocked" in t or "on downs" in t or "turnover on downs" in text:
+        return "TURNOVER"          # turnover on downs counts as a turnover, like the training labels
     if "safety" in t:
         return "SAFETY"
     if (p.get("yards") or 0) >= 20 and not p.get("penalty") and ("punt" not in t and "kickoff" not in t):
