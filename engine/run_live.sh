@@ -15,8 +15,10 @@ CF=/opt/homebrew/bin/cloudflared
 sleep 1
 
 echo "starting engine on :8000 $*"
-nohup "$PY" -m engine.live "$@" > "$RUN/engine.log" 2>&1 &
+nohup "$ROOT/engine/_supervise.sh" "$@" > "$RUN/engine.log" 2>&1 &
 echo $! > "$RUN/engine.pid"
+# keep the Mac awake while the engine runs (display may sleep; system, disk and network stay up)
+nohup caffeinate -imsu -w "$(cat "$RUN/engine.pid")" >/dev/null 2>&1 &
 for i in $(seq 1 30); do
   curl -sf localhost:8000/api/health >/dev/null && break
   sleep 1
