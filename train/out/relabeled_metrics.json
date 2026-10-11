@@ -1,0 +1,30 @@
+{
+ "cv_live": {
+  "set": "CV by game, live regime",
+  "n": 2641,
+  "games": 296,
+  "accuracy": 0.738,
+  "always_other": 0.498,
+  "lift": 0.24,
+  "lift_ci95": [
+   0.216,
+   0.267
+  ],
+  "named_calls": 466,
+  "named_precision": 0.805
+ },
+ "temporal_live": {
+  "set": "train 2025 -> test 2026, live regime",
+  "n": 511,
+  "games": 58,
+  "accuracy": 0.75,
+  "always_other": 0.47,
+  "lift": 0.28,
+  "lift_ci95": [
+   0.217,
+   0.351
+  ],
+  "named_calls": 94,
+  "named_precision": 0.766
+ }
+}

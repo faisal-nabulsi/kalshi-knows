@@ -2,6 +2,32 @@
 
 Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its source file. Charts are in `results/charts/` (script: `results/charts/make_charts.py`; cached inputs in `results/charts/data/`). Charts are also in W&B run `slide-charts` (https://wandb.ai/faisal_nabulsi-berkeley2025/kalshi-knows/runs/kgoeuzc4).
 
+## 0. UPDATED 1:30pm: the numbers to use on slides (supersede older rows below where they conflict)
+
+**Model accuracy, same plays for every model** (live-size jumps ≥0.08; CV = 5 folds grouped by game; "temporal" = trained on 2025, tested on 2026 games it never saw). Source: train/out/same_rows.json, train/out/relabeled_metrics.json.
+
+| Model | Accuracy | Always-"nothing big" | Lift (95% CI, game-clustered) | Named calls at ≥75% confidence |
+|---|---|---|---|---|
+| Smart fan (state + price jump, logistic) | 62.8% | 60.0% | +2.8 (1.4–4.3) | 38% right (97 calls) |
+| XGBoost without the 28-season pretraining | 70.0% | 60.0% | +9.9 (8.0–11.7) | 54% (69) |
+| Pre-registered production model (old labels) | 73.7% | 60.0% | +13.7 (11.7–15.7) | 79.5% (200) |
+| **Audited-label model, CV** (deduped jumps, n=2,641, 296 games) | **73.8%** | **49.8%** | **+24.0 (21.6–26.7)** | **80.5% (466)** |
+| **Audited-label model, temporal 2025→2026** (n=511, 58 games) | **75.0%** | **47.0%** | **+28.0 (21.7–35.1)** | **76.6% (94)** |
+
+**Head-to-head vs Claude Opus 5.5** (150 unseen 2026 live-size jumps, identical inputs, Claude zero-shot): Kalshi Knows 77.3% acc / log loss 0.513 / Brier 0.301 vs Claude 76.0% / 0.615 / 0.354 vs always-other 64.7%. Accuracy gap +1.3 pts (95% CI −7 to +11 → a tie); calibration clearly better; 7 ms per call. Source: train/out/claude_bench.json.
+
+**Data audit** (150 jumps hand-labeled): 15.3% of automatic labels were wrong → 3.3% after fixes (turnovers on downs restored; each jump re-anchored to the play that caused it; penalty-nullified plays dropped). Source: train/audit/.
+
+**What did NOT help (tested and dropped):** price-shape features (+0.1), contrastive-pretrained CNN (−1.6 live), multi-market features (totals ladder reacts slowly; TD ladder barely trades), game context (weather/field/spread/rest/injuries: −0.3 to −0.7, no better than placebo), LightGBM/CatBoost/TabPFN (±1–2). Sources: TRAINING.md, train/context/REPORT.md.
+
+**Market efficiency (the "find a flaw" hunt):** 1,255 pre-registered trading rules tested (in-game, pre-game, lead-lag across Kalshi markets, Kalshi vs Polymarket, context): 17 passed discovery, 11 passed the out-of-sample test + false-discovery control, **0 survived adversarial review** (each died on look-ahead timing or stale-price fills). Post-jump prices are calibrated (slope 0.97). Kalshi moves before Polymarket by ~0–4 s after big plays. **Conclusion: the market digests plays in seconds; the edge is speed.** Source: train/patterns/REPORT.md.
+
+**Live today (engine/logs/20261011, /api/health tally at 1:25pm):** 30 alerts; named plays 4 of 4 correct (0 wrong); 10 "big swing" alerts on a real play; 15 with no matching TD/FG/turnover/20+ yd play (stops, penalties, kickoffs); 1 pending. Best: "Steelers touchdown (80%)", 32 s before ESPN's feed; takeaways 38.6–64.8 s before.
+
+**Pre-registered untouched test on today's early games:** pending (results/today_test.json, ~1:50pm).
+
+**Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
+
 ## 1. Speed: the market vs the play, the stream, and ESPN
 
 | Number | Plain English | n / date | Source |
