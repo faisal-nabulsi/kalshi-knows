@@ -11,6 +11,22 @@ function urlBase64ToUint8Array(b64) {
   return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)));
 }
 
+// Stream delays (Super Bowl LX latency study); the site's delay picker stores the chosen service as 'delayK'.
+const DELAYS = { Antenna: 19, Cable: 38, Peacock: 48, 'YouTube TV': 53, 'Hulu Live': 53, DirecTV: 60, 'NFL+': 62 };
+export function subBody(sub) {
+  const service = store.get('delayK', 'Peacock');
+  return JSON.stringify({ ...sub.toJSON(), prefs: { sync: !!store.get('sync', false), delay_s: DELAYS[service] ?? 48, service } });
+}
+export async function pushPrefs(getApi) {
+  try {
+    const api = getApi && getApi(); if (!api || !('serviceWorker' in navigator)) return false;
+    const reg = await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription();
+    if (!sub) return false;
+    const r = await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: subBody(sub) });
+    return r.ok;
+  } catch { return false; }
+}
+
 // navigator.serviceWorker.ready never settles if registration failed; don't let the button hang on it
 const swReady = (ms = 8000) => Promise.race([navigator.serviceWorker.ready,
   new Promise((_, rej) => setTimeout(() => rej(new Error('the service worker did not start; reload and try again')), ms))]);
@@ -115,7 +131,7 @@ export function initPush(getApi) {
       let sub = await reg.pushManager.getSubscription();
       if (sub && store.get('vapid', '') !== vapid) { await sub.unsubscribe(); sub = null; }
       if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(vapid) });
-      const r = await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(sub.toJSON()) });
+      const r = await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: subBody(sub) });
       if (!r.ok) throw new Error(`server said ${r.status}`);
       store.set('sub', true); store.set('vapid', vapid);
       syncShield();
@@ -188,11 +204,29 @@ export function initPush(getApi) {
       const sub = await reg.pushManager.getSubscription();
       await prefetch();
       if (!sub || (vapid && store.get('vapid', '') !== vapid)) { store.set('sub', false); render(); return; }
-      await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(sub.toJSON()) });
+      await fetch(`${api}/api/push/subscribe`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: subBody(sub) });
     } catch {}
   }
 
+  // "Sync to my stream": alerts land when YOUR stream shows the play (server schedules play time + your delay)
+  const paintSync = () => $$('[data-sync]').forEach((b) => {
+    const on = !!store.get('sync', false), svc = store.get('delayK', 'Peacock');
+    b.setAttribute('aria-checked', String(on));
+    b.querySelector('b').textContent = on ? `ON · ${svc} ${DELAYS[svc] ?? 48}s` : 'OFF';
+  });
+  $$('[data-sync]').forEach((b) => b.addEventListener('click', async () => {
+    store.set('sync', !store.get('sync', false)); paintSync();
+    const ok = await pushPrefs(getApi);
+    note(ok ? (store.get('sync', false) ? `Synced: alerts will land when ${store.get('delayK', 'Peacock')} shows the play.` : 'Sync off: alerts arrive the moment the market knows.')
+            : 'Saved on this device. Enable alerts to sync with the server.', !ok && false);
+  }));
+  // the Live page's delay picker (.seg-btn) changes the chosen service: keep the server's schedule in step
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest || !e.target.closest('.seg-btn')) return;
+    setTimeout(() => { paintSync(); if (store.get('sync', false)) pushPrefs(getApi); }, 60);
+  });
+  paintSync();
   render();
   prefetch().then(resync);
-  return { render: () => { render(); prefetch(); } };
+  return { render: () => { render(); prefetch(); paintSync(); } };
 }

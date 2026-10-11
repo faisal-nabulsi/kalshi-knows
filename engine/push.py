@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import json
+import time
 import logging
 import os
 import threading
@@ -74,8 +75,12 @@ def subscribe(sub: dict) -> int:
     host = urlparse(sub["endpoint"]).hostname or ""
     if urlparse(sub["endpoint"]).scheme != "https" or not any(host == h or host.endswith("." + h) for h in PUSH_HOSTS):
         raise ValueError("endpoint is not a known browser push service")   # no arbitrary outbound POSTs (SSRF)
+    raw_prefs = sub.get("prefs") if isinstance(sub.get("prefs"), dict) else {}
+    prefs = {"sync": bool(raw_prefs.get("sync")),
+             "delay_s": max(0, min(120, int(float(raw_prefs.get("delay_s") or 48)))),
+             "service": str(raw_prefs.get("service") or "")[:24]}
     sub = {"endpoint": sub["endpoint"], "keys": {"p256dh": sub["keys"]["p256dh"], "auth": sub["keys"].get("auth", "")},
-           "expirationTime": sub.get("expirationTime")}
+           "expirationTime": sub.get("expirationTime"), "prefs": prefs}
     with _lock:
         subs = json.loads(SUBS.read_text()) if SUBS.exists() else []
         subs = [s for s in subs if s.get("endpoint") != sub["endpoint"]]
@@ -123,12 +128,39 @@ def send_to(endpoint: str, payload: dict) -> list[dict]:
     return [_send_one(s, json.dumps(payload)) for s in subs]
 
 
+def _sync_payload(payload: dict, prefs: dict) -> dict:
+    """Version of an alert for a 'sync to my stream' device: lands when their stream shows the play."""
+    p = dict(payload)
+    svc = prefs.get("service") or "your stream"
+    p["title"] = (payload.get("title") or "").replace("SPOILER", "ON YOUR STREAM NOW")
+    head = (payload.get("body") or "").split(". Your stream")[0].split(" · Tier")[0]
+    p["body"] = f"{head}: happening on {svc} right now."
+    return p
+
+
 def send_all(payload: dict, wait: bool = False) -> list[dict] | None:
-    """Send payload JSON to every subscriber. wait=True blocks and returns per-endpoint results."""
+    """Send payload JSON to every subscriber. wait=True blocks and returns per-endpoint results.
+    Devices in 'sync to my stream' mode get alert pushes scheduled for (estimated play time + their stream delay);
+    they skip the provisional stage (the named call arrives when their stream shows the play)."""
     public_key()  # ensure keys exist
     data = json.dumps(payload)
     subs = load_subs()
-    futs = [_pool.submit(_send_one, s, data) for s in subs]
+    now = time.time() * 1000
+    futs = []
+    for s in subs:
+        pr = s.get("prefs") or {}
+        if pr.get("sync") and payload.get("play_est_ms"):
+            if payload.get("stage") == "provisional":
+                continue
+            due_ms = payload["play_est_ms"] + pr.get("delay_s", 48) * 1000
+            d = json.dumps(_sync_payload(payload, pr))
+            wait_s = (due_ms - now) / 1000
+            if wait_s > 0.5:
+                t = threading.Timer(wait_s, _send_one, args=(s, d)); t.daemon = True; t.start()
+                continue
+            futs.append(_pool.submit(_send_one, s, d))
+            continue
+        futs.append(_pool.submit(_send_one, s, data))
     if wait:
         return [f.result() for f in futs]
     return None
@@ -136,6 +168,8 @@ def send_all(payload: dict, wait: bool = False) -> list[dict] | None:
 
 def alert_payload(alert: dict, game: dict | None) -> dict:
     short = (game or {}).get("short_name") or ""
+    # estimated real-world play time: the price starts moving ~5 s after the play (median market lag 7 s to halfway)
+    play_est = (alert.get("jump_started_ms") or alert.get("ts_ms") or 0) - 5000
     return {"title": f"SPOILER · {short}".strip(" ·"),
             "body": f"{alert['headline']}. Your stream shows it in ~30s.",
-            "url": "./#live", "tag": alert["id"]}
+            "url": "./#live", "tag": alert["id"], "stage": alert.get("stage"), "play_est_ms": play_est}
