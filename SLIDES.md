@@ -1,24 +1,32 @@
-# Slides: Kalshi Knows (Kevin owns; 5 min talk + 3 min Q&A)
+# Slide plan: Kalshi Knows (5-minute talk + 3-minute Q&A)
 
-Style: black background, off-white text, ONE orange accent (#FF4D1A) for "the market knows" moments. Huge numbers, few words. Use the website itself for the demo; slides are only the frame. Fill in the [brackets] from docs/data/results.json at ~2:30.
+Built 1:50pm from STATS.md section 0, JUDGING.md, research/REVIEW.md and research/BRIEF.md. **Every number below is final unless STATS.md changes; don't use older numbers from elsewhere.**
+Style: black background, bone/off-white text, ONE orange accent (#FF4D1A), big numbers, few words. Use the charts in `results/charts/`. QR to **https://kalshi-knows.pages.dev**.
+Speaker: Faisal (talk + demo), Kevin (business slide), Dugar (clicker + backup video).
 
-1. **Title.** "KALSHI KNOWS: the prediction market is a time machine." Team 4: Faisal Nabulsi, Kevin, Dugar. QR code → https://faisal-nabulsi.github.io/kalshi-knows/
-2. **The problem (10 s).** "You're watching the past." Super Bowl LX: cable 19 s behind, best stream 48 s, worst 62 s. Meanwhile Kalshi traded $1B+ that day.
-3. **The insight.** Kalshi's price moves [~7] seconds after a real play. Your stream shows it [20–60] seconds later. So the market can spoil your game, and anyone live-betting off a stream is trading against people who already know.
-4. **LIVE DEMO (2 min).** Switch to the site in presenter mode (`?present=1`) next to the 49ers stream. Phones buzz → room votes → the play airs.
-5. **How it works (one diagram).** Kalshi public order book (polled every ~2 s) → jump detector → **play inverter** (an XGBoost model trained on an L40S GPU on AWS with 28 seasons of NFL plays, [~1.2M plays], then calibrated on real Kalshi jumps) → Web Push to your phone.
-6. **Results.**
-   - Market lag after the real play: median [X] s (n = [N] plays, [G] games, 2026 season)
-   - Detector: [P]% of alerts were real big plays; caught [R]% of TDs/turnovers
-   - Play-type accuracy on REAL Kalshi jumps: [A]% vs [B]% for a sports-fan rule of thumb
-   - The Predator Scale model leaderboard (Dugar → Kevin & Faisal)
-7. **Someone Knew (hours, not seconds).** 2 case files: the price moved [N] minutes before the first article. "We don't say who. We say when."
-8. **Dutch Book (right now).** We scanned 9,050 events / 103,807 markets for prices that contradict each other. 16 arbitrages before fees, **0 after** fees. 49 "free money" lists that aren't (the outcomes weren't exhaustive). Insight: fees are Kalshi's moat.
-9. **What's next.** (1) Spoiler Shield: mute your feed until your stream catches up. (2) A stream-latency warning before you live-bet. (3) Every sport + Polymarket.
-10. **Thanks + QR.**
+| # | Slide | On screen | Say (≈) | Judging criterion |
+|---|---|---|---|---|
+| 1 | **Title** (0:00–0:15) | KALSHI KNOWS · "the intelligence layer on top of prediction markets" · Faisal Nabulsi, Kevin, Dugar · QR | "Prediction markets know things before you do. We built the layer that reads them." | 5 |
+| 2 | **The problem** (0:15–0:45) | Chart `a_kalshi_beats_your_stream.png`: Kalshi 7 s vs antenna 19 / cable 38 / Peacock 48 / YouTube TV 53 / NFL+ 62 (Super Bowl LX latency study) | "Kalshi's price moves about 7 seconds after a play. Your stream shows it 48 to 62 seconds after. Anyone live-betting off a stream is trading against people who already know, and every streaming fan gets spoiled by group chats." | 1 |
+| 3 | **Who it's for** (0:45–1:05) | Three columns: Retail (streaming fans + prediction-market traders), Quants (latency + info-flow data), Exchanges/regulators (market-integrity monitoring) | "We don't compete with Kalshi. We're the analytics layer on top, starting with retail traders and fans." | 1, 4 |
+| 4 | **LIVE DEMO** (1:05–2:35) | Switch to the site `?present=1`: Live board + Receipts → (wait ≤45 s for a buzz) → Auto page (auto-bettor on Kalshi's demo exchange + movers across every category) → if no live buzz, play the 38-second money-shot clip from the video | "Here's today. Every call is timestamped and graded against ESPN, misses included. When we named the play, we were right N of N." Then the Auto page: "The same signals drive an agent that places orders on Kalshi's demo exchange, play money, and it works on any market." | 2, 5 |
+| 5 | **How it works** (2:35–3:15) | Diagram: Kalshi public order book → jump detector → play model (pretrained on 28 seasons of NFL plays, fine-tuned on ~8,800 real Kalshi jumps with audited labels) → push + live site + auto-bettor | "Two-stage model. The 28-season pretraining is the secret sauce: worth 11 points over a smart fan. We audited our own labels, found 15% were wrong, fixed them." | 2, 3 |
+| 6 | **Results** (3:15–3:50) | Chart `h_model_vs_smart_fan.png` + a 3-row table: Smart fan 63% · Kalshi Knows 74–75% · always-"nothing" 50–60%; "When it names a play at 75%+: right ~80%"; "vs Claude Opus 5.5: ties on accuracy (77 vs 76%), better calibrated, 7 ms" ; "Pre-registered test on today's games: named calls 8 of 9" | "Tested on games it never saw, against a smart fan and against Claude." | 2 |
+| 7 | **What the market taught us** (3:50–4:15) | "1,255 trading rules tested · 11 passed the stats · 0 survived our skeptics" · "Weather, injuries, spreads: already priced in" · "Dutch Book: 100k markets, 16 arbs before fees, 0 after" | "We tried hard to find a flaw. The market digests plays in seconds; the only edge is speed, and that's what we sell." | 3 |
+| 8 | **Business** (4:15–4:45) | Free: spoiler alerts + Spoiler Shield + Receipts → **Pro ~$15/mo**: auto-bet rules + "market already moved" warnings + all markets → **B2B**: info-flow API, integrity monitoring ("the market beat the headlines": Princeton rankings moved ~6.8 h before the official release). Comps: Action Network PRO $24.99/mo, OddsJam $199+/mo | "Retail is the wedge, B2B data is the business." | 4 |
+| 9 | **Close** (4:45–5:00) | QR + "Public data only. No real money." | "Kalshi knows. Now you do too." | 5 |
 
-Q&A prep (Faisal):
-- "Is this legal / insider trading?" Public data only, no trading, no account. We measure information flow; we never name anyone.
-- "Why not just use ESPN?" ESPN's API posts plays [~30+] s late; the market is faster than the official feed.
-- "Does the model beat the market?" It isn't trying to predict winners; it infers WHAT happened from how the market moved.
-- "How do you know the lag?" ESPN play wallclock timestamps aligned to Kalshi's millisecond trade timestamps, for every big play this season.
+## Demo rules (from research/REVIEW.md)
+- Never depend on a live play: show alerts that already fired today first; wait at most 45 s for a fresh buzz; else play the money-shot clip without apologizing.
+- At 3:45: presenter laptop shows LIVE (not REPLAY), Faisal's phone subscribed (`/api/health` subscribers ≥ 1), test push received.
+- Backup: `video/kalshi-knows-demo.mp4` (2:26) if Wi-Fi dies.
+
+## Q&A (crisp answers; details in research/REVIEW.md §3)
+1. **"What's the real head start?"** Market ~7 s after the play; our push ~30 s after (we wait 8 s to read the move); streams 48–62 s → 15–40 s ahead on streams. An antenna (19 s) still beats us.
+2. **"Beats ESPN how?"** Our alerts arrived 18–65 s before the same play showed up in ESPN's public play-by-play feed (conservative; we poll it every 4 s).
+3. **"Which accuracy is real?"** Trained on 2025, tested on unseen 2026 games: 75% vs 47% always-"nothing" (audited labels, 511 jumps); named calls ~80% right. Pre-registered test on today's games: +19 pts over the baseline at live thresholds, named calls 8 of 9 (small sample, wide interval).
+4. **"Half your buzzes aren't big plays?"** We only see what the market reacts to: stops and penalties swing it too. When unsure we say "big swing", and phones only buzz on confident calls.
+5. **"Insider trading?"** We show *when* a price moved, never *who*. 3 of 6 hand-checked cases moved ≥15 min before the earliest official source.
+6. **"Isn't this courtsiding?"** We warn bettors ("this market already moved"); the auto-bettor runs on Kalshi's demo exchange; public data only.
+7. **"Who pays?"** Pro subscription for traders; B2B info-flow data and integrity monitoring for exchanges, quants and streamers.
+8. **"What if the laptop dies?"** Watchdog restarts the engine in 20 s; the site falls back to a labelled replay; push fans out from one poller.
