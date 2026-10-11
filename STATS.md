@@ -43,6 +43,8 @@ Slide line: **"When it's at least 80% sure, it names the play right about 4 time
 
 **Train/serve fix (3:20pm):** live ESPN state arrives ~one play late. Retrained on exact + one-play-late state (train/train_lagged.py). Under one-play-late conditions: accuracy 65.6% → **68.2%**, named-call precision 74.1% → **77.7%** (CV); temporal 65.2% → **68.7%**, 75.5% → **79.7%**. Stale-state naming gate relaxed 60 s → 180 s accordingly. Real-time Kalshi stream connected (production key, read-only guard) + detector config B: first buzz ~5 s after Kalshi moves (results/latency_study.md).
 
+**Precision gate (3:30pm, live):** the app names a play only when it clears a per-type threshold chosen on 2025 for ≥80% precision (TD ≥74% confidence, turnover ≥86%; field goals / big plays never clear it → "big swing"). Verified once on unseen 2026 games under live (one-play-late) conditions: **26 of 30 named calls right (86.7%, game-clustered 95% CI 68–100%)**; turnovers **7 of 7**, touchdowns 83%; it names ~6% of live-size jumps. A 90% target is reachable only on ~1% of jumps (3 of 3 TDs), too rare to use. (train/precision_gate.py, engine/model/precision_gate.json)
+
 **Platform scale:** Dutch Book scans ~100k open Kalshi markets every minute (16 arbs before fees, 0 after); movers feed tracks ~600 markets across categories; auto-bettor signs real orders for Kalshi's demo exchange (Ed25519, demo-only guard).
 
 ## 1. Speed: the market vs the play, the stream, and ESPN
