@@ -11,7 +11,7 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 | Smart fan (state + price jump, logistic) | 62.8% | 60.0% | +2.8 (1.4–4.3) | 38% right (97 calls) |
 | XGBoost without the 28-season pretraining | 70.0% | 60.0% | +9.9 (8.0–11.7) | 54% (69) |
 | Pre-registered production model (old labels) | 73.7% | 60.0% | +13.7 (11.7–15.7) | 79.5% (200) |
-| **Audited-label model, CV** (deduped jumps, n=2,641, 296 games) | **73.8%** | **49.8%** | **+24.0 (21.6–26.7)** | **80.5% (466)** |
+| **Audited-label model, CV** (deduped jumps, n=2,641, 296 games) | **73.8%** | **49.8%** | **+24.0 (21.6–26.7)** (most of the lift change vs the old row comes from the baseline moving 60.0→49.8% once labels were fixed; lead with accuracy + named-call precision) | **80.5% (466)** |
 | **Audited-label model, temporal 2025→2026** (n=511, 58 games) | **75.0%** | **47.0%** | **+28.0 (21.7–35.1)** | **76.6% (94)** |
 
 **Head-to-head vs Claude Opus 5.5** (150 unseen 2026 live-size jumps, identical inputs, Claude zero-shot): Kalshi Knows 77.3% acc / log loss 0.513 / Brier 0.301 vs Claude 76.0% / 0.615 / 0.354 vs always-other 64.7%. Accuracy gap +1.3 pts (95% CI −7 to +11 → a tie); calibration clearly better; 7 ms per call. Source: train/out/claude_bench.json.
@@ -24,9 +24,9 @@ Built Sun Oct 11 2026. Every number has a plain-English definition, n, and its s
 
 **Live today (engine/logs/20261011, /api/health tally at 1:25pm):** 30 alerts; named plays 4 of 4 correct (0 wrong); 10 "big swing" alerts on a real play; 15 with no matching TD/FG/turnover/20+ yd play (stops, penalties, kickoffs); 1 pending. Best: "Steelers touchdown (80%)", 32 s before ESPN's feed; takeaways 38.6–64.8 s before.
 
-**Pre-registered untouched test on today's early games (run once at 1:36pm; research/PREREG.md, results/today_test.json):** frozen model, 7 unseen games. PRIMARY live-size jumps: 65.6% vs 46.9% always-other (+18.8 pts, 95% CI −13 to +33; n=32, 6 games), named calls 2/2 correct. All jumps: 72.6% vs 61.1% (+11.5, CI −1 to +19; n=113), named calls 8/9 (89%). Same direction as offline; one morning is too small for a tight interval. Production then switched to the audited-label model.
+**Pre-registered untouched test on today's early games (run once at 1:36pm; research/PREREG.md, results/today_test.json):** frozen model, 7 unseen games. PRIMARY live-size jumps: 65.6% vs 46.9% always-other (+18.8 pts, 95% CI −13 to +33; n=32, 6 games), named calls 2/2 correct. All jumps: 72.6% vs 61.1% (+11.5, CI −1 to +19; n=113), named calls 8/9 (89%). Same direction as offline; one morning is too small for a tight interval (primary CI includes zero). NOTE: this tested the frozen pre-audit model; production switched to the audited-label model afterwards.
 
-**Works beyond NFL (cross-market model, train/xmarket/REPORT.md):** trained on 4.36M settled Kalshi markets (2021–Dec 2025, all categories), tested on an unseen month (Jan 2026, 70,249 markets): Brier 0.1236 vs 0.1270 for the raw market price (2.7% better, 95% CI 2.2–3.1%); gains largest 1 h before close and in Sports, Finance, Crypto, Entertainment. Paper strategy (model vs price gap ≥ 8 pts, 24 h out, after fees): +12.0% ROI (CI 6.5–17.8%, 1,603 bets) — one test month, suggestive only.
+**Works beyond NFL (cross-market model, train/xmarket/REPORT.md):** trained on 4.36M settled Kalshi markets (2021–Dec 2025, all categories), tested on an unseen month (Jan 2026, 70,249 markets): Brier 0.1236 vs 0.1270 for the raw market price (2.7% better, 95% CI 2.2–3.1%); gains largest 1 h before close and in Sports, Finance, Crypto, Entertainment. Paper strategy (model vs price gap ≥ 8 pts, 24 h out, after fees): +12.0% ROI (CI 6.5–17.8%, 1,603 bets) — ONE test month, last-trade fills, NOT adversarially reviewed (unlike the 1,255-rule hunt): suggestive only, do not pitch as an edge.
 
 **Auto-bettor on Kalshi's demo exchange (play money):** real signed order placed and filled at 2:05pm — buy 1 YES "49ers win" at $0.39, fee $0.0167, order 01a12cc9-43b0-7d31-af6a-b259485bac52; mode = demo; rules: SF/SEA named call ≥80% → buy 5 YES on that team to win ($25/day cap, kill switch).
 
