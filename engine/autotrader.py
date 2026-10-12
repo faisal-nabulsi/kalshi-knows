@@ -1,6 +1,6 @@
 """Auto-bettor for Kalshi Knows. DEMO exchange (play money) or dry-run only. Never production.
 
-Rules = {id, name, enabled, trigger, action, limits}.  Triggers: alert | mover | dutchbook.
+Rules = {id, name, enabled, trigger, action, limits}.  Triggers: alert | mover | dutchbook | pick.
 Actions: buy yes/no on a target ticker (limit = ask + max_slippage), or alert_only.
 Modes: dry_run (default; builds the signed request it WOULD send, simulates the fill on the live
 public order book + Kalshi taker fee) and demo (sends to external-api.demo.kalshi.co, then polls status/fills).
@@ -36,6 +36,11 @@ POOL = ThreadPoolExecutor(max_workers=3, thread_name_prefix="auto")
 DEFAULT_SETTINGS = {"mode": "dry_run", "kill": False, "daily_loss_cap_usd": 25.0, "max_open_exposure_usd": 100.0}
 HARD_MAX_CONTRACTS = 100          # absolute ceiling regardless of rule limits
 
+PICKS_RULE = {"id": "r_picks", "name": "Picks model bet (24h edge >=8c / 6h >=5c, +EV after fees) -> buy $10", "enabled": True,
+              "trigger": {"type": "pick", "min_ev_cents": 1.0},
+              "action": {"type": "buy", "stake_usd": 10.0, "max_slippage": 0.0},
+              "limits": {"max_contracts_per_order": 100, "max_usd_per_day": 60.0, "cooldown_s": 0}}
+
 STARTER_RULES = [
     {"id": "r_sf_td", "name": "49ers TD alert >=85% -> buy YES on SF game market", "enabled": True,
      "trigger": {"type": "alert", "team": "SF", "play_type": "TD", "min_confidence": 0.85, "named_only": True},
@@ -49,6 +54,7 @@ STARTER_RULES = [
      "trigger": {"type": "dutchbook", "min_profit_after_fees": 0.0},
      "action": {"type": "buy_set", "sets": 1, "max_slippage": 0.02},
      "limits": {"max_contracts_per_order": 5, "max_usd_per_day": 20.0, "cooldown_s": 300}},
+    PICKS_RULE,
 ]
 
 # ---------------------------------------------------------------- persistence
@@ -68,6 +74,8 @@ def _save(name, obj):
 
 SETTINGS = dict(DEFAULT_SETTINGS, **_load("settings.json", {}))
 RULES: list[dict] = _load("rules.json", None) or [json.loads(json.dumps(r)) for r in STARTER_RULES]
+if not any(r["id"] == PICKS_RULE["id"] for r in RULES):           # added Oct 11 (after the hackathon)
+    RULES.append(json.loads(json.dumps(PICKS_RULE)))
 ORDERS: list[dict] = _load("orders.json", [])
 _cid_seen: set[str] = {o["client_order_id"] for o in ORDERS if o.get("client_order_id")}
 _last_fire: dict[str, float] = {}
@@ -283,8 +291,10 @@ def _cid(rule_id: str, key: str, idx: int = 0) -> str:
 
 
 def submit_order(rule: dict, trig: dict, ticker: str, side: str, count: int, key: str, idx: int = 0,
-                 max_slippage: float = 0.02, group: str | None = None, force_dry: bool = False) -> dict | None:
-    """Apply limits + idempotency, price off the live book, then simulate (dry_run) or send (demo)."""
+                 max_slippage: float = 0.02, group: str | None = None, force_dry: bool = False,
+                 max_price: float | None = None, stake_usd: float | None = None) -> dict | None:
+    """Apply limits + idempotency, price off the live book, then simulate (dry_run) or send (demo).
+    max_price: never pay more than this (e.g. the model's fair price); stake_usd: size the order in dollars."""
     lim = rule.get("limits") or {}
     cid = _cid(rule["id"], key, idx)
     with LOCK:
@@ -293,7 +303,8 @@ def submit_order(rule: dict, trig: dict, ticker: str, side: str, count: int, key
         _cid_seen.add(cid)
         if SETTINGS["kill"]:
             return _record_skip(rule, trig, "kill switch on", ticker=ticker)
-        pnl = CACHE.get("pnl") or {}
+        # risk limits protect the demo account's (play) money; paper fills don't spend anything
+        pnl = (CACHE.get("pnl") or {}).get("demo") or {}
         if pnl.get("today", 0) <= -abs(SETTINGS["daily_loss_cap_usd"]):
             return _record_skip(rule, trig, "global daily loss cap hit", ticker=ticker)
         if (pnl.get("exposure", 0) or 0) >= SETTINGS["max_open_exposure_usd"]:
@@ -320,6 +331,14 @@ def submit_order(rule: dict, trig: dict, ticker: str, side: str, count: int, key
         return _record_skip(rule, trig, "no ask liquidity", ticker=ticker)
     ask = ladder[0][0]
     limit = round(min(0.99, ask + max_slippage), 2)
+    if max_price is not None:
+        if ask > max_price + 1e-9:
+            return _record_skip(rule, trig, f"ask {ask * 100:.0f}c is above the model's fair price {max_price * 100:.0f}c"
+                                + (" on the demo book" if use_demo else ""), ticker=ticker)
+        limit = round(min(limit, max_price), 2)
+    if stake_usd:
+        count = int(min(max(1, math.floor(stake_usd / limit)), lim.get("max_contracts_per_order") or HARD_MAX_CONTRACTS,
+                        HARD_MAX_CONTRACTS))
     cap = lim.get("max_usd_per_day")
     if cap is not None and _spent_today(rule["id"]) + count * limit > cap + 1e-9:
         return _record_skip(rule, trig, f"rule daily $ cap ${cap:.2f} reached", ticker=ticker)
@@ -410,6 +429,30 @@ def _run_alert_rule(rule, alert, game, force=False):
         log.exception("alert rule failed: %s", e)
 
 
+def on_picks(picks: list[dict]) -> None:
+    """Called by engine/picks_live.py with NEW model picks. Buys each on the demo exchange (or paper if the market
+    isn't listed there), never above the model's fair price. Never raises."""
+    try:
+        for rule in _enabled("pick"):
+            t, act = rule["trigger"], rule.get("action") or {}
+            for p in picks:
+                if (p.get("ev_cents_per_contract") or 0) < float(t.get("min_ev_cents", 0)):
+                    continue
+                if t.get("horizon") and p.get("horizon") != t["horizon"]:
+                    continue
+                if t.get("group") and str(p.get("group", "")).lower() != str(t["group"]).lower():
+                    continue
+                trig = {"type": "pick", "ticker": p["ticker"], "title": p.get("title"), "side": p["side"],
+                        "model_q": p.get("model_q"), "ask": p.get("ask"), "ev_cents": p.get("ev_cents_per_contract"),
+                        "horizon": p.get("horizon"), "headline": f"Model: {round((p.get('model_q') or 0) * 100)}% {p['side']} "
+                                                                 f"vs {round((p.get('ask') or 0) * 100)}c ask"}
+                POOL.submit(submit_order, rule, trig, p["ticker"], p["side"].lower(), int(act.get("count", 1)),
+                            f"pick:{p['ticker']}", 0, float(act.get("max_slippage", 0.0)), None, False,
+                            p.get("max_price"), act.get("stake_usd"))
+    except Exception as e:      # noqa: BLE001
+        log.warning("on_picks: %s", e)
+
+
 def _alert_only(rule, trig, key):
     cid = _cid(rule["id"], key)
     with LOCK:
@@ -435,23 +478,70 @@ def check_dutchbook(db: dict | None):
             POOL.submit(_run_dutch, rule, opp)
 
 
+def _set_already_bought(rule_id: str, opp: dict) -> bool:
+    """True if we already hold (or tried) this set, or another set on the same event, today. A Dutch Book that
+    persists across scans used to be re-bought every 15 minutes (3x on Oct 11)."""
+    d, ev = day_key(), opp.get("event_ticker") or str(opp.get("id", "")).split(":")[0]
+    with LOCK:
+        return any(o["rule_id"] == rule_id and o.get("kind") == "order" and o["status"] != "skipped"
+                   and day_key(o["ts_ms"]) == d and str(o.get("group") or "").removeprefix("set:").split(":")[0] == ev
+                   for o in ORDERS)
+
+
+def _reprice_set(legs: list[tuple[dict, int]], use_demo: bool) -> dict:
+    """Price the whole set off the live order books (the scanner's listing prices can be stale: on Oct 11 a
+    'Dutch Book' priced at the listing quotes cost $1.10 for a $1.00 payout on the real book)."""
+    cost = fees = 0.0
+    for l, q in legs:
+        try:
+            book = fetch_book(l["ticker"], demo=use_demo)
+        except Exception as e:      # noqa: BLE001
+            return {"ok": False, "reason": f"no order book for {l['ticker']}: {str(e)[:60]}"}
+        sim = simulate_fill(book, l.get("side", "yes"), q, 0.99)
+        if sim["filled"] < q:
+            return {"ok": False, "reason": f"not enough ask liquidity on {l['ticker']}"}
+        cost += sim["avg_price"] * q
+        fees += sim["fees"]
+    return {"ok": True, "cost": round(cost, 4), "fees": round(fees, 4)}
+
+
 def _run_dutch(rule, opp):
     try:
-        key = f"db:{opp.get('id') or opp.get('event_ticker')}:{int(time.time() // 900)}"
-        if _cid(rule["id"], key, 0) in _cid_seen or not _cooldown_ok(rule, str(opp.get("id"))):
+        key = f"db:{opp.get('id') or opp.get('event_ticker')}:{day_key()}"
+        decided = _cid(rule["id"], key, -1)            # marker: one decision per opportunity per day
+        if decided in _cid_seen or _set_already_bought(rule["id"], opp) \
+                or not _cooldown_ok(rule, str(opp.get("event_ticker") or opp.get("id"))):
             return
+        _cid_seen.add(decided)
         trig = {"type": "dutchbook", "opp_id": opp.get("id"), "title": opp.get("title"),
                 "profit_after_fees": opp.get("profit_after_fees")}
-        sets = int((rule.get("action") or {}).get("sets", 1))
+        act, lim = rule.get("action") or {}, rule.get("limits") or {}
+        sets = int(act.get("sets", 1))
         legs = opp.get("legs") or []
-        if SETTINGS["mode"] == "demo" and kalshi_auth.have_credentials() and not all(demo_listed(l["ticker"]) for l in legs):
-            note = "some legs not listed on demo: whole set stays dry-run"
-        else:
-            note = None
-        for i, l in enumerate(legs):
-            o = submit_order(rule, trig, l["ticker"], l.get("side", "yes"), int(l.get("qty", 1)) * sets, key, idx=i,
-                             max_slippage=float((rule.get("action") or {}).get("max_slippage", 0.02)),
-                             group=f"set:{opp.get('id')}", force_dry=bool(note))
+        if not legs:
+            return
+        # size the set: every leg must fit under the per-order cap. Equal-qty sets (ladders, mutex) scale down
+        # together; an uneven LP basket can't be scaled without breaking its guarantee, so it is skipped.
+        qty = [int(l.get("qty", 1)) * sets for l in legs]
+        payout = float(opp.get("worst_case_payout") or 0) * sets
+        cap = int(lim.get("max_contracts_per_order") or HARD_MAX_CONTRACTS)
+        if max(qty) > cap:
+            if len(set(qty)) != 1:
+                return _record_skip(rule, trig, f"uneven basket needs >{cap} contracts on a leg", ticker=legs[0]["ticker"])
+            payout *= cap / qty[0]
+            qty = [cap] * len(legs)
+        demo_ok = SETTINGS["mode"] == "demo" and kalshi_auth.have_credentials() and all(demo_listed(l["ticker"]) for l in legs)
+        note = None if demo_ok or SETTINGS["mode"] != "demo" else "some legs not listed on demo: whole set stays dry-run"
+        px = _reprice_set(list(zip(legs, qty)), demo_ok)
+        if not px["ok"] or px["cost"] + px["fees"] >= payout - 1e-9:
+            reason = px.get("reason") or (f"re-priced on the live book: the set costs ${px['cost'] + px['fees']:.2f} with fees "
+                                          f"for a ${payout:.2f} guaranteed payout, so it is not an arbitrage")
+            return _record_skip(rule, trig, reason, ticker=legs[0]["ticker"])
+        trig["executable_profit"] = round(payout - px["cost"] - px["fees"], 4)
+        for i, (l, q) in enumerate(zip(legs, qty)):
+            o = submit_order(rule, trig, l["ticker"], l.get("side", "yes"), q, key, idx=i,
+                             max_slippage=float(act.get("max_slippage", 0.02)),
+                             group=f"set:{opp.get('id')}", force_dry=not demo_ok)
             if o and note:
                 o["note"] = note
     except Exception as e:      # noqa: BLE001
@@ -615,12 +705,51 @@ def _mover_scope(t: dict, tk: str) -> bool:
 
 # ---------------------------------------------------------------- P&L / exposure
 
+def demo_account() -> dict | None:
+    """The real Kalshi DEMO account (play money): cash + open positions marked at the demo bid. This is the number
+    that matters; it includes orders placed by hand, not only the rules."""
+    if not kalshi_auth.have_credentials():
+        return None
+    bal = demo_signed("GET", "/portfolio/balance")
+    pos = demo_signed("GET", "/portfolio/positions").get("market_positions") or []
+    held = [p for p in pos if abs(float(p.get("position_fp") or p.get("position") or 0)) > 0]
+    marks: dict[str, dict] = {}
+    if held:
+        d = demo_get_public("/markets", {"tickers": ",".join(p["ticker"] for p in held[:100]), "limit": 100})
+        marks = {m["ticker"]: m for m in d.get("markets") or []}
+    cash = float(bal.get("balance_dollars") or (bal.get("balance") or 0) / 100)
+    value, rows = 0.0, []
+    for p in held:
+        n = float(p.get("position_fp") or p.get("position") or 0)      # >0 YES contracts, <0 NO contracts
+        m = marks.get(p["ticker"]) or {}
+        res = (m.get("result") or "").lower()
+        if res in ("yes", "no"):
+            mark = 1.0 if (res == "yes") == (n > 0) else 0.0
+        else:
+            px = kalshi.market_prices(m) if m else {"bid": None, "ask": None, "last": None}
+            mark = px["bid"] if n > 0 else (None if px["ask"] is None else 1 - px["ask"])
+            if not mark or (m.get("status") or "") in ("closed", "determined"):   # game over, not paid out yet
+                last = px["last"]
+                mark = (last if n > 0 else 1 - last) if last is not None else (mark or 0.0)
+        value += abs(n) * mark
+        rows.append({"ticker": p["ticker"], "side": "yes" if n > 0 else "no", "contracts": abs(n), "mark": round(mark, 4),
+                     "cost": float(p.get("market_exposure_dollars") or 0), "settled": res in ("yes", "no"),
+                     "title": m.get("title"), "result": res or None})
+    start = float(SETTINGS.get("demo_start_usd", 100.0))
+    equity = cash + value
+    return {"cash": round(cash, 2), "positions_value": round(value, 2), "equity": round(equity, 2),
+            "start": start, "pnl": round(equity - start, 2), "positions": rows, "ts": time.time()}
+
+
 def compute_portfolio() -> dict:
+    """P&L of the rules' orders, split by where they ran: 'demo' = real orders on Kalshi's demo exchange,
+    'paper' = dry-run fills simulated on the real (production) order book. Marked at the bid (what you could
+    sell for now) until the market settles, so a fresh position shows the bid/ask spread as a loss."""
     with LOCK:
         filled = [o for o in ORDERS if o.get("kind") == "order" and o.get("filled")]
     prod = sorted({o["ticker"] for o in filled if o["mode"] == "dry_run"})
     dem = sorted({o["ticker"] for o in filled if o["mode"] == "demo"})
-    qs: dict[str, dict] = {}
+    qs: dict = {}
     try:
         qs.update({("p", k): v for k, v in kalshi.quotes(prod[:100]).items()})
     except Exception as e:      # noqa: BLE001
@@ -631,8 +760,9 @@ def compute_portfolio() -> dict:
             qs.update({("d", m["ticker"]): m for m in d.get("markets") or []})
         except Exception as e:      # noqa: BLE001
             log.debug("demo pnl quotes: %s", e)
-    tot = today = exp = 0.0
     d0 = day_key()
+    blank = lambda: {"total": 0.0, "today": 0.0, "exposure": 0.0, "orders": 0, "settled": 0, "by_rule": {}}  # noqa: E731
+    out = {"demo": blank(), "paper": blank()}
     for o in filled:
         m = qs.get(("d" if o["mode"] == "demo" else "p", o["ticker"]))
         n, cost = o["filled"], o["filled"] * (o["avg_price"] or 0)
@@ -648,12 +778,28 @@ def compute_portfolio() -> dict:
         if mark is None:
             mark = o["avg_price"] or 0
         pnl = n * mark - cost - (o.get("fees") or 0)
-        tot += pnl
+        b = out["demo" if o["mode"] == "demo" else "paper"]
+        b["total"] += pnl
+        b["orders"] += 1
+        b["by_rule"][o["rule_id"]] = round(b["by_rule"].get(o["rule_id"], 0.0) + pnl, 4)
         if day_key(o["ts_ms"]) == d0:
-            today += pnl
-        if not settled:
-            exp += cost
-    out = {"total": round(tot, 2), "today": round(today, 2), "exposure": round(exp, 2), "ts": time.time()}
+            b["today"] += pnl
+        if settled:
+            b["settled"] += 1
+        else:
+            b["exposure"] += cost
+    for b in out.values():
+        for k in ("total", "today", "exposure"):
+            b[k] = round(b[k], 2)
+    # combined numbers drive the risk limits (loss cap, exposure cap)
+    out.update(total=round(out["demo"]["total"] + out["paper"]["total"], 2),
+               today=round(out["demo"]["today"] + out["paper"]["today"], 2),
+               exposure=round(out["demo"]["exposure"] + out["paper"]["exposure"], 2), ts=time.time())
+    try:
+        out["account"] = demo_account()
+    except Exception as e:      # noqa: BLE001
+        log.debug("demo account: %s", e)
+        out["account"] = (CACHE.get("pnl") or {}).get("account")
     CACHE["pnl"], CACHE["pnl_ts"] = out, time.time()
     return out
 
@@ -719,8 +865,8 @@ router = APIRouter(prefix="/api/auto")
 
 def validate_rule(r: dict) -> dict:
     t, a = r.get("trigger") or {}, r.get("action") or {}
-    if t.get("type") not in ("alert", "mover", "dutchbook"):
-        raise ValueError("trigger.type must be alert, mover or dutchbook")
+    if t.get("type") not in ("alert", "mover", "dutchbook", "pick"):
+        raise ValueError("trigger.type must be alert, mover, dutchbook or pick")
     if a.get("type") not in ("buy", "buy_set", "alert_only"):
         raise ValueError("action.type must be buy, buy_set or alert_only")
     if a.get("type") == "buy" and a.get("side", "yes") not in ("yes", "no"):

@@ -72,7 +72,55 @@ export function renderPicks(root, d) {
     <p class="pk-disc mono">${esc(d.disclaimer || 'Paper recommendations, not financial advice. 21+. Kalshi demo exchange for automated orders.')}</p>
   </div>`;
 }
-export async function mountPicks(root) {
+function liveCard(p) {
+  const yes = p.side === 'YES', q = p.model_q, ask = p.ask;
+  const sub = [p.yes_label && p.yes_label !== p.title ? `YES = ${p.yes_label}` : '', p.category && p.category !== 'Other' ? p.category : ''].filter(Boolean).join(' · ');
+  return `<article class="pk-card">
+    <div class="pk-top"><div><h3 class="pk-title">${esc(p.title)}</h3>${sub ? `<p class="pk-sub">${esc(sub)}</p>` : ''}</div>
+      <span class="pk-side ${yes ? 'yes' : 'no'}">BUY ${esc(p.side)}</span></div>
+    <dl class="pk-nums mono">
+      <div><dt>Our odds</dt><dd>${pc(q)}</dd></div>
+      <div><dt>Ask then</dt><dd>${Math.round(ask * 100)}¢</dd></div>
+      <div><dt>Pay up to</dt><dd class="sig">${Math.round(p.max_price * 100)}¢</dd></div>
+    </dl>
+    <div class="pk-bar" title="grey = price you pay, orange = our probability (for ${esc(p.side)})"><i class="m" style="left:${(ask * 100).toFixed(1)}%"></i><i class="o" style="left:${(q * 100).toFixed(1)}%"></i></div>
+    <div class="pk-foot mono"><span>EV after fees <b>+${(p.ev_cents_per_contract ?? 0).toFixed(1)}¢</b>/contract</span>
+      <span>${(p.close_ms - Date.now()) <= 0 ? 'closed, waiting to settle' : 'closes in ' + closesIn(p.close_ms)}</span><span>picked ${ago(p.ts_ms)} · ${esc(p.horizon)} before close</span></div>
+  </article>`;
+}
+function renderLive(root, d) {
+  if (!document.getElementById('pk-css')) { const s = document.createElement('style'); s.id = 'pk-css'; s.textContent = CSS; document.head.appendChild(s); }
+  const rec = d.record || {}, picks = d.picks || [], near = d.near || [], hz = (d.rules && d.rules.horizons) || {};
+  const money = (x) => (x == null ? '–' : `${x < 0 ? '−' : '+'}$${Math.abs(x).toFixed(2)}`);
+  const since = rec.since_ms ? new Date(rec.since_ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'today';
+  const settled = rec.settled || 0;
+  root.innerHTML = `<div class="pk-wrap">
+    <p class="pk-meta mono">${d.generated_ms ? `Last scan ${ago(d.generated_ms)}: ${d.looked} markets reached 24 h or 6 h before close and got their one look` : 'First scan running…'}${d.scanning ? ' · scanning now' : ''} · bet when the model beats the price by ${hz['24h'] ? hz['24h'].threshold_cents : 8}¢ (24 h) / ${hz['6h'] ? hz['6h'].threshold_cents : 5}¢ (6 h) and the bet still pays after fees at the ask · ${picks.length} open pick${picks.length === 1 ? '' : 's'}</p>
+    ${picks.length ? `<div class="pk-grid">${picks.slice(0, 30).map(liveCard).join('')}</div>`
+      : `<p class="pk-empty">No open picks right now. The model only bets when a market reaches 24 h or 6 h before close with a big enough edge. Closest calls from the last scan:</p>
+         <div class="pk-grid">${near.slice(0, 6).map((p) => card({ ...p, side: p.side, tier: 'C', ev_cents_per_contract: p.ev_cents_per_contract ?? 0 }, true)).join('')}</div>`}
+    <section class="pk-record">
+      <span class="pk-label mono">Live forward test since ${esc(since)} · real prices · graded when each market settles</span>
+      <h3>${settled ? `${rec.won} of ${settled} settled picks won · ${money(rec.pnl_usd_at_10_per_bet)} at $10 a pick` : `${rec.picks || 0} pick${rec.picks === 1 ? '' : 's'} logged · first results when they settle`}</h3>
+      <p class="mono">${settled ? `Win rate ${(rec.win_rate * 100).toFixed(1)}% · ${rec.pnl_cents_per_contract >= 0 ? '+' : ''}${rec.pnl_cents_per_contract.toFixed(1)}¢ per contract after fees · ROI ${(rec.roi * 100).toFixed(1)}% on $${rec.staked_usd.toFixed(0)} staked · ` : ''}${rec.open || 0} still open. Every pick is priced at the ask you'd really pay, then the Kalshi taker fee. A few dozen results say little; it takes a few hundred to tell a real edge from luck.</p>
+    </section>
+    <section class="pk-record">
+      <span class="pk-label mono">Backtest · Jan 2026 · one month the model never saw</span>
+      <h3>1,603 bets at 24 h before close: won 58%, +12% after fees</h3>
+      <p class="mono">Trained on 4,363,922 settled Kalshi markets. 95% interval for the return: +6.5% to +17.8%. Fills were assumed at the last traded price, which is kinder than paying the ask; with 1¢ worse fills it was still +5.1¢ per contract. At 6 h before close: 5,371 bets, +6.7%.</p>
+      ${d.scorer ? `<p>Live scorer: ${esc(d.scorer)}</p>` : ''}
+    </section>
+    <p class="pk-disc mono">${esc(d.disclaimer || '')}</p>
+  </div>`;
+}
+export async function mountPicks(root, api) {
+  const base = ((typeof api === 'string' ? api : (api && (api.api || api.base))) || '').replace(/\/+$/, '');
+  if (base) {
+    try {
+      const r = await fetch(`${base}/api/picks`, { cache: 'no-store' });
+      if (r.ok) { renderLive(root, await r.json()); return; }
+    } catch { /* engine offline: fall back to the last static snapshot */ }
+  }
   try {
     const r = await fetch(`data/picks.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!r.ok) throw new Error(`picks.json ${r.status}`);

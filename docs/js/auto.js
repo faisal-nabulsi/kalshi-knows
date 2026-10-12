@@ -43,8 +43,9 @@ export function mountAuto(root, api) {
     const t = r.trigger, a = r.action; let w;
     if (t.type === 'alert') w = `a spoiler alert for ${t.team && t.team !== 'any' ? t.team : 'any team'}, ${t.play_type && t.play_type !== 'any' ? t.play_type : 'any play'} at ${(t.min_confidence * 100 | 0)}%+`;
     else if (t.type === 'mover') w = `${t.scope === 'any' ? 'any market' : (t.ticker || t.series || t.category)} moves ${(t.min_move * 100 | 0)}+ pts in ${t.window_s} s`;
+    else if (t.type === 'pick') w = `the Picks model finds a bet worth ${t.min_ev_cents ?? 1}¢+ per contract after fees${t.horizon ? ` (${t.horizon} before close)` : ''}`;
     else w = `a Dutch Book pays after fees (> $${t.min_profit_after_fees || 0})`;
-    const d = a.type === 'alert_only' ? 'alert only (no order)' : a.type === 'buy_set' ? `buy all legs (${a.sets || 1} set)` : `buy ${(a.side || 'yes').toUpperCase()} x${a.count} on ${a.target === 'same_game' || !a.target ? 'the game market' : a.target === 'moved_market' ? 'the moved market' : a.ticker}`;
+    const d = t.type === 'pick' ? `buy the model's side for $${a.stake_usd ?? 10}, never above its fair price` : a.type === 'alert_only' ? 'alert only (no order)' : a.type === 'buy_set' ? `buy all legs (${a.sets || 1} set)` : `buy ${(a.side || 'yes').toUpperCase()} x${a.count} on ${a.target === 'same_game' || !a.target ? 'the game market' : a.target === 'moved_market' ? 'the moved market' : a.ticker}`;
     return [$('b', { text: 'WHEN ' }), w, $('br'), $('b', { text: 'THEN ' }), d];
   };
 
@@ -66,7 +67,7 @@ export function mountAuto(root, api) {
 
   function buildBuilder() {
     const sel = (opts, v) => { const s = $('select'); for (const [val, lab] of opts) s.append($('option', { value: val, text: lab })); if (v) s.value = v; return s; };
-    const trig = sel([['alert', 'a spoiler alert'], ['mover', 'a market moves'], ['dutchbook', 'a Dutch Book pays']]);
+    const trig = sel([['pick', 'the Picks model finds a bet'], ['alert', 'a spoiler alert'], ['mover', 'a market moves'], ['dutchbook', 'a Dutch Book pays']]);
     const team = $('input', { type: 'text', placeholder: 'team (SF) or any', value: 'any' });
     const play = sel([['any', 'any play'], ['TD', 'TD'], ['FG', 'FG'], ['TURNOVER', 'turnover'], ['BIG_PLAY', 'big play']]);
     const conf = $('input', { type: 'number', value: '85', min: '1', max: '100' });
@@ -86,8 +87,10 @@ export function mountAuto(root, api) {
       if (t === 'alert') trigger = { type: 'alert', team: team.value.trim() || 'any', play_type: play.value, min_confidence: conf.value / 100, named_only: true };
       else if (t === 'mover') { const s = scope.value.trim(); trigger = { type: 'mover', scope: !s || s === 'any' ? 'any' : s.includes('-') ? 'ticker' : 'series', min_move: mvPts.value / 100, window_s: +win.value };
         if (trigger.scope === 'ticker') trigger.ticker = s; if (trigger.scope === 'series') trigger.series = s.toUpperCase(); }
+      else if (t === 'pick') trigger = { type: 'pick', min_ev_cents: 1 };
       else trigger = { type: 'dutchbook', min_profit_after_fees: 0 };
-      if (t === 'dutchbook') action = { type: 'buy_set', sets: 1, max_slippage: 0.02 };
+      if (t === 'pick') action = { type: 'buy', stake_usd: +cnt.value || 10, max_slippage: 0 };
+      else if (t === 'dutchbook') action = { type: 'buy_set', sets: 1, max_slippage: 0.02 };
       else if (act.value === 'alert_only') action = { type: 'alert_only' };
       else action = { type: 'buy', side: act.value === 'buy_no' ? 'no' : 'yes', count: +cnt.value, max_slippage: 0.02, target: t === 'mover' ? 'moved_market' : 'same_game' };
       if (t === 'mover' && action.type === 'buy') action = { ...action, side: undefined, direction: 'follow' };
@@ -112,9 +115,13 @@ export function mountAuto(root, api) {
         text: lab, onclick: async () => { try { await send('/mode', 'POST', { mode: m }); } catch (e) { note.textContent = 'Mode not changed: ' + (e.message || e); } tick(); } }));
     }
     modeEl.append($('div', { class: 'am-txt' }, $('b', { text: demo ? 'KALSHI DEMO EXCHANGE' : 'DRY RUN' }), $('span', { text: demo ? ' — play money' : ' — simulated against the live Kalshi order book' })), seg);
+    const acct = s.pnl.account, dm = s.pnl.demo || {}, pp = s.pnl.paper || {}, sign = (x) => (x < 0 ? 'neg' : 'pos');
     stats.append(
-      stat('P&L today', usd(s.pnl.today), s.pnl.today < 0 ? 'neg' : 'pos'), stat('P&L total', usd(s.pnl.total), s.pnl.total < 0 ? 'neg' : 'pos'),
-      stat('Exposure', usd(s.pnl.exposure)), stat('Rule triggers', String(s.orders)), stat('Demo fills', String(lastFills)));
+      acct ? stat(`Demo account (started ${usd(acct.start)})`, `${usd(acct.equity)} · ${acct.pnl >= 0 ? '+' : ''}${usd(acct.pnl)}`, sign(acct.pnl)) : null,
+      stat('Rule orders on the demo exchange', `${usd(dm.total ?? 0)} · ${dm.orders ?? 0} orders`, sign(dm.total ?? 0)),
+      stat('Simulated orders (paper, not real fills)', `${usd(pp.total ?? 0)} · ${pp.orders ?? 0} orders`, sign(pp.total ?? 0)),
+      stat('Open on demo', usd(dm.exposure ?? 0)), stat('Demo fills', String(lastFills)));
+    stats.title = 'Open positions are valued at the price you could sell for right now (the bid), so a new position shows the bid/ask spread as a small loss until it settles.';
     kill.setAttribute('aria-pressed', String(s.kill));
     kill.textContent = ''; kill.append(s.kill ? 'Kill switch ON' : 'Kill switch', $('small', { text: s.kill ? 'no orders will be sent. tap to resume' : 'stop every rule now' }));
     note.textContent = s.key_present ? `Demo key found. Orders go to ${s.demo_base} (play money). Loss cap ${usd(s.daily_loss_cap_usd)}/day.`

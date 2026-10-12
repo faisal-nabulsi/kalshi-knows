@@ -732,7 +732,7 @@ function go() {
   }
   else if (changed) scrollTo(0, 0);
   if (changed) { requestAnimationFrame(() => redraw(page)); syncAuto(page); }
-  if (changed && page === 'picks') import('./picks.js').then((m) => route === 'picks' && m.mountPicks($('#picks-root'))).catch((e) => { $('#picks-root').textContent = `Couldn't load picks: ${e.message}`; });
+  if (changed && page === 'picks') import('./picks.js').then((m) => route === 'picks' && m.mountPicks($('#picks-root'), S.api)).catch((e) => { $('#picks-root').textContent = `Couldn't load picks: ${e.message}`; });
 }
 addEventListener('hashchange', go);
 go();

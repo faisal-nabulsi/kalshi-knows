@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 
-from engine import autotrader, espn, infer, kalshi, push, tiers
+from engine import autotrader, espn, infer, kalshi, picks_live, push, tiers
 from engine import kalshi_ws  # --- kalshi_ws: production WebSocket market data (read-only)
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1022,6 +1022,7 @@ def replay_loop():
 app = FastAPI(title="Kalshi Knows live engine")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 app.include_router(autotrader.router)   # /api/auto/* (engine/autotrader.py)
+app.include_router(picks_live.router)   # /api/picks (engine/picks_live.py)
 app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
 _started = False
 
@@ -1050,6 +1051,10 @@ def _startup():
             autotrader.start(lambda: ENGINE)
         except Exception as e:
             log.warning("autotrader not started: %s", e)
+        try:  # --- live Picks: cross-market model -> recommendations, pushes, pick rules
+            picks_live.start()
+        except Exception as e:
+            log.warning("picks not started: %s", e)
     log.info("engine up: mode=%s threshold=%.3f (%s) window=%ds hold=%ds cooldown=%ds",
              CFG["mode"], THRESH, THRESH_SRC, WINDOW_MS // 1000, HOLD_MS // 1000, COOLDOWN_MS // 1000)
 
