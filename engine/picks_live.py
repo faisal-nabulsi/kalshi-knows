@@ -39,6 +39,7 @@ DIR = ROOT / "engine" / "logs" / "picks"
 DIR.mkdir(parents=True, exist_ok=True)
 LEDGER = DIR / "live_ledger.jsonl"
 LOOKED = DIR / "looked.json"
+SCORED = DIR / "scored.jsonl"      # EVERY market the model looked at: features, prices, decision, outcome (RL/retraining data)
 
 # horizon -> (window of hours-to-close in which a market gets its one look, model h, edge threshold)
 HORIZONS = {"24h": ((23.0, 25.0), 24.0, 0.08), "6h": ((5.5, 6.5), 6.0, 0.05)}
@@ -352,13 +353,24 @@ def settle_ledger() -> int:
     with _lock:
         rows = _ledger()
         open_ = [r for r in rows if r.get("result") is None and r["close_ms"] < time.time() * 1000 + 3600_000]
-        if not open_:
+        pend = set()
+        if SCORED.exists():                 # passes need outcomes too (they are most of the training data)
+            for ln in SCORED.read_text().splitlines():
+                try:
+                    x = json.loads(ln)
+                except ValueError:
+                    continue
+                if x.get("result") is None and x["close_ms"] < time.time() * 1000 + 3600_000:
+                    pend.add(x["ticker"])
+        if not open_ and not pend:
             return 0
         res: dict[str, dict] = {}
-        tks = sorted({r["ticker"] for r in open_})
+        tks = sorted({r["ticker"] for r in open_} | pend)
         for i in range(0, len(tks), 100):
             d = bg_get("/markets", {"tickers": ",".join(tks[i:i + 100]), "limit": 100})
             res.update({m["ticker"]: m for m in d.get("markets") or []})
+        _settle_scored({t: (m.get("result") or "").lower() for t, m in res.items()})
+        _attach_orders(rows)
         n = 0
         for r in rows:
             m = res.get(r["ticker"])
@@ -373,7 +385,7 @@ def settle_ledger() -> int:
                      pnl_cents=round((win - P - fee_pc(P)) * 100, 2),
                      pnl_stake=round(r["contracts_at_stake"] * (win - P - fee_pc(P)), 2))
             n += 1
-        if n:
+        if n or any(r.get("order") for r in rows):
             _write_ledger(rows)
         return n
 
@@ -388,6 +400,93 @@ def summary() -> dict:
             "pnl_cents_per_contract": (sum(r["pnl_cents"] for r in done) / len(done)) if done else None,
             "pnl_usd_at_10_per_bet": round(pnl, 2), "staked_usd": round(staked, 2), "roi": (pnl / staked) if staked else None,
             "since_ms": rows[0]["ts_ms"] if rows else None}
+
+
+# ---------------------------------------------------------------- full decision log (for RL / retraining)
+
+def _log_scored(recs: list[dict], rows: list[dict], metas: list, now: float):
+    """One line per market look. Because every market here is binary, the outcome alone tells us the reward of
+    EVERY action we could have taken (buy YES at its ask, buy NO at its ask, or pass), so this log is full-feedback
+    training data: no exploration or propensity logging needed, as long as both asks are recorded."""
+    with _lock, open(SCORED, "a") as fo:
+        for r, f, (hz, thr, m, trunc) in zip(recs, rows, metas):
+            px = kalshi.market_prices(m)
+            fo.write(json.dumps({
+                "ts_ms": int(now * 1000), "ticker": r["ticker"], "event_ticker": r["event_ticker"], "title": r["title"],
+                "horizon": hz, "threshold": thr, "close_ms": r["close_ms"],
+                "features": {k: (v if not isinstance(v, float) else round(v, 6)) for k, v in f.items() if not k.startswith("_")},
+                "raw_n_tr": f["_raw_n_tr"], "raw_ct": f["_raw_ct"], "tape_truncated": trunc,
+                "p_yes": r["model_prob"], "last": r["market_price"],
+                "yes_bid": px["bid"], "yes_ask": px["ask"], "no_ask": None if px["bid"] is None else round(1 - px["bid"], 4),
+                "model_version": "xmarket_xgb@2026-01", "decision": "pick" if r["qualifies"] else "pass",
+                "side": r["side"], "ev_cents": r["ev_cents_per_contract"], "why": r["why"],
+                "notified": False, "result": None}) + "\n")
+
+
+def _settle_scored(results: dict[str, str]):
+    """Fill outcomes + per-action rewards (cents per contract, after the taker fee) into scored.jsonl."""
+    if not SCORED.exists() or not results:
+        return
+    with _lock:
+        lines, changed = SCORED.read_text().splitlines(), False
+        out = []
+        for ln in lines:
+            try:
+                r = json.loads(ln)
+            except ValueError:
+                continue
+            res = results.get(r["ticker"])
+            if r.get("result") is None and res in ("yes", "no"):
+                y = 1.0 if res == "yes" else 0.0
+                rw = {}
+                for side, ask, win in (("yes", r.get("yes_ask"), y), ("no", r.get("no_ask"), 1 - y)):
+                    rw[side] = None if not ask or not (0 < ask < 1) else round((win - ask - fee_pc(ask)) * 100, 2)
+                r.update(result=res, y=int(y), reward_cents={"pass": 0.0, **rw}, settled_ms=int(time.time() * 1000))
+                changed = True
+            out.append(r)
+        if changed:
+            tmp = SCORED.with_suffix(".tmp")
+            tmp.write_text("".join(json.dumps(r) + "\n" for r in out))
+            tmp.replace(SCORED)
+
+
+def _mark_notified(tickers: list[str], how: str):
+    """Record which picks actually reached the phone (and how), in the ledger and the decision log."""
+    if not tickers:
+        return
+    ts, want = int(time.time() * 1000), set(tickers)
+    with _lock:
+        rows = _ledger()
+        for r in rows:
+            if r["ticker"] in want and not r.get("notified"):
+                r.update(notified=how, notified_ms=ts)
+        _write_ledger(rows)
+        if SCORED.exists():
+            out = []
+            for ln in SCORED.read_text().splitlines():
+                try:
+                    r = json.loads(ln)
+                except ValueError:
+                    continue
+                if r["ticker"] in want and r["decision"] == "pick" and not r.get("notified"):
+                    r.update(notified=how, notified_ms=ts)
+                out.append(r)
+            SCORED.write_text("".join(json.dumps(r) + "\n" for r in out))
+
+
+def _attach_orders(rows: list[dict]):
+    """Copy the auto-bettor's order (demo or paper fill) onto each ledger row so the bet log is complete."""
+    try:
+        from engine import autotrader
+        with autotrader.LOCK:
+            od = {o["ticker"]: o for o in autotrader.ORDERS if o.get("rule_id") == "r_picks" and o.get("kind") == "order"}
+        for r in rows:
+            o = od.get(r["ticker"])
+            if o and not r.get("order"):
+                r["order"] = {k: o.get(k) for k in ("mode", "status", "filled", "avg_price", "fees", "limit_price", "reason", "note")}
+                r["order"]["demo_order_id"] = (o.get("demo") or {}).get("order_id")
+    except Exception as e:      # noqa: BLE001
+        log.debug("attach orders: %s", e)
 
 
 # ---------------------------------------------------------------- scan loop
@@ -407,6 +506,8 @@ def _push(new: list[dict]):
     try:
         from engine import push
         top = sorted(new, key=lambda r: -(r["ev_cents_per_contract"] or 0))
+        _mark_notified([r["ticker"] for r in top[:PUSH_PER_SCAN]], "push")
+        _mark_notified([r["ticker"] for r in top[PUSH_PER_SCAN:]], "push_summary")
         for r in top[:PUSH_PER_SCAN]:
             label = f"{r['title']}" + (f" ({r['yes_label']})" if r["yes_label"] and r["yes_label"] not in r["title"] else "")
             hrs = max(0.0, (r["close_ms"] / 1000 - time.time()) / 3600)
@@ -470,6 +571,7 @@ def scan_once(now: float | None = None) -> dict:
             r = decide(m, f, float(py), hz, thr)
             r["tape_truncated"] = trunc
             recs.append(r)
+    _log_scored(recs, rows, metas, now)
     picks = [r for r in recs if r["qualifies"]]
     new = []
     with _lock:
@@ -545,3 +647,11 @@ def get_picks():
                           "min_ev_cents": MIN_EV_CENTS, "stake_usd": STAKE_USD, "quiet_hours": QUIET},
                 "disclaimer": "Model recommendations from public data, not financial advice. 21+. Automated orders go to "
                               "Kalshi's demo exchange (play money)."}
+
+
+@router.get("/log")
+def get_log(notified_only: bool = True, limit: int = 500):
+    """Every bet the phone was told about (or every pick), with order + outcome. The raw bet log."""
+    with _lock:
+        rows = [r for r in _ledger() if r.get("notified") or not notified_only]
+    return {"rows": rows[-limit:][::-1], "record": summary(), "scored_rows": sum(1 for _ in open(SCORED)) if SCORED.exists() else 0}
